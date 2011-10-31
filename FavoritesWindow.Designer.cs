@@ -1,4 +1,4 @@
-﻿namespace UltraRDC
+﻿namespace EasyConnect
 {
     partial class FavoritesWindow
     {
@@ -70,7 +70,7 @@
             // 
             this.newFolderButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.newFolderButton.Enabled = false;
-            this.newFolderButton.Image = global::UltraRDC.Properties.Resources.Folder;
+            this.newFolderButton.Image = global::EasyConnect.Properties.Resources.Folder;
             this.newFolderButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newFolderButton.Name = "newFolderButton";
             this.newFolderButton.Size = new System.Drawing.Size(23, 22);
@@ -81,7 +81,7 @@
             // 
             this.deleteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.deleteButton.Enabled = false;
-            this.deleteButton.Image = global::UltraRDC.Properties.Resources.Delete;
+            this.deleteButton.Image = global::EasyConnect.Properties.Resources.Delete;
             this.deleteButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(23, 22);
@@ -97,7 +97,7 @@
             // 
             this.propertiesButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.propertiesButton.Enabled = false;
-            this.propertiesButton.Image = global::UltraRDC.Properties.Resources.Properties;
+            this.propertiesButton.Image = global::EasyConnect.Properties.Resources.Properties;
             this.propertiesButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.propertiesButton.Name = "propertiesButton";
             this.propertiesButton.Size = new System.Drawing.Size(23, 22);
@@ -156,7 +156,7 @@
             // 
             // propertiesToolStripMenuItem
             // 
-            this.propertiesToolStripMenuItem.Image = global::UltraRDC.Properties.Resources.Properties;
+            this.propertiesToolStripMenuItem.Image = global::EasyConnect.Properties.Resources.Properties;
             this.propertiesToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
             this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
@@ -165,7 +165,7 @@
             // 
             // createFolderToolStripMenuItem
             // 
-            this.createFolderToolStripMenuItem.Image = global::UltraRDC.Properties.Resources.Folder;
+            this.createFolderToolStripMenuItem.Image = global::EasyConnect.Properties.Resources.Folder;
             this.createFolderToolStripMenuItem.Name = "createFolderToolStripMenuItem";
             this.createFolderToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.createFolderToolStripMenuItem.Text = "New Folder...";
@@ -173,7 +173,7 @@
             // 
             // newConnectionToolStripMenuItem
             // 
-            this.newConnectionToolStripMenuItem.Image = global::UltraRDC.Properties.Resources.RDCSmall;
+            this.newConnectionToolStripMenuItem.Image = global::EasyConnect.Properties.Resources.RDCSmall;
             this.newConnectionToolStripMenuItem.Name = "newConnectionToolStripMenuItem";
             this.newConnectionToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.newConnectionToolStripMenuItem.Text = "New Connection...";
@@ -188,7 +188,7 @@
             // 
             // deleteToolStripMenuItem
             // 
-            this.deleteToolStripMenuItem.Image = global::UltraRDC.Properties.Resources.Delete;
+            this.deleteToolStripMenuItem.Image = global::EasyConnect.Properties.Resources.Delete;
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
             this.deleteToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
@@ -196,7 +196,7 @@
             // 
             // connectToolStripMenuItem
             // 
-            this.connectToolStripMenuItem.Image = global::UltraRDC.Properties.Resources.RDCSmall;
+            this.connectToolStripMenuItem.Image = global::EasyConnect.Properties.Resources.RDCSmall;
             this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
             this.connectToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.connectToolStripMenuItem.Text = "Connect";

@@ -1,21 +1,10 @@
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltraRDC", "UltraRDC.csproj", "{864B8C43-5221-4EF6-A98C-6DDA4E634F71}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyConnect", "EasyConnect.csproj", "{864B8C43-5221-4EF6-A98C-6DDA4E634F71}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Installer", "Installer\Installer.vdproj", "{F8E93E74-A85F-48DD-9FE2-A069DD629211}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs07.codeplex.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = UltraRDC.csproj
-		SccLocalPath1 = .
-		SccProjectUniqueName2 = Installer\\Installer.vdproj
-		SccProjectName2 = Installer
-		SccLocalPath2 = Installer
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

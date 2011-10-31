@@ -1,4 +1,4 @@
-﻿namespace UltraRDC
+﻿namespace EasyConnect
 {
     partial class MainForm
     {
@@ -74,7 +74,7 @@
             // newConnectionButton
             // 
             this.newConnectionButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.newConnectionButton.Image = global::UltraRDC.Properties.Resources.RDCSmall;
+            this.newConnectionButton.Image = global::EasyConnect.Properties.Resources.RDCSmall;
             this.newConnectionButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newConnectionButton.Name = "newConnectionButton";
             this.newConnectionButton.Size = new System.Drawing.Size(23, 20);
@@ -104,7 +104,7 @@
             // connectButton
             // 
             this.connectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.connectButton.Image = global::UltraRDC.Properties.Resources.Go;
+            this.connectButton.Image = global::EasyConnect.Properties.Resources.Go;
             this.connectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.connectButton.Name = "connectButton";
             this.connectButton.Size = new System.Drawing.Size(23, 20);
@@ -177,7 +177,7 @@
             this.Controls.Add(this.dockPanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
-            this.Text = "UltraRDC";
+            this.Text = "EasyConnect";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);

@@ -1,4 +1,4 @@
-﻿namespace UltraRDC
+﻿namespace EasyConnect
 {
     partial class ConnectionWindow
     {
@@ -692,7 +692,7 @@
             // rdcImage
             // 
             this.rdcImage.BackColor = System.Drawing.Color.Transparent;
-            this.rdcImage.Image = global::UltraRDC.Properties.Resources.RDC;
+            this.rdcImage.Image = global::EasyConnect.Properties.Resources.RDC;
             this.rdcImage.Location = new System.Drawing.Point(20, 16);
             this.rdcImage.Name = "rdcImage";
             this.rdcImage.Size = new System.Drawing.Size(68, 69);
@@ -701,7 +701,7 @@
             // 
             // gradientBackground
             // 
-            this.gradientBackground.Image = global::UltraRDC.Properties.Resources.Gradient;
+            this.gradientBackground.Image = global::EasyConnect.Properties.Resources.Gradient;
             this.gradientBackground.Location = new System.Drawing.Point(-2, -1);
             this.gradientBackground.Name = "gradientBackground";
             this.gradientBackground.Size = new System.Drawing.Size(422, 102);
@@ -711,7 +711,7 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Image = global::UltraRDC.Properties.Resources.Folder;
+            this.pictureBox2.Image = global::EasyConnect.Properties.Resources.Folder;
             this.pictureBox2.Location = new System.Drawing.Point(17, 20);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(52, 51);
@@ -720,7 +720,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::UltraRDC.Properties.Resources.Computer;
+            this.pictureBox1.Image = global::EasyConnect.Properties.Resources.Computer;
             this.pictureBox1.Location = new System.Drawing.Point(17, 19);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(52, 50);
@@ -729,7 +729,7 @@
             // 
             // pictureBox4
             // 
-            this.pictureBox4.Image = global::UltraRDC.Properties.Resources.Colors;
+            this.pictureBox4.Image = global::EasyConnect.Properties.Resources.Colors;
             this.pictureBox4.Location = new System.Drawing.Point(18, 19);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(40, 41);
@@ -739,7 +739,7 @@
             // 
             // pictureBox3
             // 
-            this.pictureBox3.Image = global::UltraRDC.Properties.Resources.Monitor;
+            this.pictureBox3.Image = global::EasyConnect.Properties.Resources.Monitor;
             this.pictureBox3.Location = new System.Drawing.Point(18, 23);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(40, 41);
@@ -749,7 +749,7 @@
             // 
             // pictureBox6
             // 
-            this.pictureBox6.Image = global::UltraRDC.Properties.Resources.Printer;
+            this.pictureBox6.Image = global::EasyConnect.Properties.Resources.Printer;
             this.pictureBox6.Location = new System.Drawing.Point(18, 23);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(40, 41);
@@ -759,7 +759,7 @@
             // 
             // pictureBox5
             // 
-            this.pictureBox5.Image = global::UltraRDC.Properties.Resources.Keyboard;
+            this.pictureBox5.Image = global::EasyConnect.Properties.Resources.Keyboard;
             this.pictureBox5.Location = new System.Drawing.Point(18, 23);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(40, 41);
@@ -769,7 +769,7 @@
             // 
             // audioPictureBox
             // 
-            this.audioPictureBox.Image = global::UltraRDC.Properties.Resources.Sound;
+            this.audioPictureBox.Image = global::EasyConnect.Properties.Resources.Sound;
             this.audioPictureBox.Location = new System.Drawing.Point(18, 23);
             this.audioPictureBox.Name = "audioPictureBox";
             this.audioPictureBox.Size = new System.Drawing.Size(40, 41);
@@ -779,7 +779,7 @@
             // 
             // pictureBox8
             // 
-            this.pictureBox8.Image = global::UltraRDC.Properties.Resources.Performance;
+            this.pictureBox8.Image = global::EasyConnect.Properties.Resources.Performance;
             this.pictureBox8.Location = new System.Drawing.Point(18, 23);
             this.pictureBox8.Name = "pictureBox8";
             this.pictureBox8.Size = new System.Drawing.Size(40, 41);
@@ -789,7 +789,7 @@
             // 
             // pictureBox7
             // 
-            this.pictureBox7.Image = global::UltraRDC.Properties.Resources.Sound;
+            this.pictureBox7.Image = global::EasyConnect.Properties.Resources.Sound;
             this.pictureBox7.Location = new System.Drawing.Point(18, 23);
             this.pictureBox7.Name = "pictureBox7";
             this.pictureBox7.Size = new System.Drawing.Size(40, 41);

@@ -9,7 +9,7 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Threading;
 
-namespace UltraRDC
+namespace EasyConnect
 {
     static class Program
     {
@@ -27,17 +27,17 @@ namespace UltraRDC
             {
                 historyGuid = new Guid(openHistory.Substring(openHistory.IndexOf(":") + 1));
                 
-                List<Process> existingProcesses = new List<Process>(Process.GetProcessesByName("ultrardc"));
+                List<Process> existingProcesses = new List<Process>(Process.GetProcessesByName("EasyConnect"));
                 
                 if (existingProcesses.Count == 0)
-                    existingProcesses.AddRange(Process.GetProcessesByName("ultrardc.vshost"));
+                    existingProcesses.AddRange(Process.GetProcessesByName("EasyConnect.vshost"));
 
                 if (existingProcesses.Count > 1)
                 {
-                    IpcChannel ipcChannel = new IpcChannel("ultraRDCClient");
+                    IpcChannel ipcChannel = new IpcChannel("EasyConnectClient");
                     ChannelServices.RegisterChannel(ipcChannel, false);
 
-                    HistoryMethods historyMethods = (HistoryMethods)Activator.GetObject(typeof(HistoryMethods), "ipc://UltraRDC/HistoryMethods");
+                    HistoryMethods historyMethods = (HistoryMethods)Activator.GetObject(typeof(HistoryMethods), "ipc://EasyConnect/HistoryMethods");
                     historyMethods.OpenToHistoryGuid(historyGuid);
 
                     return;

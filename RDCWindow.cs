@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 using WeifenLuo.WinFormsUI.Docking;
 using AxMSTSCLib;
 
-namespace UltraRDC
+namespace EasyConnect
 {
     public partial class RDCWindow : DockContent
     {

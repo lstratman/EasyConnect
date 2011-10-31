@@ -19,7 +19,7 @@ using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 
-namespace UltraRDC
+namespace EasyConnect
 {
     public partial class MainForm : Form
     {
@@ -31,7 +31,7 @@ namespace UltraRDC
         protected Dictionary<RDCWindow, Bitmap> _previews = new Dictionary<RDCWindow, Bitmap>();
         protected JumpList _jumpList = null;
         protected JumpListCustomCategory _recentCategory = new JumpListCustomCategory("Recent");
-        protected IpcServerChannel _ipcChannel = new IpcServerChannel("UltraRDC");
+        protected IpcServerChannel _ipcChannel = new IpcServerChannel("EasyConnect");
         protected Queue<HistoryWindow.HistoricalConnection> _recentConnections = new Queue<HistoryWindow.HistoricalConnection>();
 
         public static MainForm ActiveInstance = null;
@@ -44,10 +44,10 @@ namespace UltraRDC
         {
             InitializeComponent();
 
-            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\UltraRDC"))
+            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect"))
             {
                 MessageBox.Show("Since this is the first time that you have run this application,\nyou will be asked to enter an access password.  This password will\nbe used to protect any passwords that you associate with your\nconnections.", "Create password", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\UltraRDC");
+                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect");
             }
 
             while (_favorites == null || _history == null)
@@ -76,8 +76,8 @@ namespace UltraRDC
                 }
             }
 
-            if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\UltraRDC\\Windows.xml"))
-                dockPanel.LoadFromXml(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\UltraRDC\\Windows.xml", new DeserializeDockContent(GetContentFromPersistString));
+            if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Windows.xml"))
+                dockPanel.LoadFromXml(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Windows.xml", new DeserializeDockContent(GetContentFromPersistString));
 
             else
             {
@@ -270,7 +270,7 @@ namespace UltraRDC
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             _favorites.Save();
-            dockPanel.SaveAsXml(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\UltraRDC\\Windows.xml");
+            dockPanel.SaveAsXml(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Windows.xml");
         }
 
         private void hostTextBox_KeyDown(object sender, KeyEventArgs e)

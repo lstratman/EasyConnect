@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
-namespace UltraRDC
+namespace EasyConnect
 {
     public partial class ToolWindow : DockContent
     {

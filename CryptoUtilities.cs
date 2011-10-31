@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Text;
 
-namespace UltraRDC
+namespace EasyConnect
 {
     public class CryptoUtilities
     {

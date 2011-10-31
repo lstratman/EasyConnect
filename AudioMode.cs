@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UltraRDC
+namespace EasyConnect
 {
     public enum AudioMode
     {

@@ -1,4 +1,4 @@
-﻿namespace UltraRDC
+﻿namespace EasyConnect
 {
     partial class ToolWindow
     {

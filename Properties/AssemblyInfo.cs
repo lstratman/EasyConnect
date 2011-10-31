@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("UltraRDC")]
+[assembly: AssemblyTitle("EasyConnect")]
 [assembly: AssemblyDescription("Tabbed interface and connection management and organization functionality for Remote Desktop connection")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Luke Stratman")]
-[assembly: AssemblyProduct("UltraRDC")]
+[assembly: AssemblyProduct("EasyConnect")]
 [assembly: AssemblyCopyright("Copyright © Luke Stratman 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

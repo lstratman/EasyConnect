@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace UltraRDC
+namespace EasyConnect
 {
     public partial class RenameWindow : Form
     {

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Security;
 using System.Runtime.InteropServices;
 
-namespace UltraRDC
+namespace EasyConnect
 {
     public partial class PasswordWindow : Form
     {

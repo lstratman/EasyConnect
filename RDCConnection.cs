@@ -5,7 +5,7 @@ using System.Xml;
 using System.Security;
 using System.Security.Cryptography;
 
-namespace UltraRDC
+namespace EasyConnect
 {
     public class RDCConnection
     {

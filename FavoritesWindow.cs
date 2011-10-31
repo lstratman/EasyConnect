@@ -10,14 +10,14 @@ using System.IO;
 using System.Xml;
 using System.Security;
 
-namespace UltraRDC
+namespace EasyConnect
 {
     public partial class FavoritesWindow : ToolWindow
     {
         protected TreeNode draggingNode = null;
         protected TreeNode tempDropNode = null;
         protected Dictionary<TreeNode, RDCConnection> _connections = new Dictionary<TreeNode, RDCConnection>();
-        protected string _favoritesFileName = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\UltraRDC\\Favorites.xml";
+        protected string _favoritesFileName = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Favorites.xml";
         protected MainForm.ConnectionDelegate _connectionDelegate = null;
         protected SecureString _password = null;
 

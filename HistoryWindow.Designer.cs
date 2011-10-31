@@ -1,4 +1,4 @@
-﻿namespace UltraRDC
+﻿namespace EasyConnect
 {
     partial class HistoryWindow
     {
@@ -96,7 +96,7 @@
             // 
             // propertiesMenuItem
             // 
-            this.propertiesMenuItem.Image = global::UltraRDC.Properties.Resources.Properties;
+            this.propertiesMenuItem.Image = global::EasyConnect.Properties.Resources.Properties;
             this.propertiesMenuItem.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this.propertiesMenuItem.Name = "propertiesMenuItem";
             this.propertiesMenuItem.Size = new System.Drawing.Size(136, 22);
@@ -105,7 +105,7 @@
             // 
             // connectMenuItem
             // 
-            this.connectMenuItem.Image = global::UltraRDC.Properties.Resources.RDCSmall;
+            this.connectMenuItem.Image = global::EasyConnect.Properties.Resources.RDCSmall;
             this.connectMenuItem.Name = "connectMenuItem";
             this.connectMenuItem.Size = new System.Drawing.Size(136, 22);
             this.connectMenuItem.Text = "Connect";

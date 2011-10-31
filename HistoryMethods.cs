@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UltraRDC
+namespace EasyConnect
 {
     public class HistoryMethods : MarshalByRefObject
     {

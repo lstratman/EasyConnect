@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Security;
 
-namespace UltraRDC
+namespace EasyConnect
 {
     public partial class ConnectionWindow : Form
     {
