@@ -17,11 +17,11 @@ namespace EasyConnect
     {
         Dictionary<TreeNode, HistoricalConnection> _connections = new Dictionary<TreeNode, HistoricalConnection>();
         MainForm.ConnectionDelegate _connectionDelegate = null;
-        FavoritesWindow _favoritesWindow = null;
+        Favorites _favoritesWindow = null;
         protected string _historyFileName = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\History.xml";
         protected SecureString _password = null;
 
-        public HistoryWindow(MainForm.ConnectionDelegate connectionDelegate, FavoritesWindow favoritesWindow, SecureString password)
+        public HistoryWindow(MainForm.ConnectionDelegate connectionDelegate, Favorites favoritesWindow, SecureString password)
         {
             _connectionDelegate = connectionDelegate;
             _favoritesWindow = favoritesWindow;

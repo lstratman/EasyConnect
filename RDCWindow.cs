@@ -13,27 +13,29 @@ using AxMSTSCLib;
 
 namespace EasyConnect
 {
-    public partial class RDCWindow : DockContent
+    public partial class RDCWindow : Form
     {
         protected MSTSCLib.IMsRdpClientNonScriptable _nonScriptable = null;
         protected bool _connectClipboard = true;
+        protected SecureString _password = null;
 
         public event EventHandler Connected;
 
-        public RDCWindow()
+        public RDCWindow(SecureString password)
         {
             InitializeComponent();
 
-            rdcWindow.ConnectingText = "Connecting...";
-            rdcWindow.OnDisconnected += new IMsTscAxEvents_OnDisconnectedEventHandler(rdcWindow_OnDisconnected);
+            _rdcWindow.ConnectingText = "Connecting...";
+            _rdcWindow.OnDisconnected += rdcWindow_OnDisconnected;
 
-            _nonScriptable = (MSTSCLib.IMsRdpClientNonScriptable)rdcWindow.GetOcx();
+            _nonScriptable = (MSTSCLib.IMsRdpClientNonScriptable)_rdcWindow.GetOcx();
+            Password = password;
         }
 
         protected override void OnGotFocus(EventArgs e)
         {
             base.OnGotFocus(e);
-            rdcWindow.Focus();
+            _rdcWindow.Focus();
         }
 
         void rdcWindow_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
@@ -48,13 +50,13 @@ namespace EasyConnect
         {
             get
             {
-                return rdcWindow.Server;
+                return _rdcWindow.Server;
             }
 
             set
             {
                 Text = value;
-                rdcWindow.Server = value;
+                _rdcWindow.Server = value;
             }
         }
 
@@ -62,12 +64,12 @@ namespace EasyConnect
         {
             get
             {
-                return rdcWindow.DesktopWidth;
+                return _rdcWindow.DesktopWidth;
             }
 
             set
             {
-                rdcWindow.DesktopWidth = value;
+                _rdcWindow.DesktopWidth = value;
             }
         }
 
@@ -75,12 +77,12 @@ namespace EasyConnect
         {
             get
             {
-                return rdcWindow.DesktopHeight;
+                return _rdcWindow.DesktopHeight;
             }
 
             set
             {
-                rdcWindow.DesktopHeight = value;
+                _rdcWindow.DesktopHeight = value;
             }
         }
 
@@ -88,21 +90,28 @@ namespace EasyConnect
         {
             get
             {
-                return rdcWindow.UserName;
+                return _rdcWindow.UserName;
             }
 
             set
             {
-                rdcWindow.UserName = value;
+                _rdcWindow.UserName = value;
             }
         }
 
         public SecureString Password
         {
+            get
+            {
+                return _password;
+            }
+
             set
             {
                 IntPtr password = Marshal.SecureStringToGlobalAllocAnsi(value);
-                rdcWindow.AdvancedSettings3.ClearTextPassword = Marshal.PtrToStringAnsi(password);
+
+                _rdcWindow.AdvancedSettings3.ClearTextPassword = Marshal.PtrToStringAnsi(password);
+                _password = value;
             }
         }
 
@@ -110,7 +119,7 @@ namespace EasyConnect
         {
             get
             {
-                return rdcWindow.Focused;
+                return _rdcWindow.Focused;
             }
         }
 
@@ -118,12 +127,12 @@ namespace EasyConnect
         {
             get
             {
-                return (AudioMode)rdcWindow.SecuredSettings2.AudioRedirectionMode;
+                return (AudioMode)_rdcWindow.SecuredSettings2.AudioRedirectionMode;
             }
 
             set
             {
-                rdcWindow.SecuredSettings2.AudioRedirectionMode = (int)value;
+                _rdcWindow.SecuredSettings2.AudioRedirectionMode = (int)value;
             }
         }
 
@@ -131,12 +140,12 @@ namespace EasyConnect
         {
             get
             {
-                return (KeyboardMode)rdcWindow.SecuredSettings2.KeyboardHookMode;
+                return (KeyboardMode)_rdcWindow.SecuredSettings2.KeyboardHookMode;
             }
 
             set
             {
-                rdcWindow.SecuredSettings2.KeyboardHookMode = (int)value;
+                _rdcWindow.SecuredSettings2.KeyboardHookMode = (int)value;
             }
         }
 
@@ -144,13 +153,13 @@ namespace EasyConnect
         {
             get
             {
-                return rdcWindow.AdvancedSettings2.RedirectPrinters;
+                return _rdcWindow.AdvancedSettings2.RedirectPrinters;
             }
 
             set
             {
-                rdcWindow.AdvancedSettings2.RedirectPrinters = value;
-                rdcWindow.AdvancedSettings2.DisableRdpdr = (!(value || ConnectClipboard) ? 1 : 0);
+                _rdcWindow.AdvancedSettings2.RedirectPrinters = value;
+                _rdcWindow.AdvancedSettings2.DisableRdpdr = (!(value || ConnectClipboard) ? 1 : 0);
             }
         }
 
@@ -163,7 +172,7 @@ namespace EasyConnect
 
             set
             {
-                rdcWindow.AdvancedSettings.DisableRdpdr = (!(value || ConnectPrinters) ? 1 : 0);
+                _rdcWindow.AdvancedSettings.DisableRdpdr = (!(value || ConnectPrinters) ? 1 : 0);
                 _connectClipboard = value;
             }
         }
@@ -172,12 +181,12 @@ namespace EasyConnect
         {
             get
             {
-                return rdcWindow.AdvancedSettings2.RedirectDrives;
+                return _rdcWindow.AdvancedSettings2.RedirectDrives;
             }
 
             set
             {
-                rdcWindow.AdvancedSettings2.RedirectDrives = value;
+                _rdcWindow.AdvancedSettings2.RedirectDrives = value;
             }
         }
 
@@ -185,16 +194,16 @@ namespace EasyConnect
         {
             get
             {
-                return !((rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000001) == 0x00000001);
+                return !((_rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000001) == 0x00000001);
             }
 
             set
             {
                 if (value)
-                    rdcWindow.AdvancedSettings2.PerformanceFlags &= ~0x00000001;
+                    _rdcWindow.AdvancedSettings2.PerformanceFlags &= ~0x00000001;
 
                 else
-                    rdcWindow.AdvancedSettings2.PerformanceFlags |= 0x00000001;
+                    _rdcWindow.AdvancedSettings2.PerformanceFlags |= 0x00000001;
             }
         }
 
@@ -202,16 +211,16 @@ namespace EasyConnect
         {
             get
             {
-                return !((rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000080) == 0x00000080);
+                return !((_rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000080) == 0x00000080);
             }
 
             set
             {
                 if (value)
-                    rdcWindow.AdvancedSettings2.PerformanceFlags &= ~0x00000080;
+                    _rdcWindow.AdvancedSettings2.PerformanceFlags &= ~0x00000080;
 
                 else
-                    rdcWindow.AdvancedSettings2.PerformanceFlags |= 0x00000080;
+                    _rdcWindow.AdvancedSettings2.PerformanceFlags |= 0x00000080;
             }
         }
 
@@ -219,16 +228,16 @@ namespace EasyConnect
         {
             get
             {
-                return !((rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000100) == 0x00000100);
+                return !((_rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000100) == 0x00000100);
             }
 
             set
             {
                 if (value)
-                    rdcWindow.AdvancedSettings2.PerformanceFlags &= ~0x00000100;
+                    _rdcWindow.AdvancedSettings2.PerformanceFlags &= ~0x00000100;
 
                 else
-                    rdcWindow.AdvancedSettings2.PerformanceFlags |= 0x00000100;
+                    _rdcWindow.AdvancedSettings2.PerformanceFlags |= 0x00000100;
             }
         }
 
@@ -236,16 +245,16 @@ namespace EasyConnect
         {
             get
             {
-                return !((rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000100) == 0x00000100);
+                return !((_rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000100) == 0x00000100);
             }
 
             set
             {
                 if (value)
-                    rdcWindow.AdvancedSettings2.PerformanceFlags &= ~0x00000100;
+                    _rdcWindow.AdvancedSettings2.PerformanceFlags &= ~0x00000100;
 
                 else
-                    rdcWindow.AdvancedSettings2.PerformanceFlags |= 0x00000100;
+                    _rdcWindow.AdvancedSettings2.PerformanceFlags |= 0x00000100;
             }
         }
 
@@ -253,16 +262,16 @@ namespace EasyConnect
         {
             get
             {
-                return !((rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000004) == 0x00000004);
+                return !((_rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000004) == 0x00000004);
             }
 
             set
             {
                 if (value)
-                    rdcWindow.AdvancedSettings2.PerformanceFlags &= ~0x00000004;
+                    _rdcWindow.AdvancedSettings2.PerformanceFlags &= ~0x00000004;
 
                 else
-                    rdcWindow.AdvancedSettings2.PerformanceFlags |= 0x00000004;
+                    _rdcWindow.AdvancedSettings2.PerformanceFlags |= 0x00000004;
             }
         }
 
@@ -270,16 +279,16 @@ namespace EasyConnect
         {
             get
             {
-                return !((rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000008) == 0x00000008);
+                return !((_rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000008) == 0x00000008);
             }
 
             set
             {
                 if (value)
-                    rdcWindow.AdvancedSettings2.PerformanceFlags &= ~0x00000008;
+                    _rdcWindow.AdvancedSettings2.PerformanceFlags &= ~0x00000008;
 
                 else
-                    rdcWindow.AdvancedSettings2.PerformanceFlags |= 0x00000008;
+                    _rdcWindow.AdvancedSettings2.PerformanceFlags |= 0x00000008;
             }
         }
 
@@ -287,19 +296,19 @@ namespace EasyConnect
         {
             get
             {
-                return !(rdcWindow.AdvancedSettings2.CachePersistenceActive == 0);
+                return !(_rdcWindow.AdvancedSettings2.CachePersistenceActive == 0);
             }
 
             set
             {
-                rdcWindow.AdvancedSettings2.CachePersistenceActive = (value ? 1 : 0);
+                _rdcWindow.AdvancedSettings2.CachePersistenceActive = (value ? 1 : 0);
             }
         }
 
         public void Connect()
         {
-            rdcWindow.Connect();
-            rdcWindow.OnConnected += Connected;
+            _rdcWindow.Connect();
+            _rdcWindow.OnConnected += Connected;
         }
 
         public void Connect(RDCConnection connection)
@@ -331,6 +340,15 @@ namespace EasyConnect
                 Text = connection.Name;
 
             Connect();
+        }
+
+        private void urlTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                Connect(new RDCConnection(_password)
+                            {
+                                Host = urlTextBox.Text
+                            });
         }
     }
 }

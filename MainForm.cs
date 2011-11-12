@@ -12,6 +12,7 @@ using System.Windows;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using Stratman.Windows.Forms.TitleBarTabs;
 using WeifenLuo.WinFormsUI.Docking;
 using Microsoft.WindowsAPICodePack.Taskbar;
 using Microsoft.WindowsAPICodePack.Shell;
@@ -21,12 +22,12 @@ using System.Runtime.Remoting.Channels.Ipc;
 
 namespace EasyConnect
 {
-    public partial class MainForm : Form
+    public partial class MainForm : TitleBarTabs
     {
-        protected FavoritesWindow _favorites = null;
-        protected HistoryWindow _history = null;
         protected SecureString _password = null;
         protected RDCWindow _previousActiveDocument = null;
+        protected HistoryWindow _history = null;
+        protected Favorites _favorites = null;
         protected bool _addingWindow = false;
         protected Dictionary<RDCWindow, Bitmap> _previews = new Dictionary<RDCWindow, Bitmap>();
         protected JumpList _jumpList = null;
@@ -60,11 +61,11 @@ namespace EasyConnect
 
                 try
                 {
-                    _favorites = new FavoritesWindow(new ConnectionDelegate(Connect), _password);
-                    _history = new HistoryWindow(new ConnectionDelegate(Connect), _favorites, _password);
+                    _favorites = new Favorites(Connect, _password);
+                    _history = new HistoryWindow(Connect, _favorites, _password);
                 }
 
-                catch (CryptographicException e)
+                catch (CryptographicException)
                 {
                     DialogResult result = MessageBox.Show("Password is incorrect.", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
 
@@ -76,37 +77,52 @@ namespace EasyConnect
                 }
             }
 
-            if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Windows.xml"))
-                dockPanel.LoadFromXml(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Windows.xml", new DeserializeDockContent(GetContentFromPersistString));
-
-            else
-            {
-                _favorites.Show(dockPanel, DockState.DockLeftAutoHide);
-                _history.Show(dockPanel, DockState.DockLeftAutoHide);
-            }
-
             _favorites.Password = _password;
             _history.Password = _password;
 
-            dockPanel.ActiveAutoHideContent = null;
-
             ChannelServices.RegisterChannel(_ipcChannel, false);
             RemotingConfiguration.RegisterWellKnownServiceType(typeof(HistoryMethods), "HistoryMethods", WellKnownObjectMode.SingleCall);
+            
+            TabSelected += MainForm_TabSelected;
+            TabDeselecting += MainForm_TabDeselecting;
 
             ActiveInstance = this;
-            ConnectToHistoryMethod = new ConnectToHistoryDelegate(ConnectToHistory);
+            ConnectToHistoryMethod = ConnectToHistory;
+
+            TabRenderer = new ChromeTabRenderer(this);
+            Tabs.Add(new TitleBarTab(this)
+                         {
+                             Content = new RDCWindow(_password)
+                         });
+            SelectedTabIndex = 0;
         }
 
-        protected IDockContent GetContentFromPersistString(string persistString)
+        protected void MainForm_TabDeselecting(object sender, TitleBarTabCancelEventArgs e)
         {
-            if (persistString == typeof(HistoryWindow).ToString())
-                return _history;
+            if (_previousActiveDocument == null)
+                return;
 
-            else if (persistString == typeof(FavoritesWindow).ToString())
-                return _favorites;
+            TabbedThumbnail preview = TaskbarManager.Instance.TabbedThumbnail.GetThumbnailPreview(_previousActiveDocument);
 
-            else
-                return null;
+            if (preview == null)
+                return;
+
+            Bitmap bitmap = TabbedThumbnailScreenCapture.GrabWindowBitmap(_previousActiveDocument.Handle, _previousActiveDocument.Size);
+
+            preview.SetImage(bitmap);
+
+            if (_previews.ContainsKey(_previousActiveDocument))
+                _previews[_previousActiveDocument].Dispose();
+
+            _previews[_previousActiveDocument] = bitmap;
+        }
+
+        protected void MainForm_TabSelected(object sender, TitleBarTabEventArgs e)
+        {
+            if (!_addingWindow && SelectedTabIndex != -1)
+                TaskbarManager.Instance.TabbedThumbnail.SetActiveTab((RDCWindow)SelectedTab.Content);
+
+            _previousActiveDocument = (RDCWindow)SelectedTab.Content;
         }
 
         public bool Closing
@@ -121,17 +137,6 @@ namespace EasyConnect
             set;
         }
 
-        private void MainForm_Resize(object sender, EventArgs e)
-        {
-            dockPanel.Width = ClientSize.Width;
-            dockPanel.Height = ClientSize.Height - dockPanel.Location.Y;
-        }
-
-        private void connectButton_Click(object sender, EventArgs e)
-        {
-            Connect(new RDCConnection(_password) { Host = hostTextBox.Text });
-        }
-
         public void ConnectToHistory(Guid historyGuid)
         {
             RDCConnection connection = _history.FindInHistory(historyGuid);
@@ -143,12 +148,14 @@ namespace EasyConnect
         protected void Connect(RDCConnection connection)
         {
             _history.AddToHistory(connection);
-            dockPanel.ActiveAutoHideContent = null;
 
-            RDCWindow sessionWindow = new RDCWindow();
+            RDCWindow sessionWindow = new RDCWindow(_password);
 
             _addingWindow = true;
-            sessionWindow.Show(dockPanel, DockState.Document);
+            Tabs.Add(new TitleBarTab(this)
+                         {
+                             Content = sessionWindow
+                         });
             _addingWindow = false;
 
             sessionWindow.FormClosed += new FormClosedEventHandler(sessionWindow_FormClosed);
@@ -190,7 +197,7 @@ namespace EasyConnect
 
         protected void GenerateWindowPreview(RDCWindow sessionWindow)
         {
-            if (dockPanel.ActiveDocument != sessionWindow)
+            if (SelectedTab.Content != sessionWindow)
                 return;
 
             Bitmap bitmap = TabbedThumbnailScreenCapture.GrabWindowBitmap(sessionWindow.Handle, sessionWindow.Size);
@@ -202,9 +209,9 @@ namespace EasyConnect
 
         void preview_TabbedThumbnailBitmapRequested(object sender, TabbedThumbnailBitmapRequestedEventArgs e)
         {
-            foreach (IDockContent document in dockPanel.Documents)
+            foreach (TitleBarTab tab in Tabs)
             {
-                RDCWindow rdcWindow = (RDCWindow)document;
+                RDCWindow rdcWindow = (RDCWindow)tab.Content;
 
                 if (rdcWindow.Handle == e.WindowHandle && _previews.ContainsKey(rdcWindow))
                 {
@@ -222,7 +229,7 @@ namespace EasyConnect
                 _previews.Remove((RDCWindow)sender);
             }
 
-            if (((RDCWindow)sender) == _previousActiveDocument)
+            if (sender == _previousActiveDocument)
                 _previousActiveDocument = null;
 
             TaskbarManager.Instance.TabbedThumbnail.RemoveThumbnailPreview((RDCWindow)sender);
@@ -230,9 +237,9 @@ namespace EasyConnect
 
         void preview_TabbedThumbnailClosed(object sender, TabbedThumbnailEventArgs e)
         {
-            foreach (IDockContent document in dockPanel.Documents)
+            foreach (TitleBarTab tab in Tabs)
             {
-                RDCWindow rdcWindow = (RDCWindow)document;
+                RDCWindow rdcWindow = (RDCWindow)tab.Content;
 
                 if (rdcWindow.Handle == e.WindowHandle)
                 {
@@ -245,14 +252,13 @@ namespace EasyConnect
 
         void preview_TabbedThumbnailActivated(object sender, TabbedThumbnailEventArgs e)
         {
-            foreach (IDockContent document in dockPanel.Documents)
+            foreach (TitleBarTab tab in Tabs)
             {
-                RDCWindow rdcWindow = (RDCWindow)document;
-
-                if (rdcWindow.Handle == e.WindowHandle)
+                if (tab.Content.Handle == e.WindowHandle)
                 {
-                    rdcWindow.Activate();
-                    TaskbarManager.Instance.TabbedThumbnail.SetActiveTab(rdcWindow);
+                    SelectedTabIndex = Tabs.IndexOf(tab);
+
+                    TaskbarManager.Instance.TabbedThumbnail.SetActiveTab(tab.Content);
                     break;
                 }
             }
@@ -261,50 +267,9 @@ namespace EasyConnect
                 WindowState = FormWindowState.Normal;
         }
 
-        private void newConnectionButton_Click(object sender, EventArgs e)
-        {
-            ConnectionWindow connectionWindow = new ConnectionWindow(_favorites, new ConnectionDelegate(Connect), _password);
-            connectionWindow.ShowDialog(this);
-        }
-
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             _favorites.Save();
-            dockPanel.SaveAsXml(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Windows.xml");
-        }
-
-        private void hostTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-                connectButton_Click(null, null);
-        }
-
-        private void dockPanel_ActiveDocumentChanging(object sender, EventArgs e)
-        {
-            if (_previousActiveDocument != null)
-            {
-                TabbedThumbnail preview = TaskbarManager.Instance.TabbedThumbnail.GetThumbnailPreview(_previousActiveDocument);
-
-                if (preview != null)
-                {
-                    Bitmap bitmap = TabbedThumbnailScreenCapture.GrabWindowBitmap(_previousActiveDocument.Handle, _previousActiveDocument.Size);
-                    
-                    preview.SetImage(bitmap);
-
-                    if (_previews.ContainsKey(_previousActiveDocument))
-                        _previews[_previousActiveDocument].Dispose();
-
-                    _previews[_previousActiveDocument] = bitmap;
-                }
-            }
-        }
-
-        private void dockPanel_ActiveDocumentChanged(object sender, EventArgs e)
-        {
-            if (!_addingWindow && dockPanel.ActiveDocument != null)
-                TaskbarManager.Instance.TabbedThumbnail.SetActiveTab((RDCWindow)dockPanel.ActiveDocument);
-
-            _previousActiveDocument = (RDCWindow)dockPanel.ActiveDocument;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -326,6 +291,14 @@ namespace EasyConnect
 
             if (OpenToHistory != Guid.Empty)
                 Connect(_history.FindInHistory(OpenToHistory));
+        }
+
+        public override TitleBarTab CreateTab()
+        {
+            return new TitleBarTab(this)
+                       {
+                           Content = new RDCWindow(_password)
+                       };
         }
     }
 }

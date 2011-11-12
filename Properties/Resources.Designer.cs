@@ -60,6 +60,41 @@ namespace EasyConnect.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap BackActive {
+            get {
+                object obj = ResourceManager.GetObject("BackActive", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap BookmarksActive {
+            get {
+                object obj = ResourceManager.GetObject("BookmarksActive", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Border {
+            get {
+                object obj = ResourceManager.GetObject("Border", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap ButtonHoverBackground {
+            get {
+                object obj = ResourceManager.GetObject("ButtonHoverBackground", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap CloseActive {
+            get {
+                object obj = ResourceManager.GetObject("CloseActive", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Colors {
             get {
                 object obj = ResourceManager.GetObject("Colors", resourceCulture);
@@ -84,6 +119,13 @@ namespace EasyConnect.Properties {
         internal static System.Drawing.Bitmap Folder {
             get {
                 object obj = ResourceManager.GetObject("Folder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap ForwardActive {
+            get {
+                object obj = ResourceManager.GetObject("ForwardActive", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -154,6 +196,20 @@ namespace EasyConnect.Properties {
         internal static System.Drawing.Bitmap Sound {
             get {
                 object obj = ResourceManager.GetObject("Sound", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap ToolbarBackground {
+            get {
+                object obj = ResourceManager.GetObject("ToolbarBackground", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap ToolsActive {
+            get {
+                object obj = ResourceManager.GetObject("ToolsActive", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

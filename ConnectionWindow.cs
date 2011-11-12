@@ -12,17 +12,17 @@ namespace EasyConnect
     public partial class ConnectionWindow : Form
     {
         protected List<DEVMODE> _resolutions = new List<DEVMODE>();
-        protected FavoritesWindow _favorites = null;
+        protected Favorites _favorites = null;
         protected RDCConnection _connection = null;
         protected MainForm.ConnectionDelegate _connectionDelegate = null;
         protected SecureString _password = null;
 
-        public ConnectionWindow(FavoritesWindow favorites, MainForm.ConnectionDelegate connectionDelegate, SecureString password)
+        public ConnectionWindow(Favorites favorites, MainForm.ConnectionDelegate connectionDelegate, SecureString password)
             : this(favorites, new RDCConnection(password), connectionDelegate, password)
         {
         }
 
-        public ConnectionWindow(FavoritesWindow favorites, RDCConnection connection, MainForm.ConnectionDelegate connectionDelegate, SecureString password)
+        public ConnectionWindow(Favorites favorites, RDCConnection connection, MainForm.ConnectionDelegate connectionDelegate, SecureString password)
         {
             InitializeComponent();
 
@@ -107,39 +107,39 @@ namespace EasyConnect
 
         private void saveAsButton_Click(object sender, EventArgs e)
         {
-            SaveConnectionWindow saveWindow = new SaveConnectionWindow((TreeNode)_favorites.TreeRoot.Clone());
-            saveWindow.ShowDialog(this);
+            //SaveConnectionWindow saveWindow = new SaveConnectionWindow((TreeNode)_favorites.TreeRoot.Clone());
+            //saveWindow.ShowDialog(this);
 
-            if (saveWindow.DialogResult != DialogResult.OK)
-                return;
+            //if (saveWindow.DialogResult != DialogResult.OK)
+            //    return;
 
-            string[] pathComponents = saveWindow.DestinationFolderPath.Split('/');
-            TreeNode currentNode = _favorites.TreeRoot;
+            //string[] pathComponents = saveWindow.DestinationFolderPath.Split('/');
+            //TreeNode currentNode = _favorites.TreeRoot;
             
-            for (int i = 2; i < pathComponents.Length; i++)
-                currentNode = currentNode.Nodes[Convert.ToInt32(pathComponents[i])];
+            //for (int i = 2; i < pathComponents.Length; i++)
+            //    currentNode = currentNode.Nodes[Convert.ToInt32(pathComponents[i])];
 
-            TreeNode connectionNode = new TreeNode(saveWindow.ConnectionName, 1, 1);
-            bool overwriteExisting = false;
+            //TreeNode connectionNode = new TreeNode(saveWindow.ConnectionName, 1, 1);
+            //bool overwriteExisting = false;
 
-            foreach (TreeNode node in currentNode.Nodes)
-            {
-                if (node.Text == connectionNode.Text)
-                {
-                    overwriteExisting = true;
-                    connectionNode = node;
-                }
-            }
+            //foreach (TreeNode node in currentNode.Nodes)
+            //{
+            //    if (node.Text == connectionNode.Text)
+            //    {
+            //        overwriteExisting = true;
+            //        connectionNode = node;
+            //    }
+            //}
 
-            if (!overwriteExisting)
-                _favorites.AddTreeNode(currentNode.Nodes, connectionNode);
+            //if (!overwriteExisting)
+            //    _favorites.AddTreeNode(currentNode.Nodes, connectionNode);
 
-            _connection = new RDCConnection(_password) { Name = saveWindow.ConnectionName, IsFavorite = true };
+            //_connection = new RDCConnection(_password) { Name = saveWindow.ConnectionName, IsFavorite = true };
 
-            SaveConnection();
-            _favorites.Connections[connectionNode] = _connection;
+            //SaveConnection();
+            //_favorites.Connections[connectionNode] = _connection;
 
-            _favorites.Save();
+            //_favorites.Save();
         }
 
         private void saveButton_Click(object sender, EventArgs e)
