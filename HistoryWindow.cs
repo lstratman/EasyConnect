@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using System.IO;
 using System.Security;
 using System.Linq;
-using WeifenLuo.WinFormsUI.Docking;
 
 namespace EasyConnect
 {
-    public partial class HistoryWindow : DockContent
+    public partial class HistoryWindow : Form
     {
         Dictionary<TreeNode, HistoricalConnection> _connections = new Dictionary<TreeNode, HistoricalConnection>();
         MainForm.ConnectionDelegate _connectionDelegate = null;
