@@ -86,7 +86,6 @@
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.1.35488, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -186,12 +185,6 @@
     <Compile Include="SaveConnectionWindow.Designer.cs">
       <DependentUpon>SaveConnectionWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="ToolWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ToolWindow.Designer.cs">
-      <DependentUpon>ToolWindow.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\ToolbarBackground.png" />
@@ -203,7 +196,6 @@
     <Content Include="lib\Microsoft.WindowsAPICodePack.dll" />
     <Content Include="lib\Microsoft.WindowsAPICodePack.Shell.dll" />
     <Content Include="lib\SecurePasswordTextBox.dll" />
-    <Content Include="lib\WeifenLuo.WinFormsUI.Docking.dll" />
     <Content Include="RDC.ico">
     </Content>
     <Content Include="Resources\BackActive.png" />

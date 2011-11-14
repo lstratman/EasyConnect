@@ -32,18 +32,18 @@
             this._rdcWindow = new AxMSTSCLib.AxMsRdpClient2();
             this.borderLeft = new System.Windows.Forms.Panel();
             this.toolbarBackground = new System.Windows.Forms.Panel();
+            this.forwardButton = new System.Windows.Forms.PictureBox();
+            this.backButton = new System.Windows.Forms.PictureBox();
             this.urlTextBox = new System.Windows.Forms.TextBox();
             this.urlBorder = new System.Windows.Forms.Panel();
             this.urlBackground = new System.Windows.Forms.Panel();
             this.borderRight = new System.Windows.Forms.Panel();
-            this.forwardButton = new System.Windows.Forms.PictureBox();
-            this.backButton = new System.Windows.Forms.PictureBox();
             this.borderBottom = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this._rdcWindow)).BeginInit();
             this.toolbarBackground.SuspendLayout();
-            this.urlBorder.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.forwardButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.backButton)).BeginInit();
+            this.urlBorder.SuspendLayout();
             this.SuspendLayout();
             // 
             // _rdcWindow
@@ -81,6 +81,28 @@
             this.toolbarBackground.Name = "toolbarBackground";
             this.toolbarBackground.Size = new System.Drawing.Size(622, 36);
             this.toolbarBackground.TabIndex = 5;
+            // 
+            // forwardButton
+            // 
+            this.forwardButton.BackColor = System.Drawing.Color.Transparent;
+            this.forwardButton.Image = global::EasyConnect.Properties.Resources.ForwardActive;
+            this.forwardButton.Location = new System.Drawing.Point(37, 5);
+            this.forwardButton.Margin = new System.Windows.Forms.Padding(4, 4, 3, 3);
+            this.forwardButton.Name = "forwardButton";
+            this.forwardButton.Size = new System.Drawing.Size(27, 27);
+            this.forwardButton.TabIndex = 3;
+            this.forwardButton.TabStop = false;
+            // 
+            // backButton
+            // 
+            this.backButton.BackColor = System.Drawing.Color.Transparent;
+            this.backButton.Image = global::EasyConnect.Properties.Resources.BackActive;
+            this.backButton.Location = new System.Drawing.Point(6, 5);
+            this.backButton.Margin = new System.Windows.Forms.Padding(4, 4, 3, 3);
+            this.backButton.Name = "backButton";
+            this.backButton.Size = new System.Drawing.Size(27, 27);
+            this.backButton.TabIndex = 2;
+            this.backButton.TabStop = false;
             // 
             // urlTextBox
             // 
@@ -131,33 +153,12 @@
             this.borderRight.Size = new System.Drawing.Size(2, 435);
             this.borderRight.TabIndex = 7;
             // 
-            // forwardButton
-            // 
-            this.forwardButton.BackColor = System.Drawing.Color.Transparent;
-            this.forwardButton.Image = global::EasyConnect.Properties.Resources.ForwardActive;
-            this.forwardButton.Location = new System.Drawing.Point(37, 5);
-            this.forwardButton.Margin = new System.Windows.Forms.Padding(4, 4, 3, 3);
-            this.forwardButton.Name = "forwardButton";
-            this.forwardButton.Size = new System.Drawing.Size(27, 27);
-            this.forwardButton.TabIndex = 3;
-            this.forwardButton.TabStop = false;
-            // 
-            // backButton
-            // 
-            this.backButton.BackColor = System.Drawing.Color.Transparent;
-            this.backButton.Image = global::EasyConnect.Properties.Resources.BackActive;
-            this.backButton.Location = new System.Drawing.Point(6, 5);
-            this.backButton.Margin = new System.Windows.Forms.Padding(4, 4, 3, 3);
-            this.backButton.Name = "backButton";
-            this.backButton.Size = new System.Drawing.Size(27, 27);
-            this.backButton.TabIndex = 2;
-            this.backButton.TabStop = false;
-            // 
             // borderBottom
             // 
             this.borderBottom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.borderBottom.BackColor = System.Drawing.Color.Transparent;
+            this.borderBottom.BackgroundImage = global::EasyConnect.Properties.Resources.Border;
             this.borderBottom.Location = new System.Drawing.Point(0, 433);
             this.borderBottom.Name = "borderBottom";
             this.borderBottom.Size = new System.Drawing.Size(622, 2);
@@ -180,9 +181,9 @@
             ((System.ComponentModel.ISupportInitialize)(this._rdcWindow)).EndInit();
             this.toolbarBackground.ResumeLayout(false);
             this.toolbarBackground.PerformLayout();
-            this.urlBorder.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.forwardButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.backButton)).EndInit();
+            this.urlBorder.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
