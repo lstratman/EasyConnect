@@ -19,6 +19,14 @@ namespace EasyConnect
         protected SecureString _password = null;
         protected FavoritesFolder _rootFolder = new FavoritesFolder();
 
+        public FavoritesFolder RootFolder
+        {
+            get
+            {
+                return _rootFolder;
+            }
+        }
+
         public Favorites(MainForm.ConnectionDelegate connectionDelegate, SecureString password)
         {
             _connectionDelegate = connectionDelegate;

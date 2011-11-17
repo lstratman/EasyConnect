@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Security;
 using System.Runtime.InteropServices;
@@ -12,6 +13,9 @@ namespace EasyConnect
         protected MSTSCLib.IMsRdpClientNonScriptable _nonScriptable = null;
         protected bool _connectClipboard = true;
         protected SecureString _password = null;
+        protected RDCConnection _connection = null;
+        protected Dictionary<ToolStripMenuItem, RDCConnection> _menuItemConnections =
+            new Dictionary<ToolStripMenuItem, RDCConnection>();
 
         public event EventHandler Connected;
 
@@ -38,6 +42,14 @@ namespace EasyConnect
                 MessageBox.Show("Unable to establish a connection to the remote system.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             Close();
+        }
+
+        protected MainForm ParentTabs
+        {
+            get
+            {
+                return (MainForm) Parent;
+            }
         }
 
         public string Host
@@ -329,10 +341,10 @@ namespace EasyConnect
                 Password = connection.Password;
 
             Host = connection.Host;
+            Text = (String.IsNullOrEmpty(connection.Name) ? connection.Host : connection.Name);
+            urlTextBox.Text = connection.Host;
 
-            if (!String.IsNullOrEmpty(connection.Name))
-                Text = connection.Name;
-
+            _connection = connection;
             Connect();
         }
 
@@ -387,12 +399,58 @@ namespace EasyConnect
 
         private void _toolsButton_Click(object sender, EventArgs e)
         {
-            _toolsMenu.Show(_toolsButton, 0, _toolsButton.Height);
+            _toolsMenu.Show(_toolsButton, (-1 * _toolsMenu.Width) + _toolsButton.Width, _toolsButton.Height);
         }
 
         private void _favoritesButton_Click(object sender, EventArgs e)
         {
-            _bookmarksMenu.Show(_favoritesButton, 0, _favoritesButton.Height);
+            while (_bookmarksMenu.Items.Count > 2)
+                _bookmarksMenu.Items.RemoveAt(2);
+
+            if (ParentTabs.Favorites.RootFolder.ChildFolders.Count > 0 || ParentTabs.Favorites.RootFolder.Favorites.Count > 0)
+                _bookmarksMenu.Items.Add(new ToolStripSeparator());
+
+            _menuItemConnections.Clear();
+            PopulateBookmarks(ParentTabs.Favorites.RootFolder, _bookmarksMenu.Items, true);
+            _bookmarksMenu.Show(_favoritesButton, (-1 * _bookmarksMenu.Width) + _favoritesButton.Width, _favoritesButton.Height);
+        }
+
+        private void PopulateBookmarks(FavoritesFolder currentFolder, ToolStripItemCollection menuItems, bool root)
+        {
+            ToolStripItemCollection addLocation = menuItems;
+
+            if (!root)
+            {
+                ToolStripMenuItem folderMenuItem = new ToolStripMenuItem(currentFolder.Name, Resources.Folder);
+                menuItems.Add(folderMenuItem);
+
+                addLocation = folderMenuItem.DropDownItems;
+            }
+
+            foreach (FavoritesFolder childFolder in currentFolder.ChildFolders)
+                PopulateBookmarks(childFolder, addLocation, false);
+
+            foreach (RDCConnection bookmark in currentFolder.Favorites)
+            {
+                ToolStripMenuItem bookmarkMenuItem = new ToolStripMenuItem(String.IsNullOrEmpty(bookmark.Name)
+                                                                               ? bookmark.Host
+                                                                               : bookmark.Name, Resources.RDCSmall,
+                                                                           (object sender, EventArgs e) =>
+                                                                           Connect(
+                                                                               _menuItemConnections[
+                                                                                   (ToolStripMenuItem) sender]));
+
+                _menuItemConnections[bookmarkMenuItem] = bookmark;
+                addLocation.Add(bookmarkMenuItem);
+            }
+        }
+
+        private void _bookmarkMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_connection == null)
+                return;
+
+            ParentTabs.Favorites.RootFolder.Favorites.Add(_connection);
         }
     }
 }

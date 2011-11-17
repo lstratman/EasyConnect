@@ -35,6 +35,14 @@ namespace EasyConnect
         public delegate void ConnectionDelegate(RDCConnection connection);
         public delegate void ConnectToHistoryDelegate(Guid historyGuid);
 
+        public Favorites Favorites
+        {
+            get
+            {
+                return _favorites;
+            }
+        }
+
         public MainForm()
         {
             InitializeComponent();
