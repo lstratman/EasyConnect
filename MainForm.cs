@@ -152,8 +152,8 @@ namespace EasyConnect
                          });
             _addingWindow = false;
 
-            sessionWindow.FormClosed += new FormClosedEventHandler(sessionWindow_FormClosed);
-            sessionWindow.Connected += new EventHandler(sessionWindow_Connected);
+            sessionWindow.FormClosing += sessionWindow_FormClosing;
+            sessionWindow.Connected += sessionWindow_Connected;
             sessionWindow.Connect(connection);
 
             TabbedThumbnail preview = new TabbedThumbnail(Handle, sessionWindow);
@@ -215,7 +215,7 @@ namespace EasyConnect
             }
         }
 
-        void sessionWindow_FormClosed(object sender, FormClosedEventArgs e)
+        void sessionWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (_previews.ContainsKey((RDCWindow)sender))
             {
