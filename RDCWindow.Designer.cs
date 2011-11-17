@@ -28,22 +28,40 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RDCWindow));
             this._rdcWindow = new AxMSTSCLib.AxMsRdpClient2();
             this.borderLeft = new System.Windows.Forms.Panel();
             this.toolbarBackground = new System.Windows.Forms.Panel();
-            this.forwardButton = new System.Windows.Forms.PictureBox();
-            this.backButton = new System.Windows.Forms.PictureBox();
+            this._closeButton = new System.Windows.Forms.PictureBox();
             this.urlTextBox = new System.Windows.Forms.TextBox();
             this.urlBorder = new System.Windows.Forms.Panel();
             this.urlBackground = new System.Windows.Forms.Panel();
             this.borderRight = new System.Windows.Forms.Panel();
             this.borderBottom = new System.Windows.Forms.Panel();
+            this._toolsButton = new System.Windows.Forms.PictureBox();
+            this._favoritesButton = new System.Windows.Forms.PictureBox();
+            this._toolsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this._newTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._newWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._toolsMenuSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this._optionsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._toolsMenuSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this._exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._bookmarksMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._toolsMenuSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this._bookmarksManagerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._bookmarksMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this._bookmarksManagerMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this._bookmarksSeparator = new System.Windows.Forms.ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)(this._rdcWindow)).BeginInit();
             this.toolbarBackground.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.forwardButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.backButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._closeButton)).BeginInit();
             this.urlBorder.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._toolsButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._favoritesButton)).BeginInit();
+            this._toolsMenu.SuspendLayout();
+            this._bookmarksMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // _rdcWindow
@@ -72,8 +90,9 @@
             // toolbarBackground
             // 
             this.toolbarBackground.BackgroundImage = global::EasyConnect.Properties.Resources.ToolbarBackground;
-            this.toolbarBackground.Controls.Add(this.forwardButton);
-            this.toolbarBackground.Controls.Add(this.backButton);
+            this.toolbarBackground.Controls.Add(this._toolsButton);
+            this.toolbarBackground.Controls.Add(this._favoritesButton);
+            this.toolbarBackground.Controls.Add(this._closeButton);
             this.toolbarBackground.Controls.Add(this.urlTextBox);
             this.toolbarBackground.Controls.Add(this.urlBorder);
             this.toolbarBackground.Dock = System.Windows.Forms.DockStyle.Top;
@@ -82,27 +101,19 @@
             this.toolbarBackground.Size = new System.Drawing.Size(622, 36);
             this.toolbarBackground.TabIndex = 5;
             // 
-            // forwardButton
+            // _closeButton
             // 
-            this.forwardButton.BackColor = System.Drawing.Color.Transparent;
-            this.forwardButton.Image = global::EasyConnect.Properties.Resources.ForwardActive;
-            this.forwardButton.Location = new System.Drawing.Point(37, 5);
-            this.forwardButton.Margin = new System.Windows.Forms.Padding(4, 4, 3, 3);
-            this.forwardButton.Name = "forwardButton";
-            this.forwardButton.Size = new System.Drawing.Size(27, 27);
-            this.forwardButton.TabIndex = 3;
-            this.forwardButton.TabStop = false;
-            // 
-            // backButton
-            // 
-            this.backButton.BackColor = System.Drawing.Color.Transparent;
-            this.backButton.Image = global::EasyConnect.Properties.Resources.BackActive;
-            this.backButton.Location = new System.Drawing.Point(6, 5);
-            this.backButton.Margin = new System.Windows.Forms.Padding(4, 4, 3, 3);
-            this.backButton.Name = "backButton";
-            this.backButton.Size = new System.Drawing.Size(27, 27);
-            this.backButton.TabIndex = 2;
-            this.backButton.TabStop = false;
+            this._closeButton.BackColor = System.Drawing.Color.Transparent;
+            this._closeButton.Image = global::EasyConnect.Properties.Resources.CloseActive;
+            this._closeButton.Location = new System.Drawing.Point(6, 5);
+            this._closeButton.Margin = new System.Windows.Forms.Padding(4, 4, 3, 3);
+            this._closeButton.Name = "_closeButton";
+            this._closeButton.Size = new System.Drawing.Size(27, 27);
+            this._closeButton.TabIndex = 2;
+            this._closeButton.TabStop = false;
+            this._closeButton.Click += new System.EventHandler(this._closeButton_Click);
+            this._closeButton.MouseEnter += new System.EventHandler(this._closeButton_MouseEnter);
+            this._closeButton.MouseLeave += new System.EventHandler(this._closeButton_MouseLeave);
             // 
             // urlTextBox
             // 
@@ -110,12 +121,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.urlTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.urlTextBox.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.urlTextBox.Location = new System.Drawing.Point(79, 8);
+            this.urlTextBox.Location = new System.Drawing.Point(48, 8);
             this.urlTextBox.Margin = new System.Windows.Forms.Padding(9);
             this.urlTextBox.Name = "urlTextBox";
-            this.urlTextBox.Size = new System.Drawing.Size(527, 19);
+            this.urlTextBox.Size = new System.Drawing.Size(495, 19);
             this.urlTextBox.TabIndex = 0;
-            this.urlTextBox.Text = "about:blank";
             this.urlTextBox.WordWrap = false;
             this.urlTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.urlTextBox_KeyDown);
             // 
@@ -126,9 +136,9 @@
             this.urlBorder.BackColor = System.Drawing.Color.Silver;
             this.urlBorder.Controls.Add(this.urlBackground);
             this.urlBorder.ForeColor = System.Drawing.Color.Silver;
-            this.urlBorder.Location = new System.Drawing.Point(69, 5);
+            this.urlBorder.Location = new System.Drawing.Point(38, 5);
             this.urlBorder.Name = "urlBorder";
-            this.urlBorder.Size = new System.Drawing.Size(547, 26);
+            this.urlBorder.Size = new System.Drawing.Size(515, 26);
             this.urlBorder.TabIndex = 1;
             // 
             // urlBackground
@@ -139,7 +149,7 @@
             this.urlBackground.ForeColor = System.Drawing.Color.Silver;
             this.urlBackground.Location = new System.Drawing.Point(1, 1);
             this.urlBackground.Name = "urlBackground";
-            this.urlBackground.Size = new System.Drawing.Size(545, 24);
+            this.urlBackground.Size = new System.Drawing.Size(513, 24);
             this.urlBackground.TabIndex = 2;
             // 
             // borderRight
@@ -164,6 +174,133 @@
             this.borderBottom.Size = new System.Drawing.Size(622, 2);
             this.borderBottom.TabIndex = 8;
             // 
+            // _toolsButton
+            // 
+            this._toolsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._toolsButton.BackColor = System.Drawing.Color.Transparent;
+            this._toolsButton.Image = global::EasyConnect.Properties.Resources.ToolsActive;
+            this._toolsButton.Location = new System.Drawing.Point(589, 5);
+            this._toolsButton.Margin = new System.Windows.Forms.Padding(4, 4, 3, 3);
+            this._toolsButton.Name = "_toolsButton";
+            this._toolsButton.Size = new System.Drawing.Size(27, 27);
+            this._toolsButton.TabIndex = 5;
+            this._toolsButton.TabStop = false;
+            this._toolsButton.Click += new System.EventHandler(this._toolsButton_Click);
+            this._toolsButton.MouseEnter += new System.EventHandler(this._toolsButton_MouseEnter);
+            this._toolsButton.MouseLeave += new System.EventHandler(this._toolsButton_MouseLeave);
+            // 
+            // _favoritesButton
+            // 
+            this._favoritesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._favoritesButton.BackColor = System.Drawing.Color.Transparent;
+            this._favoritesButton.Image = global::EasyConnect.Properties.Resources.BookmarksActive;
+            this._favoritesButton.Location = new System.Drawing.Point(558, 5);
+            this._favoritesButton.Margin = new System.Windows.Forms.Padding(4, 4, 3, 3);
+            this._favoritesButton.Name = "_favoritesButton";
+            this._favoritesButton.Size = new System.Drawing.Size(27, 27);
+            this._favoritesButton.TabIndex = 4;
+            this._favoritesButton.TabStop = false;
+            this._favoritesButton.Click += new System.EventHandler(this._favoritesButton_Click);
+            this._favoritesButton.MouseEnter += new System.EventHandler(this._favoritesButton_MouseEnter);
+            this._favoritesButton.MouseLeave += new System.EventHandler(this._favoritesButton_MouseLeave);
+            // 
+            // _toolsMenu
+            // 
+            this._toolsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._newTabMenuItem,
+            this._newWindowMenuItem,
+            this._toolsMenuSeparator1,
+            this._bookmarksMenuItem,
+            this._toolsMenuSeparator2,
+            this._optionsMenuItem,
+            this._toolsMenuSeparator3,
+            this._exitMenuItem});
+            this._toolsMenu.Name = "_toolsMenu";
+            this._toolsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this._toolsMenu.ShowImageMargin = false;
+            this._toolsMenu.Size = new System.Drawing.Size(162, 154);
+            // 
+            // _newTabMenuItem
+            // 
+            this._newTabMenuItem.Name = "_newTabMenuItem";
+            this._newTabMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this._newTabMenuItem.Size = new System.Drawing.Size(161, 22);
+            this._newTabMenuItem.Text = "New tab";
+            // 
+            // _newWindowMenuItem
+            // 
+            this._newWindowMenuItem.Name = "_newWindowMenuItem";
+            this._newWindowMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this._newWindowMenuItem.Size = new System.Drawing.Size(161, 22);
+            this._newWindowMenuItem.Text = "New window";
+            // 
+            // _toolsMenuSeparator1
+            // 
+            this._toolsMenuSeparator1.Name = "_toolsMenuSeparator1";
+            this._toolsMenuSeparator1.Size = new System.Drawing.Size(115, 6);
+            // 
+            // _optionsMenuItem
+            // 
+            this._optionsMenuItem.Name = "_optionsMenuItem";
+            this._optionsMenuItem.Size = new System.Drawing.Size(118, 22);
+            this._optionsMenuItem.Text = "Options";
+            // 
+            // _toolsMenuSeparator3
+            // 
+            this._toolsMenuSeparator3.Name = "_toolsMenuSeparator3";
+            this._toolsMenuSeparator3.Size = new System.Drawing.Size(115, 6);
+            // 
+            // _exitMenuItem
+            // 
+            this._exitMenuItem.Name = "_exitMenuItem";
+            this._exitMenuItem.Size = new System.Drawing.Size(118, 22);
+            this._exitMenuItem.Text = "Exit";
+            this._exitMenuItem.Click += new System.EventHandler(this._exitMenuItem_Click);
+            // 
+            // _bookmarksMenuItem
+            // 
+            this._bookmarksMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this._bookmarksMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._bookmarksManagerMenuItem});
+            this._bookmarksMenuItem.Name = "_bookmarksMenuItem";
+            this._bookmarksMenuItem.Size = new System.Drawing.Size(161, 22);
+            this._bookmarksMenuItem.Text = "Bookmarks";
+            // 
+            // _toolsMenuSeparator2
+            // 
+            this._toolsMenuSeparator2.Name = "_toolsMenuSeparator2";
+            this._toolsMenuSeparator2.Size = new System.Drawing.Size(115, 6);
+            // 
+            // _bookmarksManagerMenuItem
+            // 
+            this._bookmarksManagerMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this._bookmarksManagerMenuItem.Name = "_bookmarksManagerMenuItem";
+            this._bookmarksManagerMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.O)));
+            this._bookmarksManagerMenuItem.Size = new System.Drawing.Size(258, 22);
+            this._bookmarksManagerMenuItem.Text = "Bookmarks manager";
+            // 
+            // _bookmarksMenu
+            // 
+            this._bookmarksMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._bookmarksManagerMenuItem2,
+            this._bookmarksSeparator});
+            this._bookmarksMenu.Name = "_bookmarksMenu";
+            this._bookmarksMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this._bookmarksMenu.ShowImageMargin = false;
+            this._bookmarksMenu.Size = new System.Drawing.Size(159, 32);
+            // 
+            // _bookmarksManagerMenuItem2
+            // 
+            this._bookmarksManagerMenuItem2.Name = "_bookmarksManagerMenuItem2";
+            this._bookmarksManagerMenuItem2.Size = new System.Drawing.Size(158, 22);
+            this._bookmarksManagerMenuItem2.Text = "Bookmarks manager";
+            // 
+            // _bookmarksSeparator
+            // 
+            this._bookmarksSeparator.Name = "_bookmarksSeparator";
+            this._bookmarksSeparator.Size = new System.Drawing.Size(155, 6);
+            // 
             // RDCWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -181,9 +318,12 @@
             ((System.ComponentModel.ISupportInitialize)(this._rdcWindow)).EndInit();
             this.toolbarBackground.ResumeLayout(false);
             this.toolbarBackground.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.forwardButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.backButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._closeButton)).EndInit();
             this.urlBorder.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this._toolsButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._favoritesButton)).EndInit();
+            this._toolsMenu.ResumeLayout(false);
+            this._bookmarksMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -193,12 +333,26 @@
         private AxMSTSCLib.AxMsRdpClient2 _rdcWindow;
         private System.Windows.Forms.Panel borderLeft;
         private System.Windows.Forms.Panel toolbarBackground;
-        private System.Windows.Forms.PictureBox forwardButton;
-        private System.Windows.Forms.PictureBox backButton;
+        private System.Windows.Forms.PictureBox _closeButton;
         private System.Windows.Forms.TextBox urlTextBox;
         private System.Windows.Forms.Panel urlBorder;
         private System.Windows.Forms.Panel urlBackground;
         private System.Windows.Forms.Panel borderRight;
         private System.Windows.Forms.Panel borderBottom;
+        private System.Windows.Forms.PictureBox _toolsButton;
+        private System.Windows.Forms.PictureBox _favoritesButton;
+        private System.Windows.Forms.ContextMenuStrip _toolsMenu;
+        private System.Windows.Forms.ToolStripMenuItem _newTabMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _newWindowMenuItem;
+        private System.Windows.Forms.ToolStripSeparator _toolsMenuSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem _optionsMenuItem;
+        private System.Windows.Forms.ToolStripSeparator _toolsMenuSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem _exitMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _bookmarksMenuItem;
+        private System.Windows.Forms.ToolStripSeparator _toolsMenuSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem _bookmarksManagerMenuItem;
+        private System.Windows.Forms.ContextMenuStrip _bookmarksMenu;
+        private System.Windows.Forms.ToolStripMenuItem _bookmarksManagerMenuItem2;
+        private System.Windows.Forms.ToolStripSeparator _bookmarksSeparator;
     }
 }

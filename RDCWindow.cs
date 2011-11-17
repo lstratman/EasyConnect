@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Security;
 using System.Runtime.InteropServices;
 using AxMSTSCLib;
+using EasyConnect.Properties;
 
 namespace EasyConnect
 {
@@ -187,7 +188,7 @@ namespace EasyConnect
         {
             get
             {
-                return !((_rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000001) == 0x00000001);
+                return (_rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000001) != 0x00000001;
             }
 
             set
@@ -204,7 +205,7 @@ namespace EasyConnect
         {
             get
             {
-                return !((_rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000080) == 0x00000080);
+                return (_rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000080) != 0x00000080;
             }
 
             set
@@ -221,7 +222,7 @@ namespace EasyConnect
         {
             get
             {
-                return !((_rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000100) == 0x00000100);
+                return (_rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000100) != 0x00000100;
             }
 
             set
@@ -238,7 +239,7 @@ namespace EasyConnect
         {
             get
             {
-                return !((_rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000100) == 0x00000100);
+                return (_rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000100) != 0x00000100;
             }
 
             set
@@ -255,7 +256,7 @@ namespace EasyConnect
         {
             get
             {
-                return !((_rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000004) == 0x00000004);
+                return (_rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000004) != 0x00000004;
             }
 
             set
@@ -272,7 +273,7 @@ namespace EasyConnect
         {
             get
             {
-                return !((_rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000008) == 0x00000008);
+                return (_rdcWindow.AdvancedSettings2.PerformanceFlags & 0x00000008) != 0x00000008;
             }
 
             set
@@ -289,7 +290,7 @@ namespace EasyConnect
         {
             get
             {
-                return !(_rdcWindow.AdvancedSettings2.CachePersistenceActive == 0);
+                return _rdcWindow.AdvancedSettings2.CachePersistenceActive != 0;
             }
 
             set
@@ -306,8 +307,8 @@ namespace EasyConnect
 
         public void Connect(RDCConnection connection)
         {
-            DesktopWidth = (connection.DesktopWidth == 0 ? ClientSize.Width : connection.DesktopWidth);
-            DesktopHeight = (connection.DesktopHeight == 0 ? ClientSize.Height : connection.DesktopHeight);
+            DesktopWidth = (connection.DesktopWidth == 0 ? ClientSize.Width - borderLeft.Width - borderRight.Width : connection.DesktopWidth);
+            DesktopHeight = (connection.DesktopHeight == 0 ? ClientSize.Height - borderBottom.Height - toolbarBackground.Height : connection.DesktopHeight);
             AudioMode = connection.AudioMode;
             KeyboardMode = connection.KeyboardMode;
             ConnectPrinters = connection.ConnectPrinters;
@@ -342,6 +343,56 @@ namespace EasyConnect
                             {
                                 Host = urlTextBox.Text
                             });
+        }
+
+        private void _closeButton_MouseEnter(object sender, EventArgs e)
+        {
+            _closeButton.BackgroundImage = Resources.ButtonHoverBackground;
+        }
+
+        private void _closeButton_MouseLeave(object sender, EventArgs e)
+        {
+            _closeButton.BackgroundImage = null;
+        }
+
+        private void _favoritesButton_MouseEnter(object sender, EventArgs e)
+        {
+            _favoritesButton.BackgroundImage = Resources.ButtonHoverBackground;
+        }
+
+        private void _favoritesButton_MouseLeave(object sender, EventArgs e)
+        {
+            _favoritesButton.BackgroundImage = null;
+        }
+
+        private void _toolsButton_MouseEnter(object sender, EventArgs e)
+        {
+            _toolsButton.BackgroundImage = Resources.ButtonHoverBackground;
+        }
+
+        private void _toolsButton_MouseLeave(object sender, EventArgs e)
+        {
+            _toolsButton.BackgroundImage = null;
+        }
+
+        private void _closeButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void _exitMenuItem_Click(object sender, EventArgs e)
+        {
+            ((Form)Parent).Close();
+        }
+
+        private void _toolsButton_Click(object sender, EventArgs e)
+        {
+            _toolsMenu.Show(_toolsButton, 0, _toolsButton.Height);
+        }
+
+        private void _favoritesButton_Click(object sender, EventArgs e)
+        {
+            _bookmarksMenu.Show(_favoritesButton, 0, _favoritesButton.Height);
         }
     }
 }
