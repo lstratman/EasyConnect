@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Security;
 using System.Runtime.InteropServices;
@@ -399,7 +400,8 @@ namespace EasyConnect
 
         private void _toolsButton_Click(object sender, EventArgs e)
         {
-            _toolsMenu.Show(_toolsButton, (-1 * _toolsMenu.Width) + _toolsButton.Width, _toolsButton.Height);
+            _toolsMenu.DefaultDropDownDirection = ToolStripDropDownDirection.Left;
+            _toolsMenu.Show(_toolsButton, -1 * _toolsMenu.Width + _toolsButton.Width, _toolsButton.Height);
         }
 
         private void _bookmarksButton_Click(object sender, EventArgs e)
@@ -412,7 +414,9 @@ namespace EasyConnect
 
             _menuItemConnections.Clear();
             PopulateBookmarks(ParentTabs.Bookmarks.RootFolder, _bookmarksMenu.Items, true);
-            _bookmarksMenu.Show(_bookmarksButton, (-1 * _bookmarksMenu.Width) + _bookmarksButton.Width, _bookmarksButton.Height);
+
+            _bookmarksMenu.DefaultDropDownDirection = ToolStripDropDownDirection.Left;
+            _bookmarksMenu.Show(_bookmarksButton, -1 * _bookmarksMenu.Width + _bookmarksButton.Width, _bookmarksButton.Height);
         }
 
         private void PopulateBookmarks(BookmarksFolder currentFolder, ToolStripItemCollection menuItems, bool root)
@@ -422,8 +426,9 @@ namespace EasyConnect
             if (!root)
             {
                 ToolStripMenuItem folderMenuItem = new ToolStripMenuItem(currentFolder.Name, Resources.Folder);
-                menuItems.Add(folderMenuItem);
+                folderMenuItem.DropDownDirection = ToolStripDropDownDirection.Left;
 
+                menuItems.Add(folderMenuItem);
                 addLocation = folderMenuItem.DropDownItems;
             }
 
