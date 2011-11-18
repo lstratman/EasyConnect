@@ -452,5 +452,10 @@ namespace EasyConnect
 
             ParentTabs.Bookmarks.RootFolder.Bookmarks.Add(_connection);
         }
+
+        private void _newTabMenuItem_Click(object sender, EventArgs e)
+        {
+            ParentTabs.AddNewTab();
+        }
     }
 }

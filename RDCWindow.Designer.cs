@@ -213,7 +213,7 @@
             this._toolsMenu.Name = "_toolsMenu";
             this._toolsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this._toolsMenu.ShowImageMargin = false;
-            this._toolsMenu.Size = new System.Drawing.Size(162, 104);
+            this._toolsMenu.Size = new System.Drawing.Size(162, 126);
             // 
             // _newTabMenuItem
             // 
@@ -221,6 +221,7 @@
             this._newTabMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
             this._newTabMenuItem.Size = new System.Drawing.Size(161, 22);
             this._newTabMenuItem.Text = "New tab";
+            this._newTabMenuItem.Click += new System.EventHandler(this._newTabMenuItem_Click);
             // 
             // _newWindowMenuItem
             // 
@@ -259,21 +260,21 @@
             this.bookmarkThisSiteToolStripMenuItem});
             this._bookmarksMenu.Name = "_bookmarksMenu";
             this._bookmarksMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this._bookmarksMenu.Size = new System.Drawing.Size(259, 70);
+            this._bookmarksMenu.Size = new System.Drawing.Size(259, 48);
             // 
             // _bookmarksManagerMenuItem2
             // 
             this._bookmarksManagerMenuItem2.Name = "_bookmarksManagerMenuItem2";
             this._bookmarksManagerMenuItem2.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.O)));
-            this._bookmarksManagerMenuItem2.Size = new System.Drawing.Size(233, 22);
+            this._bookmarksManagerMenuItem2.Size = new System.Drawing.Size(258, 22);
             this._bookmarksManagerMenuItem2.Text = "Bookmarks manager";
             // 
             // bookmarkThisSiteToolStripMenuItem
             // 
             this.bookmarkThisSiteToolStripMenuItem.Name = "bookmarkThisSiteToolStripMenuItem";
             this.bookmarkThisSiteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.bookmarkThisSiteToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.bookmarkThisSiteToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.bookmarkThisSiteToolStripMenuItem.Text = "Bookmark this site";
             this.bookmarkThisSiteToolStripMenuItem.Click += new System.EventHandler(this._bookmarkMenuItem_Click);
             // 
