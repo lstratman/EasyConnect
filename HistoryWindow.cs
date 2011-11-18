@@ -12,14 +12,14 @@ namespace EasyConnect
     {
         Dictionary<TreeNode, HistoricalConnection> _connections = new Dictionary<TreeNode, HistoricalConnection>();
         MainForm.ConnectionDelegate _connectionDelegate = null;
-        Favorites _favoritesWindow = null;
+        Bookmarks _bookmarksWindow = null;
         protected string _historyFileName = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\History.xml";
         protected SecureString _password = null;
 
-        public HistoryWindow(MainForm.ConnectionDelegate connectionDelegate, Favorites favoritesWindow, SecureString password)
+        public HistoryWindow(MainForm.ConnectionDelegate connectionDelegate, Bookmarks bookmarksWindow, SecureString password)
         {
             _connectionDelegate = connectionDelegate;
-            _favoritesWindow = favoritesWindow;
+            _bookmarksWindow = bookmarksWindow;
             _password = password;
 
             InitializeComponent();
@@ -177,7 +177,7 @@ namespace EasyConnect
                 DesktopHeight = connection.DesktopHeight;
                 ColorDepth = connection.ColorDepth;
                 Name = connection.Name;
-                IsFavorite = connection.IsFavorite;
+                IsBookmark = connection.IsBookmark;
                 AudioMode = connection.AudioMode;
                 KeyboardMode = connection.KeyboardMode;
                 ConnectPrinters = connection.ConnectPrinters;
@@ -248,7 +248,7 @@ namespace EasyConnect
 
         private void propertiesMenuItem_Click(object sender, EventArgs e)
         {
-            ConnectionWindow connectionWindow = new ConnectionWindow(_favoritesWindow, _connections[historyTreeView.SelectedNode], _connectionDelegate, _password);
+            ConnectionWindow connectionWindow = new ConnectionWindow(_bookmarksWindow, _connections[historyTreeView.SelectedNode], _connectionDelegate, _password);
             connectionWindow.ShowDialog();
         }
 

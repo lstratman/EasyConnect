@@ -12,14 +12,14 @@ using System.Security;
 
 namespace EasyConnect
 {
-    public class Favorites
+    public class Bookmarks
     {
-        protected string _favoritesFileName = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Favorites.xml";
+        protected string _bookmarksFileName = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Bookmarks.xml";
         protected MainForm.ConnectionDelegate _connectionDelegate = null;
         protected SecureString _password = null;
-        protected FavoritesFolder _rootFolder = new FavoritesFolder();
+        protected BookmarksFolder _rootFolder = new BookmarksFolder();
 
-        public FavoritesFolder RootFolder
+        public BookmarksFolder RootFolder
         {
             get
             {
@@ -27,34 +27,34 @@ namespace EasyConnect
             }
         }
 
-        public Favorites(MainForm.ConnectionDelegate connectionDelegate, SecureString password)
+        public Bookmarks(MainForm.ConnectionDelegate connectionDelegate, SecureString password)
         {
             _connectionDelegate = connectionDelegate;
             _password = password;
 
-            if (File.Exists(_favoritesFileName))
+            if (File.Exists(_bookmarksFileName))
             {
-                XmlDocument favorites = new XmlDocument();
-                favorites.Load(_favoritesFileName);
+                XmlDocument bookmarks = new XmlDocument();
+                bookmarks.Load(_bookmarksFileName);
 
-                _rootFolder.Favorites.Clear();
+                _rootFolder.Bookmarks.Clear();
                 _rootFolder.ChildFolders.Clear();
 
-                InitializeTreeView(favorites.SelectSingleNode("/favorites"), _rootFolder);
+                InitializeTreeView(bookmarks.SelectSingleNode("/bookmarks"), _rootFolder);
             }
         }
 
-        protected void InitializeTreeView(XmlNode favoritesFolder, FavoritesFolder currentFolder)
+        protected void InitializeTreeView(XmlNode bookmarksFolder, BookmarksFolder currentFolder)
         {
-            if (favoritesFolder == null)
+            if (bookmarksFolder == null)
                 return;
 
-            foreach (XmlNode favorite in favoritesFolder.SelectNodes("favorite"))
-                currentFolder.Favorites.Add(new RDCConnection(favorite, _password));
+            foreach (XmlNode bookmark in bookmarksFolder.SelectNodes("bookmark"))
+                currentFolder.Bookmarks.Add(new RDCConnection(bookmark, _password));
 
-            foreach (XmlNode folder in favoritesFolder.SelectNodes("folder"))
+            foreach (XmlNode folder in bookmarksFolder.SelectNodes("folder"))
             {
-                FavoritesFolder newFolder = new FavoritesFolder
+                BookmarksFolder newFolder = new BookmarksFolder
                                                 {
                                                     Name = folder.SelectSingleNode("@name").Value
                                                 };
@@ -74,29 +74,29 @@ namespace EasyConnect
 
         public void Save()
         {
-            XmlDocument favoritesFile = new XmlDocument();
-            XmlNode rootNode = favoritesFile.CreateNode(XmlNodeType.Element, "favorites", null);
+            XmlDocument bookmarksFile = new XmlDocument();
+            XmlNode rootNode = bookmarksFile.CreateNode(XmlNodeType.Element, "bookmarks", null);
 
-            favoritesFile.AppendChild(rootNode);
+            bookmarksFile.AppendChild(rootNode);
             SaveTreeView(_rootFolder, rootNode);
 
-            FileInfo destinationFile = new FileInfo(_favoritesFileName);
+            FileInfo destinationFile = new FileInfo(_bookmarksFileName);
 
             Directory.CreateDirectory(destinationFile.DirectoryName);
-            favoritesFile.Save(_favoritesFileName);
+            bookmarksFile.Save(_bookmarksFileName);
         }
 
-        protected void SaveTreeView(FavoritesFolder currentFolder, XmlNode parentNode)
+        protected void SaveTreeView(BookmarksFolder currentFolder, XmlNode parentNode)
         {
-            foreach (RDCConnection favorite in currentFolder.Favorites)
+            foreach (RDCConnection bookmark in currentFolder.Bookmarks)
             {
-                XmlNode connectionNode = parentNode.OwnerDocument.CreateNode(XmlNodeType.Element, "favorite", null);
+                XmlNode connectionNode = parentNode.OwnerDocument.CreateNode(XmlNodeType.Element, "bookmark", null);
                 parentNode.AppendChild(connectionNode);
 
-                favorite.ToXmlNode(connectionNode);
+                bookmark.ToXmlNode(connectionNode);
             }
 
-            foreach (FavoritesFolder folder in currentFolder.ChildFolders)
+            foreach (BookmarksFolder folder in currentFolder.ChildFolders)
             {
                 XmlNode folderNode = parentNode.OwnerDocument.CreateNode(XmlNodeType.Element, "folder", null);
 

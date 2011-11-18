@@ -34,7 +34,7 @@
             this.borderLeft = new System.Windows.Forms.Panel();
             this.toolbarBackground = new System.Windows.Forms.Panel();
             this._toolsButton = new System.Windows.Forms.PictureBox();
-            this._favoritesButton = new System.Windows.Forms.PictureBox();
+            this._bookmarksButton = new System.Windows.Forms.PictureBox();
             this._closeButton = new System.Windows.Forms.PictureBox();
             this.urlTextBox = new System.Windows.Forms.TextBox();
             this.urlBorder = new System.Windows.Forms.Panel();
@@ -54,7 +54,7 @@
             ((System.ComponentModel.ISupportInitialize)(this._rdcWindow)).BeginInit();
             this.toolbarBackground.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._toolsButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._favoritesButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._bookmarksButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._closeButton)).BeginInit();
             this.urlBorder.SuspendLayout();
             this._toolsMenu.SuspendLayout();
@@ -88,7 +88,7 @@
             // 
             this.toolbarBackground.BackgroundImage = global::EasyConnect.Properties.Resources.ToolbarBackground;
             this.toolbarBackground.Controls.Add(this._toolsButton);
-            this.toolbarBackground.Controls.Add(this._favoritesButton);
+            this.toolbarBackground.Controls.Add(this._bookmarksButton);
             this.toolbarBackground.Controls.Add(this._closeButton);
             this.toolbarBackground.Controls.Add(this.urlTextBox);
             this.toolbarBackground.Controls.Add(this.urlBorder);
@@ -113,20 +113,20 @@
             this._toolsButton.MouseEnter += new System.EventHandler(this._toolsButton_MouseEnter);
             this._toolsButton.MouseLeave += new System.EventHandler(this._toolsButton_MouseLeave);
             // 
-            // _favoritesButton
+            // _bookmarksButton
             // 
-            this._favoritesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._favoritesButton.BackColor = System.Drawing.Color.Transparent;
-            this._favoritesButton.Image = global::EasyConnect.Properties.Resources.BookmarksActive;
-            this._favoritesButton.Location = new System.Drawing.Point(558, 5);
-            this._favoritesButton.Margin = new System.Windows.Forms.Padding(4, 4, 3, 3);
-            this._favoritesButton.Name = "_favoritesButton";
-            this._favoritesButton.Size = new System.Drawing.Size(27, 27);
-            this._favoritesButton.TabIndex = 4;
-            this._favoritesButton.TabStop = false;
-            this._favoritesButton.Click += new System.EventHandler(this._favoritesButton_Click);
-            this._favoritesButton.MouseEnter += new System.EventHandler(this._favoritesButton_MouseEnter);
-            this._favoritesButton.MouseLeave += new System.EventHandler(this._favoritesButton_MouseLeave);
+            this._bookmarksButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._bookmarksButton.BackColor = System.Drawing.Color.Transparent;
+            this._bookmarksButton.Image = global::EasyConnect.Properties.Resources.BookmarksActive;
+            this._bookmarksButton.Location = new System.Drawing.Point(558, 5);
+            this._bookmarksButton.Margin = new System.Windows.Forms.Padding(4, 4, 3, 3);
+            this._bookmarksButton.Name = "_bookmarksButton";
+            this._bookmarksButton.Size = new System.Drawing.Size(27, 27);
+            this._bookmarksButton.TabIndex = 4;
+            this._bookmarksButton.TabStop = false;
+            this._bookmarksButton.Click += new System.EventHandler(this._bookmarksButton_Click);
+            this._bookmarksButton.MouseEnter += new System.EventHandler(this._bookmarksButton_MouseEnter);
+            this._bookmarksButton.MouseLeave += new System.EventHandler(this._bookmarksButton_MouseLeave);
             // 
             // _closeButton
             // 
@@ -295,7 +295,7 @@
             this.toolbarBackground.ResumeLayout(false);
             this.toolbarBackground.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._toolsButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._favoritesButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._bookmarksButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._closeButton)).EndInit();
             this.urlBorder.ResumeLayout(false);
             this._toolsMenu.ResumeLayout(false);
@@ -316,7 +316,7 @@
         private System.Windows.Forms.Panel borderRight;
         private System.Windows.Forms.Panel borderBottom;
         private System.Windows.Forms.PictureBox _toolsButton;
-        private System.Windows.Forms.PictureBox _favoritesButton;
+        private System.Windows.Forms.PictureBox _bookmarksButton;
         private System.Windows.Forms.ContextMenuStrip _toolsMenu;
         private System.Windows.Forms.ToolStripMenuItem _newTabMenuItem;
         private System.Windows.Forms.ToolStripMenuItem _newWindowMenuItem;

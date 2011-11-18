@@ -12,22 +12,22 @@ namespace EasyConnect
     public partial class ConnectionWindow : Form
     {
         protected List<DEVMODE> _resolutions = new List<DEVMODE>();
-        protected Favorites _favorites = null;
+        protected Bookmarks _bookmarks = null;
         protected RDCConnection _connection = null;
         protected MainForm.ConnectionDelegate _connectionDelegate = null;
         protected SecureString _password = null;
 
-        public ConnectionWindow(Favorites favorites, MainForm.ConnectionDelegate connectionDelegate, SecureString password)
-            : this(favorites, new RDCConnection(password), connectionDelegate, password)
+        public ConnectionWindow(Bookmarks bookmarks, MainForm.ConnectionDelegate connectionDelegate, SecureString password)
+            : this(bookmarks, new RDCConnection(password), connectionDelegate, password)
         {
         }
 
-        public ConnectionWindow(Favorites favorites, RDCConnection connection, MainForm.ConnectionDelegate connectionDelegate, SecureString password)
+        public ConnectionWindow(Bookmarks bookmarks, RDCConnection connection, MainForm.ConnectionDelegate connectionDelegate, SecureString password)
         {
             InitializeComponent();
 
             _connection = connection;
-            _favorites = favorites;
+            _bookmarks = bookmarks;
             _connectionDelegate = connectionDelegate;
             _password = password;
 
@@ -144,13 +144,13 @@ namespace EasyConnect
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            if (_connection == null || _connection.IsFavorite == false)
+            if (_connection == null || _connection.IsBookmark == false)
                 saveAsButton_Click(sender, e);
 
             else
                 SaveConnection();
 
-            _favorites.Save();
+            _bookmarks.Save();
         }
 
         protected void SaveConnection()

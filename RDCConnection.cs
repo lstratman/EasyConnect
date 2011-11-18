@@ -45,7 +45,7 @@ namespace EasyConnect
             ColorDepth = Convert.ToInt32(node.SelectSingleNode("@colorDepth").Value);
             Name = node.SelectSingleNode("@name").Value;
             Guid = (node.SelectSingleNode("@guid") != null ? new Guid(node.SelectSingleNode("@guid").Value) : Guid.NewGuid());
-            IsFavorite = (node.SelectSingleNode("@isFavorite") != null ? Boolean.Parse(node.SelectSingleNode("@isFavorite").Value) : false);
+            IsBookmark = (node.SelectSingleNode("@isBookmark") != null ? Boolean.Parse(node.SelectSingleNode("@isBookmark").Value) : false);
             AudioMode = (node.SelectSingleNode("@audioMode") != null ? (AudioMode)Enum.Parse(typeof(AudioMode), node.SelectSingleNode("@audioMode").Value) : AudioMode.Locally);
             KeyboardMode = (node.SelectSingleNode("@keyboardMode") != null ? (KeyboardMode)Enum.Parse(typeof(KeyboardMode), node.SelectSingleNode("@keyboardMode").Value) : KeyboardMode.Remotely);
             ConnectPrinters = (node.SelectSingleNode("@connectPrinters") != null ? Boolean.Parse(node.SelectSingleNode("@connectPrinters").Value) : true);
@@ -85,7 +85,7 @@ namespace EasyConnect
             node.Attributes.Append(node.OwnerDocument.CreateAttribute("desktopHeight"));
             node.Attributes.Append(node.OwnerDocument.CreateAttribute("colorDepth"));
             node.Attributes.Append(node.OwnerDocument.CreateAttribute("name"));
-            node.Attributes.Append(node.OwnerDocument.CreateAttribute("isFavorite"));
+            node.Attributes.Append(node.OwnerDocument.CreateAttribute("isBookmark"));
             node.Attributes.Append(node.OwnerDocument.CreateAttribute("audioMode"));
             node.Attributes.Append(node.OwnerDocument.CreateAttribute("keyboardMode"));
             node.Attributes.Append(node.OwnerDocument.CreateAttribute("connectPrinters"));
@@ -106,7 +106,7 @@ namespace EasyConnect
             node.Attributes["desktopHeight"].Value = DesktopHeight.ToString();
             node.Attributes["colorDepth"].Value = ColorDepth.ToString();
             node.Attributes["name"].Value = Name;
-            node.Attributes["isFavorite"].Value = IsFavorite.ToString();
+            node.Attributes["isBookmark"].Value = IsBookmark.ToString();
             node.Attributes["audioMode"].Value = AudioMode.ToString();
             node.Attributes["keyboardMode"].Value = KeyboardMode.ToString();
             node.Attributes["connectPrinters"].Value = ConnectPrinters.ToString();
@@ -180,7 +180,7 @@ namespace EasyConnect
             }
         }
 
-        public bool IsFavorite
+        public bool IsBookmark
         {
             get;
             set;

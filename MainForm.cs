@@ -21,7 +21,7 @@ namespace EasyConnect
         protected SecureString _password = null;
         protected RDCWindow _previousActiveDocument = null;
         protected HistoryWindow _history = null;
-        protected Favorites _favorites = null;
+        protected Bookmarks _bookmarks = null;
         protected bool _addingWindow = false;
         protected Dictionary<RDCWindow, Bitmap> _previews = new Dictionary<RDCWindow, Bitmap>();
         protected JumpList _jumpList = null;
@@ -35,11 +35,11 @@ namespace EasyConnect
         public delegate void ConnectionDelegate(RDCConnection connection);
         public delegate void ConnectToHistoryDelegate(Guid historyGuid);
 
-        public Favorites Favorites
+        public Bookmarks Bookmarks
         {
             get
             {
-                return _favorites;
+                return _bookmarks;
             }
         }
 
@@ -53,7 +53,7 @@ namespace EasyConnect
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect");
             }
 
-            while (_favorites == null || _history == null)
+            while (_bookmarks == null || _history == null)
             {
                 PasswordWindow passwordWindow = new PasswordWindow();
                 passwordWindow.ShowDialog();
@@ -63,8 +63,8 @@ namespace EasyConnect
 
                 try
                 {
-                    _favorites = new Favorites(Connect, _password);
-                    _history = new HistoryWindow(Connect, _favorites, _password);
+                    _bookmarks = new Bookmarks(Connect, _password);
+                    _history = new HistoryWindow(Connect, _bookmarks, _password);
                 }
 
                 catch (CryptographicException)
@@ -79,7 +79,7 @@ namespace EasyConnect
                 }
             }
 
-            _favorites.Password = _password;
+            _bookmarks.Password = _password;
             _history.Password = _password;
 
             ChannelServices.RegisterChannel(_ipcChannel, false);
@@ -271,7 +271,7 @@ namespace EasyConnect
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _favorites.Save();
+            _bookmarks.Save();
         }
 
         private void MainForm_Load(object sender, EventArgs e)

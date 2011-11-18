@@ -32,8 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SaveConnectionWindow));
             this.nameLabel = new System.Windows.Forms.Label();
             this.nameTextBox = new System.Windows.Forms.TextBox();
-            this.favoritesTreeView = new System.Windows.Forms.TreeView();
-            this.favoritesImageList = new System.Windows.Forms.ImageList(this.components);
+            this.bookmarksTreeView = new System.Windows.Forms.TreeView();
+            this.bookmarkImageList = new System.Windows.Forms.ImageList(this.components);
             this.cancelButton = new System.Windows.Forms.Button();
             this.okButton = new System.Windows.Forms.Button();
             this.destinationLabel = new System.Windows.Forms.Label();
@@ -55,26 +55,26 @@
             this.nameTextBox.Size = new System.Drawing.Size(207, 20);
             this.nameTextBox.TabIndex = 1;
             // 
-            // favoritesTreeView
+            // bookmarksTreeView
             // 
-            this.favoritesTreeView.ImageIndex = 0;
-            this.favoritesTreeView.ImageList = this.favoritesImageList;
-            this.favoritesTreeView.Location = new System.Drawing.Point(13, 58);
-            this.favoritesTreeView.Name = "favoritesTreeView";
-            this.favoritesTreeView.SelectedImageIndex = 0;
-            this.favoritesTreeView.Size = new System.Drawing.Size(251, 192);
-            this.favoritesTreeView.TabIndex = 2;
-            this.favoritesTreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.favoritesTreeView_NodeMouseDoubleClick);
-            this.favoritesTreeView.Enter += new System.EventHandler(this.favoritesTreeView_Enter);
-            this.favoritesTreeView.Leave += new System.EventHandler(this.favoritesTreeView_Leave);
-            this.favoritesTreeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.favoritesTreeView_NodeMouseClick);
+            this.bookmarksTreeView.ImageIndex = 0;
+            this.bookmarksTreeView.ImageList = this.bookmarkImageList;
+            this.bookmarksTreeView.Location = new System.Drawing.Point(13, 58);
+            this.bookmarksTreeView.Name = "bookmarksTreeView";
+            this.bookmarksTreeView.SelectedImageIndex = 0;
+            this.bookmarksTreeView.Size = new System.Drawing.Size(251, 192);
+            this.bookmarksTreeView.TabIndex = 2;
+            this.bookmarksTreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.bookmarksTreeView_NodeMouseDoubleClick);
+            this.bookmarksTreeView.Enter += new System.EventHandler(this.bookmarksTreeView_Enter);
+            this.bookmarksTreeView.Leave += new System.EventHandler(this.bookmarksTreeView_Leave);
+            this.bookmarksTreeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.bookmarksTreeView_NodeMouseClick);
             // 
-            // favoritesImageList
+            // bookmarksImageList
             // 
-            this.favoritesImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("favoritesImageList.ImageStream")));
-            this.favoritesImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.favoritesImageList.Images.SetKeyName(0, "Folder.png");
-            this.favoritesImageList.Images.SetKeyName(1, "RDCSmall.ico");
+            this.bookmarkImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("bookmarksImageList.ImageStream")));
+            this.bookmarkImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.bookmarkImageList.Images.SetKeyName(0, "Folder.png");
+            this.bookmarkImageList.Images.SetKeyName(1, "RDCSmall.ico");
             // 
             // cancelButton
             // 
@@ -116,7 +116,7 @@
             this.Controls.Add(this.destinationLabel);
             this.Controls.Add(this.okButton);
             this.Controls.Add(this.cancelButton);
-            this.Controls.Add(this.favoritesTreeView);
+            this.Controls.Add(this.bookmarksTreeView);
             this.Controls.Add(this.nameTextBox);
             this.Controls.Add(this.nameLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -132,10 +132,10 @@
 
         private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.TextBox nameTextBox;
-        private System.Windows.Forms.TreeView favoritesTreeView;
+        private System.Windows.Forms.TreeView bookmarksTreeView;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button okButton;
-        private System.Windows.Forms.ImageList favoritesImageList;
+        private System.Windows.Forms.ImageList bookmarkImageList;
         private System.Windows.Forms.Label destinationLabel;
     }
 }

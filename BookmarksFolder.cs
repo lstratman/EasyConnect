@@ -5,10 +5,10 @@ using System.Text;
 
 namespace EasyConnect
 {
-    public class FavoritesFolder
+    public class BookmarksFolder
     {
-        protected List<FavoritesFolder> _childFolders = new List<FavoritesFolder>();
-        protected List<RDCConnection> _favorites = new List<RDCConnection>();
+        protected List<BookmarksFolder> _childFolders = new List<BookmarksFolder>();
+        protected List<RDCConnection> _bookmarks = new List<RDCConnection>();
 
         public string Name
         {
@@ -16,7 +16,7 @@ namespace EasyConnect
             set;
         }
 
-        public List<FavoritesFolder> ChildFolders
+        public List<BookmarksFolder> ChildFolders
         {
             get
             {
@@ -24,11 +24,11 @@ namespace EasyConnect
             }
         }
 
-        public List<RDCConnection> Favorites
+        public List<RDCConnection> Bookmarks
         {
             get
             {
-                return _favorites;
+                return _bookmarks;
             }
         }
     }

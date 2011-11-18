@@ -10,11 +10,11 @@ namespace EasyConnect
 {
     public partial class SaveConnectionWindow : Form
     {
-        public SaveConnectionWindow(TreeNode favorites)
+        public SaveConnectionWindow(TreeNode bookmarks)
         {
             InitializeComponent();
-            favoritesTreeView.Nodes.Add(favorites);
-            favoritesTreeView.SelectedNode = favoritesTreeView.Nodes[0];
+            bookmarksTreeView.Nodes.Add(bookmarks);
+            bookmarksTreeView.SelectedNode = bookmarksTreeView.Nodes[0];
         }
 
         public string ConnectionName
@@ -29,7 +29,7 @@ namespace EasyConnect
         {
             get
             {
-                TreeNode currentNode = favoritesTreeView.SelectedNode;
+                TreeNode currentNode = bookmarksTreeView.SelectedNode;
                 string path = "";
 
                 while (currentNode != null)
@@ -50,45 +50,45 @@ namespace EasyConnect
                 return;
             }
 
-            if (favoritesTreeView.SelectedNode.ImageIndex == 1)
-                favoritesTreeView.SelectedNode = favoritesTreeView.SelectedNode.Parent;
+            if (bookmarksTreeView.SelectedNode.ImageIndex == 1)
+                bookmarksTreeView.SelectedNode = bookmarksTreeView.SelectedNode.Parent;
 
             DialogResult = DialogResult.OK;
             Close();
         }
 
-        private void favoritesTreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        private void bookmarksTreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (e.Node.ImageIndex == 1)
             {
-                favoritesTreeView.SelectedNode = e.Node;
+                bookmarksTreeView.SelectedNode = e.Node;
                 nameTextBox.Text = e.Node.Text;
 
                 okButton_Click(null, null);
             }
         }
 
-        private void favoritesTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        private void bookmarksTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (e.Node.ImageIndex == 1)
                 nameTextBox.Text = e.Node.Text;
         }
 
-        private void favoritesTreeView_Leave(object sender, EventArgs e)
+        private void bookmarksTreeView_Leave(object sender, EventArgs e)
         {
-            if (favoritesTreeView.SelectedNode != null)
+            if (bookmarksTreeView.SelectedNode != null)
             {
-                favoritesTreeView.SelectedNode.BackColor = SystemColors.Highlight;
-                favoritesTreeView.SelectedNode.ForeColor = SystemColors.HighlightText;
+                bookmarksTreeView.SelectedNode.BackColor = SystemColors.Highlight;
+                bookmarksTreeView.SelectedNode.ForeColor = SystemColors.HighlightText;
             }
         }
 
-        private void favoritesTreeView_Enter(object sender, EventArgs e)
+        private void bookmarksTreeView_Enter(object sender, EventArgs e)
         {
-            if (favoritesTreeView.SelectedNode != null)
+            if (bookmarksTreeView.SelectedNode != null)
             {
-                favoritesTreeView.SelectedNode.BackColor = SystemColors.Window;
-                favoritesTreeView.SelectedNode.ForeColor = SystemColors.WindowText;
+                bookmarksTreeView.SelectedNode.BackColor = SystemColors.Window;
+                bookmarksTreeView.SelectedNode.ForeColor = SystemColors.WindowText;
             }
         }
     }

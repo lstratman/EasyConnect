@@ -367,14 +367,14 @@ namespace EasyConnect
             _closeButton.BackgroundImage = null;
         }
 
-        private void _favoritesButton_MouseEnter(object sender, EventArgs e)
+        private void _bookmarksButton_MouseEnter(object sender, EventArgs e)
         {
-            _favoritesButton.BackgroundImage = Resources.ButtonHoverBackground;
+            _bookmarksButton.BackgroundImage = Resources.ButtonHoverBackground;
         }
 
-        private void _favoritesButton_MouseLeave(object sender, EventArgs e)
+        private void _bookmarksButton_MouseLeave(object sender, EventArgs e)
         {
-            _favoritesButton.BackgroundImage = null;
+            _bookmarksButton.BackgroundImage = null;
         }
 
         private void _toolsButton_MouseEnter(object sender, EventArgs e)
@@ -402,20 +402,20 @@ namespace EasyConnect
             _toolsMenu.Show(_toolsButton, (-1 * _toolsMenu.Width) + _toolsButton.Width, _toolsButton.Height);
         }
 
-        private void _favoritesButton_Click(object sender, EventArgs e)
+        private void _bookmarksButton_Click(object sender, EventArgs e)
         {
             while (_bookmarksMenu.Items.Count > 2)
                 _bookmarksMenu.Items.RemoveAt(2);
 
-            if (ParentTabs.Favorites.RootFolder.ChildFolders.Count > 0 || ParentTabs.Favorites.RootFolder.Favorites.Count > 0)
+            if (ParentTabs.Bookmarks.RootFolder.ChildFolders.Count > 0 || ParentTabs.Bookmarks.RootFolder.Bookmarks.Count > 0)
                 _bookmarksMenu.Items.Add(new ToolStripSeparator());
 
             _menuItemConnections.Clear();
-            PopulateBookmarks(ParentTabs.Favorites.RootFolder, _bookmarksMenu.Items, true);
-            _bookmarksMenu.Show(_favoritesButton, (-1 * _bookmarksMenu.Width) + _favoritesButton.Width, _favoritesButton.Height);
+            PopulateBookmarks(ParentTabs.Bookmarks.RootFolder, _bookmarksMenu.Items, true);
+            _bookmarksMenu.Show(_bookmarksButton, (-1 * _bookmarksMenu.Width) + _bookmarksButton.Width, _bookmarksButton.Height);
         }
 
-        private void PopulateBookmarks(FavoritesFolder currentFolder, ToolStripItemCollection menuItems, bool root)
+        private void PopulateBookmarks(BookmarksFolder currentFolder, ToolStripItemCollection menuItems, bool root)
         {
             ToolStripItemCollection addLocation = menuItems;
 
@@ -427,10 +427,10 @@ namespace EasyConnect
                 addLocation = folderMenuItem.DropDownItems;
             }
 
-            foreach (FavoritesFolder childFolder in currentFolder.ChildFolders)
+            foreach (BookmarksFolder childFolder in currentFolder.ChildFolders)
                 PopulateBookmarks(childFolder, addLocation, false);
 
-            foreach (RDCConnection bookmark in currentFolder.Favorites)
+            foreach (RDCConnection bookmark in currentFolder.Bookmarks)
             {
                 ToolStripMenuItem bookmarkMenuItem = new ToolStripMenuItem(String.IsNullOrEmpty(bookmark.Name)
                                                                                ? bookmark.Host
@@ -450,7 +450,7 @@ namespace EasyConnect
             if (_connection == null)
                 return;
 
-            ParentTabs.Favorites.RootFolder.Favorites.Add(_connection);
+            ParentTabs.Bookmarks.RootFolder.Bookmarks.Add(_connection);
         }
     }
 }
