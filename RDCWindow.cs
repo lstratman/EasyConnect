@@ -389,7 +389,20 @@ namespace EasyConnect
 
         private void _closeButton_Click(object sender, EventArgs e)
         {
+          if (AllowClose())
+          {
             Close();
+          }
+          else
+          {
+            Application.Exit();
+          }
+        }
+        
+        private bool AllowClose()
+        {
+          //todo: check if this is the last tab, if yes return false, and instead of close tab, exit application
+          return true;
         }
 
         private void _exitMenuItem_Click(object sender, EventArgs e)
