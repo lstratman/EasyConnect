@@ -21,7 +21,7 @@ namespace EasyConnect
         protected SecureString _password = null;
         protected RDCWindow _previousActiveDocument = null;
         protected HistoryWindow _history = null;
-        protected Bookmarks _bookmarks = null;
+        protected BookmarksWindow _bookmarks = null;
         protected bool _addingWindow = false;
         protected Dictionary<RDCWindow, Bitmap> _previews = new Dictionary<RDCWindow, Bitmap>();
         protected JumpList _jumpList = null;
@@ -32,15 +32,28 @@ namespace EasyConnect
         public static MainForm ActiveInstance = null;
         public static ConnectToHistoryDelegate ConnectToHistoryMethod = null;
 
-        public delegate void ConnectionDelegate(RDCConnection connection);
-        public delegate void ConnectToHistoryDelegate(Guid historyGuid);
+        public delegate TitleBarTab ConnectionDelegate(RDCConnection connection);
+        public delegate TitleBarTab ConnectToHistoryDelegate(Guid historyGuid);
 
-        public Bookmarks Bookmarks
+        public BookmarksWindow Bookmarks
         {
             get
             {
                 return _bookmarks;
             }
+        }
+
+        public void OpenBookmarkManager()
+        {
+            TitleBarTab newTab = new TitleBarTab(this)
+                                     {
+                                         Content = _bookmarks
+                                     };
+
+            Tabs.Add(newTab);
+            ResizeTabContents(newTab);
+
+            SelectedTabIndex = _tabs.Count - 1;
         }
 
         public MainForm()
@@ -63,7 +76,7 @@ namespace EasyConnect
 
                 try
                 {
-                    _bookmarks = new Bookmarks(Connect, _password);
+                    _bookmarks = new BookmarksWindow(Connect, _password);
                     _history = new HistoryWindow(Connect, _bookmarks, _password);
                 }
 
@@ -139,25 +152,29 @@ namespace EasyConnect
             set;
         }
 
-        public void ConnectToHistory(Guid historyGuid)
+        public TitleBarTab ConnectToHistory(Guid historyGuid)
         {
             RDCConnection connection = _history.FindInHistory(historyGuid);
 
             if (connection != null)
-                Connect(connection);
+                return Connect(connection);
+
+            return null;
         }
 
-        protected void Connect(RDCConnection connection)
+        protected TitleBarTab Connect(RDCConnection connection)
         {
             _history.AddToHistory(connection);
 
             RDCWindow sessionWindow = new RDCWindow(_password);
 
             _addingWindow = true;
-            Tabs.Add(new TitleBarTab(this)
-                         {
-                             Content = sessionWindow
-                         });
+            TitleBarTab newTab = new TitleBarTab(this)
+                                     {
+                                         Content = sessionWindow
+                                     };
+            Tabs.Insert(SelectedTabIndex + 1, newTab);
+            ResizeTabContents(newTab);
             _addingWindow = false;
 
             sessionWindow.FormClosing += sessionWindow_FormClosing;
@@ -190,11 +207,13 @@ namespace EasyConnect
                 if (_recentConnections.Count > _jumpList.MaxSlotsInList)
                     _recentConnections.Dequeue();
             }
+
+            return newTab;
         }
 
         void sessionWindow_Connected(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         protected void GenerateWindowPreview(RDCWindow sessionWindow)

@@ -6,6 +6,7 @@ using System.Security;
 using System.Runtime.InteropServices;
 using AxMSTSCLib;
 using EasyConnect.Properties;
+using Stratman.Windows.Forms.TitleBarTabs;
 
 namespace EasyConnect
 {
@@ -461,6 +462,11 @@ namespace EasyConnect
         private void _newTabMenuItem_Click(object sender, EventArgs e)
         {
             ParentTabs.AddNewTab();
+        }
+
+        private void _bookmarksManagerMenuItem2_Click(object sender, EventArgs e)
+        {
+            ParentTabs.OpenBookmarkManager();
         }
     }
 }

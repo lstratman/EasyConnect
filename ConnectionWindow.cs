@@ -12,22 +12,22 @@ namespace EasyConnect
     public partial class ConnectionWindow : Form
     {
         protected List<DEVMODE> _resolutions = new List<DEVMODE>();
-        protected Bookmarks _bookmarks = null;
+        protected BookmarksWindow _bookmarks = null;
         protected RDCConnection _connection = null;
         protected MainForm.ConnectionDelegate _connectionDelegate = null;
         protected SecureString _password = null;
 
-        public ConnectionWindow(Bookmarks bookmarks, MainForm.ConnectionDelegate connectionDelegate, SecureString password)
+        public ConnectionWindow(BookmarksWindow bookmarks, MainForm.ConnectionDelegate connectionDelegate, SecureString password)
             : this(bookmarks, new RDCConnection(password), connectionDelegate, password)
         {
         }
 
-        public ConnectionWindow(Bookmarks bookmarks, RDCConnection connection, MainForm.ConnectionDelegate connectionDelegate, SecureString password)
+        public ConnectionWindow(BookmarksWindow BookmarksWindow, RDCConnection connection, MainForm.ConnectionDelegate connectionDelegate, SecureString password)
         {
             InitializeComponent();
 
             _connection = connection;
-            _bookmarks = bookmarks;
+            _bookmarks = BookmarksWindow;
             _connectionDelegate = connectionDelegate;
             _password = password;
 
