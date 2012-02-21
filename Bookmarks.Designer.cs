@@ -61,7 +61,7 @@ namespace EasyConnect
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Bookmarks");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Bookmarks");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BookmarksWindow));
             this._splitContainer = new System.Windows.Forms.SplitContainer();
             this._bookmarksTreeView = new System.Windows.Forms.TreeView();
@@ -91,10 +91,10 @@ namespace EasyConnect
             this._editBookmarkMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this._cutBookmarkMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
             this._splitContainer.Panel2.SuspendLayout();
@@ -105,10 +105,8 @@ namespace EasyConnect
             // 
             // _splitContainer
             // 
-            this._splitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this._splitContainer.BackColor = System.Drawing.Color.Transparent;
+            this._splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this._splitContainer.Location = new System.Drawing.Point(0, 0);
             this._splitContainer.Name = "_splitContainer";
             // 
@@ -134,17 +132,20 @@ namespace EasyConnect
             this._bookmarksTreeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this._bookmarksTreeView.ImageIndex = 0;
             this._bookmarksTreeView.ImageList = this._treeViewImageList;
+            this._bookmarksTreeView.LabelEdit = true;
             this._bookmarksTreeView.Location = new System.Drawing.Point(12, 12);
             this._bookmarksTreeView.Name = "_bookmarksTreeView";
-            treeNode2.Name = "root";
-            treeNode2.Text = "Bookmarks";
+            treeNode1.Name = "root";
+            treeNode1.Text = "Bookmarks";
             this._bookmarksTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
+            treeNode1});
             this._bookmarksTreeView.SelectedImageIndex = 1;
             this._bookmarksTreeView.ShowRootLines = false;
             this._bookmarksTreeView.Size = new System.Drawing.Size(147, 400);
             this._bookmarksTreeView.TabIndex = 0;
+            this._bookmarksTreeView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this._bookmarksTreeView_AfterLabelEdit);
             this._bookmarksTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this._bookmarksTreeView_AfterSelect);
+            this._bookmarksTreeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this._bookmarksTreeView_MouseClick);
             // 
             // _treeViewImageList
             // 
@@ -164,9 +165,9 @@ namespace EasyConnect
             this._bookmarkNameColumnHeader,
             this._bookmarkUriColumnHeader});
             this._bookmarksListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this._bookmarksListView.Location = new System.Drawing.Point(0, 12);
+            this._bookmarksListView.Location = new System.Drawing.Point(0, 2);
             this._bookmarksListView.Name = "_bookmarksListView";
-            this._bookmarksListView.Size = new System.Drawing.Size(339, 412);
+            this._bookmarksListView.Size = new System.Drawing.Size(339, 420);
             this._bookmarksListView.SmallImageList = this._listViewImageList;
             this._bookmarksListView.TabIndex = 0;
             this._bookmarksListView.UseCompatibleStateImageBehavior = false;
@@ -209,13 +210,14 @@ namespace EasyConnect
             this._addFolderMenuItem});
             this._folderContextMenu.Name = "_folderContextMenu";
             this._folderContextMenu.ShowImageMargin = false;
-            this._folderContextMenu.Size = new System.Drawing.Size(248, 226);
+            this._folderContextMenu.Size = new System.Drawing.Size(248, 248);
             // 
             // _folderOpenAllMenuItem
             // 
             this._folderOpenAllMenuItem.Name = "_folderOpenAllMenuItem";
             this._folderOpenAllMenuItem.Size = new System.Drawing.Size(247, 22);
             this._folderOpenAllMenuItem.Text = "Open all bookmarks";
+            this._folderOpenAllMenuItem.Click += new System.EventHandler(this._folderOpenAllMenuItem_Click);
             // 
             // _folderOpenAllNewWindowMenuItem
             // 
@@ -233,6 +235,7 @@ namespace EasyConnect
             this._renameFolderMenuItem.Name = "_renameFolderMenuItem";
             this._renameFolderMenuItem.Size = new System.Drawing.Size(247, 22);
             this._renameFolderMenuItem.Text = "Rename...";
+            this._renameFolderMenuItem.Click += new System.EventHandler(this._renameFolderMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -267,6 +270,7 @@ namespace EasyConnect
             this._deleteFolderMenuItem.Name = "_deleteFolderMenuItem";
             this._deleteFolderMenuItem.Size = new System.Drawing.Size(247, 22);
             this._deleteFolderMenuItem.Text = "Delete";
+            this._deleteFolderMenuItem.Click += new System.EventHandler(this._deleteFolderMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
@@ -278,12 +282,14 @@ namespace EasyConnect
             this._addBookmarkMenuItem.Name = "_addBookmarkMenuItem";
             this._addBookmarkMenuItem.Size = new System.Drawing.Size(247, 22);
             this._addBookmarkMenuItem.Text = "Add bookmark...";
+            this._addBookmarkMenuItem.Click += new System.EventHandler(this._addBookmarkMenuItem_Click);
             // 
             // _addFolderMenuItem
             // 
             this._addFolderMenuItem.Name = "_addFolderMenuItem";
             this._addFolderMenuItem.Size = new System.Drawing.Size(247, 22);
             this._addFolderMenuItem.Text = "Add folder...";
+            this._addFolderMenuItem.Click += new System.EventHandler(this._addFolderMenuItem_Click);
             // 
             // _bookmarkContextMenu
             // 
@@ -307,6 +313,7 @@ namespace EasyConnect
             this._openBookmarkNewTabMenuItem.Name = "_openBookmarkNewTabMenuItem";
             this._openBookmarkNewTabMenuItem.Size = new System.Drawing.Size(170, 22);
             this._openBookmarkNewTabMenuItem.Text = "Open in a new tab";
+            this._openBookmarkNewTabMenuItem.Click += new System.EventHandler(this._openBookmarkNewTabMenuItem_Click);
             // 
             // _openBookmarkNewWindowMenuItem
             // 
@@ -324,6 +331,7 @@ namespace EasyConnect
             this._editBookmarkMenuItem.Name = "_editBookmarkMenuItem";
             this._editBookmarkMenuItem.Size = new System.Drawing.Size(170, 22);
             this._editBookmarkMenuItem.Text = "Edit...";
+            this._editBookmarkMenuItem.Click += new System.EventHandler(this._editBookmarkMenuItem_Click);
             // 
             // toolStripSeparator6
             // 
@@ -335,17 +343,6 @@ namespace EasyConnect
             this._cutBookmarkMenuItem.Name = "_cutBookmarkMenuItem";
             this._cutBookmarkMenuItem.Size = new System.Drawing.Size(170, 22);
             this._cutBookmarkMenuItem.Text = "Cut";
-            // 
-            // toolStripSeparator7
-            // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(167, 6);
-            // 
-            // deleteToolStripMenuItem1
-            // 
-            this.deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
-            this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(170, 22);
-            this.deleteToolStripMenuItem1.Text = "Delete";
             // 
             // copyToolStripMenuItem
             // 
@@ -359,6 +356,18 @@ namespace EasyConnect
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
             this.pasteToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(167, 6);
+            // 
+            // deleteToolStripMenuItem1
+            // 
+            this.deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
+            this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(170, 22);
+            this.deleteToolStripMenuItem1.Text = "Delete";
+            this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
             // 
             // BookmarksWindow
             // 

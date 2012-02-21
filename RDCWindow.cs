@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using System.Security;
 using System.Runtime.InteropServices;
@@ -44,6 +45,14 @@ namespace EasyConnect
                 MessageBox.Show("Unable to establish a connection to the remote system.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             Close();
+        }
+
+        public bool IsConnected
+        {
+            get
+            {
+                return Convert.ToBoolean(_rdcWindow.Connected);
+            }
         }
 
         protected MainForm ParentTabs
@@ -321,8 +330,8 @@ namespace EasyConnect
 
         public void Connect(RDCConnection connection)
         {
-            DesktopWidth = (connection.DesktopWidth == 0 ? ClientSize.Width : connection.DesktopWidth);
-            DesktopHeight = (connection.DesktopHeight == 0 ? ClientSize.Height : connection.DesktopHeight);
+            DesktopWidth = (connection.DesktopWidth == 0 ? _rdcWindow.Width - 2 : connection.DesktopWidth);
+            DesktopHeight = (connection.DesktopHeight == 0 ? _rdcWindow.Height - 1 : connection.DesktopHeight);
             AudioMode = connection.AudioMode;
             KeyboardMode = connection.KeyboardMode;
             ConnectPrinters = connection.ConnectPrinters;
@@ -433,10 +442,10 @@ namespace EasyConnect
                 addLocation = folderMenuItem.DropDownItems;
             }
 
-            foreach (BookmarksFolder childFolder in currentFolder.ChildFolders)
+            foreach (BookmarksFolder childFolder in currentFolder.ChildFolders.OrderBy(f => f.Name))
                 PopulateBookmarks(childFolder, addLocation, false);
 
-            foreach (RDCConnection bookmark in currentFolder.Bookmarks)
+            foreach (RDCConnection bookmark in currentFolder.Bookmarks.OrderBy(b => String.IsNullOrEmpty(b.Name) ? b.Host : b.Name))
             {
                 ToolStripMenuItem bookmarkMenuItem = new ToolStripMenuItem(String.IsNullOrEmpty(bookmark.Name)
                                                                                ? bookmark.Host
@@ -467,6 +476,9 @@ namespace EasyConnect
         private void _bookmarksManagerMenuItem2_Click(object sender, EventArgs e)
         {
             ParentTabs.OpenBookmarkManager();
+
+            if (!IsConnected)
+                Close();
         }
     }
 }
