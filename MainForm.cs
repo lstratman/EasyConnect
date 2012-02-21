@@ -293,8 +293,10 @@ namespace EasyConnect
             _bookmarks.Save();
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
+
             _jumpList = JumpList.CreateJumpList();
             _jumpList.KnownCategoryToDisplay = JumpListKnownCategoryType.Neither;
             _jumpList.AddCustomCategories(_recentCategory);

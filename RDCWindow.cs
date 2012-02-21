@@ -321,8 +321,8 @@ namespace EasyConnect
 
         public void Connect(RDCConnection connection)
         {
-            DesktopWidth = (connection.DesktopWidth == 0 ? ClientSize.Width - borderLeft.Width - borderRight.Width : connection.DesktopWidth);
-            DesktopHeight = (connection.DesktopHeight == 0 ? ClientSize.Height - borderBottom.Height - toolbarBackground.Height : connection.DesktopHeight);
+            DesktopWidth = (connection.DesktopWidth == 0 ? ClientSize.Width : connection.DesktopWidth);
+            DesktopHeight = (connection.DesktopHeight == 0 ? ClientSize.Height : connection.DesktopHeight);
             AudioMode = connection.AudioMode;
             KeyboardMode = connection.KeyboardMode;
             ConnectPrinters = connection.ConnectPrinters;
