@@ -199,4 +199,10 @@ connections.</value>
   <data name="ErrorTitle">
     <value xml:space="preserve">Error</value>
   </data>
+  <data name="UnableToEstablishConnection">
+    <value xml:space="preserve">Unable to establish a connection to the remote system.</value>
+  </data>
+  <data name="ConnectingText">
+    <value xml:space="preserve">Connecting...</value>
+  </data>
 </root>

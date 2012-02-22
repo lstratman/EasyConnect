@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace EasyConnect
@@ -46,7 +42,8 @@ namespace EasyConnect
         {
             if (String.IsNullOrEmpty(nameTextBox.Text))
             {
-                MessageBox.Show("Please enter a name for this connection.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please enter a name for this connection.", "Error", MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
                 return;
             }
 

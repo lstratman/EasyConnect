@@ -2,39 +2,101 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
-using System.Security;
-using System.Windows;
 using System.Linq;
-using System.Security.Cryptography;
-using EasyConnect.Properties;
-using Stratman.Windows.Forms.TitleBarTabs;
-using Microsoft.WindowsAPICodePack.Taskbar;
-using Microsoft.WindowsAPICodePack.Shell;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
+using System.Security;
+using System.Security.Cryptography;
+using System.Windows;
+using System.Windows.Forms;
+using EasyConnect.Properties;
+using Microsoft.WindowsAPICodePack.Shell;
+using Microsoft.WindowsAPICodePack.Taskbar;
+using Stratman.Windows.Forms.TitleBarTabs;
 
 namespace EasyConnect
 {
     public partial class MainForm : TitleBarTabs
     {
-        protected SecureString _password = null;
-        protected RDCWindow _previousActiveDocument = null;
-        protected HistoryWindow _history = null;
-        protected BookmarksWindow _bookmarks = null;
-        protected bool _addingWindow = false;
-        protected Dictionary<RDCWindow, Bitmap> _previews = new Dictionary<RDCWindow, Bitmap>();
-        protected JumpList _jumpList = null;
-        protected JumpListCustomCategory _recentCategory = new JumpListCustomCategory("Recent");
-        protected IpcServerChannel _ipcChannel = new IpcServerChannel("EasyConnect");
-        protected Queue<HistoryWindow.HistoricalConnection> _recentConnections = new Queue<HistoryWindow.HistoricalConnection>();
+        public delegate TitleBarTab ConnectToHistoryDelegate(Guid historyGuid);
+
+        public delegate TitleBarTab ConnectionDelegate(RDCConnection connection);
 
         public static MainForm ActiveInstance = null;
         public static ConnectToHistoryDelegate ConnectToHistoryMethod = null;
 
-        public delegate TitleBarTab ConnectionDelegate(RDCConnection connection);
-        public delegate TitleBarTab ConnectToHistoryDelegate(Guid historyGuid);
+        protected bool _addingWindow = false;
+        protected BookmarksWindow _bookmarks = null;
+        protected HistoryWindow _history = null;
+        protected IpcServerChannel _ipcChannel = new IpcServerChannel("EasyConnect");
+        protected JumpList _jumpList = null;
+        protected SecureString _password = null;
+        protected Dictionary<RDCWindow, Bitmap> _previews = new Dictionary<RDCWindow, Bitmap>();
+        protected RDCWindow _previousActiveDocument = null;
+        protected JumpListCustomCategory _recentCategory = new JumpListCustomCategory("Recent");
+
+        protected Queue<HistoryWindow.HistoricalConnection> _recentConnections =
+            new Queue<HistoryWindow.HistoricalConnection>();
+
+        public MainForm()
+        {
+            InitializeComponent();
+
+            if (
+                !Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                                  "\\EasyConnect"))
+            {
+                MessageBox.Show(Resources.FirstRunPasswordText, Resources.FirstRunPasswordTitle, MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                                          "\\EasyConnect");
+            }
+
+            while (Bookmarks == null || _history == null)
+            {
+                PasswordWindow passwordWindow = new PasswordWindow();
+                passwordWindow.ShowDialog();
+
+                _password = passwordWindow.Password;
+                _password.MakeReadOnly();
+
+                try
+                {
+                    _bookmarks = new BookmarksWindow(Connect, _password);
+                    _history = new HistoryWindow(Connect, _bookmarks, _password);
+                }
+
+                catch (CryptographicException)
+                {
+                    DialogResult result = MessageBox.Show(Resources.IncorrectPasswordText, Resources.ErrorTitle,
+                                                          MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+
+                    if (result != DialogResult.OK)
+                    {
+                        Closing = true;
+                        return;
+                    }
+                }
+            }
+
+            ChannelServices.RegisterChannel(_ipcChannel, false);
+            RemotingConfiguration.RegisterWellKnownServiceType(typeof (HistoryMethods), "HistoryMethods",
+                                                               WellKnownObjectMode.SingleCall);
+
+            TabSelected += MainForm_TabSelected;
+            TabDeselecting += MainForm_TabDeselecting;
+
+            ActiveInstance = this;
+            ConnectToHistoryMethod = ConnectToHistory;
+
+            TabRenderer = new ChromeTabRenderer(this);
+            Tabs.Add(new TitleBarTab(this)
+                         {
+                             Content = new RDCWindow(_password)
+                         });
+            SelectedTabIndex = 0;
+        }
 
         public BookmarksWindow Bookmarks
         {
@@ -45,6 +107,18 @@ namespace EasyConnect
 
                 return _bookmarks;
             }
+        }
+
+        public bool Closing
+        {
+            get;
+            set;
+        }
+
+        public Guid OpenToHistory
+        {
+            get;
+            set;
         }
 
         protected void Bookmarks_FormClosed(object sender, FormClosedEventArgs e)
@@ -74,70 +148,19 @@ namespace EasyConnect
             Bookmarks.FormClosed += Bookmarks_FormClosed;
         }
 
-        public MainForm()
-        {
-            InitializeComponent();
-
-            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect"))
-            {
-                MessageBox.Show(Resources.FirstRunPasswordText, Resources.FirstRunPasswordTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect");
-            }
-
-            while (Bookmarks == null || _history == null)
-            {
-                PasswordWindow passwordWindow = new PasswordWindow();
-                passwordWindow.ShowDialog();
-
-                _password = passwordWindow.Password;
-                _password.MakeReadOnly();
-
-                try
-                {
-                    _bookmarks = new BookmarksWindow(Connect, _password);
-                    _history = new HistoryWindow(Connect, _bookmarks, _password);
-                }
-
-                catch (CryptographicException)
-                {
-                    DialogResult result = MessageBox.Show(Resources.IncorrectPasswordText, Resources.ErrorTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
-
-                    if (result != DialogResult.OK)
-                    {
-                        Closing = true;
-                        return;
-                    }
-                }
-            }
-
-            ChannelServices.RegisterChannel(_ipcChannel, false);
-            RemotingConfiguration.RegisterWellKnownServiceType(typeof(HistoryMethods), "HistoryMethods", WellKnownObjectMode.SingleCall);
-            
-            TabSelected += MainForm_TabSelected;
-            TabDeselecting += MainForm_TabDeselecting;
-
-            ActiveInstance = this;
-            ConnectToHistoryMethod = ConnectToHistory;
-
-            TabRenderer = new ChromeTabRenderer(this);
-            Tabs.Add(new TitleBarTab(this)
-                         {
-                             Content = new RDCWindow(_password)
-                         });
-            SelectedTabIndex = 0;
-        }
-
         protected void MainForm_TabDeselecting(object sender, TitleBarTabCancelEventArgs e)
         {
             if (_previousActiveDocument == null)
                 return;
 
-            TabbedThumbnail preview = TaskbarManager.Instance.TabbedThumbnail.GetThumbnailPreview(_previousActiveDocument);
+            TabbedThumbnail preview =
+                TaskbarManager.Instance.TabbedThumbnail.GetThumbnailPreview(_previousActiveDocument);
 
             if (preview == null)
                 return;
 
-            Bitmap bitmap = TabbedThumbnailScreenCapture.GrabWindowBitmap(_previousActiveDocument.Handle, _previousActiveDocument.Size);
+            Bitmap bitmap = TabbedThumbnailScreenCapture.GrabWindowBitmap(_previousActiveDocument.Handle,
+                                                                          _previousActiveDocument.Size);
 
             preview.SetImage(bitmap);
 
@@ -150,21 +173,9 @@ namespace EasyConnect
         protected void MainForm_TabSelected(object sender, TitleBarTabEventArgs e)
         {
             if (!_addingWindow && SelectedTabIndex != -1)
-                TaskbarManager.Instance.TabbedThumbnail.SetActiveTab((RDCWindow)SelectedTab.Content);
+                TaskbarManager.Instance.TabbedThumbnail.SetActiveTab(SelectedTab.Content);
 
-            _previousActiveDocument = (RDCWindow)SelectedTab.Content;
-        }
-
-        public bool Closing
-        {
-            get;
-            set;
-        }
-
-        public Guid OpenToHistory
-        {
-            get;
-            set;
+            _previousActiveDocument = (RDCWindow) SelectedTab.Content;
         }
 
         public TitleBarTab ConnectToHistory(Guid historyGuid)
@@ -196,28 +207,40 @@ namespace EasyConnect
             sessionWindow.Connected += sessionWindow_Connected;
             sessionWindow.Connect(connection);
 
-            TabbedThumbnail preview = new TabbedThumbnail(Handle, sessionWindow);
-            
-            preview.Title = sessionWindow.Text;
-            preview.Tooltip = sessionWindow.Text;
+            TabbedThumbnail preview = new TabbedThumbnail(Handle, sessionWindow)
+                                          {
+                                              Title = sessionWindow.Text,
+                                              Tooltip = sessionWindow.Text
+                                          };
+
             preview.SetWindowIcon(sessionWindow.Icon);
-            preview.TabbedThumbnailActivated += new EventHandler<TabbedThumbnailEventArgs>(preview_TabbedThumbnailActivated);
-            preview.TabbedThumbnailClosed += new EventHandler<TabbedThumbnailEventArgs>(preview_TabbedThumbnailClosed);
-            preview.TabbedThumbnailBitmapRequested += new EventHandler<TabbedThumbnailBitmapRequestedEventArgs>(preview_TabbedThumbnailBitmapRequested);
+            preview.TabbedThumbnailActivated += preview_TabbedThumbnailActivated;
+            preview.TabbedThumbnailClosed += preview_TabbedThumbnailClosed;
+            preview.TabbedThumbnailBitmapRequested += preview_TabbedThumbnailBitmapRequested;
             preview.PeekOffset = new Vector(sessionWindow.Location.X, sessionWindow.Location.Y);
 
-            for (Control currentControl = sessionWindow.Parent; currentControl.Parent != null; currentControl = currentControl.Parent)
+            for (Control currentControl = sessionWindow.Parent;
+                 currentControl.Parent != null;
+                 currentControl = currentControl.Parent)
                 preview.PeekOffset += new Vector(currentControl.Location.X, currentControl.Location.Y);
 
             TaskbarManager.Instance.TabbedThumbnail.AddThumbnailPreview(preview);
             TaskbarManager.Instance.TabbedThumbnail.SetActiveTab(preview);
 
-            if (_recentConnections.FirstOrDefault((HistoryWindow.HistoricalConnection c) => c.Guid == connection.Guid) == null)
+            if (
+                _recentConnections.FirstOrDefault((HistoryWindow.HistoricalConnection c) => c.Guid == connection.Guid) ==
+                null)
             {
-                _recentCategory.AddJumpListItems(new JumpListLink(Application.ExecutablePath, sessionWindow.Text) { Arguments = "/openHistory:" + connection.Guid.ToString(), IconReference = new IconReference(Application.ExecutablePath, 0) });
+                _recentCategory.AddJumpListItems(new JumpListLink(Application.ExecutablePath, sessionWindow.Text)
+                                                     {
+                                                         Arguments = "/openHistory:" + connection.Guid.ToString(),
+                                                         IconReference =
+                                                             new IconReference(Application.ExecutablePath, 0)
+                                                     });
                 _jumpList.Refresh();
 
-                _recentConnections.Enqueue(_history.Connections.First((HistoryWindow.HistoricalConnection c) => c.Guid == connection.Guid));
+                _recentConnections.Enqueue(
+                    _history.Connections.First((HistoryWindow.HistoricalConnection c) => c.Guid == connection.Guid));
 
                 if (_recentConnections.Count > _jumpList.MaxSlotsInList)
                     _recentConnections.Dequeue();
@@ -226,7 +249,7 @@ namespace EasyConnect
             return newTab;
         }
 
-        void sessionWindow_Connected(object sender, EventArgs e)
+        private void sessionWindow_Connected(object sender, EventArgs e)
         {
             //throw new NotImplementedException();
         }
@@ -243,11 +266,11 @@ namespace EasyConnect
             preview.SetImage(bitmap);
         }
 
-        void preview_TabbedThumbnailBitmapRequested(object sender, TabbedThumbnailBitmapRequestedEventArgs e)
+        private void preview_TabbedThumbnailBitmapRequested(object sender, TabbedThumbnailBitmapRequestedEventArgs e)
         {
             foreach (TitleBarTab tab in Tabs)
             {
-                RDCWindow rdcWindow = (RDCWindow)tab.Content;
+                RDCWindow rdcWindow = (RDCWindow) tab.Content;
 
                 if (rdcWindow.Handle == e.WindowHandle && _previews.ContainsKey(rdcWindow))
                 {
@@ -257,25 +280,25 @@ namespace EasyConnect
             }
         }
 
-        void sessionWindow_FormClosing(object sender, FormClosingEventArgs e)
+        private void sessionWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (_previews.ContainsKey((RDCWindow)sender))
+            if (_previews.ContainsKey((RDCWindow) sender))
             {
-                _previews[(RDCWindow)sender].Dispose();
-                _previews.Remove((RDCWindow)sender);
+                _previews[(RDCWindow) sender].Dispose();
+                _previews.Remove((RDCWindow) sender);
             }
 
             if (sender == _previousActiveDocument)
                 _previousActiveDocument = null;
 
-            TaskbarManager.Instance.TabbedThumbnail.RemoveThumbnailPreview((RDCWindow)sender);
+            TaskbarManager.Instance.TabbedThumbnail.RemoveThumbnailPreview((RDCWindow) sender);
         }
 
-        void preview_TabbedThumbnailClosed(object sender, TabbedThumbnailEventArgs e)
+        private void preview_TabbedThumbnailClosed(object sender, TabbedThumbnailEventArgs e)
         {
             foreach (TitleBarTab tab in Tabs)
             {
-                RDCWindow rdcWindow = (RDCWindow)tab.Content;
+                RDCWindow rdcWindow = (RDCWindow) tab.Content;
 
                 if (rdcWindow.Handle == e.WindowHandle)
                 {
@@ -286,7 +309,7 @@ namespace EasyConnect
             }
         }
 
-        void preview_TabbedThumbnailActivated(object sender, TabbedThumbnailEventArgs e)
+        private void preview_TabbedThumbnailActivated(object sender, TabbedThumbnailEventArgs e)
         {
             foreach (TitleBarTab tab in Tabs)
             {
@@ -318,12 +341,24 @@ namespace EasyConnect
                 _jumpList.KnownCategoryToDisplay = JumpListKnownCategoryType.Neither;
                 _jumpList.AddCustomCategories(_recentCategory);
 
-                List<HistoryWindow.HistoricalConnection> historicalConnections = _history.Connections.OrderBy((HistoryWindow.HistoricalConnection c) => c.LastConnection).ToList();
-                historicalConnections = historicalConnections.GetRange(0, Math.Min(historicalConnections.Count, Convert.ToInt32(_jumpList.MaxSlotsInList)));
+                List<HistoryWindow.HistoricalConnection> historicalConnections =
+                    _history.Connections.OrderBy((HistoryWindow.HistoricalConnection c) => c.LastConnection).ToList();
+                historicalConnections = historicalConnections.GetRange(0,
+                                                                       Math.Min(historicalConnections.Count,
+                                                                                Convert.ToInt32(_jumpList.MaxSlotsInList)));
 
                 foreach (HistoryWindow.HistoricalConnection historicalConnection in historicalConnections)
                 {
-                    _recentCategory.AddJumpListItems(new JumpListLink(Application.ExecutablePath, (!String.IsNullOrEmpty(historicalConnection.Name) ? historicalConnection.Name : historicalConnection.Host)) { Arguments = "/openHistory:" + historicalConnection.Guid.ToString(), IconReference = new IconReference(Application.ExecutablePath, 0) });
+                    _recentCategory.AddJumpListItems(new JumpListLink(Application.ExecutablePath,
+                                                                      (!String.IsNullOrEmpty(historicalConnection.Name)
+                                                                           ? historicalConnection.Name
+                                                                           : historicalConnection.Host))
+                                                         {
+                                                             Arguments =
+                                                                 "/openHistory:" + historicalConnection.Guid.ToString(),
+                                                             IconReference =
+                                                                 new IconReference(Application.ExecutablePath, 0)
+                                                         });
                     _recentConnections.Enqueue(historicalConnection);
                 }
 

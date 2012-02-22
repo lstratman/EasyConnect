@@ -1,50 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
-using System.Security;
 using System.Runtime.InteropServices;
+using System.Security;
+using System.Windows.Forms;
 using AxMSTSCLib;
 using EasyConnect.Properties;
-using Stratman.Windows.Forms.TitleBarTabs;
+using MSTSCLib;
 
 namespace EasyConnect
 {
     public partial class RDCWindow : Form
     {
-        protected MSTSCLib.IMsRdpClientNonScriptable _nonScriptable = null;
         protected bool _connectClipboard = true;
-        protected SecureString _password = null;
         protected RDCConnection _connection = null;
+
         protected Dictionary<ToolStripMenuItem, RDCConnection> _menuItemConnections =
             new Dictionary<ToolStripMenuItem, RDCConnection>();
 
-        public event EventHandler Connected;
+        protected IMsRdpClientNonScriptable _nonScriptable = null;
+        protected SecureString _password = null;
 
         public RDCWindow(SecureString password)
         {
             InitializeComponent();
 
-            _rdcWindow.ConnectingText = "Connecting...";
+            _rdcWindow.ConnectingText = Resources.ConnectingText;
             _rdcWindow.OnDisconnected += rdcWindow_OnDisconnected;
 
-            _nonScriptable = (MSTSCLib.IMsRdpClientNonScriptable)_rdcWindow.GetOcx();
+            _nonScriptable = (IMsRdpClientNonScriptable) _rdcWindow.GetOcx();
             Password = password;
-        }
-
-        protected override void OnGotFocus(EventArgs e)
-        {
-            base.OnGotFocus(e);
-            _rdcWindow.Focus();
-        }
-
-        void rdcWindow_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
-        {
-            if (e.discReason > 3)
-                MessageBox.Show("Unable to establish a connection to the remote system.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-            Close();
         }
 
         public bool IsConnected
@@ -144,12 +129,12 @@ namespace EasyConnect
         {
             get
             {
-                return (AudioMode)_rdcWindow.SecuredSettings2.AudioRedirectionMode;
+                return (AudioMode) _rdcWindow.SecuredSettings2.AudioRedirectionMode;
             }
 
             set
             {
-                _rdcWindow.SecuredSettings2.AudioRedirectionMode = (int)value;
+                _rdcWindow.SecuredSettings2.AudioRedirectionMode = (int) value;
             }
         }
 
@@ -157,12 +142,12 @@ namespace EasyConnect
         {
             get
             {
-                return (KeyboardMode)_rdcWindow.SecuredSettings2.KeyboardHookMode;
+                return (KeyboardMode) _rdcWindow.SecuredSettings2.KeyboardHookMode;
             }
 
             set
             {
-                _rdcWindow.SecuredSettings2.KeyboardHookMode = (int)value;
+                _rdcWindow.SecuredSettings2.KeyboardHookMode = (int) value;
             }
         }
 
@@ -176,7 +161,9 @@ namespace EasyConnect
             set
             {
                 _rdcWindow.AdvancedSettings2.RedirectPrinters = value;
-                _rdcWindow.AdvancedSettings2.DisableRdpdr = (!(value || ConnectClipboard) ? 1 : 0);
+                _rdcWindow.AdvancedSettings2.DisableRdpdr = (!(value || ConnectClipboard)
+                                                                 ? 1
+                                                                 : 0);
             }
         }
 
@@ -189,7 +176,9 @@ namespace EasyConnect
 
             set
             {
-                _rdcWindow.AdvancedSettings.DisableRdpdr = (!(value || ConnectPrinters) ? 1 : 0);
+                _rdcWindow.AdvancedSettings.DisableRdpdr = (!(value || ConnectPrinters)
+                                                                ? 1
+                                                                : 0);
                 _connectClipboard = value;
             }
         }
@@ -318,8 +307,29 @@ namespace EasyConnect
 
             set
             {
-                _rdcWindow.AdvancedSettings2.CachePersistenceActive = (value ? 1 : 0);
+                _rdcWindow.AdvancedSettings2.CachePersistenceActive = (value
+                                                                           ? 1
+                                                                           : 0);
             }
+        }
+
+        public event EventHandler Connected;
+
+        protected override void OnGotFocus(EventArgs e)
+        {
+            base.OnGotFocus(e);
+            _rdcWindow.Focus();
+        }
+
+        private void rdcWindow_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
+        {
+            if (e.discReason > 3)
+            {
+                MessageBox.Show(Resources.UnableToEstablishConnection, Resources.ErrorTitle, MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+            }
+
+            Close();
         }
 
         public void Connect()
@@ -330,8 +340,12 @@ namespace EasyConnect
 
         public void Connect(RDCConnection connection)
         {
-            DesktopWidth = (connection.DesktopWidth == 0 ? _rdcWindow.Width - 2 : connection.DesktopWidth);
-            DesktopHeight = (connection.DesktopHeight == 0 ? _rdcWindow.Height - 1 : connection.DesktopHeight);
+            DesktopWidth = (connection.DesktopWidth == 0
+                                ? _rdcWindow.Width - 2
+                                : connection.DesktopWidth);
+            DesktopHeight = (connection.DesktopHeight == 0
+                                 ? _rdcWindow.Height - 1
+                                 : connection.DesktopHeight);
             AudioMode = connection.AudioMode;
             KeyboardMode = connection.KeyboardMode;
             ConnectPrinters = connection.ConnectPrinters;
@@ -344,7 +358,7 @@ namespace EasyConnect
             Animations = connection.Animations;
             VisualStyles = connection.VisualStyles;
             PersistentBitmapCaching = connection.PersistentBitmapCaching;
-            
+
             if (!String.IsNullOrEmpty(connection.Username))
                 Username = connection.Username;
 
@@ -352,7 +366,9 @@ namespace EasyConnect
                 Password = connection.Password;
 
             Host = connection.Host;
-            Text = (String.IsNullOrEmpty(connection.Name) ? connection.Host : connection.Name);
+            Text = (String.IsNullOrEmpty(connection.Name)
+                        ? connection.Host
+                        : connection.Name);
             urlTextBox.Text = connection.Host;
 
             _connection = connection;
@@ -362,10 +378,12 @@ namespace EasyConnect
         private void urlTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
+            {
                 Connect(new RDCConnection(_password)
                             {
                                 Host = urlTextBox.Text
                             });
+            }
         }
 
         private void _closeButton_MouseEnter(object sender, EventArgs e)
@@ -405,7 +423,7 @@ namespace EasyConnect
 
         private void _exitMenuItem_Click(object sender, EventArgs e)
         {
-            ((Form)Parent).Close();
+            ((Form) Parent).Close();
         }
 
         private void _toolsButton_Click(object sender, EventArgs e)
@@ -419,14 +437,16 @@ namespace EasyConnect
             while (_bookmarksMenu.Items.Count > 2)
                 _bookmarksMenu.Items.RemoveAt(2);
 
-            if (ParentTabs.Bookmarks.RootFolder.ChildFolders.Count > 0 || ParentTabs.Bookmarks.RootFolder.Bookmarks.Count > 0)
+            if (ParentTabs.Bookmarks.RootFolder.ChildFolders.Count > 0 ||
+                ParentTabs.Bookmarks.RootFolder.Bookmarks.Count > 0)
                 _bookmarksMenu.Items.Add(new ToolStripSeparator());
 
             _menuItemConnections.Clear();
             PopulateBookmarks(ParentTabs.Bookmarks.RootFolder, _bookmarksMenu.Items, true);
 
             _bookmarksMenu.DefaultDropDownDirection = ToolStripDropDownDirection.Left;
-            _bookmarksMenu.Show(_bookmarksButton, -1 * _bookmarksMenu.Width + _bookmarksButton.Width, _bookmarksButton.Height);
+            _bookmarksMenu.Show(_bookmarksButton, -1 * _bookmarksMenu.Width + _bookmarksButton.Width,
+                                _bookmarksButton.Height);
         }
 
         private void PopulateBookmarks(BookmarksFolder currentFolder, ToolStripItemCollection menuItems, bool root)
@@ -435,8 +455,10 @@ namespace EasyConnect
 
             if (!root)
             {
-                ToolStripMenuItem folderMenuItem = new ToolStripMenuItem(currentFolder.Name, Resources.Folder);
-                folderMenuItem.DropDownDirection = ToolStripDropDownDirection.Left;
+                ToolStripMenuItem folderMenuItem = new ToolStripMenuItem(currentFolder.Name, Resources.Folder)
+                                                       {
+                                                           DropDownDirection = ToolStripDropDownDirection.Left
+                                                       };
 
                 menuItems.Add(folderMenuItem);
                 addLocation = folderMenuItem.DropDownItems;
@@ -445,7 +467,9 @@ namespace EasyConnect
             foreach (BookmarksFolder childFolder in currentFolder.ChildFolders.OrderBy(f => f.Name))
                 PopulateBookmarks(childFolder, addLocation, false);
 
-            foreach (RDCConnection bookmark in currentFolder.Bookmarks.OrderBy(b => String.IsNullOrEmpty(b.Name) ? b.Host : b.Name))
+            foreach (RDCConnection bookmark in currentFolder.Bookmarks.OrderBy(b => String.IsNullOrEmpty(b.Name)
+                                                                                        ? b.Host
+                                                                                        : b.Name))
             {
                 ToolStripMenuItem bookmarkMenuItem = new ToolStripMenuItem(String.IsNullOrEmpty(bookmark.Name)
                                                                                ? bookmark.Host

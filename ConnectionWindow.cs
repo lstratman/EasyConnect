@@ -1,28 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using System.Security;
+using System.Windows.Forms;
 
 namespace EasyConnect
 {
     public partial class ConnectionWindow : Form
     {
-        protected List<DEVMODE> _resolutions = new List<DEVMODE>();
         protected BookmarksWindow _bookmarks = null;
         protected RDCConnection _connection = null;
         protected MainForm.ConnectionDelegate _connectionDelegate = null;
         protected SecureString _password = null;
+        protected List<DEVMODE> _resolutions = new List<DEVMODE>();
 
-        public ConnectionWindow(BookmarksWindow bookmarks, MainForm.ConnectionDelegate connectionDelegate, SecureString password)
+        public ConnectionWindow(BookmarksWindow bookmarks, MainForm.ConnectionDelegate connectionDelegate,
+                                SecureString password)
             : this(bookmarks, new RDCConnection(password), connectionDelegate, password)
         {
         }
 
-        public ConnectionWindow(BookmarksWindow bookmarksWindow, RDCConnection connection, MainForm.ConnectionDelegate connectionDelegate, SecureString password)
+        public ConnectionWindow(BookmarksWindow bookmarksWindow, RDCConnection connection,
+                                MainForm.ConnectionDelegate connectionDelegate, SecureString password)
         {
             InitializeComponent();
 
@@ -42,7 +40,9 @@ namespace EasyConnect
 
             while (DisplayHelper.EnumDisplaySettings(null, modeNumber, ref devMode) > 0)
             {
-                if (!_resolutions.Exists((DEVMODE d) => d.dmPelsWidth == devMode.dmPelsWidth && d.dmPelsHeight == devMode.dmPelsHeight))
+                if (
+                    !_resolutions.Exists(
+                        (DEVMODE d) => d.dmPelsWidth == devMode.dmPelsWidth && d.dmPelsHeight == devMode.dmPelsHeight))
                     _resolutions.Add(devMode);
 
                 modeNumber++;
@@ -55,8 +55,10 @@ namespace EasyConnect
             {
                 hostBox.Text = connection.Host;
                 usernameTextBox.Text = connection.Username;
-                passwordTextBox.SecureText = (connection.Password == null ? new SecureString() : connection.Password.Copy());
-                keyboardDropdown.SelectedIndex = (int)connection.KeyboardMode;
+                passwordTextBox.SecureText = (connection.Password == null
+                                                  ? new SecureString()
+                                                  : connection.Password.Copy());
+                keyboardDropdown.SelectedIndex = (int) connection.KeyboardMode;
                 printersCheckBox.Checked = connection.ConnectPrinters;
                 clipboardCheckBox.Checked = connection.ConnectClipboard;
                 drivesCheckBox.Checked = connection.ConnectDrives;
@@ -73,8 +75,11 @@ namespace EasyConnect
 
                 else if (connection.AudioMode == AudioMode.None)
                     dontPlayRadioButton.Checked = true;
-                
-                int resolutionIndex = _resolutions.FindIndex((DEVMODE d) => d.dmPelsWidth == connection.DesktopWidth && d.dmPelsHeight == connection.DesktopHeight);
+
+                int resolutionIndex =
+                    _resolutions.FindIndex(
+                        (DEVMODE d) =>
+                        d.dmPelsWidth == connection.DesktopWidth && d.dmPelsHeight == connection.DesktopHeight);
 
                 if (resolutionIndex != -1)
                     resolutionTrackBar.Value = resolutionIndex;
@@ -102,7 +107,10 @@ namespace EasyConnect
 
         private void resolutionTrackBar_ValueChanged(object sender, EventArgs e)
         {
-            resolutionLabel.Text = (resolutionTrackBar.Value == _resolutions.Count ? "Full Screen" : _resolutions[resolutionTrackBar.Value].dmPelsWidth.ToString() + " by " + _resolutions[resolutionTrackBar.Value].dmPelsHeight.ToString() + " pixels");
+            resolutionLabel.Text = (resolutionTrackBar.Value == _resolutions.Count
+                                        ? "Full Screen"
+                                        : _resolutions[resolutionTrackBar.Value].dmPelsWidth.ToString() + " by " +
+                                          _resolutions[resolutionTrackBar.Value].dmPelsHeight.ToString() + " pixels");
         }
 
         private void saveAsButton_Click(object sender, EventArgs e)
@@ -115,7 +123,7 @@ namespace EasyConnect
 
             //string[] pathComponents = saveWindow.DestinationFolderPath.Split('/');
             //TreeNode currentNode = _favorites.TreeRoot;
-            
+
             //for (int i = 2; i < pathComponents.Length; i++)
             //    currentNode = currentNode.Nodes[Convert.ToInt32(pathComponents[i])];
 
@@ -158,9 +166,13 @@ namespace EasyConnect
             _connection.Host = hostBox.Text;
             _connection.Username = usernameTextBox.Text;
             _connection.Password = passwordTextBox.SecureText;
-            _connection.DesktopWidth = (resolutionTrackBar.Value == resolutionTrackBar.Maximum ? 0 : _resolutions[resolutionTrackBar.Value].dmPelsWidth);
-            _connection.DesktopHeight = (resolutionTrackBar.Value == resolutionTrackBar.Maximum ? 0 : _resolutions[resolutionTrackBar.Value].dmPelsHeight);
-            _connection.KeyboardMode = (KeyboardMode)keyboardDropdown.SelectedIndex;
+            _connection.DesktopWidth = (resolutionTrackBar.Value == resolutionTrackBar.Maximum
+                                            ? 0
+                                            : _resolutions[resolutionTrackBar.Value].dmPelsWidth);
+            _connection.DesktopHeight = (resolutionTrackBar.Value == resolutionTrackBar.Maximum
+                                             ? 0
+                                             : _resolutions[resolutionTrackBar.Value].dmPelsHeight);
+            _connection.KeyboardMode = (KeyboardMode) keyboardDropdown.SelectedIndex;
             _connection.ConnectPrinters = printersCheckBox.Checked;
             _connection.ConnectClipboard = clipboardCheckBox.Checked;
             _connection.ConnectDrives = drivesCheckBox.Checked;
@@ -203,7 +215,10 @@ namespace EasyConnect
 
         private void connectButton_Click(object sender, EventArgs e)
         {
-            RDCConnection newConnection = new RDCConnection(_password) { Name = _connection.Name };
+            RDCConnection newConnection = new RDCConnection(_password)
+                                              {
+                                                  Name = _connection.Name
+                                              };
             _connection = newConnection;
 
             SaveConnection();

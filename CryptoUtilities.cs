@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Cryptography;
-using System.Runtime.InteropServices;
-using System.IO;
 using System.Text;
 
 namespace EasyConnect
@@ -30,7 +28,8 @@ namespace EasyConnect
             encryption.IV = Convert.FromBase64String("QGWyKbe+W9H0mL2igm73jw==");
 
             MemoryStream memoryStream = new MemoryStream(data, 0, data.Length);
-            CryptoStream cryptoStream = new CryptoStream(memoryStream, encryption.CreateDecryptor(), CryptoStreamMode.Read);
+            CryptoStream cryptoStream = new CryptoStream(memoryStream, encryption.CreateDecryptor(),
+                                                         CryptoStreamMode.Read);
 
             cryptoStream.Read(decryptedData, 0, decryptedData.Length);
             cryptoStream.Close();
@@ -56,9 +55,10 @@ namespace EasyConnect
 
             encryption.Key = keyBytes;
             encryption.IV = Convert.FromBase64String("QGWyKbe+W9H0mL2igm73jw==");
-            
+
             MemoryStream memoryStream = new MemoryStream();
-            CryptoStream cryptoStream = new CryptoStream(memoryStream, encryption.CreateEncryptor(), CryptoStreamMode.Write);
+            CryptoStream cryptoStream = new CryptoStream(memoryStream, encryption.CreateEncryptor(),
+                                                         CryptoStreamMode.Write);
 
             cryptoStream.Write(data, 0, data.Length);
             cryptoStream.Close();

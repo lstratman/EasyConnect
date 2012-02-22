@@ -92,13 +92,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioMode.cs" />
-    <Compile Include="Bookmarks.cs">
+    <Compile Include="BookmarksFolder.cs" />
+    <Compile Include="BookmarksWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Bookmarks.Designer.cs">
-      <DependentUpon>Bookmarks.cs</DependentUpon>
+    <Compile Include="BookmarksWindow.designer.cs">
+      <DependentUpon>BookmarksWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="BookmarksFolder.cs" />
     <Compile Include="ConnectionWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,8 +130,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Bookmarks.resx">
-      <DependentUpon>Bookmarks.cs</DependentUpon>
+    <EmbeddedResource Include="BookmarksWindow.resx">
+      <DependentUpon>BookmarksWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConnectionWindow.resx">
       <DependentUpon>ConnectionWindow.cs</DependentUpon>

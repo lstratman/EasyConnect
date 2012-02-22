@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using System.Security;
-using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace EasyConnect
 {
@@ -17,18 +11,18 @@ namespace EasyConnect
             InitializeComponent();
         }
 
-        protected override void OnShown(EventArgs e)
-        {
-            base.OnShown(e);
-            passwordTextBox.Focus();
-        }
-
         public SecureString Password
         {
             get
             {
                 return passwordTextBox.SecureText;
             }
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            passwordTextBox.Focus();
         }
 
         private void okButton_Click(object sender, EventArgs e)

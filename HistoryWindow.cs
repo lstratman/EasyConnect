@@ -1,22 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security;
 using System.Windows.Forms;
 using System.Xml;
-using System.IO;
-using System.Security;
-using System.Linq;
 
 namespace EasyConnect
 {
     public partial class HistoryWindow : Form
     {
-        Dictionary<TreeNode, HistoricalConnection> _connections = new Dictionary<TreeNode, HistoricalConnection>();
-        MainForm.ConnectionDelegate _connectionDelegate = null;
-        BookmarksWindow _bookmarksWindow = null;
-        protected string _historyFileName = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\History.xml";
+        private readonly BookmarksWindow _bookmarksWindow = null;
+        private readonly MainForm.ConnectionDelegate _connectionDelegate = null;
+
+        private readonly Dictionary<TreeNode, HistoricalConnection> _connections =
+            new Dictionary<TreeNode, HistoricalConnection>();
+
+        protected string _historyFileName = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                                            "\\EasyConnect\\History.xml";
+
         protected SecureString _password = null;
 
-        public HistoryWindow(MainForm.ConnectionDelegate connectionDelegate, BookmarksWindow bookmarksWindow, SecureString password)
+        public HistoryWindow(MainForm.ConnectionDelegate connectionDelegate, BookmarksWindow bookmarksWindow,
+                             SecureString password)
         {
             _connectionDelegate = connectionDelegate;
             _bookmarksWindow = bookmarksWindow;
@@ -32,18 +38,25 @@ namespace EasyConnect
                 foreach (XmlNode node in history.SelectNodes("/history/connection"))
                 {
                     HistoricalConnection historyEntry = new HistoricalConnection(node, _password);
-                    TreeNode newTreeNode = new TreeNode((String.IsNullOrEmpty(historyEntry.Name) ? historyEntry.Host : historyEntry.Name), 2, 2);
+                    TreeNode newTreeNode = new TreeNode((String.IsNullOrEmpty(historyEntry.Name)
+                                                             ? historyEntry.Host
+                                                             : historyEntry.Name), 2, 2);
 
-                    if (historyEntry.LastConnection.DayOfYear == DateTime.Now.DayOfYear && historyEntry.LastConnection.Year == DateTime.Now.Year)
+                    if (historyEntry.LastConnection.DayOfYear == DateTime.Now.DayOfYear &&
+                        historyEntry.LastConnection.Year == DateTime.Now.Year)
                         AddTreeNode(historyTreeView.Nodes[0].Nodes[0].Nodes, newTreeNode);
 
-                    else if (historyEntry.LastConnection.DayOfYear == DateTime.Now.DayOfYear - 1 && historyEntry.LastConnection.Year == DateTime.Now.Year)
+                    else if (historyEntry.LastConnection.DayOfYear == DateTime.Now.DayOfYear - 1 &&
+                             historyEntry.LastConnection.Year == DateTime.Now.Year)
                         AddTreeNode(historyTreeView.Nodes[0].Nodes[1].Nodes, newTreeNode);
 
-                    else if (historyEntry.LastConnection.DayOfYear >= DateTime.Now.DayOfYear - (int)DateTime.Now.DayOfWeek && historyEntry.LastConnection.Year == DateTime.Now.Year)
+                    else if (historyEntry.LastConnection.DayOfYear >=
+                             DateTime.Now.DayOfYear - (int) DateTime.Now.DayOfWeek &&
+                             historyEntry.LastConnection.Year == DateTime.Now.Year)
                         AddTreeNode(historyTreeView.Nodes[0].Nodes[2].Nodes, newTreeNode);
 
-                    else if (historyEntry.LastConnection.Month == DateTime.Now.Month && historyEntry.LastConnection.Year == DateTime.Now.Year)
+                    else if (historyEntry.LastConnection.Month == DateTime.Now.Month &&
+                             historyEntry.LastConnection.Year == DateTime.Now.Year)
                         AddTreeNode(historyTreeView.Nodes[0].Nodes[3].Nodes, newTreeNode);
 
                     else if (historyEntry.LastConnection.Year == DateTime.Now.Year)
@@ -78,7 +91,7 @@ namespace EasyConnect
 
         public RDCConnection FindInHistory(Guid historyGuid)
         {
-            return (RDCConnection)_connections.Values.FirstOrDefault((HistoricalConnection c) => c.Guid == historyGuid);
+            return _connections.Values.FirstOrDefault((HistoricalConnection c) => c.Guid == historyGuid);
         }
 
         public void AddToHistory(RDCConnection connection)
@@ -102,7 +115,9 @@ namespace EasyConnect
                     connectionNode.Remove();
                 }
 
-                TreeNode newTreeNode = new TreeNode((String.IsNullOrEmpty(historyEntry.Name) ? historyEntry.Host : historyEntry.Name), 2, 2);
+                TreeNode newTreeNode = new TreeNode((String.IsNullOrEmpty(historyEntry.Name)
+                                                         ? historyEntry.Host
+                                                         : historyEntry.Name), 2, 2);
 
                 AddTreeNode(historyTreeView.Nodes[0].Nodes[0].Nodes, newTreeNode);
                 _connections[newTreeNode] = historyEntry;
@@ -110,7 +125,9 @@ namespace EasyConnect
 
             else if (connectionNode != null)
             {
-                TreeNode newTreeNode = new TreeNode((String.IsNullOrEmpty(historyEntry.Name) ? historyEntry.Host : historyEntry.Name), 2, 2);
+                TreeNode newTreeNode = new TreeNode((String.IsNullOrEmpty(historyEntry.Name)
+                                                         ? historyEntry.Host
+                                                         : historyEntry.Name), 2, 2);
 
                 _connections.Remove(connectionNode);
                 connectionNode.Remove();
@@ -161,6 +178,55 @@ namespace EasyConnect
             return null;
         }
 
+        private void historyTreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node.ImageIndex == 2)
+                _connectionDelegate(_connections[e.Node]);
+        }
+
+        public void Save()
+        {
+            XmlDocument historyFile = new XmlDocument();
+            XmlNode rootNode = historyFile.CreateNode(XmlNodeType.Element, "history", null);
+
+            historyFile.AppendChild(rootNode);
+
+            foreach (HistoricalConnection connection in _connections.Values)
+            {
+                XmlNode connectionNode = historyFile.CreateNode(XmlNodeType.Element, "connection", null);
+                rootNode.AppendChild(connectionNode);
+
+                connection.ToXmlNode(connectionNode);
+            }
+
+            FileInfo destinationFile = new FileInfo(_historyFileName);
+
+            Directory.CreateDirectory(destinationFile.DirectoryName);
+            historyFile.Save(_historyFileName);
+        }
+
+        private void historyTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.Node.ImageIndex == 2)
+            {
+                historyTreeView.SelectedNode = e.Node;
+                historyContextMenu.Show(Cursor.Position);
+            }
+        }
+
+        private void propertiesMenuItem_Click(object sender, EventArgs e)
+        {
+            ConnectionWindow connectionWindow = new ConnectionWindow(_bookmarksWindow,
+                                                                     _connections[historyTreeView.SelectedNode],
+                                                                     _connectionDelegate, _password);
+            connectionWindow.ShowDialog();
+        }
+
+        private void connectMenuItem_Click(object sender, EventArgs e)
+        {
+            _connectionDelegate(_connections[historyTreeView.SelectedNode]);
+        }
+
         public class HistoricalConnection : RDCConnection
         {
             public HistoricalConnection(XmlNode node, SecureString encryptionPassword)
@@ -204,57 +270,10 @@ namespace EasyConnect
             public override void ToXmlNode(XmlNode node)
             {
                 base.ToXmlNode(node);
-                
+
                 node.Attributes.Append(node.OwnerDocument.CreateAttribute("lastAccess"));
                 node.Attributes["lastAccess"].Value = LastConnection.ToString();
             }
-        }
-
-        private void historyTreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            if (e.Node.ImageIndex == 2)
-                _connectionDelegate(_connections[e.Node]);
-        }
-
-        public void Save()
-        {
-            XmlDocument historyFile = new XmlDocument();
-            XmlNode rootNode = historyFile.CreateNode(XmlNodeType.Element, "history", null);
-
-            historyFile.AppendChild(rootNode);
-
-            foreach (HistoricalConnection connection in _connections.Values)
-            {
-                XmlNode connectionNode = historyFile.CreateNode(XmlNodeType.Element, "connection", null);
-                rootNode.AppendChild(connectionNode);
-
-                connection.ToXmlNode(connectionNode);
-            }
-
-            FileInfo destinationFile = new FileInfo(_historyFileName);
-
-            Directory.CreateDirectory(destinationFile.DirectoryName);
-            historyFile.Save(_historyFileName);
-        }
-
-        private void historyTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right && e.Node.ImageIndex == 2)
-            {
-                historyTreeView.SelectedNode = e.Node;
-                historyContextMenu.Show(Cursor.Position);
-            }
-        }
-
-        private void propertiesMenuItem_Click(object sender, EventArgs e)
-        {
-            ConnectionWindow connectionWindow = new ConnectionWindow(_bookmarksWindow, _connections[historyTreeView.SelectedNode], _connectionDelegate, _password);
-            connectionWindow.ShowDialog();
-        }
-
-        private void connectMenuItem_Click(object sender, EventArgs e)
-        {
-            _connectionDelegate(_connections[historyTreeView.SelectedNode]);
         }
     }
 }
