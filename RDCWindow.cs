@@ -502,6 +502,8 @@ namespace EasyConnect
                     (String.IsNullOrEmpty(b.Name) && b.Host == _connection.Host));
 
             _connection.Name = saveWindow.ConnectionName;
+            _connection.IsBookmark = true;
+
             Text = _connection.DisplayName;
             ParentTabs.Bookmarks.TreeNodeFolders[currentNode].Bookmarks.Add(_connection);
 

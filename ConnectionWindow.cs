@@ -217,7 +217,7 @@ namespace EasyConnect
             _connection = newConnection;
 
             SaveConnection();
-            _applicationForm.Connect(_connection);
+            _applicationForm.SelectedTab = _applicationForm.Connect(_connection);
 
             Close();
         }
