@@ -22,12 +22,12 @@ namespace EasyConnect
         {
         }
 
-        public ConnectionWindow(BookmarksWindow BookmarksWindow, RDCConnection connection, MainForm.ConnectionDelegate connectionDelegate, SecureString password)
+        public ConnectionWindow(BookmarksWindow bookmarksWindow, RDCConnection connection, MainForm.ConnectionDelegate connectionDelegate, SecureString password)
         {
             InitializeComponent();
 
             _connection = connection;
-            _bookmarks = BookmarksWindow;
+            _bookmarks = bookmarksWindow;
             _connectionDelegate = connectionDelegate;
             _password = password;
 

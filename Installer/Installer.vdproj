@@ -21,8 +21,20 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_02299C7123BBA64FA69110A90B3439A7"
+        "OwnerKey" = "8:_D003927D77F047569D26879F8AA2B838"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_143CE20D596D6A83BFACC0DFC0C8C9AA"
         "OwnerKey" = "8:_191F95AD066428F0BBCEE214A72BCB18"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_143CE20D596D6A83BFACC0DFC0C8C9AA"
+        "OwnerKey" = "8:_D003927D77F047569D26879F8AA2B838"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -39,8 +51,20 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_191F95AD066428F0BBCEE214A72BCB18"
+        "OwnerKey" = "8:_D003927D77F047569D26879F8AA2B838"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_313705E7818C97AF9A6AEE9837D5BB25"
         "OwnerKey" = "8:_9FAB19F059224E9D912A66C91EFB6997"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_313705E7818C97AF9A6AEE9837D5BB25"
+        "OwnerKey" = "8:_D003927D77F047569D26879F8AA2B838"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -53,6 +77,12 @@
         {
         "MsmKey" = "8:_3B57CE4AEE45B1AD9AE823D3BAA0CC74"
         "OwnerKey" = "8:_9FAB19F059224E9D912A66C91EFB6997"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3B57CE4AEE45B1AD9AE823D3BAA0CC74"
+        "OwnerKey" = "8:_D003927D77F047569D26879F8AA2B838"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -75,7 +105,19 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_7FF7B021D178FE778A82BB088F61663C"
+        "OwnerKey" = "8:_D003927D77F047569D26879F8AA2B838"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_9FAB19F059224E9D912A66C91EFB6997"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D003927D77F047569D26879F8AA2B838"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -83,6 +125,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_9FAB19F059224E9D912A66C91EFB6997"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D003927D77F047569D26879F8AA2B838"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -490,13 +538,13 @@
             "Property" = "8:ProgramMenuFolder"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_F1742B29FB04498B8A6C267BEE112336"
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_18B17265F7314524B04405C30D6A018A"
                     {
-                    "Name" = "8:UltraRDC"
+                    "Name" = "8:EasyConnect"
                     "AlwaysCreate" = "11:FALSE"
                     "Condition" = "8:"
                     "Transitive" = "11:FALSE"
-                    "Property" = "8:_AB361A47CA3A4EC7AE98C0CDACCA9A4D"
+                    "Property" = "8:_770F4A4473C1412F8433DADB3514221D"
                         "Folders"
                         {
                         }
@@ -520,7 +568,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:UltraRDC"
         "ProductCode" = "8:{41AB5772-1A47-445D-BF17-5483A2B68405}"
-        "PackageCode" = "8:{DC60ECD7-EA51-4489-808B-D6359B2ADDD7}"
+        "PackageCode" = "8:{0888F440-61B7-40A8-A945-ED1B2FD45A44}"
         "UpgradeCode" = "8:{981E1181-F1D5-434C-B07A-452457AA80AB}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -640,20 +688,6 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_64BF9EFE0BFB4CD2A1F8094C51D15CDB"
-            {
-            "Name" = "8:UltraRDC"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:32512"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_9FAB19F059224E9D912A66C91EFB6997"
-            "Folder" = "8:_F1742B29FB04498B8A6C267BEE112336"
-            "WorkingFolder" = "8:_E0536C4634084F6888C7165652EEF36A"
-            "Icon" = "8:_9FAB19F059224E9D912A66C91EFB6997"
-            "Feature" = "8:"
-            }
         }
         "UserInterface"
         {
@@ -1069,6 +1103,34 @@
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E0536C4634084F6888C7165652EEF36A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{864B8C43-5221-4EF6-A98C-6DDA4E634F71}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_D003927D77F047569D26879F8AA2B838"
+            {
+            "SourcePath" = "8:..\\obj\\x86\\Debug\\EasyConnect.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_18B17265F7314524B04405C30D6A018A"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"

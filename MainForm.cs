@@ -7,6 +7,7 @@ using System.Security;
 using System.Windows;
 using System.Linq;
 using System.Security.Cryptography;
+using EasyConnect.Properties;
 using Stratman.Windows.Forms.TitleBarTabs;
 using Microsoft.WindowsAPICodePack.Taskbar;
 using Microsoft.WindowsAPICodePack.Shell;
@@ -62,7 +63,7 @@ namespace EasyConnect
 
             if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect"))
             {
-                MessageBox.Show("Since this is the first time that you have run this application,\nyou will be asked to enter an access password.  This password will\nbe used to protect any passwords that you associate with your\nconnections.", "Create password", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(Resources.FirstRunPasswordText, Resources.FirstRunPasswordTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect");
             }
 
@@ -82,7 +83,7 @@ namespace EasyConnect
 
                 catch (CryptographicException)
                 {
-                    DialogResult result = MessageBox.Show("Password is incorrect.", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                    DialogResult result = MessageBox.Show(Resources.IncorrectPasswordText, Resources.ErrorTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
 
                     if (result != DialogResult.OK)
                     {

@@ -184,4 +184,19 @@
   <data name="ToolsActive" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ToolsActive.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="FirstRunPasswordText">
+    <value xml:space="preserve">Since this is the first time that you have run this application,
+you will be asked to enter an access password.  This password will
+be used to protect any passwords that you associate with your
+connections.</value>
+  </data>
+  <data name="FirstRunPasswordTitle">
+    <value xml:space="preserve">Create password</value>
+  </data>
+  <data name="IncorrectPasswordText">
+    <value xml:space="preserve">Password is incorrect.</value>
+  </data>
+  <data name="ErrorTitle">
+    <value xml:space="preserve">Error</value>
+  </data>
 </root>

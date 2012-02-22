@@ -116,6 +116,36 @@ namespace EasyConnect.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string ErrorTitle {
+            get {
+                return ResourceManager.GetString("ErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Since this is the first time that you have run this application,
+        ///you will be asked to enter an access password.  This password will
+        ///be used to protect any passwords that you associate with your
+        ///connections..
+        /// </summary>
+        internal static string FirstRunPasswordText {
+            get {
+                return ResourceManager.GetString("FirstRunPasswordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create password.
+        /// </summary>
+        internal static string FirstRunPasswordTitle {
+            get {
+                return ResourceManager.GetString("FirstRunPasswordTitle", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap Folder {
             get {
                 object obj = ResourceManager.GetObject("Folder", resourceCulture);
@@ -141,6 +171,15 @@ namespace EasyConnect.Properties {
             get {
                 object obj = ResourceManager.GetObject("Gradient", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password is incorrect..
+        /// </summary>
+        internal static string IncorrectPasswordText {
+            get {
+                return ResourceManager.GetString("IncorrectPasswordText", resourceCulture);
             }
         }
         
