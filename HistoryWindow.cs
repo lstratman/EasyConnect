@@ -10,23 +10,17 @@ namespace EasyConnect
 {
     public partial class HistoryWindow : Form
     {
-        private readonly BookmarksWindow _bookmarksWindow = null;
-        private readonly MainForm.ConnectionDelegate _connectionDelegate = null;
-
         private readonly Dictionary<TreeNode, HistoricalConnection> _connections =
             new Dictionary<TreeNode, HistoricalConnection>();
 
         protected string _historyFileName = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
                                             "\\EasyConnect\\History.xml";
 
-        protected SecureString _password = null;
+        protected MainForm _applicationForm = null;
 
-        public HistoryWindow(MainForm.ConnectionDelegate connectionDelegate, BookmarksWindow bookmarksWindow,
-                             SecureString password)
+        public HistoryWindow(MainForm applicationForm)
         {
-            _connectionDelegate = connectionDelegate;
-            _bookmarksWindow = bookmarksWindow;
-            _password = password;
+            _applicationForm = applicationForm;
 
             InitializeComponent();
 
@@ -37,10 +31,8 @@ namespace EasyConnect
 
                 foreach (XmlNode node in history.SelectNodes("/history/connection"))
                 {
-                    HistoricalConnection historyEntry = new HistoricalConnection(node, _password);
-                    TreeNode newTreeNode = new TreeNode((String.IsNullOrEmpty(historyEntry.Name)
-                                                             ? historyEntry.Host
-                                                             : historyEntry.Name), 2, 2);
+                    HistoricalConnection historyEntry = new HistoricalConnection(node, _applicationForm.Password);
+                    TreeNode newTreeNode = new TreeNode(historyEntry.DisplayName, 2, 2);
 
                     if (historyEntry.LastConnection.DayOfYear == DateTime.Now.DayOfYear &&
                         historyEntry.LastConnection.Year == DateTime.Now.Year)
@@ -70,17 +62,6 @@ namespace EasyConnect
             }
         }
 
-        public SecureString Password
-        {
-            set
-            {
-                _password = value;
-
-                if (_password != null)
-                    _password.MakeReadOnly();
-            }
-        }
-
         public List<HistoricalConnection> Connections
         {
             get
@@ -97,7 +78,7 @@ namespace EasyConnect
         public void AddToHistory(RDCConnection connection)
         {
             TreeNode connectionNode = FindConnectionNode(historyTreeView.Nodes, connection);
-            HistoricalConnection historyEntry = new HistoricalConnection(connection, _password);
+            HistoricalConnection historyEntry = new HistoricalConnection(connection, _applicationForm.Password);
 
             if (connectionNode != null)
             {
@@ -115,9 +96,7 @@ namespace EasyConnect
                     connectionNode.Remove();
                 }
 
-                TreeNode newTreeNode = new TreeNode((String.IsNullOrEmpty(historyEntry.Name)
-                                                         ? historyEntry.Host
-                                                         : historyEntry.Name), 2, 2);
+                TreeNode newTreeNode = new TreeNode(historyEntry.DisplayName, 2, 2);
 
                 AddTreeNode(historyTreeView.Nodes[0].Nodes[0].Nodes, newTreeNode);
                 _connections[newTreeNode] = historyEntry;
@@ -125,9 +104,7 @@ namespace EasyConnect
 
             else if (connectionNode != null)
             {
-                TreeNode newTreeNode = new TreeNode((String.IsNullOrEmpty(historyEntry.Name)
-                                                         ? historyEntry.Host
-                                                         : historyEntry.Name), 2, 2);
+                TreeNode newTreeNode = new TreeNode(historyEntry.DisplayName, 2, 2);
 
                 _connections.Remove(connectionNode);
                 connectionNode.Remove();
@@ -181,7 +158,7 @@ namespace EasyConnect
         private void historyTreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (e.Node.ImageIndex == 2)
-                _connectionDelegate(_connections[e.Node]);
+                _applicationForm.Connect(_connections[e.Node]);
         }
 
         public void Save()
@@ -216,15 +193,14 @@ namespace EasyConnect
 
         private void propertiesMenuItem_Click(object sender, EventArgs e)
         {
-            ConnectionWindow connectionWindow = new ConnectionWindow(_bookmarksWindow,
-                                                                     _connections[historyTreeView.SelectedNode],
-                                                                     _connectionDelegate, _password);
+            ConnectionWindow connectionWindow = new ConnectionWindow(_applicationForm,
+                                                                     _connections[historyTreeView.SelectedNode]);
             connectionWindow.ShowDialog();
         }
 
         private void connectMenuItem_Click(object sender, EventArgs e)
         {
-            _connectionDelegate(_connections[historyTreeView.SelectedNode]);
+            _applicationForm.Connect(_connections[historyTreeView.SelectedNode]);
         }
 
         public class HistoricalConnection : RDCConnection

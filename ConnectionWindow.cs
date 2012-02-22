@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Security;
 using System.Windows.Forms;
@@ -7,27 +8,23 @@ namespace EasyConnect
 {
     public partial class ConnectionWindow : Form
     {
-        protected BookmarksWindow _bookmarks = null;
         protected RDCConnection _connection = null;
-        protected MainForm.ConnectionDelegate _connectionDelegate = null;
-        protected SecureString _password = null;
+        protected MainForm _applicationForm = null;
         protected List<DEVMODE> _resolutions = new List<DEVMODE>();
+        protected BookmarksFolder _currentFolder = null;
 
-        public ConnectionWindow(BookmarksWindow bookmarks, MainForm.ConnectionDelegate connectionDelegate,
-                                SecureString password)
-            : this(bookmarks, new RDCConnection(password), connectionDelegate, password)
+        public ConnectionWindow(MainForm applicationForm, BookmarksFolder currentFolder = null)
+            : this(applicationForm, new RDCConnection(applicationForm.Password), currentFolder)
         {
         }
 
-        public ConnectionWindow(BookmarksWindow bookmarksWindow, RDCConnection connection,
-                                MainForm.ConnectionDelegate connectionDelegate, SecureString password)
+        public ConnectionWindow(MainForm applicationForm, RDCConnection connection, BookmarksFolder currentFolder = null)
         {
             InitializeComponent();
 
+            _applicationForm = applicationForm;
             _connection = connection;
-            _bookmarks = bookmarksWindow;
-            _connectionDelegate = connectionDelegate;
-            _password = password;
+            _currentFolder = currentFolder;
 
             keyboardDropdown.SelectedIndex = 1;
 
@@ -115,39 +112,37 @@ namespace EasyConnect
 
         private void saveAsButton_Click(object sender, EventArgs e)
         {
-            //SaveConnectionWindow saveWindow = new SaveConnectionWindow((TreeNode)_favorites.TreeRoot.Clone());
-            //saveWindow.ShowDialog(this);
+            SaveConnectionWindow saveWindow = new SaveConnectionWindow(_applicationForm, _currentFolder);
+            saveWindow.ShowDialog(this);
 
-            //if (saveWindow.DialogResult != DialogResult.OK)
-            //    return;
+            if (saveWindow.DialogResult != DialogResult.OK)
+                return;
 
-            //string[] pathComponents = saveWindow.DestinationFolderPath.Split('/');
-            //TreeNode currentNode = _favorites.TreeRoot;
+            string[] pathComponents = saveWindow.DestinationFolderPath.Split('/');
+            TreeNode currentNode = _applicationForm.Bookmarks.FoldersTreeView.Nodes[0];
 
-            //for (int i = 2; i < pathComponents.Length; i++)
-            //    currentNode = currentNode.Nodes[Convert.ToInt32(pathComponents[i])];
+            for (int i = 2; i < pathComponents.Length; i++)
+                currentNode = currentNode.Nodes[Convert.ToInt32(pathComponents[i])];
 
-            //TreeNode connectionNode = new TreeNode(saveWindow.ConnectionName, 1, 1);
-            //bool overwriteExisting = false;
+            _connection =
+                _applicationForm.Bookmarks.TreeNodeFolders[currentNode].Bookmarks.SingleOrDefault(
+                    b =>
+                    (b.Name == saveWindow.ConnectionName && !String.IsNullOrEmpty(b.Name)) ||
+                    (String.IsNullOrEmpty(b.Name) && b.Host == hostBox.Text));
 
-            //foreach (TreeNode node in currentNode.Nodes)
-            //{
-            //    if (node.Text == connectionNode.Text)
-            //    {
-            //        overwriteExisting = true;
-            //        connectionNode = node;
-            //    }
-            //}
+            if (_connection == null)
+            {
+                _connection = new RDCConnection(_applicationForm.Password)
+                                  {
+                                      Name = saveWindow.ConnectionName,
+                                      Host = hostBox.Text,
+                                      IsBookmark = true
+                                  };
+                _applicationForm.Bookmarks.TreeNodeFolders[currentNode].Bookmarks.Add(_connection);
+            }
 
-            //if (!overwriteExisting)
-            //    _favorites.AddTreeNode(currentNode.Nodes, connectionNode);
-
-            //_connection = new RDCConnection(_password) { Name = saveWindow.ConnectionName, IsFavorite = true };
-
-            //SaveConnection();
-            //_favorites.Connections[connectionNode] = _connection;
-
-            //_favorites.Save();
+            SaveConnection();
+            _applicationForm.Bookmarks.Save();
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -158,7 +153,7 @@ namespace EasyConnect
             else
                 SaveConnection();
 
-            _bookmarks.Save();
+            _applicationForm.Bookmarks.Save();
         }
 
         protected void SaveConnection()
@@ -215,14 +210,14 @@ namespace EasyConnect
 
         private void connectButton_Click(object sender, EventArgs e)
         {
-            RDCConnection newConnection = new RDCConnection(_password)
+            RDCConnection newConnection = new RDCConnection(_applicationForm.Password)
                                               {
                                                   Name = _connection.Name
                                               };
             _connection = newConnection;
 
             SaveConnection();
-            _connectionDelegate(_connection);
+            _applicationForm.Connect(_connection);
 
             Close();
         }

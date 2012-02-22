@@ -118,6 +118,16 @@ namespace EasyConnect
             set;
         }
 
+        public string DisplayName
+        {
+            get
+            {
+                return String.IsNullOrEmpty(Name)
+                           ? Host
+                           : Name;
+            }
+        }
+
         public int ColorDepth
         {
             get;
@@ -233,6 +243,12 @@ namespace EasyConnect
         }
 
         public Guid Guid
+        {
+            get;
+            set;
+        }
+
+        public BookmarksFolder ParentFolder
         {
             get;
             set;

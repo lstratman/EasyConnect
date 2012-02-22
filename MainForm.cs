@@ -63,8 +63,8 @@ namespace EasyConnect
 
                 try
                 {
-                    _bookmarks = new BookmarksWindow(Connect, _password);
-                    _history = new HistoryWindow(Connect, _bookmarks, _password);
+                    _bookmarks = new BookmarksWindow(this);
+                    _history = new HistoryWindow(this);
                 }
 
                 catch (CryptographicException)
@@ -98,12 +98,20 @@ namespace EasyConnect
             SelectedTabIndex = 0;
         }
 
+        public SecureString Password
+        {
+            get
+            {
+                return _password;
+            }
+        }
+
         public BookmarksWindow Bookmarks
         {
             get
             {
                 if (_bookmarks == null && _password != null)
-                    _bookmarks = new BookmarksWindow(Connect, _password);
+                    _bookmarks = new BookmarksWindow(this);
 
                 return _bookmarks;
             }
@@ -188,7 +196,7 @@ namespace EasyConnect
             return null;
         }
 
-        protected TitleBarTab Connect(RDCConnection connection)
+        public TitleBarTab Connect(RDCConnection connection)
         {
             _history.AddToHistory(connection);
 
@@ -350,9 +358,7 @@ namespace EasyConnect
                 foreach (HistoryWindow.HistoricalConnection historicalConnection in historicalConnections)
                 {
                     _recentCategory.AddJumpListItems(new JumpListLink(Application.ExecutablePath,
-                                                                      (!String.IsNullOrEmpty(historicalConnection.Name)
-                                                                           ? historicalConnection.Name
-                                                                           : historicalConnection.Host))
+                                                                      historicalConnection.DisplayName)
                                                          {
                                                              Arguments =
                                                                  "/openHistory:" + historicalConnection.Guid.ToString(),

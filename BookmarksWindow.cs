@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security;
 using System.Windows.Forms;
 using System.Xml;
+using Stratman.Windows.Forms.TitleBarTabs;
 
 namespace EasyConnect
 {
@@ -13,7 +14,6 @@ namespace EasyConnect
         protected string _bookmarksFileName =
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Bookmarks.xml";
 
-        protected MainForm.ConnectionDelegate _connectionDelegate = null;
         protected Dictionary<TreeNode, BookmarksFolder> _folderTreeNodes = new Dictionary<TreeNode, BookmarksFolder>();
 
         protected Dictionary<ListViewItem, RDCConnection> _listViewConnections =
@@ -22,30 +22,95 @@ namespace EasyConnect
         protected Dictionary<ListViewItem, BookmarksFolder> _listViewFolders =
             new Dictionary<ListViewItem, BookmarksFolder>();
 
-        protected SecureString _password = null;
         protected BookmarksFolder _rootFolder = new BookmarksFolder();
 
-        public BookmarksWindow(MainForm.ConnectionDelegate connectionDelegate, SecureString password)
+        protected MainForm _applicationForm = null;
+
+        public BookmarksWindow(MainForm applicationForm)
         {
             InitializeComponent();
 
-            _connectionDelegate = connectionDelegate;
-            _password = password;
-            _bookmarksTreeView.Sorted = true;
+            _applicationForm = applicationForm;
+            _bookmarksFoldersTreeView.Sorted = true;
 
             if (File.Exists(_bookmarksFileName))
             {
+                _rootFolder.Bookmarks.Clear();
+                _rootFolder.ChildFolders.Clear();
+
+                _rootFolder.Bookmarks.CollectionModified += Bookmarks_CollectionModified;
+                _rootFolder.ChildFolders.CollectionModified += ChildFolders_CollectionModified;
+
+                _folderTreeNodes[_bookmarksFoldersTreeView.Nodes[0]] = RootFolder;
+
                 XmlDocument bookmarks = new XmlDocument();
                 bookmarks.Load(_bookmarksFileName);
 
-                _rootFolder.Bookmarks.Clear();
-                _rootFolder.ChildFolders.Clear();
-                _folderTreeNodes[_bookmarksTreeView.Nodes[0]] = RootFolder;
+                InitializeTreeView(bookmarks.SelectSingleNode("/bookmarks"), _rootFolder, _bookmarksFoldersTreeView.Nodes[0]);
 
-                InitializeTreeView(bookmarks.SelectSingleNode("/bookmarks"), _rootFolder, _bookmarksTreeView.Nodes[0]);
-
-                _bookmarksTreeView.Nodes[0].Expand();
+                _bookmarksFoldersTreeView.Nodes[0].Expand();
             }
+        }
+
+        void ChildFolders_CollectionModified(object sender, ListModificationEventArgs e)
+        {
+            ListWithEvents<BookmarksFolder> childFolders = sender as ListWithEvents<BookmarksFolder>;
+
+            if (e.Modification == ListModification.ItemModified || e.Modification == ListModification.ItemAdded || e.Modification == ListModification.RangeAdded)
+            {
+                for (int i = e.StartIndex; i < e.StartIndex + e.Count; i++)
+                {
+                    BookmarksFolder currentFolder = childFolders[i];
+                    TreeNode parentTreeNode =
+                        _folderTreeNodes.Single(kvp => kvp.Value == currentFolder.ParentFolder).Key;
+                    TreeNode folderTreeNode = _folderTreeNodes.SingleOrDefault(kvp => kvp.Value == currentFolder).Key;
+
+                    if (folderTreeNode == null)
+                    {
+                        folderTreeNode = new TreeNode(currentFolder.Name);
+                        parentTreeNode.Nodes.Add(folderTreeNode);
+
+                        currentFolder.ChildFolders.CollectionModified += ChildFolders_CollectionModified;
+                        currentFolder.Bookmarks.CollectionModified += Bookmarks_CollectionModified;
+                    }
+
+                    else
+                    {
+                        folderTreeNode.Parent.Nodes.Remove(folderTreeNode);
+                        parentTreeNode.Nodes.Add(folderTreeNode);
+                    }
+
+                    _folderTreeNodes[folderTreeNode] = currentFolder;
+                }
+            }
+
+            else
+            {
+                KeyValuePair<TreeNode, BookmarksFolder> containerFolder =
+                    _folderTreeNodes.SingleOrDefault(kvp => kvp.Value.ChildFolders == childFolders);
+
+                if (containerFolder.Key != null)
+                {
+                    for (int i = 0; i < containerFolder.Key.Nodes.Count; i++)
+                    {
+                        TreeNode treeNode = containerFolder.Key.Nodes[i];
+
+                        if (!containerFolder.Value.ChildFolders.Contains(_folderTreeNodes[treeNode]))
+                        {
+                            RemoveAllFolders(treeNode);
+                            containerFolder.Key.Nodes.Remove(treeNode);
+                            
+                            i--;
+                        }
+                    }
+                }
+            }
+
+            //_bookmarksFoldersTreeView.BeginInvoke(new Action(_bookmarksFoldersTreeView.Sort));
+        }
+
+        void Bookmarks_CollectionModified(object sender, ListModificationEventArgs e)
+        {
         }
 
         public BookmarksFolder RootFolder
@@ -64,11 +129,19 @@ namespace EasyConnect
             }
         }
 
-        public SecureString Password
+        public Dictionary<TreeNode, BookmarksFolder> TreeNodeFolders
         {
-            set
+            get
             {
-                _password = value;
+                return _folderTreeNodes;
+            }
+        }
+
+        public TreeView FoldersTreeView
+        {
+            get
+            {
+                return _bookmarksFoldersTreeView;
             }
         }
 
@@ -78,7 +151,7 @@ namespace EasyConnect
                 return;
 
             foreach (XmlNode bookmark in bookmarksFolder.SelectNodes("bookmark"))
-                currentFolder.Bookmarks.Add(new RDCConnection(bookmark, _password));
+                currentFolder.Bookmarks.Add(new RDCConnection(bookmark, _applicationForm.Password));
 
             foreach (XmlNode folder in bookmarksFolder.SelectNodes("folder"))
             {
@@ -87,13 +160,8 @@ namespace EasyConnect
                                                     Name = folder.SelectSingleNode("@name").Value
                                                 };
 
-                TreeNode newFolderNode = new TreeNode(newFolder.Name);
-                _folderTreeNodes[newFolderNode] = newFolder;
-
-                currentNode.Nodes.Add(newFolderNode);
-
                 currentFolder.ChildFolders.Add(newFolder);
-                InitializeTreeView(folder, newFolder, newFolderNode);
+                InitializeTreeView(folder, newFolder, _folderTreeNodes.SingleOrDefault(kvp => kvp.Value == newFolder).Key);
             }
         }
 
@@ -152,15 +220,11 @@ namespace EasyConnect
                 _bookmarksListView.Items.Add(item);
             }
 
-            foreach (RDCConnection bookmark in folder.Bookmarks.OrderBy(b => String.IsNullOrEmpty(b.Name)
-                                                                                 ? b.Host
-                                                                                 : b.Name))
+            foreach (RDCConnection bookmark in folder.Bookmarks.OrderBy(b => b.DisplayName))
             {
                 ListViewItem item = new ListViewItem(new string[]
                                                          {
-                                                             String.IsNullOrEmpty(bookmark.Name)
-                                                                 ? bookmark.Host
-                                                                 : bookmark.Name, bookmark.Host
+                                                             bookmark.DisplayName
                                                          }, 0);
 
                 _listViewConnections[item] = bookmark;
@@ -175,7 +239,7 @@ namespace EasyConnect
                 if (_listViewConnections.ContainsKey(_bookmarksListView.SelectedItems[0]))
                 {
                     ParentTabs.SelectedTab =
-                        _connectionDelegate(_listViewConnections[_bookmarksListView.SelectedItems[0]]);
+                        _applicationForm.Connect(_listViewConnections[_bookmarksListView.SelectedItems[0]]);
                 }
 
                 else
@@ -183,7 +247,7 @@ namespace EasyConnect
                     BookmarksFolder folder = _listViewFolders[_bookmarksListView.SelectedItems[0]];
                     TreeNode node = _folderTreeNodes.First(p => p.Value == folder).Key;
 
-                    _bookmarksTreeView.SelectedNode = node;
+                    _bookmarksFoldersTreeView.SelectedNode = node;
                 }
             }
         }
@@ -196,21 +260,22 @@ namespace EasyConnect
 
         private void _openBookmarkNewTabMenuItem_Click(object sender, EventArgs e)
         {
-            ParentTabs.SelectedTab = _connectionDelegate(_listViewConnections[_bookmarksListView.SelectedItems[0]]);
+            ParentTabs.SelectedTab = _applicationForm.Connect(_listViewConnections[_bookmarksListView.SelectedItems[0]]);
         }
 
         private void _editBookmarkMenuItem_Click(object sender, EventArgs e)
         {
-            ConnectionWindow connectionWindow = new ConnectionWindow(this,
+            ConnectionWindow connectionWindow = new ConnectionWindow(_applicationForm,
                                                                      _listViewConnections[
                                                                          _bookmarksListView.SelectedItems[0]],
-                                                                     _connectionDelegate, _password);
+                                                                     _folderTreeNodes[
+                                                                         _bookmarksFoldersTreeView.SelectedNode]);
             connectionWindow.ShowDialog();
         }
 
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            _folderTreeNodes[_bookmarksTreeView.SelectedNode].Bookmarks.Remove(
+            _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode].Bookmarks.Remove(
                 _listViewConnections[_bookmarksListView.SelectedItems[0]]);
 
             _listViewConnections.Remove(_bookmarksListView.SelectedItems[0]);
@@ -221,13 +286,13 @@ namespace EasyConnect
 
         private void _folderOpenAllMenuItem_Click(object sender, EventArgs e)
         {
-            OpenAllBookmarks(_folderTreeNodes[_bookmarksTreeView.SelectedNode]);
+            OpenAllBookmarks(_folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode]);
         }
 
         private void OpenAllBookmarks(BookmarksFolder folder)
         {
             foreach (RDCConnection connection in folder.Bookmarks)
-                _connectionDelegate(connection);
+                _applicationForm.Connect(connection);
 
             foreach (BookmarksFolder childFolder in folder.ChildFolders)
                 OpenAllBookmarks(childFolder);
@@ -237,11 +302,11 @@ namespace EasyConnect
         {
             if (e.Button == MouseButtons.Right)
             {
-                TreeViewHitTestInfo hitTestInfo = _bookmarksTreeView.HitTest(e.Location);
+                TreeViewHitTestInfo hitTestInfo = _bookmarksFoldersTreeView.HitTest(e.Location);
 
                 if (hitTestInfo.Node != null)
                 {
-                    _bookmarksTreeView.SelectedNode = hitTestInfo.Node;
+                    _bookmarksFoldersTreeView.SelectedNode = hitTestInfo.Node;
                     _folderContextMenu.Show(Cursor.Position);
                 }
             }
@@ -249,21 +314,24 @@ namespace EasyConnect
 
         private void _addBookmarkMenuItem_Click(object sender, EventArgs e)
         {
-            ConnectionWindow connectionWindow = new ConnectionWindow(this, _connectionDelegate, _password);
+            ConnectionWindow connectionWindow = new ConnectionWindow(_applicationForm,
+                                                                     _folderTreeNodes[
+                                                                         _bookmarksFoldersTreeView.SelectedNode]);
             connectionWindow.ShowDialog();
         }
 
         private void _addFolderMenuItem_Click(object sender, EventArgs e)
         {
-            TreeNode newNode = _bookmarksTreeView.SelectedNode.Nodes.Add("New folder");
-            _folderTreeNodes[newNode] = new BookmarksFolder
+            BookmarksFolder newFolder = new BookmarksFolder
                                             {
-                                                Name = newNode.Text
+                                                Name = "New folder"
                                             };
-            _folderTreeNodes[_bookmarksTreeView.SelectedNode].ChildFolders.Add(_folderTreeNodes[newNode]);
+            _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode].ChildFolders.Add(newFolder);
 
-            _bookmarksTreeView.SelectedNode.Expand();
-            _bookmarksTreeView.SelectedNode = newNode;
+            TreeNode newNode = _folderTreeNodes.SingleOrDefault(kvp => kvp.Value == newFolder).Key;
+
+            _bookmarksFoldersTreeView.SelectedNode.Expand();
+            _bookmarksFoldersTreeView.SelectedNode = newNode;
 
             Save();
             newNode.BeginEdit();
@@ -274,26 +342,23 @@ namespace EasyConnect
             if (e.CancelEdit || String.IsNullOrEmpty(e.Label))
                 return;
 
-            _folderTreeNodes[_bookmarksTreeView.SelectedNode].Name = e.Label;
+            _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode].Name = e.Label;
             Save();
 
-            _bookmarksTreeView.BeginInvoke(new Action(_bookmarksTreeView.Sort));
+            _bookmarksFoldersTreeView.BeginInvoke(new Action(_bookmarksFoldersTreeView.Sort));
         }
 
         private void _renameFolderMenuItem_Click(object sender, EventArgs e)
         {
-            _bookmarksTreeView.SelectedNode.BeginEdit();
+            _bookmarksFoldersTreeView.SelectedNode.BeginEdit();
         }
 
         private void _deleteFolderMenuItem_Click(object sender, EventArgs e)
         {
-            _folderTreeNodes[_bookmarksTreeView.SelectedNode.Parent].ChildFolders.Remove(
-                _folderTreeNodes[_bookmarksTreeView.SelectedNode]);
-
-            RemoveAllFolders(_bookmarksTreeView.SelectedNode);
+            _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode.Parent].ChildFolders.Remove(
+                _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode]);
 
             _bookmarksListView.Items.Clear();
-            _bookmarksTreeView.SelectedNode.Parent.Nodes.Remove(_bookmarksTreeView.SelectedNode);
 
             Save();
         }

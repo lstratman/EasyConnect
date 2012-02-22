@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Stratman.Windows.Forms.TitleBarTabs;
 
 namespace EasyConnect
 {
@@ -10,12 +11,42 @@ namespace EasyConnect
         /// <summary>
         /// Bookmarked connections contained in this folder.
         /// </summary>
-        protected List<RDCConnection> _bookmarks = new List<RDCConnection>();
+        protected ListWithEvents<RDCConnection> _bookmarks = new ListWithEvents<RDCConnection>();
 
         /// <summary>
         /// Folders beneath this one in the hierarchy.
         /// </summary>
-        protected List<BookmarksFolder> _childFolders = new List<BookmarksFolder>();
+        protected ListWithEvents<BookmarksFolder> _childFolders = new ListWithEvents<BookmarksFolder>();
+
+        public BookmarksFolder()
+        {
+            _bookmarks.CollectionModified += _bookmarks_CollectionModified;
+            _childFolders.CollectionModified += _childFolders_CollectionModified;
+        }
+
+        void _childFolders_CollectionModified(object sender, ListModificationEventArgs e)
+        {
+            if (e.Modification == ListModification.ItemAdded || e.Modification == ListModification.RangeAdded || e.Modification == ListModification.ItemModified)
+            {
+                for (int i = e.StartIndex; i < e.StartIndex + e.Count; i++)
+                    _childFolders[i].ParentFolder = this;
+            }
+        }
+
+        void _bookmarks_CollectionModified(object sender, ListModificationEventArgs e)
+        {
+            if (e.Modification == ListModification.ItemAdded || e.Modification == ListModification.RangeAdded || e.Modification == ListModification.ItemModified)
+            {
+                for (int i = e.StartIndex; i < e.StartIndex + e.Count; i++)
+                    _bookmarks[i].ParentFolder = this;
+            }
+        }
+
+        public BookmarksFolder ParentFolder
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Name used to identify this folder.
@@ -29,7 +60,7 @@ namespace EasyConnect
         /// <summary>
         /// Folders beneath this one in the hierarchy.
         /// </summary>
-        public List<BookmarksFolder> ChildFolders
+        public ListWithEvents<BookmarksFolder> ChildFolders
         {
             get
             {
@@ -40,7 +71,7 @@ namespace EasyConnect
         /// <summary>
         /// Bookmarked connections contained in this folder.
         /// </summary>
-        public List<RDCConnection> Bookmarks
+        public ListWithEvents<RDCConnection> Bookmarks
         {
             get
             {

@@ -9,7 +9,7 @@ namespace EasyConnect
         /// </summary>
         private System.ComponentModel.IContainer components = null;
         private SplitContainer _splitContainer;
-        private TreeView _bookmarksTreeView;
+        private TreeView _bookmarksFoldersTreeView;
         private ImageList _treeViewImageList;
         private ListView _bookmarksListView;
         private ColumnHeader _bookmarkNameColumnHeader;
@@ -64,7 +64,7 @@ namespace EasyConnect
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Bookmarks");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BookmarksWindow));
             this._splitContainer = new System.Windows.Forms.SplitContainer();
-            this._bookmarksTreeView = new System.Windows.Forms.TreeView();
+            this._bookmarksFoldersTreeView = new System.Windows.Forms.TreeView();
             this._treeViewImageList = new System.Windows.Forms.ImageList(this.components);
             this._bookmarksListView = new System.Windows.Forms.ListView();
             this._bookmarkNameColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -113,7 +113,7 @@ namespace EasyConnect
             // _splitContainer.Panel1
             // 
             this._splitContainer.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
-            this._splitContainer.Panel1.Controls.Add(this._bookmarksTreeView);
+            this._splitContainer.Panel1.Controls.Add(this._bookmarksFoldersTreeView);
             // 
             // _splitContainer.Panel2
             // 
@@ -125,27 +125,27 @@ namespace EasyConnect
             // 
             // _bookmarksTreeView
             // 
-            this._bookmarksTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this._bookmarksFoldersTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._bookmarksTreeView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
-            this._bookmarksTreeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this._bookmarksTreeView.ImageIndex = 0;
-            this._bookmarksTreeView.ImageList = this._treeViewImageList;
-            this._bookmarksTreeView.LabelEdit = true;
-            this._bookmarksTreeView.Location = new System.Drawing.Point(12, 12);
-            this._bookmarksTreeView.Name = "_bookmarksTreeView";
+            this._bookmarksFoldersTreeView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
+            this._bookmarksFoldersTreeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._bookmarksFoldersTreeView.ImageIndex = 0;
+            this._bookmarksFoldersTreeView.ImageList = this._treeViewImageList;
+            this._bookmarksFoldersTreeView.LabelEdit = true;
+            this._bookmarksFoldersTreeView.Location = new System.Drawing.Point(12, 12);
+            this._bookmarksFoldersTreeView.Name = "_bookmarksFoldersTreeView";
             treeNode1.Name = "root";
             treeNode1.Text = "Bookmarks";
-            this._bookmarksTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            this._bookmarksFoldersTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1});
-            this._bookmarksTreeView.SelectedImageIndex = 1;
-            this._bookmarksTreeView.ShowRootLines = false;
-            this._bookmarksTreeView.Size = new System.Drawing.Size(147, 400);
-            this._bookmarksTreeView.TabIndex = 0;
-            this._bookmarksTreeView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this._bookmarksTreeView_AfterLabelEdit);
-            this._bookmarksTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this._bookmarksTreeView_AfterSelect);
-            this._bookmarksTreeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this._bookmarksTreeView_MouseClick);
+            this._bookmarksFoldersTreeView.SelectedImageIndex = 1;
+            this._bookmarksFoldersTreeView.ShowRootLines = false;
+            this._bookmarksFoldersTreeView.Size = new System.Drawing.Size(147, 400);
+            this._bookmarksFoldersTreeView.TabIndex = 0;
+            this._bookmarksFoldersTreeView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this._bookmarksTreeView_AfterLabelEdit);
+            this._bookmarksFoldersTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this._bookmarksTreeView_AfterSelect);
+            this._bookmarksFoldersTreeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this._bookmarksTreeView_MouseClick);
             // 
             // _treeViewImageList
             // 

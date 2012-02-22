@@ -366,9 +366,7 @@ namespace EasyConnect
                 Password = connection.Password;
 
             Host = connection.Host;
-            Text = (String.IsNullOrEmpty(connection.Name)
-                        ? connection.Host
-                        : connection.Name);
+            Text = connection.DisplayName;
             urlTextBox.Text = connection.Host;
 
             _connection = connection;
@@ -467,13 +465,9 @@ namespace EasyConnect
             foreach (BookmarksFolder childFolder in currentFolder.ChildFolders.OrderBy(f => f.Name))
                 PopulateBookmarks(childFolder, addLocation, false);
 
-            foreach (RDCConnection bookmark in currentFolder.Bookmarks.OrderBy(b => String.IsNullOrEmpty(b.Name)
-                                                                                        ? b.Host
-                                                                                        : b.Name))
+            foreach (RDCConnection bookmark in currentFolder.Bookmarks.OrderBy(b => b.DisplayName))
             {
-                ToolStripMenuItem bookmarkMenuItem = new ToolStripMenuItem(String.IsNullOrEmpty(bookmark.Name)
-                                                                               ? bookmark.Host
-                                                                               : bookmark.Name, Resources.RDCSmall,
+                ToolStripMenuItem bookmarkMenuItem = new ToolStripMenuItem(bookmark.DisplayName, Resources.RDCSmall,
                                                                            (object sender, EventArgs e) =>
                                                                            Connect(
                                                                                _menuItemConnections[
@@ -489,7 +483,32 @@ namespace EasyConnect
             if (_connection == null)
                 return;
 
-            ParentTabs.Bookmarks.RootFolder.Bookmarks.Add(_connection);
+            SaveConnectionWindow saveWindow = new SaveConnectionWindow(ParentTabs, null);
+            saveWindow.ShowDialog(this);
+
+            if (saveWindow.DialogResult != DialogResult.OK)
+                return;
+
+            string[] pathComponents = saveWindow.DestinationFolderPath.Split('/');
+            TreeNode currentNode = ParentTabs.Bookmarks.FoldersTreeView.Nodes[0];
+
+            for (int i = 2; i < pathComponents.Length; i++)
+                currentNode = currentNode.Nodes[Convert.ToInt32(pathComponents[i])];
+
+            RDCConnection overwriteConnection =
+                ParentTabs.Bookmarks.TreeNodeFolders[currentNode].Bookmarks.SingleOrDefault(
+                    b =>
+                    (b.Name == saveWindow.ConnectionName && !String.IsNullOrEmpty(b.Name)) ||
+                    (String.IsNullOrEmpty(b.Name) && b.Host == _connection.Host));
+
+            _connection.Name = saveWindow.ConnectionName;
+            Text = _connection.DisplayName;
+            ParentTabs.Bookmarks.TreeNodeFolders[currentNode].Bookmarks.Add(_connection);
+
+            if (overwriteConnection != null)
+                ParentTabs.Bookmarks.TreeNodeFolders[currentNode].Bookmarks.Remove(overwriteConnection);
+
+            ParentTabs.Bookmarks.Save();
         }
 
         private void _newTabMenuItem_Click(object sender, EventArgs e)

@@ -61,20 +61,20 @@
             this.bookmarksTreeView.ImageList = this.bookmarkImageList;
             this.bookmarksTreeView.Location = new System.Drawing.Point(13, 58);
             this.bookmarksTreeView.Name = "bookmarksTreeView";
-            this.bookmarksTreeView.SelectedImageIndex = 0;
+            this.bookmarksTreeView.SelectedImageIndex = 1;
             this.bookmarksTreeView.Size = new System.Drawing.Size(251, 192);
             this.bookmarksTreeView.TabIndex = 2;
+            this.bookmarksTreeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.bookmarksTreeView_NodeMouseClick);
             this.bookmarksTreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.bookmarksTreeView_NodeMouseDoubleClick);
             this.bookmarksTreeView.Enter += new System.EventHandler(this.bookmarksTreeView_Enter);
             this.bookmarksTreeView.Leave += new System.EventHandler(this.bookmarksTreeView_Leave);
-            this.bookmarksTreeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.bookmarksTreeView_NodeMouseClick);
             // 
-            // bookmarksImageList
+            // bookmarkImageList
             // 
-            this.bookmarkImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("bookmarksImageList.ImageStream")));
+            this.bookmarkImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("bookmarkImageList.ImageStream")));
             this.bookmarkImageList.TransparentColor = System.Drawing.Color.Transparent;
             this.bookmarkImageList.Images.SetKeyName(0, "Folder.png");
-            this.bookmarkImageList.Images.SetKeyName(1, "RDCSmall.ico");
+            this.bookmarkImageList.Images.SetKeyName(1, "FolderOpen.png");
             // 
             // cancelButton
             // 
