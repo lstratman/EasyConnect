@@ -57,6 +57,7 @@ namespace EasyConnect
         void ChildFolders_CollectionModified(object sender, ListModificationEventArgs e)
         {
             ListWithEvents<BookmarksFolder> childFolders = sender as ListWithEvents<BookmarksFolder>;
+            bool sortListView = false;
 
             if (e.Modification == ListModification.ItemModified || e.Modification == ListModification.ItemAdded || e.Modification == ListModification.RangeAdded)
             {
@@ -82,6 +83,16 @@ namespace EasyConnect
                         parentTreeNode.Nodes.Add(folderTreeNode);
                     }
 
+                    if (_bookmarksFoldersTreeView.SelectedNode == parentTreeNode)
+                    {
+                        ListViewItem newItem = new ListViewItem(currentFolder.Name, 1);
+
+                        _bookmarksListView.Items.Add(newItem);
+                        _listViewFolders[newItem] = currentFolder;
+
+                        sortListView = true;
+                    }
+
                     _folderTreeNodes[folderTreeNode] = currentFolder;
                 }
             }
@@ -101,18 +112,87 @@ namespace EasyConnect
                         {
                             RemoveAllFolders(treeNode);
                             containerFolder.Key.Nodes.Remove(treeNode);
-                            
+
+                            KeyValuePair<ListViewItem, BookmarksFolder> listViewItem =
+                                _listViewFolders.SingleOrDefault(kvp => kvp.Value == _folderTreeNodes[treeNode]);
+
+                            if (listViewItem.Key != null)
+                            {
+                                _bookmarksListView.Items.Remove(listViewItem.Key);
+                                _listViewFolders.Remove(listViewItem.Key);
+
+                                sortListView = true;
+                            }
+
                             i--;
                         }
                     }
                 }
             }
 
-            //_bookmarksFoldersTreeView.BeginInvoke(new Action(_bookmarksFoldersTreeView.Sort));
+            if (IsHandleCreated)
+            {
+                _bookmarksFoldersTreeView.BeginInvoke(new Action(_bookmarksFoldersTreeView.Sort));
+
+                if (sortListView)
+                    _bookmarksListView.BeginInvoke(new Action(_bookmarksListView.Sort));
+            }
         }
 
         void Bookmarks_CollectionModified(object sender, ListModificationEventArgs e)
         {
+            ListWithEvents<RDCConnection> bookmarks = sender as ListWithEvents<RDCConnection>;
+            bool sortListView = false;
+
+            if (e.Modification == ListModification.ItemModified || e.Modification == ListModification.ItemAdded || e.Modification == ListModification.RangeAdded)
+            {
+                for (int i = e.StartIndex; i < e.StartIndex + e.Count; i++)
+                {
+                    RDCConnection currentBookmark = bookmarks[i];
+                    TreeNode parentTreeNode =
+                        _folderTreeNodes.Single(kvp => kvp.Value == currentBookmark.ParentFolder).Key;
+
+                    if (_bookmarksFoldersTreeView.SelectedNode == parentTreeNode)
+                    {
+                        ListViewItem newItem = new ListViewItem(currentBookmark.DisplayName, 0);
+                        newItem.SubItems.Add(currentBookmark.Host);
+
+                        _listViewConnections[newItem] = currentBookmark;
+                        _bookmarksListView.Items.Add(newItem);
+
+                        sortListView = true;
+                    }
+                }
+            }
+
+            else
+            {
+                KeyValuePair<TreeNode, BookmarksFolder> containerFolder =
+                    _folderTreeNodes.SingleOrDefault(kvp => kvp.Value.Bookmarks == bookmarks);
+
+                if (containerFolder.Key != null && containerFolder.Key == _bookmarksFoldersTreeView.SelectedNode)
+                {
+                    for (int i = 0; i < _bookmarksListView.Items.Count; i++)
+                    {
+                        ListViewItem bookmark = _bookmarksListView.Items[i];
+
+                        if (bookmark.ImageIndex != 0)
+                            continue;
+
+                        if (!containerFolder.Value.Bookmarks.Contains(_listViewConnections[bookmark]))
+                        {
+                            _listViewConnections.Remove(bookmark);
+                            _bookmarksListView.Items.Remove(bookmark);
+                            sortListView = true;
+
+                            i--;
+                        }
+                    }
+                }
+            }
+
+            if (IsHandleCreated && sortListView)
+                _bookmarksListView.BeginInvoke(new Action(_bookmarksListView.Sort));
         }
 
         public BookmarksFolder RootFolder
