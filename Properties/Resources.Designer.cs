@@ -126,6 +126,15 @@ namespace EasyConnect.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter a name for this connection..
+        /// </summary>
+        internal static string EnterNameForThisConnection {
+            get {
+                return ResourceManager.GetString("EnterNameForThisConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         internal static string ErrorTitle {

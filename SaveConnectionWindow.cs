@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using EasyConnect.Properties;
 
 namespace EasyConnect
 {
@@ -42,7 +43,7 @@ namespace EasyConnect
         {
             if (String.IsNullOrEmpty(nameTextBox.Text))
             {
-                MessageBox.Show("Please enter a name for this connection.", "Error", MessageBoxButtons.OK,
+                MessageBox.Show(Resources.EnterNameForThisConnection, Resources.ErrorTitle, MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
                 return;
             }
