@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RDCWindow));
-            this._rdcWindow = new AxMSTSCLib.AxMsRdpClient2();
             this._toolsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._newTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._newWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,9 +40,6 @@
             this._bookmarksMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._bookmarksManagerMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.bookmarkThisSiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.borderBottom = new System.Windows.Forms.Panel();
-            this.borderRight = new System.Windows.Forms.Panel();
-            this.borderLeft = new System.Windows.Forms.Panel();
             this.toolbarBackground = new System.Windows.Forms.Panel();
             this._toolsButton = new System.Windows.Forms.PictureBox();
             this._bookmarksButton = new System.Windows.Forms.PictureBox();
@@ -51,7 +47,7 @@
             this.urlTextBox = new System.Windows.Forms.TextBox();
             this.urlBorder = new System.Windows.Forms.Panel();
             this.urlBackground = new System.Windows.Forms.Panel();
-            ((System.ComponentModel.ISupportInitialize)(this._rdcWindow)).BeginInit();
+            this._rdcWindow = new AxMSTSCLib.AxMsRdpClient2();
             this._toolsMenu.SuspendLayout();
             this._bookmarksMenu.SuspendLayout();
             this.toolbarBackground.SuspendLayout();
@@ -59,19 +55,8 @@
             ((System.ComponentModel.ISupportInitialize)(this._bookmarksButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._closeButton)).BeginInit();
             this.urlBorder.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._rdcWindow)).BeginInit();
             this.SuspendLayout();
-            // 
-            // _rdcWindow
-            // 
-            this._rdcWindow.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this._rdcWindow.Enabled = true;
-            this._rdcWindow.Location = new System.Drawing.Point(1, 35);
-            this._rdcWindow.Name = "_rdcWindow";
-            this._rdcWindow.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("_rdcWindow.OcxState")));
-            this._rdcWindow.Size = new System.Drawing.Size(620, 399);
-            this._rdcWindow.TabIndex = 0;
             // 
             // _toolsMenu
             // 
@@ -147,39 +132,6 @@
             this.bookmarkThisSiteToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.bookmarkThisSiteToolStripMenuItem.Text = "Bookmark this site";
             this.bookmarkThisSiteToolStripMenuItem.Click += new System.EventHandler(this._bookmarkMenuItem_Click);
-            // 
-            // borderBottom
-            // 
-            this.borderBottom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.borderBottom.BackColor = System.Drawing.Color.Transparent;
-            this.borderBottom.BackgroundImage = global::EasyConnect.Properties.Resources.Border;
-            this.borderBottom.Location = new System.Drawing.Point(0, 433);
-            this.borderBottom.Name = "borderBottom";
-            this.borderBottom.Size = new System.Drawing.Size(622, 2);
-            this.borderBottom.TabIndex = 8;
-            // 
-            // borderRight
-            // 
-            this.borderRight.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.borderRight.BackColor = System.Drawing.Color.Transparent;
-            this.borderRight.BackgroundImage = global::EasyConnect.Properties.Resources.Border;
-            this.borderRight.Location = new System.Drawing.Point(620, 0);
-            this.borderRight.Name = "borderRight";
-            this.borderRight.Size = new System.Drawing.Size(2, 435);
-            this.borderRight.TabIndex = 7;
-            // 
-            // borderLeft
-            // 
-            this.borderLeft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.borderLeft.BackColor = System.Drawing.Color.Transparent;
-            this.borderLeft.BackgroundImage = global::EasyConnect.Properties.Resources.Border;
-            this.borderLeft.Location = new System.Drawing.Point(0, 0);
-            this.borderLeft.Name = "borderLeft";
-            this.borderLeft.Size = new System.Drawing.Size(2, 435);
-            this.borderLeft.TabIndex = 6;
             // 
             // toolbarBackground
             // 
@@ -276,21 +228,29 @@
             this.urlBackground.Size = new System.Drawing.Size(513, 24);
             this.urlBackground.TabIndex = 2;
             // 
+            // _rdcWindow
+            // 
+            this._rdcWindow.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._rdcWindow.Enabled = true;
+            this._rdcWindow.Location = new System.Drawing.Point(-1, 35);
+            this._rdcWindow.Name = "_rdcWindow";
+            this._rdcWindow.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("_rdcWindow.OcxState")));
+            this._rdcWindow.Size = new System.Drawing.Size(624, 401);
+            this._rdcWindow.TabIndex = 0;
+            // 
             // RDCWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(622, 435);
-            this.Controls.Add(this.borderBottom);
-            this.Controls.Add(this.borderRight);
-            this.Controls.Add(this.borderLeft);
             this.Controls.Add(this.toolbarBackground);
             this.Controls.Add(this._rdcWindow);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RDCWindow";
             this.Text = "New Tab";
-            ((System.ComponentModel.ISupportInitialize)(this._rdcWindow)).EndInit();
             this._toolsMenu.ResumeLayout(false);
             this._bookmarksMenu.ResumeLayout(false);
             this.toolbarBackground.ResumeLayout(false);
@@ -299,6 +259,7 @@
             ((System.ComponentModel.ISupportInitialize)(this._bookmarksButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._closeButton)).EndInit();
             this.urlBorder.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this._rdcWindow)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -306,14 +267,11 @@
         #endregion
 
         private AxMSTSCLib.AxMsRdpClient2 _rdcWindow;
-        private System.Windows.Forms.Panel borderLeft;
         private System.Windows.Forms.Panel toolbarBackground;
         private System.Windows.Forms.PictureBox _closeButton;
         private System.Windows.Forms.TextBox urlTextBox;
         private System.Windows.Forms.Panel urlBorder;
         private System.Windows.Forms.Panel urlBackground;
-        private System.Windows.Forms.Panel borderRight;
-        private System.Windows.Forms.Panel borderBottom;
         private System.Windows.Forms.PictureBox _toolsButton;
         private System.Windows.Forms.PictureBox _bookmarksButton;
         private System.Windows.Forms.ContextMenuStrip _toolsMenu;

@@ -46,6 +46,7 @@ namespace EasyConnect
 
             _connectionDelegate = connectionDelegate;
             _password = password;
+            _bookmarksTreeView.Sorted = true;
 
             if (File.Exists(_bookmarksFileName))
             {
@@ -139,7 +140,7 @@ namespace EasyConnect
 
             BookmarksFolder folder = _folderTreeNodes[e.Node];
 
-            foreach (BookmarksFolder childFolder in folder.ChildFolders)
+            foreach (BookmarksFolder childFolder in folder.ChildFolders.OrderBy(f => f.Name))
             {
                 ListViewItem item = new ListViewItem(new string[]
                                                          {
@@ -150,7 +151,7 @@ namespace EasyConnect
                 _bookmarksListView.Items.Add(item);
             }
 
-            foreach (RDCConnection bookmark in folder.Bookmarks)
+            foreach (RDCConnection bookmark in folder.Bookmarks.OrderBy(b => String.IsNullOrEmpty(b.Name) ? b.Host : b.Name))
             {
                 ListViewItem item = new ListViewItem(new string[]
                                                          {
@@ -169,10 +170,7 @@ namespace EasyConnect
             if (_bookmarksListView.SelectedItems.Count > 0)
             {
                 if (_listViewConnections.ContainsKey(_bookmarksListView.SelectedItems[0]))
-                {
-                    TitleBarTab newTab = _connectionDelegate(_listViewConnections[_bookmarksListView.SelectedItems[0]]);
-                    ParentTabs.SelectedTabIndex = ParentTabs.Tabs.IndexOf(newTab);
-                }
+                    ParentTabs.SelectedTab = _connectionDelegate(_listViewConnections[_bookmarksListView.SelectedItems[0]]);
 
                 else
                 {
@@ -188,6 +186,115 @@ namespace EasyConnect
         {
             if (e.Button == MouseButtons.Right && _bookmarksListView.SelectedItems.Count > 0)
                 _bookmarkContextMenu.Show(Cursor.Position);
+        }
+
+        private void _openBookmarkNewTabMenuItem_Click(object sender, EventArgs e)
+        {
+            ParentTabs.SelectedTab = _connectionDelegate(_listViewConnections[_bookmarksListView.SelectedItems[0]]);
+        }
+
+        private void _editBookmarkMenuItem_Click(object sender, EventArgs e)
+        {
+            ConnectionWindow connectionWindow = new ConnectionWindow(this, _listViewConnections[_bookmarksListView.SelectedItems[0]], _connectionDelegate, _password);
+            connectionWindow.ShowDialog();
+        }
+
+        private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            _folderTreeNodes[_bookmarksTreeView.SelectedNode].Bookmarks.Remove(
+                _listViewConnections[_bookmarksListView.SelectedItems[0]]);
+
+            _listViewConnections.Remove(_bookmarksListView.SelectedItems[0]);
+            _bookmarksListView.Items.Remove(_bookmarksListView.SelectedItems[0]);
+
+            Save();
+        }
+
+        private void _folderOpenAllMenuItem_Click(object sender, EventArgs e)
+        {
+            openAllBookmarks(_folderTreeNodes[_bookmarksTreeView.SelectedNode]);
+        }
+
+        private void openAllBookmarks(BookmarksFolder folder)
+        {
+            foreach (RDCConnection connection in folder.Bookmarks)
+                _connectionDelegate(connection);
+
+            foreach (BookmarksFolder childFolder in folder.ChildFolders)
+                openAllBookmarks(childFolder);
+        }
+
+        private void _bookmarksTreeView_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                TreeViewHitTestInfo hitTestInfo = _bookmarksTreeView.HitTest(e.Location);
+
+                if (hitTestInfo.Node != null)
+                {
+                    _bookmarksTreeView.SelectedNode = hitTestInfo.Node;
+                    _folderContextMenu.Show(Cursor.Position);
+                }
+            }
+        }
+
+        private void _addBookmarkMenuItem_Click(object sender, EventArgs e)
+        {
+            ConnectionWindow connectionWindow = new ConnectionWindow(this, _connectionDelegate, _password);
+            connectionWindow.ShowDialog();
+        }
+
+        private void _addFolderMenuItem_Click(object sender, EventArgs e)
+        {
+            TreeNode newNode = _bookmarksTreeView.SelectedNode.Nodes.Add("New folder");
+            _folderTreeNodes[newNode] = new BookmarksFolder
+                                            {
+                                                Name = newNode.Text
+                                            };
+            _folderTreeNodes[_bookmarksTreeView.SelectedNode].ChildFolders.Add(_folderTreeNodes[newNode]);
+
+            _bookmarksTreeView.SelectedNode.Expand();
+            _bookmarksTreeView.SelectedNode = newNode;
+
+            Save();
+            newNode.BeginEdit();
+        }
+
+        private void _bookmarksTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
+        {
+            if (e.CancelEdit || String.IsNullOrEmpty(e.Label))
+                return;
+
+            _folderTreeNodes[_bookmarksTreeView.SelectedNode].Name = e.Label;
+            Save();
+
+            _bookmarksTreeView.BeginInvoke(new Action(_bookmarksTreeView.Sort));
+        }
+
+        private void _renameFolderMenuItem_Click(object sender, EventArgs e)
+        {
+            _bookmarksTreeView.SelectedNode.BeginEdit();
+        }
+
+        private void _deleteFolderMenuItem_Click(object sender, EventArgs e)
+        {
+            _folderTreeNodes[_bookmarksTreeView.SelectedNode.Parent].ChildFolders.Remove(
+                _folderTreeNodes[_bookmarksTreeView.SelectedNode]);
+
+            RemoveAllFolders(_bookmarksTreeView.SelectedNode);
+            
+            _bookmarksListView.Items.Clear();
+            _bookmarksTreeView.SelectedNode.Parent.Nodes.Remove(_bookmarksTreeView.SelectedNode);
+
+            Save();
+        }
+
+        private void RemoveAllFolders(TreeNode currentNode)
+        {
+            foreach (TreeNode childNode in currentNode.Nodes)
+                RemoveAllFolders(childNode);
+
+            _folderTreeNodes.Remove(currentNode);
         }
 
         /*private void newFolderButton_Click(object sender, EventArgs e)
@@ -211,64 +318,9 @@ namespace EasyConnect
             Save();
         }
 
-        private void deleteButton_Click(object sender, EventArgs e)
-        {
-            favoritesTreeView.SelectedNode.Remove();
-            Save();
-        }
-
-        private void propertiesButton_Click(object sender, EventArgs e)
-        {
-            ConnectionWindow connectionWindow = new ConnectionWindow(this, _connections[favoritesTreeView.SelectedNode], _connectionDelegate, _password);
-            connectionWindow.ShowDialog();
-        }
-
-        private void favoritesTreeView_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            TreeNode currentNode = favoritesTreeView.GetNodeAt(new Point(e.X, e.Y));
-
-            if (currentNode == null || currentNode.ImageIndex != 1)
-                return;
-
-            _connectionDelegate(_connections[currentNode]);
-        }
-
-        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            propertiesButton_Click(null, null);
-        }
-
         private void createFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             newFolderButton_Click(null, null);
-        }
-
-        private void newConnectionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ConnectionWindow connectionWindow = new ConnectionWindow(this, _connectionDelegate, _password);
-            connectionWindow.ShowDialog();
-        }
-
-        private void renameToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            RenameWindow folderNameWindow = new RenameWindow();
-            TreeNode node = favoritesTreeView.SelectedNode;
-            TreeNode parent = node.Parent;
-
-            folderNameWindow.ValueText = node.Text;
-            folderNameWindow.Title = "Folder Name";
-
-            DialogResult result = folderNameWindow.ShowDialog(this);
-
-            if (result != DialogResult.OK)
-                return;
-
-            node.Remove();
-            node.Text = folderNameWindow.ValueText;
-
-            AddTreeNode(parent.Nodes, node);
-
-            Save();
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)

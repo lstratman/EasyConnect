@@ -40,21 +40,38 @@ namespace EasyConnect
         {
             get
             {
+                if (_bookmarks == null && _password != null)
+                    _bookmarks = new BookmarksWindow(Connect, _password);
+
                 return _bookmarks;
             }
         }
 
+        protected void Bookmarks_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _bookmarks = null;
+        }
+
         public void OpenBookmarkManager()
         {
+            TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content is BookmarksWindow);
+
+            if (tab != null)
+            {
+                SelectedTab = tab;
+                return;
+            }
+
             TitleBarTab newTab = new TitleBarTab(this)
                                      {
-                                         Content = _bookmarks
+                                         Content = Bookmarks
                                      };
 
             Tabs.Add(newTab);
             ResizeTabContents(newTab);
 
             SelectedTabIndex = _tabs.Count - 1;
+            Bookmarks.FormClosed += Bookmarks_FormClosed;
         }
 
         public MainForm()
@@ -67,7 +84,7 @@ namespace EasyConnect
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect");
             }
 
-            while (_bookmarks == null || _history == null)
+            while (Bookmarks == null || _history == null)
             {
                 PasswordWindow passwordWindow = new PasswordWindow();
                 passwordWindow.ShowDialog();
@@ -92,9 +109,6 @@ namespace EasyConnect
                     }
                 }
             }
-
-            _bookmarks.Password = _password;
-            _history.Password = _password;
 
             ChannelServices.RegisterChannel(_ipcChannel, false);
             RemotingConfiguration.RegisterWellKnownServiceType(typeof(HistoryMethods), "HistoryMethods", WellKnownObjectMode.SingleCall);
@@ -294,25 +308,30 @@ namespace EasyConnect
             _bookmarks.Save();
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        protected override void OnShown(EventArgs e)
         {
-            _jumpList = JumpList.CreateJumpList();
-            _jumpList.KnownCategoryToDisplay = JumpListKnownCategoryType.Neither;
-            _jumpList.AddCustomCategories(_recentCategory);
+            base.OnShown(e);
 
-            List<HistoryWindow.HistoricalConnection> historicalConnections = _history.Connections.OrderBy((HistoryWindow.HistoricalConnection c) => c.LastConnection).ToList();
-            historicalConnections = historicalConnections.GetRange(0, Math.Min(historicalConnections.Count, Convert.ToInt32(_jumpList.MaxSlotsInList)));
-
-            foreach (HistoryWindow.HistoricalConnection historicalConnection in historicalConnections)
+            if (_jumpList == null)
             {
-                _recentCategory.AddJumpListItems(new JumpListLink(Application.ExecutablePath, (!String.IsNullOrEmpty(historicalConnection.Name) ? historicalConnection.Name : historicalConnection.Host)) { Arguments = "/openHistory:" + historicalConnection.Guid.ToString(), IconReference = new IconReference(Application.ExecutablePath, 0) });
-                _recentConnections.Enqueue(historicalConnection);
+                _jumpList = JumpList.CreateJumpList();
+                _jumpList.KnownCategoryToDisplay = JumpListKnownCategoryType.Neither;
+                _jumpList.AddCustomCategories(_recentCategory);
+
+                List<HistoryWindow.HistoricalConnection> historicalConnections = _history.Connections.OrderBy((HistoryWindow.HistoricalConnection c) => c.LastConnection).ToList();
+                historicalConnections = historicalConnections.GetRange(0, Math.Min(historicalConnections.Count, Convert.ToInt32(_jumpList.MaxSlotsInList)));
+
+                foreach (HistoryWindow.HistoricalConnection historicalConnection in historicalConnections)
+                {
+                    _recentCategory.AddJumpListItems(new JumpListLink(Application.ExecutablePath, (!String.IsNullOrEmpty(historicalConnection.Name) ? historicalConnection.Name : historicalConnection.Host)) { Arguments = "/openHistory:" + historicalConnection.Guid.ToString(), IconReference = new IconReference(Application.ExecutablePath, 0) });
+                    _recentConnections.Enqueue(historicalConnection);
+                }
+
+                _jumpList.Refresh();
+
+                if (OpenToHistory != Guid.Empty)
+                    Connect(_history.FindInHistory(OpenToHistory));
             }
-
-            _jumpList.Refresh();
-
-            if (OpenToHistory != Guid.Empty)
-                Connect(_history.FindInHistory(OpenToHistory));
         }
 
         public override TitleBarTab CreateTab()
