@@ -224,7 +224,8 @@ namespace EasyConnect
             {
                 ListViewItem item = new ListViewItem(new string[]
                                                          {
-                                                             bookmark.DisplayName
+                                                             bookmark.DisplayName,
+                                                             bookmark.Host
                                                          }, 0);
 
                 _listViewConnections[item] = bookmark;
