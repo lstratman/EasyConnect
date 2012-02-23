@@ -18,7 +18,9 @@ namespace EasyConnect
         {
             string[] arguments = Environment.GetCommandLineArgs();
             string openHistory = arguments.FirstOrDefault((string s) => s.StartsWith("/openHistory:"));
+            string openBookmarks = arguments.FirstOrDefault((string s) => s.StartsWith("/openBookmarks:"));
             Guid historyGuid = Guid.Empty;
+            Guid[] bookmarkGuids = null;
 
             if (openHistory != null)
             {
@@ -43,12 +45,21 @@ namespace EasyConnect
                 }
             }
 
+            else if (openBookmarks != null)
+            {
+                string bookmarks = openBookmarks.Substring(openBookmarks.IndexOf(":") + 1);
+                bookmarkGuids = (from bookmark in bookmarks.Split(',')
+                                 where !String.IsNullOrEmpty(bookmark)
+                                 select new Guid(bookmark)).ToArray();
+            }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             MainForm mainForm = new MainForm
                                     {
-                                        OpenToHistory = historyGuid
+                                        OpenToHistory = historyGuid,
+                                        OpenToBookmarks = bookmarkGuids
                                     };
 
             if (!mainForm.Closing)

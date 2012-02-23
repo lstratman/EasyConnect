@@ -93,6 +93,7 @@
   <ItemGroup>
     <Compile Include="AudioMode.cs" />
     <Compile Include="BookmarksFolder.cs" />
+    <Compile Include="BookmarksMethods.cs" />
     <Compile Include="BookmarksWindow.cs">
       <SubType>Form</SubType>
     </Compile>

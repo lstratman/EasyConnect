@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security;
@@ -490,6 +491,62 @@ namespace EasyConnect
         private void renameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _bookmarksListView.SelectedItems[0].BeginEdit();
+        }
+
+        private void _openBookmarkNewWindowMenuItem_Click(object sender, EventArgs e)
+        {
+            MainForm mainForm = new MainForm(new Guid[]
+                                                 {
+                                                     _listViewConnections[
+                                                         _bookmarksListView.SelectedItems[0]].Guid
+                                                 }, _applicationForm.Password);
+            mainForm.Show();
+        }
+
+        public RDCConnection FindBookmark(Guid bookmarkGuid)
+        {
+            return FindBookmark(bookmarkGuid, _rootFolder);
+        }
+
+        protected RDCConnection FindBookmark(Guid bookmarkGuid, BookmarksFolder searchFolder)
+        {
+            RDCConnection bookmark = searchFolder.Bookmarks.FirstOrDefault(b => b.Guid == bookmarkGuid);
+
+            if (bookmark != null)
+                return bookmark;
+
+            else
+            {
+                foreach (BookmarksFolder childFolder in searchFolder.ChildFolders)
+                {
+                    bookmark = FindBookmark(bookmarkGuid, childFolder);
+
+                    if (bookmark != null)
+                        return bookmark;
+                }
+
+                return null;
+            }
+        }
+
+        private void _folderOpenAllNewWindowMenuItem_Click(object sender, EventArgs e)
+        {
+            List<Guid> bookmarkGuids = new List<Guid>();
+            FindAllBookmarks(_folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode], bookmarkGuids);
+            
+            if (bookmarkGuids.Count > 0)
+            {
+                MainForm mainForm = new MainForm(bookmarkGuids.ToArray(), _applicationForm.Password);
+                mainForm.Show();
+            }
+        }
+
+        private void FindAllBookmarks(BookmarksFolder bookmarksFolder, List<Guid> bookmarkGuids)
+        {
+            bookmarkGuids.AddRange(bookmarksFolder.Bookmarks.Select(bookmark => bookmark.Guid));
+
+            foreach (BookmarksFolder childFolder in bookmarksFolder.ChildFolders)
+                FindAllBookmarks(childFolder, bookmarkGuids);
         }
     }
 }

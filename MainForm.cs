@@ -21,15 +21,18 @@ namespace EasyConnect
     {
         public delegate TitleBarTab ConnectToHistoryDelegate(Guid historyGuid);
 
+        public delegate void ConnectToBookmarksDelegate(Guid[] bookmarkGuids);
+
         public delegate TitleBarTab ConnectionDelegate(RDCConnection connection);
 
         public static MainForm ActiveInstance = null;
         public static ConnectToHistoryDelegate ConnectToHistoryMethod = null;
+        public static ConnectToBookmarksDelegate ConnectToBookmarksMethod = null;
 
         protected bool _addingWindow = false;
         protected BookmarksWindow _bookmarks = null;
         protected HistoryWindow _history = null;
-        protected IpcServerChannel _ipcChannel = new IpcServerChannel("EasyConnect");
+        protected static IpcServerChannel _ipcChannel = null;
         protected JumpList _jumpList = null;
         protected SecureString _password = null;
         protected Dictionary<RDCWindow, Bitmap> _previews = new Dictionary<RDCWindow, Bitmap>();
@@ -39,9 +42,16 @@ namespace EasyConnect
         protected Queue<HistoryWindow.HistoricalConnection> _recentConnections =
             new Queue<HistoryWindow.HistoricalConnection>();
 
-        public MainForm()
+        public MainForm() : this(null, null)
+        {
+        }
+
+        public MainForm(Guid[] openToBookmarks, SecureString password)
         {
             InitializeComponent();
+
+            OpenToBookmarks = openToBookmarks;
+            _password = password;
 
             if (
                 !Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
@@ -55,11 +65,14 @@ namespace EasyConnect
 
             while (Bookmarks == null || _history == null)
             {
-                PasswordWindow passwordWindow = new PasswordWindow();
-                passwordWindow.ShowDialog();
+                if (_password == null)
+                {
+                    PasswordWindow passwordWindow = new PasswordWindow();
+                    passwordWindow.ShowDialog();
 
-                _password = passwordWindow.Password;
-                _password.MakeReadOnly();
+                    _password = passwordWindow.Password;
+                    _password.MakeReadOnly();
+                }
 
                 try
                 {
@@ -77,25 +90,36 @@ namespace EasyConnect
                         Closing = true;
                         return;
                     }
+
+                    _password = null;
                 }
             }
 
-            ChannelServices.RegisterChannel(_ipcChannel, false);
-            RemotingConfiguration.RegisterWellKnownServiceType(typeof (HistoryMethods), "HistoryMethods",
-                                                               WellKnownObjectMode.SingleCall);
+            if (_ipcChannel == null)
+            {
+                _ipcChannel = new IpcServerChannel("EasyConnect");
+                ChannelServices.RegisterChannel(_ipcChannel, false);
+                RemotingConfiguration.RegisterWellKnownServiceType(typeof (HistoryMethods), "HistoryMethods",
+                                                                   WellKnownObjectMode.SingleCall);
+            }
 
             TabSelected += MainForm_TabSelected;
             TabDeselecting += MainForm_TabDeselecting;
 
             ActiveInstance = this;
             ConnectToHistoryMethod = ConnectToHistory;
+            ConnectToBookmarksMethod = ConnectToBookmarks;
 
             TabRenderer = new ChromeTabRenderer(this);
-            Tabs.Add(new TitleBarTab(this)
-                         {
-                             Content = new RDCWindow(_password)
-                         });
-            SelectedTabIndex = 0;
+
+            if (OpenToBookmarks == null && OpenToHistory == Guid.Empty)
+            {
+                Tabs.Add(new TitleBarTab(this)
+                             {
+                                 Content = new RDCWindow(_password)
+                             });
+                SelectedTabIndex = 0;
+            }
         }
 
         public SecureString Password
@@ -103,6 +127,11 @@ namespace EasyConnect
             get
             {
                 return _password;
+            }
+
+            set
+            {
+                _password = value;
             }
         }
 
@@ -124,6 +153,12 @@ namespace EasyConnect
         }
 
         public Guid OpenToHistory
+        {
+            get;
+            set;
+        }
+
+        public Guid[] OpenToBookmarks
         {
             get;
             set;
@@ -194,6 +229,14 @@ namespace EasyConnect
                 return Connect(connection);
 
             return null;
+        }
+
+        public void ConnectToBookmarks(Guid[] bookmarkGuids)
+        {
+            foreach (Guid bookmarkGuid in bookmarkGuids)
+                Connect(_bookmarks.FindBookmark(bookmarkGuid));
+
+            SelectedTabIndex = Tabs.Count - 1;
         }
 
         public TitleBarTab Connect(RDCConnection connection)
@@ -299,7 +342,8 @@ namespace EasyConnect
             if (sender == _previousActiveDocument)
                 _previousActiveDocument = null;
 
-            TaskbarManager.Instance.TabbedThumbnail.RemoveThumbnailPreview((RDCWindow) sender);
+            if (!((RDCWindow)sender).IsDisposed)
+                TaskbarManager.Instance.TabbedThumbnail.RemoveThumbnailPreview((RDCWindow) sender);
         }
 
         private void preview_TabbedThumbnailClosed(object sender, TabbedThumbnailEventArgs e)
@@ -371,8 +415,11 @@ namespace EasyConnect
                 _jumpList.Refresh();
 
                 if (OpenToHistory != Guid.Empty)
-                    Connect(_history.FindInHistory(OpenToHistory));
+                    SelectedTab = Connect(_history.FindInHistory(OpenToHistory));
             }
+
+            if (OpenToHistory == Guid.Empty && OpenToBookmarks != null)
+                ConnectToBookmarks(OpenToBookmarks);
         }
 
         public override TitleBarTab CreateTab()
