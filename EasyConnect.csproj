@@ -150,9 +150,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="RenameWindow.resx">
-      <DependentUpon>RenameWindow.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="RDCWindow.resx">
       <DependentUpon>RDCWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -176,12 +173,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="RDCConnection.cs" />
-    <Compile Include="RenameWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RenameWindow.Designer.cs">
-      <DependentUpon>RenameWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="RDCWindow.cs">
       <SubType>Form</SubType>
     </Compile>
