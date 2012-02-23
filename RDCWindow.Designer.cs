@@ -114,7 +114,7 @@
             this._bookmarksManagerMenuItem2,
             this.bookmarkThisSiteToolStripMenuItem});
             this._bookmarksMenu.Name = "_bookmarksMenu";
-            this._bookmarksMenu.Size = new System.Drawing.Size(259, 48);
+            this._bookmarksMenu.Size = new System.Drawing.Size(259, 70);
             // 
             // _bookmarksManagerMenuItem2
             // 
@@ -130,7 +130,7 @@
             this.bookmarkThisSiteToolStripMenuItem.Name = "bookmarkThisSiteToolStripMenuItem";
             this.bookmarkThisSiteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
             this.bookmarkThisSiteToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
-            this.bookmarkThisSiteToolStripMenuItem.Text = "Bookmark this site";
+            this.bookmarkThisSiteToolStripMenuItem.Text = "Bookmark this server";
             this.bookmarkThisSiteToolStripMenuItem.Click += new System.EventHandler(this._bookmarkMenuItem_Click);
             // 
             // toolbarBackground
