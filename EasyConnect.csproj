@@ -100,11 +100,11 @@
     <Compile Include="BookmarksWindow.designer.cs">
       <DependentUpon>BookmarksWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConnectionWindow.cs">
+    <Compile Include="RdpConnectionPropertiesWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConnectionWindow.Designer.cs">
-      <DependentUpon>ConnectionWindow.cs</DependentUpon>
+    <Compile Include="RdpConnectionPropertiesWindow.Designer.cs">
+      <DependentUpon>RdpConnectionPropertiesWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="CryptoUtilities.cs" />
     <Compile Include="DisplayHelper.cs" />
@@ -134,8 +134,8 @@
     <EmbeddedResource Include="BookmarksWindow.resx">
       <DependentUpon>BookmarksWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ConnectionWindow.resx">
-      <DependentUpon>ConnectionWindow.cs</DependentUpon>
+    <EmbeddedResource Include="RdpConnectionPropertiesWindow.resx">
+      <DependentUpon>RdpConnectionPropertiesWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HistoryWindow.resx">
       <DependentUpon>HistoryWindow.cs</DependentUpon>
@@ -151,8 +151,8 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="RDCWindow.resx">
-      <DependentUpon>RDCWindow.cs</DependentUpon>
+    <EmbeddedResource Include="RdpWindow.resx">
+      <DependentUpon>RdpWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SaveConnectionWindow.resx">
       <DependentUpon>SaveConnectionWindow.cs</DependentUpon>
@@ -173,12 +173,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="RDCConnection.cs" />
-    <Compile Include="RDCWindow.cs">
+    <Compile Include="RdpConnection.cs" />
+    <Compile Include="RdpWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RDCWindow.Designer.cs">
-      <DependentUpon>RDCWindow.cs</DependentUpon>
+    <Compile Include="RdpWindow.Designer.cs">
+      <DependentUpon>RdpWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="SaveConnectionWindow.cs">
       <SubType>Form</SubType>

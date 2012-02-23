@@ -70,12 +70,12 @@ namespace EasyConnect
             }
         }
 
-        public RDCConnection FindInHistory(Guid historyGuid)
+        public RdpConnection FindInHistory(Guid historyGuid)
         {
             return _connections.Values.FirstOrDefault((HistoricalConnection c) => c.Guid == historyGuid);
         }
 
-        public void AddToHistory(RDCConnection connection)
+        public void AddToHistory(RdpConnection connection)
         {
             TreeNode connectionNode = FindConnectionNode(historyTreeView.Nodes, connection);
             HistoricalConnection historyEntry = new HistoricalConnection(connection, _applicationForm.Password);
@@ -133,7 +133,7 @@ namespace EasyConnect
             collection.Insert(insertPoint, child);
         }
 
-        protected TreeNode FindConnectionNode(TreeNodeCollection searchNodes, RDCConnection connection)
+        protected TreeNode FindConnectionNode(TreeNodeCollection searchNodes, RdpConnection connection)
         {
             foreach (TreeNode node in searchNodes)
             {
@@ -193,7 +193,7 @@ namespace EasyConnect
 
         private void propertiesMenuItem_Click(object sender, EventArgs e)
         {
-            ConnectionWindow connectionWindow = new ConnectionWindow(_applicationForm,
+            RdpConnectionPropertiesWindow connectionWindow = new RdpConnectionPropertiesWindow(_applicationForm,
                                                                      _connections[historyTreeView.SelectedNode]);
             connectionWindow.ShowDialog();
         }
@@ -203,7 +203,7 @@ namespace EasyConnect
             _applicationForm.Connect(_connections[historyTreeView.SelectedNode]);
         }
 
-        public class HistoricalConnection : RDCConnection
+        public class HistoricalConnection : RdpConnection
         {
             public HistoricalConnection(XmlNode node, SecureString encryptionPassword)
                 : base(node, encryptionPassword)
@@ -211,7 +211,7 @@ namespace EasyConnect
                 LastConnection = DateTime.Parse(node.Attributes["lastAccess"].Value);
             }
 
-            public HistoricalConnection(RDCConnection connection, SecureString encryptionPassword)
+            public HistoricalConnection(RdpConnection connection, SecureString encryptionPassword)
             {
                 Host = connection.Host;
                 Username = connection.Username;

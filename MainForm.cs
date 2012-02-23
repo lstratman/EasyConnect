@@ -23,7 +23,7 @@ namespace EasyConnect
 
         public delegate void ConnectToBookmarksDelegate(Guid[] bookmarkGuids);
 
-        public delegate TitleBarTab ConnectionDelegate(RDCConnection connection);
+        public delegate TitleBarTab ConnectionDelegate(RdpConnection connection);
 
         public static MainForm ActiveInstance = null;
         public static ConnectToHistoryDelegate ConnectToHistoryMethod = null;
@@ -35,8 +35,8 @@ namespace EasyConnect
         protected static IpcServerChannel _ipcChannel = null;
         protected JumpList _jumpList = null;
         protected SecureString _password = null;
-        protected Dictionary<RDCWindow, Bitmap> _previews = new Dictionary<RDCWindow, Bitmap>();
-        protected RDCWindow _previousActiveDocument = null;
+        protected Dictionary<RdpWindow, Bitmap> _previews = new Dictionary<RdpWindow, Bitmap>();
+        protected RdpWindow _previousActiveDocument = null;
         protected JumpListCustomCategory _recentCategory = new JumpListCustomCategory("Recent");
 
         protected Queue<HistoryWindow.HistoricalConnection> _recentConnections =
@@ -116,7 +116,7 @@ namespace EasyConnect
             {
                 Tabs.Add(new TitleBarTab(this)
                              {
-                                 Content = new RDCWindow(_password)
+                                 Content = new RdpWindow(_password)
                              });
                 SelectedTabIndex = 0;
             }
@@ -218,12 +218,12 @@ namespace EasyConnect
             if (!_addingWindow && SelectedTabIndex != -1)
                 TaskbarManager.Instance.TabbedThumbnail.SetActiveTab(SelectedTab.Content);
 
-            _previousActiveDocument = (RDCWindow) SelectedTab.Content;
+            _previousActiveDocument = (RdpWindow) SelectedTab.Content;
         }
 
         public TitleBarTab ConnectToHistory(Guid historyGuid)
         {
-            RDCConnection connection = _history.FindInHistory(historyGuid);
+            RdpConnection connection = _history.FindInHistory(historyGuid);
 
             if (connection != null)
                 return Connect(connection);
@@ -239,11 +239,11 @@ namespace EasyConnect
             SelectedTabIndex = Tabs.Count - 1;
         }
 
-        public TitleBarTab Connect(RDCConnection connection)
+        public TitleBarTab Connect(RdpConnection connection)
         {
             _history.AddToHistory(connection);
 
-            RDCWindow sessionWindow = new RDCWindow(_password);
+            RdpWindow sessionWindow = new RdpWindow(_password);
 
             _addingWindow = true;
             TitleBarTab newTab = new TitleBarTab(this)
@@ -305,7 +305,7 @@ namespace EasyConnect
             //throw new NotImplementedException();
         }
 
-        protected void GenerateWindowPreview(RDCWindow sessionWindow)
+        protected void GenerateWindowPreview(RdpWindow sessionWindow)
         {
             if (SelectedTab.Content != sessionWindow)
                 return;
@@ -321,7 +321,7 @@ namespace EasyConnect
         {
             foreach (TitleBarTab tab in Tabs)
             {
-                RDCWindow rdcWindow = (RDCWindow) tab.Content;
+                RdpWindow rdcWindow = (RdpWindow) tab.Content;
 
                 if (rdcWindow.Handle == e.WindowHandle && _previews.ContainsKey(rdcWindow))
                 {
@@ -333,24 +333,24 @@ namespace EasyConnect
 
         private void sessionWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (_previews.ContainsKey((RDCWindow) sender))
+            if (_previews.ContainsKey((RdpWindow) sender))
             {
-                _previews[(RDCWindow) sender].Dispose();
-                _previews.Remove((RDCWindow) sender);
+                _previews[(RdpWindow) sender].Dispose();
+                _previews.Remove((RdpWindow) sender);
             }
 
             if (sender == _previousActiveDocument)
                 _previousActiveDocument = null;
 
-            if (!((RDCWindow)sender).IsDisposed)
-                TaskbarManager.Instance.TabbedThumbnail.RemoveThumbnailPreview((RDCWindow) sender);
+            if (!((RdpWindow)sender).IsDisposed)
+                TaskbarManager.Instance.TabbedThumbnail.RemoveThumbnailPreview((RdpWindow) sender);
         }
 
         private void preview_TabbedThumbnailClosed(object sender, TabbedThumbnailEventArgs e)
         {
             foreach (TitleBarTab tab in Tabs)
             {
-                RDCWindow rdcWindow = (RDCWindow) tab.Content;
+                RdpWindow rdcWindow = (RdpWindow) tab.Content;
 
                 if (rdcWindow.Handle == e.WindowHandle)
                 {
@@ -426,7 +426,7 @@ namespace EasyConnect
         {
             return new TitleBarTab(this)
                        {
-                           Content = new RDCWindow(_password)
+                           Content = new RdpWindow(_password)
                        };
         }
     }

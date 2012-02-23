@@ -4,14 +4,14 @@ using Stratman.Windows.Forms.TitleBarTabs;
 namespace EasyConnect
 {
     /// <summary>
-    /// Folder that contains <see cref="RDCConnection"/>s and child <see cref="BookmarksFolder"/> instances.
+    /// Folder that contains <see cref="RdpConnection"/>s and child <see cref="BookmarksFolder"/> instances.
     /// </summary>
     public class BookmarksFolder
     {
         /// <summary>
         /// Bookmarked connections contained in this folder.
         /// </summary>
-        protected ListWithEvents<RDCConnection> _bookmarks = new ListWithEvents<RDCConnection>();
+        protected ListWithEvents<RdpConnection> _bookmarks = new ListWithEvents<RdpConnection>();
 
         /// <summary>
         /// Folders beneath this one in the hierarchy.
@@ -71,7 +71,7 @@ namespace EasyConnect
         /// <summary>
         /// Bookmarked connections contained in this folder.
         /// </summary>
-        public ListWithEvents<RDCConnection> Bookmarks
+        public ListWithEvents<RdpConnection> Bookmarks
         {
             get
             {

@@ -18,8 +18,8 @@ namespace EasyConnect
 
         protected Dictionary<TreeNode, BookmarksFolder> _folderTreeNodes = new Dictionary<TreeNode, BookmarksFolder>();
 
-        protected Dictionary<ListViewItem, RDCConnection> _listViewConnections =
-            new Dictionary<ListViewItem, RDCConnection>();
+        protected Dictionary<ListViewItem, RdpConnection> _listViewConnections =
+            new Dictionary<ListViewItem, RdpConnection>();
 
         protected Dictionary<ListViewItem, BookmarksFolder> _listViewFolders =
             new Dictionary<ListViewItem, BookmarksFolder>();
@@ -142,14 +142,14 @@ namespace EasyConnect
 
         void Bookmarks_CollectionModified(object sender, ListModificationEventArgs e)
         {
-            ListWithEvents<RDCConnection> bookmarks = sender as ListWithEvents<RDCConnection>;
+            ListWithEvents<RdpConnection> bookmarks = sender as ListWithEvents<RdpConnection>;
             bool sortListView = false;
 
             if (e.Modification == ListModification.ItemModified || e.Modification == ListModification.ItemAdded || e.Modification == ListModification.RangeAdded)
             {
                 for (int i = e.StartIndex; i < e.StartIndex + e.Count; i++)
                 {
-                    RDCConnection currentBookmark = bookmarks[i];
+                    RdpConnection currentBookmark = bookmarks[i];
                     TreeNode parentTreeNode =
                         _folderTreeNodes.Single(kvp => kvp.Value == currentBookmark.ParentFolder).Key;
 
@@ -234,7 +234,7 @@ namespace EasyConnect
                 return;
 
             foreach (XmlNode bookmark in bookmarksFolder.SelectNodes("bookmark"))
-                currentFolder.Bookmarks.Add(new RDCConnection(bookmark, _applicationForm.Password));
+                currentFolder.Bookmarks.Add(new RdpConnection(bookmark, _applicationForm.Password));
 
             foreach (XmlNode folder in bookmarksFolder.SelectNodes("folder"))
             {
@@ -264,7 +264,7 @@ namespace EasyConnect
 
         protected void SaveTreeView(BookmarksFolder currentFolder, XmlNode parentNode)
         {
-            foreach (RDCConnection bookmark in currentFolder.Bookmarks)
+            foreach (RdpConnection bookmark in currentFolder.Bookmarks)
             {
                 XmlNode connectionNode = parentNode.OwnerDocument.CreateNode(XmlNodeType.Element, "bookmark", null);
                 parentNode.AppendChild(connectionNode);
@@ -303,7 +303,7 @@ namespace EasyConnect
                 _bookmarksListView.Items.Add(item);
             }
 
-            foreach (RDCConnection bookmark in folder.Bookmarks)
+            foreach (RdpConnection bookmark in folder.Bookmarks)
             {
                 ListViewItem item = new ListViewItem(bookmark.DisplayName, 0);
                 item.SubItems.Add(bookmark.Host);
@@ -346,7 +346,7 @@ namespace EasyConnect
 
         private void _editBookmarkMenuItem_Click(object sender, EventArgs e)
         {
-            ConnectionWindow connectionWindow = new ConnectionWindow(_applicationForm,
+            RdpConnectionPropertiesWindow connectionWindow = new RdpConnectionPropertiesWindow(_applicationForm,
                                                                      _listViewConnections[
                                                                          _bookmarksListView.SelectedItems[0]],
                                                                      _folderTreeNodes[
@@ -372,7 +372,7 @@ namespace EasyConnect
 
         private void OpenAllBookmarks(BookmarksFolder folder)
         {
-            foreach (RDCConnection connection in folder.Bookmarks)
+            foreach (RdpConnection connection in folder.Bookmarks)
                 _applicationForm.Connect(connection);
 
             foreach (BookmarksFolder childFolder in folder.ChildFolders)
@@ -395,7 +395,7 @@ namespace EasyConnect
 
         private void _addBookmarkMenuItem_Click(object sender, EventArgs e)
         {
-            ConnectionWindow connectionWindow = new ConnectionWindow(_applicationForm,
+            RdpConnectionPropertiesWindow connectionWindow = new RdpConnectionPropertiesWindow(_applicationForm,
                                                                      _folderTreeNodes[
                                                                          _bookmarksFoldersTreeView.SelectedNode]);
             connectionWindow.ShowDialog();
@@ -503,14 +503,14 @@ namespace EasyConnect
             mainForm.Show();
         }
 
-        public RDCConnection FindBookmark(Guid bookmarkGuid)
+        public RdpConnection FindBookmark(Guid bookmarkGuid)
         {
             return FindBookmark(bookmarkGuid, _rootFolder);
         }
 
-        protected RDCConnection FindBookmark(Guid bookmarkGuid, BookmarksFolder searchFolder)
+        protected RdpConnection FindBookmark(Guid bookmarkGuid, BookmarksFolder searchFolder)
         {
-            RDCConnection bookmark = searchFolder.Bookmarks.FirstOrDefault(b => b.Guid == bookmarkGuid);
+            RdpConnection bookmark = searchFolder.Bookmarks.FirstOrDefault(b => b.Guid == bookmarkGuid);
 
             if (bookmark != null)
                 return bookmark;
