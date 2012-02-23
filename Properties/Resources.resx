@@ -124,9 +124,6 @@
   <data name="RDC" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RDC.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Properties" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Properties.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Monitor" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Monitor.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -153,9 +150,6 @@
   </data>
   <data name="Computer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Computer.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Go" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Go.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Performance" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Performance.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -184,28 +178,28 @@
   <data name="ToolsActive" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ToolsActive.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="FirstRunPasswordText">
-    <value xml:space="preserve">Since this is the first time that you have run this application,
+  <data name="FirstRunPasswordText" xml:space="preserve">
+    <value>Since this is the first time that you have run this application,
 you will be asked to enter an access password.  This password will
 be used to protect any passwords that you associate with your
 connections.</value>
   </data>
-  <data name="FirstRunPasswordTitle">
-    <value xml:space="preserve">Create password</value>
+  <data name="FirstRunPasswordTitle" xml:space="preserve">
+    <value>Create password</value>
   </data>
-  <data name="IncorrectPasswordText">
-    <value xml:space="preserve">Password is incorrect.</value>
+  <data name="IncorrectPasswordText" xml:space="preserve">
+    <value>Password is incorrect.</value>
   </data>
-  <data name="ErrorTitle">
-    <value xml:space="preserve">Error</value>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Error</value>
   </data>
-  <data name="UnableToEstablishConnection">
-    <value xml:space="preserve">Unable to establish a connection to the remote system.</value>
+  <data name="UnableToEstablishConnection" xml:space="preserve">
+    <value>Unable to establish a connection to the remote system.</value>
   </data>
-  <data name="ConnectingText">
-    <value xml:space="preserve">Connecting...</value>
+  <data name="ConnectingText" xml:space="preserve">
+    <value>Connecting...</value>
   </data>
-  <data name="EnterNameForThisConnection">
-    <value xml:space="preserve">Please enter a name for this connection.</value>
+  <data name="EnterNameForThisConnection" xml:space="preserve">
+    <value>Please enter a name for this connection.</value>
   </data>
 </root>

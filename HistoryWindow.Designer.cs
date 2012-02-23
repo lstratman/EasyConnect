@@ -96,8 +96,6 @@
             // 
             // propertiesMenuItem
             // 
-            this.propertiesMenuItem.Image = global::EasyConnect.Properties.Resources.Properties;
-            this.propertiesMenuItem.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this.propertiesMenuItem.Name = "propertiesMenuItem";
             this.propertiesMenuItem.Size = new System.Drawing.Size(136, 22);
             this.propertiesMenuItem.Text = "Properties...";

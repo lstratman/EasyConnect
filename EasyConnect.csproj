@@ -196,6 +196,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\FolderOpen.png" />
     <Content Include="Resources\ToolbarBackground.png" />
     <Content Include="Resources\ToolsActive.png" />
     <None Include="Resources\Calendar.png" />
@@ -215,11 +216,8 @@
     <Content Include="Resources\Favorites.ico" />
     <None Include="Resources\Folder.png" />
     <Content Include="Resources\ForwardActive.png" />
-    <Content Include="Resources\Go.bmp" />
     <None Include="Resources\Monitor.png" />
-    <None Include="Resources\Properties.bmp" />
     <None Include="Resources\Gradient.png" />
-    <None Include="Resources\History.png" />
     <None Include="Resources\History.ico" />
     <Content Include="Resources\Keyboard.png" />
     <None Include="Resources\Performance.png" />
