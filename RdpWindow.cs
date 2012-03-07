@@ -384,16 +384,6 @@ namespace EasyConnect
             }
         }
 
-        private void _closeButton_MouseEnter(object sender, EventArgs e)
-        {
-            _closeButton.BackgroundImage = Resources.ButtonHoverBackground;
-        }
-
-        private void _closeButton_MouseLeave(object sender, EventArgs e)
-        {
-            _closeButton.BackgroundImage = null;
-        }
-
         private void _bookmarksButton_MouseEnter(object sender, EventArgs e)
         {
             _bookmarksButton.BackgroundImage = Resources.ButtonHoverBackground;
@@ -412,11 +402,6 @@ namespace EasyConnect
         private void _toolsButton_MouseLeave(object sender, EventArgs e)
         {
             _toolsButton.BackgroundImage = null;
-        }
-
-        private void _closeButton_Click(object sender, EventArgs e)
-        {
-            Close();
         }
 
         private void _exitMenuItem_Click(object sender, EventArgs e)
