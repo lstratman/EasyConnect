@@ -59,6 +59,50 @@ namespace EasyConnect
             }
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.C))
+            {
+                if (_bookmarksFoldersTreeView.Focused && _bookmarksFoldersTreeView.SelectedNode != null)
+                {
+                    _copyFolderMenuItem_Click(null, null);
+                    return true;
+                }
+
+                else if (_bookmarksListView.Focused && _bookmarksListView.SelectedItems.Count > 0)
+                {
+                    copyToolStripMenuItem_Click(null, null);
+                    return true;
+                }
+            }
+
+            else if (keyData == (Keys.Control | Keys.V))
+            {
+                if (_bookmarksFoldersTreeView.SelectedNode != null)
+                {
+                    _pasteFolderMenuItem_Click(null, null);
+                    return true;
+                }
+            }
+
+            if (keyData == Keys.Delete)
+            {
+                if (_bookmarksFoldersTreeView.Focused && _bookmarksFoldersTreeView.SelectedNode != null)
+                {
+                    _deleteFolderMenuItem_Click(null, null);
+                    return true;
+                }
+
+                else if (_bookmarksListView.Focused && _bookmarksListView.SelectedItems.Count > 0)
+                {
+                    deleteToolStripMenuItem1_Click(null, null);
+                    return true;
+                }
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         void ChildFolders_CollectionModified(object sender, ListModificationEventArgs e)
         {
             ListWithEvents<BookmarksFolder> childFolders = sender as ListWithEvents<BookmarksFolder>;
