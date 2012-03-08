@@ -61,7 +61,7 @@ namespace EasyConnect
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Bookmarks");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Bookmarks");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BookmarksWindow));
             this._splitContainer = new System.Windows.Forms.SplitContainer();
             this._bookmarksFoldersTreeView = new System.Windows.Forms.TreeView();
@@ -136,10 +136,10 @@ namespace EasyConnect
             this._bookmarksFoldersTreeView.LabelEdit = true;
             this._bookmarksFoldersTreeView.Location = new System.Drawing.Point(12, 12);
             this._bookmarksFoldersTreeView.Name = "_bookmarksFoldersTreeView";
-            treeNode2.Name = "root";
-            treeNode2.Text = "Bookmarks";
+            treeNode1.Name = "root";
+            treeNode1.Text = "Bookmarks";
             this._bookmarksFoldersTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
+            treeNode1});
             this._bookmarksFoldersTreeView.SelectedImageIndex = 1;
             this._bookmarksFoldersTreeView.ShowRootLines = false;
             this._bookmarksFoldersTreeView.Size = new System.Drawing.Size(147, 400);
@@ -257,12 +257,15 @@ namespace EasyConnect
             this._copyFolderMenuItem.Name = "_copyFolderMenuItem";
             this._copyFolderMenuItem.Size = new System.Drawing.Size(247, 22);
             this._copyFolderMenuItem.Text = "Copy";
+            this._copyFolderMenuItem.Click += new System.EventHandler(this._copyFolderMenuItem_Click);
             // 
             // _pasteFolderMenuItem
             // 
+            this._pasteFolderMenuItem.Enabled = false;
             this._pasteFolderMenuItem.Name = "_pasteFolderMenuItem";
             this._pasteFolderMenuItem.Size = new System.Drawing.Size(247, 22);
             this._pasteFolderMenuItem.Text = "Paste";
+            this._pasteFolderMenuItem.Click += new System.EventHandler(this._pasteFolderMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -362,6 +365,7 @@ namespace EasyConnect
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
             this.copyToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.copyToolStripMenuItem.Text = "Copy";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
             // 
             // pasteToolStripMenuItem
             // 
@@ -369,6 +373,7 @@ namespace EasyConnect
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
             this.pasteToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
+            this.pasteToolStripMenuItem.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
             // 
             // toolStripSeparator7
             // 

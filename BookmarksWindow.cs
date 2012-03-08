@@ -26,7 +26,11 @@ namespace EasyConnect
 
         protected BookmarksFolder _rootFolder = new BookmarksFolder();
 
+        protected List<object> _copiedItems = new List<object>();
+
         protected MainForm _applicationForm = null;
+
+        protected bool _deferSort = false;
 
         public BookmarksWindow(MainForm applicationForm)
         {
@@ -74,8 +78,13 @@ namespace EasyConnect
                         folderTreeNode = new TreeNode(currentFolder.Name);
                         parentTreeNode.Nodes.Add(folderTreeNode);
 
+                        _folderTreeNodes[folderTreeNode] = currentFolder;
+
                         currentFolder.ChildFolders.CollectionModified += ChildFolders_CollectionModified;
                         currentFolder.Bookmarks.CollectionModified += Bookmarks_CollectionModified;
+
+                        ChildFolders_CollectionModified(
+                            currentFolder.ChildFolders, new ListModificationEventArgs(ListModification.RangeAdded, 0, currentFolder.ChildFolders.Count));
                     }
 
                     else
@@ -93,8 +102,6 @@ namespace EasyConnect
 
                         sortListView = true;
                     }
-
-                    _folderTreeNodes[folderTreeNode] = currentFolder;
                 }
             }
 
@@ -111,9 +118,6 @@ namespace EasyConnect
 
                         if (!containerFolder.Value.ChildFolders.Contains(_folderTreeNodes[treeNode]))
                         {
-                            RemoveAllFolders(treeNode);
-                            containerFolder.Key.Nodes.Remove(treeNode);
-
                             KeyValuePair<ListViewItem, BookmarksFolder> listViewItem =
                                 _listViewFolders.SingleOrDefault(kvp => kvp.Value == _folderTreeNodes[treeNode]);
 
@@ -125,15 +129,18 @@ namespace EasyConnect
                                 sortListView = true;
                             }
 
+                            RemoveAllFolders(treeNode);
+                            containerFolder.Key.Nodes.Remove(treeNode);
+
                             i--;
                         }
                     }
                 }
             }
 
-            if (IsHandleCreated)
+            if (IsHandleCreated && !_deferSort)
             {
-                _bookmarksFoldersTreeView.BeginInvoke(new Action(_bookmarksFoldersTreeView.Sort));
+                _bookmarksFoldersTreeView.BeginInvoke(new Action(SortTreeView));
 
                 if (sortListView)
                     _bookmarksListView.BeginInvoke(new Action(_bookmarksListView.Sort));
@@ -192,7 +199,7 @@ namespace EasyConnect
                 }
             }
 
-            if (IsHandleCreated && sortListView)
+            if (IsHandleCreated && sortListView && !_deferSort)
                 _bookmarksListView.BeginInvoke(new Action(_bookmarksListView.Sort));
         }
 
@@ -336,7 +343,11 @@ namespace EasyConnect
         private void _bookmarksListView_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right && _bookmarksListView.SelectedItems.Count > 0)
+            {
+                pasteToolStripMenuItem.Enabled = _copiedItems.Count > 0 && _listViewFolders.ContainsKey(_bookmarksListView.SelectedItems[0]) &&
+                                                 _bookmarksListView.SelectedItems.Count == 1;
                 _bookmarkContextMenu.Show(Cursor.Position);
+            }
         }
 
         private void _openBookmarkNewTabMenuItem_Click(object sender, EventArgs e)
@@ -356,11 +367,31 @@ namespace EasyConnect
 
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode].Bookmarks.Remove(
-                _listViewConnections[_bookmarksListView.SelectedItems[0]]);
+            _deferSort = true;
 
-            _listViewConnections.Remove(_bookmarksListView.SelectedItems[0]);
-            _bookmarksListView.Items.Remove(_bookmarksListView.SelectedItems[0]);
+            foreach (ListViewItem selectedItem in _bookmarksListView.SelectedItems)
+            {
+                if (_listViewConnections.ContainsKey(selectedItem))
+                {
+                    _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode].Bookmarks.Remove(
+                        _listViewConnections[selectedItem]);
+                    _listViewConnections.Remove(selectedItem);
+                }
+
+                else
+                {
+                    _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode].ChildFolders.Remove(
+                        _listViewFolders[selectedItem]);
+                    _listViewFolders.Remove(selectedItem);
+                }
+
+                _bookmarksListView.Items.Remove(selectedItem);
+            }
+
+            _deferSort = false;
+
+            _bookmarksFoldersTreeView.BeginInvoke(new Action(SortTreeView));
+            _bookmarksListView.BeginInvoke(new Action(_bookmarksListView.Sort));
 
             Save();
         }
@@ -388,6 +419,8 @@ namespace EasyConnect
                 if (hitTestInfo.Node != null)
                 {
                     _bookmarksFoldersTreeView.SelectedNode = hitTestInfo.Node;
+                    _pasteFolderMenuItem.Enabled = _copiedItems.Count > 0;
+
                     _folderContextMenu.Show(Cursor.Position);
                 }
             }
@@ -426,7 +459,7 @@ namespace EasyConnect
             _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode].Name = e.Label;
             Save();
 
-            _bookmarksFoldersTreeView.BeginInvoke(new Action(_bookmarksFoldersTreeView.Sort));
+            _bookmarksFoldersTreeView.BeginInvoke(new Action(SortTreeView));
         }
 
         private void _renameFolderMenuItem_Click(object sender, EventArgs e)
@@ -436,10 +469,15 @@ namespace EasyConnect
 
         private void _deleteFolderMenuItem_Click(object sender, EventArgs e)
         {
+            _deferSort = true;
+
             _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode.Parent].ChildFolders.Remove(
                 _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode]);
 
             _bookmarksListView.Items.Clear();
+            _bookmarksFoldersTreeView.BeginInvoke(new Action(_bookmarksFoldersTreeView.Sort));
+
+            _deferSort = false;
 
             Save();
         }
@@ -547,6 +585,74 @@ namespace EasyConnect
 
             foreach (BookmarksFolder childFolder in bookmarksFolder.ChildFolders)
                 FindAllBookmarks(childFolder, bookmarkGuids);
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _copiedItems.Clear();
+
+            foreach (ListViewItem item in _bookmarksListView.SelectedItems)
+                _copiedItems.Add(
+                    _listViewConnections.ContainsKey(item)
+                        ? (object) _listViewConnections[item]
+                        : (object) _listViewFolders[item]);
+        }
+
+        private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PasteItems(_listViewFolders[_bookmarksListView.SelectedItems[0]]);
+        }
+
+        private void _pasteFolderMenuItem_Click(object sender, EventArgs e)
+        {
+            TreeNode currentFolderNode = FoldersTreeView.SelectedNode;
+            
+            PasteItems(_folderTreeNodes[currentFolderNode]);
+            FoldersTreeView.SelectedNode = currentFolderNode;
+        }
+
+        private void PasteItems(BookmarksFolder targetFolder)
+        {
+            _deferSort = true;
+
+            if ((_copiedItems[0] is BookmarksFolder && ((BookmarksFolder)_copiedItems[0]).ParentFolder == targetFolder) || (_copiedItems[0] is RdpConnection && ((RdpConnection)_copiedItems[0]).ParentFolder == targetFolder))
+            {
+                MessageBox.Show(this, "You cannot paste items into their existing parent folders.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            List<object> clonedItems = (from item in _copiedItems
+                                        select ((ICloneable)item).Clone()).ToList();
+
+            foreach (object clonedItem in clonedItems)
+            {
+                if (clonedItem is RdpConnection)
+                    targetFolder.Bookmarks.Add((RdpConnection)clonedItem);
+
+                else
+                    targetFolder.MergeFolder((BookmarksFolder)clonedItem);
+            }
+
+            _bookmarksFoldersTreeView.BeginInvoke(new Action(SortTreeView));
+            _bookmarksListView.BeginInvoke(new Action(_bookmarksListView.Sort));
+
+            _deferSort = false;
+
+            Save();
+        }
+
+        private void _copyFolderMenuItem_Click(object sender, EventArgs e)
+        {
+            _copiedItems.Clear();
+            _copiedItems.Add(_folderTreeNodes[FoldersTreeView.SelectedNode]);
+        }
+
+        private void SortTreeView()
+        {
+            TreeNode currentlySelectedNode = _bookmarksFoldersTreeView.SelectedNode;
+            
+            _bookmarksFoldersTreeView.Sort();
+            _bookmarksFoldersTreeView.SelectedNode = currentlySelectedNode;
         }
     }
 }

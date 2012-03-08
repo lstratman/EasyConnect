@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Stratman.Windows.Forms.TitleBarTabs;
 
 namespace EasyConnect
@@ -6,7 +8,8 @@ namespace EasyConnect
     /// <summary>
     /// Folder that contains <see cref="RdpConnection"/>s and child <see cref="BookmarksFolder"/> instances.
     /// </summary>
-    public class BookmarksFolder
+    [Serializable]
+    public class BookmarksFolder : ICloneable
     {
         /// <summary>
         /// Bookmarked connections contained in this folder.
@@ -17,6 +20,9 @@ namespace EasyConnect
         /// Folders beneath this one in the hierarchy.
         /// </summary>
         protected ListWithEvents<BookmarksFolder> _childFolders = new ListWithEvents<BookmarksFolder>();
+
+        [NonSerialized]
+        protected BookmarksFolder _parentFolder = null;
 
         public BookmarksFolder()
         {
@@ -44,8 +50,15 @@ namespace EasyConnect
 
         public BookmarksFolder ParentFolder
         {
-            get;
-            set;
+            get
+            {
+                return _parentFolder;
+            }
+
+            set
+            {
+                _parentFolder = value;
+            }
         }
 
         /// <summary>
@@ -77,6 +90,39 @@ namespace EasyConnect
             {
                 return _bookmarks;
             }
+        }
+
+        public object Clone()
+        {
+            BookmarksFolder clonedFolder = new BookmarksFolder
+                                               {
+                                                   Name = Name
+                                               };
+
+            foreach (RdpConnection bookmark in Bookmarks)
+                clonedFolder.Bookmarks.Add((RdpConnection)bookmark.Clone());
+
+            foreach (BookmarksFolder childFolder in ChildFolders)
+                clonedFolder.ChildFolders.Add((BookmarksFolder)childFolder.Clone());
+
+            return clonedFolder;
+        }
+
+        public void MergeFolder(BookmarksFolder childFolder)
+        {
+            if (ChildFolders.Any(f => f.Name == childFolder.Name))
+            {
+                BookmarksFolder mergeTarget = ChildFolders.First(f => f.Name == childFolder.Name);
+
+                foreach (RdpConnection bookmark in childFolder.Bookmarks)
+                    mergeTarget.Bookmarks.Add(bookmark);
+
+                foreach (BookmarksFolder folder in childFolder.ChildFolders)
+                    mergeTarget.MergeFolder(folder);
+            }
+
+            else
+                ChildFolders.Add(childFolder);
         }
     }
 }

@@ -1,13 +1,21 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using System.Security;
 using System.Xml;
 
 namespace EasyConnect
 {
-    public class RdpConnection
+    [Serializable]
+    public class RdpConnection : ICloneable, ISerializable 
     {
+        [NonSerialized]
         protected SecureString _encryptionPassword = null;
+        [NonSerialized]
         protected SecureString _password = null;
+        [NonSerialized]
+        protected BookmarksFolder _parentFolder = null;
+        [NonSerialized]
+        protected byte[] _encryptedPasswordBytes = null;
 
         public RdpConnection()
         {
@@ -30,6 +38,35 @@ namespace EasyConnect
             ConnectClipboard = true;
             ConnectPrinters = true;
             Guid = Guid.NewGuid();
+        }
+
+        protected RdpConnection(SerializationInfo info, StreamingContext context)
+        {
+            Animations = info.GetBoolean("Animations");
+            AudioMode = info.GetValue<AudioMode>("AudioMode");
+            ColorDepth = info.GetInt32("ColorDepth");
+            ConnectClipboard = info.GetBoolean("ConnectClipboard");
+            ConnectDrives = info.GetBoolean("ConnectDrives");
+            ConnectPrinters = info.GetBoolean("ConnectPrinters");
+            DesktopBackground = info.GetBoolean("DesktopBackground");
+            DesktopComposition = info.GetBoolean("DesktopComposition");
+            DesktopHeight = info.GetInt32("DesktopHeight");
+            DesktopWidth = info.GetInt32("DesktopWidth");
+            FontSmoothing = info.GetBoolean("FontSmoothing");
+            Guid = new Guid(info.GetString("Guid"));
+            Host = info.GetString("Host");
+            IsBookmark = info.GetBoolean("IsBookmark");
+            KeyboardMode = info.GetValue<KeyboardMode>("KeyboardMode");
+            Name = info.GetString("Name");
+            PersistentBitmapCaching = info.GetBoolean("PersistentBitmapCaching");
+            Username = info.GetString("Username");
+            VisualStyles = info.GetBoolean("VisualStyles");
+            WindowContentsWhileDragging = info.GetBoolean("WindowContentsWhileDragging");
+
+            string encryptedPassword = info.GetString("Password");
+
+            if (encryptedPassword != null)
+                _encryptedPasswordBytes = Convert.FromBase64String(encryptedPassword);
         }
 
         public RdpConnection(XmlNode node, SecureString encryptionPassword)
@@ -239,6 +276,28 @@ namespace EasyConnect
             set
             {
                 _encryptionPassword = value;
+
+                if (_encryptionPassword != null && _encryptedPasswordBytes != null)
+                {
+                    byte[] decryptedPassword = CryptoUtilities.Decrypt(_encryptionPassword, _encryptedPasswordBytes);
+                    SecureString password = new SecureString();
+
+                    for (int i = 0; i < decryptedPassword.Length; i++)
+                    {
+                        if (decryptedPassword[i] == 0)
+                            break;
+
+                        password.AppendChar((char) decryptedPassword[i]);
+                        decryptedPassword[i] = 0;
+                    }
+
+                    _password = password;
+
+                    for (int i = 0; i < _encryptedPasswordBytes.Length; i++)
+                        _encryptedPasswordBytes[i] = 0;
+
+                    _encryptedPasswordBytes = null;
+                }
             }
         }
 
@@ -250,8 +309,15 @@ namespace EasyConnect
 
         public BookmarksFolder ParentFolder
         {
-            get;
-            set;
+            get
+            {
+                return _parentFolder;
+            }
+
+            set
+            {
+                _parentFolder = value;
+            }
         }
 
         public virtual void ToXmlNode(XmlNode node)
@@ -304,6 +370,42 @@ namespace EasyConnect
                 node.Attributes["password"].Value =
                     Convert.ToBase64String(CryptoUtilities.Encrypt(_encryptionPassword, _password));
             }
+        }
+
+        public object Clone()
+        {
+            RdpConnection clonedConnection = SerializationHelper.Clone(this);
+
+            clonedConnection.ParentFolder = null;
+            clonedConnection.Guid = new Guid();
+            clonedConnection.EncryptionPassword = _encryptionPassword;
+
+            return clonedConnection;
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("Animations", Animations);
+            info.AddValue("AudioMode", AudioMode);
+            info.AddValue("ColorDepth", ColorDepth);
+            info.AddValue("ConnectClipboard", ConnectClipboard);
+            info.AddValue("ConnectDrives", ConnectDrives);
+            info.AddValue("ConnectPrinters", ConnectPrinters);
+            info.AddValue("DesktopBackground", DesktopBackground);
+            info.AddValue("DesktopComposition", DesktopComposition);
+            info.AddValue("DesktopHeight", DesktopHeight);
+            info.AddValue("DesktopWidth", DesktopWidth);
+            info.AddValue("FontSmoothing", FontSmoothing);
+            info.AddValue("Guid", Guid.ToString());
+            info.AddValue("Host", Host);
+            info.AddValue("IsBookmark", IsBookmark);
+            info.AddValue("KeyboardMode", KeyboardMode);
+            info.AddValue("Name", Name);
+            info.AddValue("PersistentBitmapCaching", PersistentBitmapCaching);
+            info.AddValue("Username", Username);
+            info.AddValue("VisualStyles", VisualStyles);
+            info.AddValue("WindowContentsWhileDragging", WindowContentsWhileDragging);
+            info.AddValue("Password", _password == null ? null : Convert.ToBase64String(CryptoUtilities.Encrypt(_encryptionPassword, _password)));
         }
     }
 }
