@@ -169,6 +169,26 @@ namespace EasyConnect
             _bookmarks = null;
         }
 
+        public void OpenOptions()
+        {
+            TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content is OptionsWindow);
+
+            if (tab != null)
+            {
+                SelectedTab = tab;
+                return;
+            }
+
+            TitleBarTab newTab = new TitleBarTab(this)
+                                     {
+                                         Content = new OptionsWindow()
+                                     };
+
+            Tabs.Add(newTab);
+            ResizeTabContents(newTab);
+            SelectedTabIndex = _tabs.Count - 1;
+        }
+
         public void OpenBookmarkManager()
         {
             TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content is BookmarksWindow);

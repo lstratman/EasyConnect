@@ -100,6 +100,12 @@
     <Compile Include="BookmarksWindow.designer.cs">
       <DependentUpon>BookmarksWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="OptionsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OptionsWindow.Designer.cs">
+      <DependentUpon>OptionsWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="RdpConnectionPropertiesWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,6 +140,9 @@
     <Compile Include="SerializationHelper.cs" />
     <EmbeddedResource Include="BookmarksWindow.resx">
       <DependentUpon>BookmarksWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OptionsWindow.resx">
+      <DependentUpon>OptionsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RdpConnectionPropertiesWindow.resx">
       <DependentUpon>RdpConnectionPropertiesWindow.cs</DependentUpon>
@@ -191,6 +200,7 @@
   <ItemGroup>
     <Content Include="Resources\FolderOpen.png" />
     <Content Include="Resources\ToolbarBackground.png" />
+    <Content Include="Resources\Tools.ico" />
     <Content Include="Resources\ToolsActive.png" />
     <None Include="Resources\Calendar.png" />
     <None Include="Resources\Colors.png" />

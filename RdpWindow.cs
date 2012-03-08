@@ -412,7 +412,7 @@ namespace EasyConnect
         private void _toolsButton_Click(object sender, EventArgs e)
         {
             _toolsMenu.DefaultDropDownDirection = ToolStripDropDownDirection.Left;
-            _toolsMenu.Show(_toolsButton, -1 * _toolsMenu.Width + _toolsButton.Width, _toolsButton.Height);
+            _toolsMenu.Show(_toolsButton, -187 + _toolsButton.Width, _toolsButton.Height);
         }
 
         private void _bookmarksButton_Click(object sender, EventArgs e)
@@ -506,6 +506,14 @@ namespace EasyConnect
         private void _bookmarksManagerMenuItem2_Click(object sender, EventArgs e)
         {
             ParentTabs.OpenBookmarkManager();
+
+            if (!IsConnected)
+                Close();
+        }
+
+        private void _optionsMenuItem_Click(object sender, EventArgs e)
+        {
+            ParentTabs.OpenOptions();
 
             if (!IsConnected)
                 Close();

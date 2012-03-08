@@ -66,7 +66,7 @@
             this._toolsMenuSeparator2,
             this._exitMenuItem});
             this._toolsMenu.Name = "_toolsMenu";
-            this._toolsMenu.Size = new System.Drawing.Size(187, 104);
+            this._toolsMenu.Size = new System.Drawing.Size(187, 126);
             // 
             // _newTabMenuItem
             // 
@@ -93,6 +93,7 @@
             this._optionsMenuItem.Name = "_optionsMenuItem";
             this._optionsMenuItem.Size = new System.Drawing.Size(186, 22);
             this._optionsMenuItem.Text = "Options";
+            this._optionsMenuItem.Click += new System.EventHandler(this._optionsMenuItem_Click);
             // 
             // _toolsMenuSeparator2
             // 
