@@ -199,6 +199,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\FolderOpen.png" />
+    <Content Include="Resources\OptionsSidebarBackground.png" />
+    <None Include="Resources\SelectedOptionCategoryBackground.png" />
     <Content Include="Resources\ToolbarBackground.png" />
     <Content Include="Resources\Tools.ico" />
     <Content Include="Resources\ToolsActive.png" />
