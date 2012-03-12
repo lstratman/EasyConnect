@@ -377,10 +377,13 @@ namespace EasyConnect
         {
             if (e.KeyCode == Keys.Enter)
             {
-                Connect(new RdpConnection(_password)
-                            {
-                                Host = urlTextBox.Text
-                            });
+                RdpConnection newConnection = SerializationHelper.Clone(ParentTabs.Options.RdpDefaults);
+                
+                newConnection.EncryptionPassword = _password;
+                newConnection.Host = urlTextBox.Text;
+                newConnection.Guid = Guid.NewGuid();
+
+                Connect(newConnection);
             }
         }
 

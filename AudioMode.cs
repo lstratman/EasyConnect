@@ -13,11 +13,11 @@
         /// <summary>
         /// Forward the audio to the remote system.
         /// </summary>
-        Remotely = 1,
+        Remotely = 2,
 
         /// <summary>
         /// Do not perform any audio forwarding.
         /// </summary>
-        None = 2
+        None = 1
     }
 }

@@ -10,6 +10,7 @@ using System.Security;
 using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 using EasyConnect.Properties;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
@@ -38,6 +39,7 @@ namespace EasyConnect
         protected Dictionary<RdpWindow, Bitmap> _previews = new Dictionary<RdpWindow, Bitmap>();
         protected RdpWindow _previousActiveDocument = null;
         protected JumpListCustomCategory _recentCategory = new JumpListCustomCategory("Recent");
+        protected Options _options = null;
 
         protected Queue<HistoryWindow.HistoricalConnection> _recentConnections =
             new Queue<HistoryWindow.HistoricalConnection>();
@@ -63,7 +65,7 @@ namespace EasyConnect
                                           "\\EasyConnect");
             }
 
-            while (Bookmarks == null || _history == null)
+            while (Bookmarks == null || _history == null || _options == null)
             {
                 if (_password == null)
                 {
@@ -78,6 +80,7 @@ namespace EasyConnect
                 {
                     _bookmarks = new BookmarksWindow(this);
                     _history = new HistoryWindow(this);
+                    _options = Options.Load(_password);
                 }
 
                 catch (CryptographicException)
@@ -164,6 +167,14 @@ namespace EasyConnect
             set;
         }
 
+        public Options Options
+        {
+            get
+            {
+                return _options;
+            }
+        }
+
         protected void Bookmarks_FormClosed(object sender, FormClosedEventArgs e)
         {
             _bookmarks = null;
@@ -181,7 +192,7 @@ namespace EasyConnect
 
             TitleBarTab newTab = new TitleBarTab(this)
                                      {
-                                         Content = new OptionsWindow()
+                                         Content = new OptionsWindow(this)
                                      };
 
             Tabs.Add(newTab);

@@ -2,6 +2,7 @@
 using System.Runtime.Serialization;
 using System.Security;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace EasyConnect
 {
@@ -26,6 +27,7 @@ namespace EasyConnect
             ConnectClipboard = true;
             ConnectPrinters = true;
             Guid = Guid.NewGuid();
+            RecordingMode = RecordingMode.RecordFromThisComputer;
         }
 
         public RdpConnection(SecureString encryptionPassword)
@@ -38,6 +40,7 @@ namespace EasyConnect
             ConnectClipboard = true;
             ConnectPrinters = true;
             Guid = Guid.NewGuid();
+            RecordingMode = RecordingMode.RecordFromThisComputer;
         }
 
         protected RdpConnection(SerializationInfo info, StreamingContext context)
@@ -59,6 +62,7 @@ namespace EasyConnect
             KeyboardMode = info.GetValue<KeyboardMode>("KeyboardMode");
             Name = info.GetString("Name");
             PersistentBitmapCaching = info.GetBoolean("PersistentBitmapCaching");
+            RecordingMode = info.GetValue<RecordingMode>("RecordingMode");
             Username = info.GetString("Username");
             VisualStyles = info.GetBoolean("VisualStyles");
             WindowContentsWhileDragging = info.GetBoolean("WindowContentsWhileDragging");
@@ -177,6 +181,48 @@ namespace EasyConnect
             set;
         }
 
+        [XmlElement("Password")]
+        public string Base64Password
+        {
+            get
+            {
+                if (Password == null)
+                    return null;
+
+                return Convert.ToBase64String(CryptoUtilities.Encrypt(_encryptionPassword, _password));
+            }
+
+            set
+            {
+                if (String.IsNullOrEmpty(value))
+                {
+                    Password = null;
+                    return;
+                }
+
+                if (_encryptionPassword == null)
+                {
+                    _encryptedPasswordBytes = Convert.FromBase64String(value);
+                    return;
+                }
+
+                byte[] decryptedPassword = CryptoUtilities.Decrypt(_encryptionPassword, Convert.FromBase64String(value));
+                SecureString password = new SecureString();
+
+                for (int i = 0; i < decryptedPassword.Length; i++)
+                {
+                    if (decryptedPassword[i] == 0)
+                        break;
+
+                    password.AppendChar((char)decryptedPassword[i]);
+                    decryptedPassword[i] = 0;
+                }
+
+                Password = password;
+            }
+        }
+
+        [XmlIgnore]
         public SecureString Password
         {
             get
@@ -200,6 +246,12 @@ namespace EasyConnect
         }
 
         public AudioMode AudioMode
+        {
+            get;
+            set;
+        }
+
+        public RecordingMode RecordingMode
         {
             get;
             set;
@@ -402,6 +454,7 @@ namespace EasyConnect
             info.AddValue("KeyboardMode", KeyboardMode);
             info.AddValue("Name", Name);
             info.AddValue("PersistentBitmapCaching", PersistentBitmapCaching);
+            info.AddValue("RecordingMode", RecordingMode);
             info.AddValue("Username", Username);
             info.AddValue("VisualStyles", VisualStyles);
             info.AddValue("WindowContentsWhileDragging", WindowContentsWhileDragging);
