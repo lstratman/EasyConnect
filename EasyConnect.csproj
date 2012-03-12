@@ -16,7 +16,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <ApplicationIcon>RDC.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\EasyConnect.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -200,6 +200,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="RDC.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\EasyConnect.ico" />
     <Content Include="Resources\FolderOpen.png" />
     <Content Include="Resources\OptionsSidebarBackground.png" />
     <None Include="Resources\SelectedOptionCategoryBackground.png" />
@@ -213,8 +217,6 @@
     <Content Include="lib\Microsoft.WindowsAPICodePack.dll" />
     <Content Include="lib\Microsoft.WindowsAPICodePack.Shell.dll" />
     <Content Include="lib\SecurePasswordTextBox.dll" />
-    <Content Include="RDC.ico">
-    </Content>
     <Content Include="Resources\BackActive.png" />
     <Content Include="Resources\BookmarksActive.png" />
     <Content Include="Resources\Border.png" />
