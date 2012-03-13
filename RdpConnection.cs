@@ -69,7 +69,7 @@ namespace EasyConnect
 
             string encryptedPassword = info.GetString("Password");
 
-            if (encryptedPassword != null)
+            if (!String.IsNullOrEmpty(encryptedPassword))
                 _encryptedPasswordBytes = Convert.FromBase64String(encryptedPassword);
         }
 
@@ -359,6 +359,7 @@ namespace EasyConnect
             set;
         }
 
+        [XmlIgnore]
         public BookmarksFolder ParentFolder
         {
             get
@@ -435,7 +436,7 @@ namespace EasyConnect
             return clonedConnection;
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("Animations", Animations);
             info.AddValue("AudioMode", AudioMode);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Security;
 using System.Windows.Forms;
 using System.Xml;
@@ -211,6 +212,12 @@ namespace EasyConnect
                 LastConnection = DateTime.Parse(node.Attributes["lastAccess"].Value);
             }
 
+            public HistoricalConnection(SerializationInfo info, StreamingContext context) 
+                : base(info, context)
+            {
+                LastConnection = info.GetDateTime("LastConnection");
+            }
+
             public HistoricalConnection(RdpConnection connection, SecureString encryptionPassword)
             {
                 Host = connection.Host;
@@ -235,6 +242,13 @@ namespace EasyConnect
                 Password = connection.Password;
                 Guid = connection.Guid;
                 EncryptionPassword = encryptionPassword;
+            }
+
+            public override void GetObjectData(SerializationInfo info, StreamingContext context)
+            {
+                base.GetObjectData(info, context);
+
+                info.AddValue("LastConnection", LastConnection);
             }
 
             public DateTime LastConnection

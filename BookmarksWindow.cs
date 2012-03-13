@@ -5,8 +5,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security;
+using System.Text;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Serialization;
 using Stratman.Windows.Forms.TitleBarTabs;
 
 namespace EasyConnect
@@ -42,20 +44,42 @@ namespace EasyConnect
 
             if (File.Exists(_bookmarksFileName))
             {
-                _rootFolder.Bookmarks.Clear();
-                _rootFolder.ChildFolders.Clear();
+                XmlSerializer bookmarksSerializer = new XmlSerializer(typeof(BookmarksFolder));
 
-                _rootFolder.Bookmarks.CollectionModified += Bookmarks_CollectionModified;
-                _rootFolder.ChildFolders.CollectionModified += ChildFolders_CollectionModified;
+                using (XmlReader bookmarksReader = new XmlTextReader(_bookmarksFileName))
+                {
+                    _rootFolder = (BookmarksFolder)bookmarksSerializer.Deserialize(bookmarksReader);
+                    _rootFolder.EncryptionPassword = _applicationForm.Password;
 
-                _folderTreeNodes[_bookmarksFoldersTreeView.Nodes[0]] = RootFolder;
+                    _rootFolder.Bookmarks.CollectionModified += Bookmarks_CollectionModified;
+                    _rootFolder.ChildFolders.CollectionModified += ChildFolders_CollectionModified;
 
-                XmlDocument bookmarks = new XmlDocument();
-                bookmarks.Load(_bookmarksFileName);
+                    _folderTreeNodes[_bookmarksFoldersTreeView.Nodes[0]] = _rootFolder;
 
-                InitializeTreeView(bookmarks.SelectSingleNode("/bookmarks"), _rootFolder, _bookmarksFoldersTreeView.Nodes[0]);
+                    InitializeTreeView(_rootFolder);
+                }
 
                 _bookmarksFoldersTreeView.Nodes[0].Expand();
+            }
+        }
+
+        protected void InitializeTreeView(BookmarksFolder currentFolder)
+        {
+            if (currentFolder.Bookmarks != null && currentFolder.Bookmarks.Count > 0)
+            {
+                currentFolder.Bookmarks.ForEach(b => b.ParentFolder = currentFolder);
+                Bookmarks_CollectionModified(
+                    currentFolder.Bookmarks, new ListModificationEventArgs(ListModification.RangeAdded, 0, currentFolder.Bookmarks.Count));
+            }
+
+            if (currentFolder.ChildFolders != null && currentFolder.ChildFolders.Count > 0)
+            {
+                currentFolder.ChildFolders.ForEach(f => f.ParentFolder = currentFolder);
+                ChildFolders_CollectionModified(
+                    currentFolder.ChildFolders, new ListModificationEventArgs(ListModification.RangeAdded, 0, currentFolder.ChildFolders.Count));
+
+                foreach (BookmarksFolder childFolder in currentFolder.ChildFolders)
+                    InitializeTreeView(childFolder);
             }
         }
 
@@ -279,59 +303,17 @@ namespace EasyConnect
             }
         }
 
-        protected void InitializeTreeView(XmlNode bookmarksFolder, BookmarksFolder currentFolder, TreeNode currentNode)
-        {
-            if (bookmarksFolder == null)
-                return;
-
-            foreach (XmlNode bookmark in bookmarksFolder.SelectNodes("bookmark"))
-                currentFolder.Bookmarks.Add(new RdpConnection(bookmark, _applicationForm.Password));
-
-            foreach (XmlNode folder in bookmarksFolder.SelectNodes("folder"))
-            {
-                BookmarksFolder newFolder = new BookmarksFolder
-                                                {
-                                                    Name = folder.SelectSingleNode("@name").Value
-                                                };
-
-                currentFolder.ChildFolders.Add(newFolder);
-                InitializeTreeView(folder, newFolder, _folderTreeNodes.SingleOrDefault(kvp => kvp.Value == newFolder).Key);
-            }
-        }
-
         public void Save()
         {
-            XmlDocument bookmarksFile = new XmlDocument();
-            XmlNode rootNode = bookmarksFile.CreateNode(XmlNodeType.Element, "bookmarks", null);
-
-            bookmarksFile.AppendChild(rootNode);
-            SaveTreeView(_rootFolder, rootNode);
-
             FileInfo destinationFile = new FileInfo(_bookmarksFileName);
+            XmlSerializer bookmarksSerializer = new XmlSerializer(typeof(BookmarksFolder));
 
             Directory.CreateDirectory(destinationFile.DirectoryName);
-            bookmarksFile.Save(_bookmarksFileName);
-        }
-
-        protected void SaveTreeView(BookmarksFolder currentFolder, XmlNode parentNode)
-        {
-            foreach (RdpConnection bookmark in currentFolder.Bookmarks)
+            
+            using (XmlWriter bookmarksWriter = new XmlTextWriter(_bookmarksFileName, new UnicodeEncoding()))
             {
-                XmlNode connectionNode = parentNode.OwnerDocument.CreateNode(XmlNodeType.Element, "bookmark", null);
-                parentNode.AppendChild(connectionNode);
-
-                bookmark.ToXmlNode(connectionNode);
-            }
-
-            foreach (BookmarksFolder folder in currentFolder.ChildFolders)
-            {
-                XmlNode folderNode = parentNode.OwnerDocument.CreateNode(XmlNodeType.Element, "folder", null);
-
-                folderNode.Attributes.Append(parentNode.OwnerDocument.CreateAttribute("name"));
-                folderNode.Attributes["name"].Value = folder.Name;
-
-                parentNode.AppendChild(folderNode);
-                SaveTreeView(folder, folderNode);
+                bookmarksSerializer.Serialize(bookmarksWriter, _rootFolder);
+                bookmarksWriter.Flush();
             }
         }
 
@@ -472,9 +454,8 @@ namespace EasyConnect
 
         private void _addBookmarkMenuItem_Click(object sender, EventArgs e)
         {
-            RdpConnectionPropertiesWindow connectionWindow = new RdpConnectionPropertiesWindow(_applicationForm,
-                                                                     _folderTreeNodes[
-                                                                         _bookmarksFoldersTreeView.SelectedNode]);
+            RdpConnectionPropertiesWindow connectionWindow = new RdpConnectionPropertiesWindow(
+                _applicationForm, (RdpConnection)_applicationForm.Options.RdpDefaults.Clone(), _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode]);
             connectionWindow.ShowDialog();
         }
 

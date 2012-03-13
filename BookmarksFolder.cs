@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
+using System.Xml.Serialization;
 using Stratman.Windows.Forms.TitleBarTabs;
 
 namespace EasyConnect
@@ -48,6 +50,7 @@ namespace EasyConnect
             }
         }
 
+        [XmlIgnore]
         public BookmarksFolder ParentFolder
         {
             get
@@ -89,6 +92,18 @@ namespace EasyConnect
             get
             {
                 return _bookmarks;
+            }
+        }
+
+        public SecureString EncryptionPassword
+        {
+            set
+            {
+                foreach (RdpConnection bookmark in Bookmarks)
+                    bookmark.EncryptionPassword = value;
+
+                foreach (BookmarksFolder childFolder in ChildFolders)
+                    childFolder.EncryptionPassword = value;
             }
         }
 

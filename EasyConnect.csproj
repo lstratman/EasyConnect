@@ -200,9 +200,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="RDC.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\EasyConnect.ico" />
     <Content Include="Resources\FolderOpen.png" />
     <Content Include="Resources\OptionsSidebarBackground.png" />
