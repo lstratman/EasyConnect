@@ -4,8 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Security;
+using System.Text;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace EasyConnect
 {
@@ -27,12 +29,16 @@ namespace EasyConnect
 
             if (File.Exists(_historyFileName))
             {
-                XmlDocument history = new XmlDocument();
-                history.Load(_historyFileName);
+                XmlSerializer historySerializer = new XmlSerializer(typeof(List<HistoricalConnection>));
+                List<HistoricalConnection> historicalConnections = null;
 
-                foreach (XmlNode node in history.SelectNodes("/history/connection"))
+                using (XmlReader historyReader = new XmlTextReader(_historyFileName))
                 {
-                    HistoricalConnection historyEntry = new HistoricalConnection(node, _applicationForm.Password);
+                    historicalConnections = (List<HistoricalConnection>)historySerializer.Deserialize(historyReader);
+                }
+
+                foreach (HistoricalConnection historyEntry in historicalConnections)
+                {
                     TreeNode newTreeNode = new TreeNode(historyEntry.DisplayName, 2, 2);
 
                     if (historyEntry.LastConnection.DayOfYear == DateTime.Now.DayOfYear &&
@@ -164,23 +170,16 @@ namespace EasyConnect
 
         public void Save()
         {
-            XmlDocument historyFile = new XmlDocument();
-            XmlNode rootNode = historyFile.CreateNode(XmlNodeType.Element, "history", null);
-
-            historyFile.AppendChild(rootNode);
-
-            foreach (HistoricalConnection connection in _connections.Values)
-            {
-                XmlNode connectionNode = historyFile.CreateNode(XmlNodeType.Element, "connection", null);
-                rootNode.AppendChild(connectionNode);
-
-                connection.ToXmlNode(connectionNode);
-            }
-
             FileInfo destinationFile = new FileInfo(_historyFileName);
+            XmlSerializer historySerializer = new XmlSerializer(typeof(List<HistoricalConnection>));
 
             Directory.CreateDirectory(destinationFile.DirectoryName);
-            historyFile.Save(_historyFileName);
+
+            using (XmlWriter historyWriter = new XmlTextWriter(_historyFileName, new UnicodeEncoding()))
+            {
+                historySerializer.Serialize(historyWriter, _connections.Values.ToList());
+                historyWriter.Flush();
+            }
         }
 
         private void historyTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -206,10 +205,8 @@ namespace EasyConnect
 
         public class HistoricalConnection : RdpConnection
         {
-            public HistoricalConnection(XmlNode node, SecureString encryptionPassword)
-                : base(node, encryptionPassword)
+            public HistoricalConnection()
             {
-                LastConnection = DateTime.Parse(node.Attributes["lastAccess"].Value);
             }
 
             public HistoricalConnection(SerializationInfo info, StreamingContext context) 
@@ -255,14 +252,6 @@ namespace EasyConnect
             {
                 get;
                 set;
-            }
-
-            public override void ToXmlNode(XmlNode node)
-            {
-                base.ToXmlNode(node);
-
-                node.Attributes.Append(node.OwnerDocument.CreateAttribute("lastAccess"));
-                node.Attributes["lastAccess"].Value = LastConnection.ToString();
             }
         }
     }

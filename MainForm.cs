@@ -149,6 +149,17 @@ namespace EasyConnect
             }
         }
 
+        public HistoryWindow History
+        {
+            get
+            {
+                if (_history == null && _password != null)
+                    _history = new HistoryWindow(this);
+
+                return _history;
+            }
+        }
+
         public bool Closing
         {
             get;
@@ -198,6 +209,33 @@ namespace EasyConnect
             Tabs.Add(newTab);
             ResizeTabContents(newTab);
             SelectedTabIndex = _tabs.Count - 1;
+        }
+
+        public void OpenHistory()
+        {
+            TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content is HistoryWindow);
+
+            if (tab != null)
+            {
+                SelectedTab = tab;
+                return;
+            }
+
+            TitleBarTab newTab = new TitleBarTab(this)
+                                     {
+                                         Content = History
+                                     };
+
+            Tabs.Add(newTab);
+            ResizeTabContents(newTab);
+
+            SelectedTabIndex = _tabs.Count - 1;
+            History.FormClosed += History_FormClosed;
+        }
+
+        private void History_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _history = null;
         }
 
         public void OpenBookmarkManager()
@@ -272,8 +310,6 @@ namespace EasyConnect
 
         public TitleBarTab Connect(RdpConnection connection)
         {
-            _history.AddToHistory(connection);
-
             RdpWindow sessionWindow = new RdpWindow(_password);
 
             _addingWindow = true;
@@ -350,15 +386,10 @@ namespace EasyConnect
 
         private void preview_TabbedThumbnailBitmapRequested(object sender, TabbedThumbnailBitmapRequestedEventArgs e)
         {
-            foreach (TitleBarTab tab in Tabs)
+            foreach (RdpWindow rdcWindow in Tabs.Where(tab => tab.Content is RdpWindow).Select(tab => (RdpWindow) tab.Content).Where(rdcWindow => rdcWindow.Handle == e.WindowHandle && _previews.ContainsKey(rdcWindow)))
             {
-                RdpWindow rdcWindow = (RdpWindow) tab.Content;
-
-                if (rdcWindow.Handle == e.WindowHandle && _previews.ContainsKey(rdcWindow))
-                {
-                    e.SetImage(_previews[rdcWindow]);
-                    break;
-                }
+                e.SetImage(_previews[rdcWindow]);
+                break;
             }
         }
 

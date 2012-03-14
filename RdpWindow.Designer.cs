@@ -47,6 +47,8 @@
             this.urlBorder = new System.Windows.Forms.Panel();
             this.urlBackground = new System.Windows.Forms.Panel();
             this._rdcWindow = new AxMSTSCLib.AxMsRdpClient2();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this._historyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._toolsMenu.SuspendLayout();
             this._bookmarksMenu.SuspendLayout();
             this.toolbarBackground.SuspendLayout();
@@ -61,12 +63,14 @@
             this._toolsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._newTabMenuItem,
             this._newWindowMenuItem,
+            this.toolStripSeparator1,
+            this._historyToolStripMenuItem,
             this._toolsMenuSeparator1,
             this._optionsMenuItem,
             this._toolsMenuSeparator2,
             this._exitMenuItem});
             this._toolsMenu.Name = "_toolsMenu";
-            this._toolsMenu.Size = new System.Drawing.Size(187, 126);
+            this._toolsMenu.Size = new System.Drawing.Size(187, 154);
             // 
             // _newTabMenuItem
             // 
@@ -226,6 +230,19 @@
             this._rdcWindow.Size = new System.Drawing.Size(624, 401);
             this._rdcWindow.TabIndex = 0;
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(183, 6);
+            // 
+            // _historyToolStripMenuItem
+            // 
+            this._historyToolStripMenuItem.Name = "_historyToolStripMenuItem";
+            this._historyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
+            this._historyToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this._historyToolStripMenuItem.Text = "History";
+            this._historyToolStripMenuItem.Click += new System.EventHandler(this._historyToolStripMenuItem_Click);
+            // 
             // RdpWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -268,5 +285,7 @@
         private System.Windows.Forms.ContextMenuStrip _bookmarksMenu;
         private System.Windows.Forms.ToolStripMenuItem _bookmarksManagerMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem bookmarkThisSiteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem _historyToolStripMenuItem;
     }
 }

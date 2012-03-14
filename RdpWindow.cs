@@ -370,6 +370,8 @@ namespace EasyConnect
             urlTextBox.Text = connection.Host;
 
             _connection = connection;
+            ParentTabs.History.AddToHistory(_connection);
+
             Connect();
         }
 
@@ -517,6 +519,14 @@ namespace EasyConnect
         private void _optionsMenuItem_Click(object sender, EventArgs e)
         {
             ParentTabs.OpenOptions();
+
+            if (!IsConnected)
+                Close();
+        }
+
+        private void _historyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ParentTabs.OpenHistory();
 
             if (!IsConnected)
                 Close();

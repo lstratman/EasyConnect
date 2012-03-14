@@ -75,8 +75,8 @@
             this.historyTreeView.SelectedImageIndex = 0;
             this.historyTreeView.Size = new System.Drawing.Size(284, 262);
             this.historyTreeView.TabIndex = 0;
-            this.historyTreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.historyTreeView_NodeMouseDoubleClick);
             this.historyTreeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.historyTreeView_NodeMouseClick);
+            this.historyTreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.historyTreeView_NodeMouseDoubleClick);
             // 
             // historyImageList
             // 
