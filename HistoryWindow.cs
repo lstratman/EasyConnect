@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,8 +14,8 @@ namespace EasyConnect
 {
     public partial class HistoryWindow : Form
     {
-        private readonly Dictionary<TreeNode, HistoricalConnection> _connections =
-            new Dictionary<TreeNode, HistoricalConnection>();
+        private readonly Dictionary<ListViewItem, HistoricalConnection> _connections =
+            new Dictionary<ListViewItem, HistoricalConnection>();
 
         protected string _historyFileName = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
                                             "\\EasyConnect\\History.xml";
@@ -24,8 +25,10 @@ namespace EasyConnect
         public HistoryWindow(MainForm applicationForm)
         {
             _applicationForm = applicationForm;
-
+            
             InitializeComponent();
+
+            _historyListView.ListViewItemSorter = new HistoryComparer(_connections);
 
             if (File.Exists(_historyFileName))
             {
@@ -39,32 +42,8 @@ namespace EasyConnect
 
                 foreach (HistoricalConnection historyEntry in historicalConnections)
                 {
-                    TreeNode newTreeNode = new TreeNode(historyEntry.DisplayName, 2, 2);
-
-                    if (historyEntry.LastConnection.DayOfYear == DateTime.Now.DayOfYear &&
-                        historyEntry.LastConnection.Year == DateTime.Now.Year)
-                        AddTreeNode(historyTreeView.Nodes[0].Nodes[0].Nodes, newTreeNode);
-
-                    else if (historyEntry.LastConnection.DayOfYear == DateTime.Now.DayOfYear - 1 &&
-                             historyEntry.LastConnection.Year == DateTime.Now.Year)
-                        AddTreeNode(historyTreeView.Nodes[0].Nodes[1].Nodes, newTreeNode);
-
-                    else if (historyEntry.LastConnection.DayOfYear >=
-                             DateTime.Now.DayOfYear - (int) DateTime.Now.DayOfWeek &&
-                             historyEntry.LastConnection.Year == DateTime.Now.Year)
-                        AddTreeNode(historyTreeView.Nodes[0].Nodes[2].Nodes, newTreeNode);
-
-                    else if (historyEntry.LastConnection.Month == DateTime.Now.Month &&
-                             historyEntry.LastConnection.Year == DateTime.Now.Year)
-                        AddTreeNode(historyTreeView.Nodes[0].Nodes[3].Nodes, newTreeNode);
-
-                    else if (historyEntry.LastConnection.Year == DateTime.Now.Year)
-                        AddTreeNode(historyTreeView.Nodes[0].Nodes[4].Nodes, newTreeNode);
-
-                    else
-                        continue;
-
-                    _connections[newTreeNode] = historyEntry;
+                    historyEntry.EncryptionPassword = _applicationForm.Password;
+                    AddToHistory(historyEntry);
                 }
             }
         }
@@ -84,88 +63,43 @@ namespace EasyConnect
 
         public void AddToHistory(RdpConnection connection)
         {
-            TreeNode connectionNode = FindConnectionNode(historyTreeView.Nodes, connection);
-            HistoricalConnection historyEntry = new HistoricalConnection(connection, _applicationForm.Password);
-
-            if (connectionNode != null)
-            {
-                if (!String.IsNullOrEmpty(_connections[connectionNode].Name) && String.IsNullOrEmpty(connection.Name))
-                    historyEntry.Name = _connections[connectionNode].Name;
-            }
-
-            historyEntry.LastConnection = DateTime.Now;
-
-            if (FindConnectionNode(historyTreeView.Nodes[0].Nodes[0].Nodes, connection) == null)
-            {
-                if (connectionNode != null)
-                {
-                    _connections.Remove(connectionNode);
-                    connectionNode.Remove();
-                }
-
-                TreeNode newTreeNode = new TreeNode(historyEntry.DisplayName, 2, 2);
-
-                AddTreeNode(historyTreeView.Nodes[0].Nodes[0].Nodes, newTreeNode);
-                _connections[newTreeNode] = historyEntry;
-            }
-
-            else if (connectionNode != null)
-            {
-                TreeNode newTreeNode = new TreeNode(historyEntry.DisplayName, 2, 2);
-
-                _connections.Remove(connectionNode);
-                connectionNode.Remove();
-                AddTreeNode(historyTreeView.Nodes[0].Nodes[0].Nodes, newTreeNode);
-                _connections[newTreeNode] = historyEntry;
-            }
-
+            HistoricalConnection historyEntry = new HistoricalConnection(connection, _applicationForm.Password)
+                                                    {
+                                                        LastConnection = DateTime.Now
+                                                    };
+            
+            AddToHistory(historyEntry);
             Save();
         }
 
-        protected void AddTreeNode(TreeNodeCollection collection, TreeNode child)
+        protected override void OnShown(EventArgs e)
         {
-            int insertPoint = 0;
+            base.OnShown(e);
 
-            for (int i = 0; i < collection.Count; i++)
-            {
-                if (child.ImageIndex != 1 && collection[i].ImageIndex == 1)
-                    break;
-
-                if (child.ImageIndex == collection[i].ImageIndex && String.Compare(collection[i].Text, child.Text) > 0)
-                    break;
-
-                insertPoint++;
-            }
-
-            collection.Insert(insertPoint, child);
+            _historyListView.BeginInvoke(new Action(_historyListView.Sort));
         }
 
-        protected TreeNode FindConnectionNode(TreeNodeCollection searchNodes, RdpConnection connection)
+        protected void AddToHistory(HistoricalConnection historyEntry)
         {
-            foreach (TreeNode node in searchNodes)
-            {
-                if (node.ImageIndex != 2)
-                {
-                    TreeNode foundNode = FindConnectionNode(node.Nodes, connection);
+            if (_historyListView.Groups[historyEntry.LastConnection.ToString("yyyy-MM-dd")] == null)
+                _historyListView.Groups.Add(
+                    new ListViewGroup(historyEntry.LastConnection.ToString("yyyy-MM-dd"), historyEntry.LastConnection.ToLongDateString()));
 
-                    if (foundNode != null)
-                        return foundNode;
-                }
+            ListViewItem listViewItem = new ListViewItem(historyEntry.LastConnection.ToLongTimeString(), 0);
 
-                else
-                {
-                    if (connection.Host == _connections[node].Host)
-                        return node;
-                }
-            }
+            listViewItem.SubItems.Add(historyEntry.DisplayName);
+            listViewItem.SubItems.Add(historyEntry.Host);
 
-            return null;
-        }
+            _connections[listViewItem] = historyEntry;
 
-        private void historyTreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            if (e.Node.ImageIndex == 2)
-                _applicationForm.Connect(_connections[e.Node]);
+            _historyListView.Items.Add(listViewItem);
+            _historyListView.Groups[historyEntry.LastConnection.ToString("yyyy-MM-dd")].Items.Add(listViewItem);
+            _historyListView.Columns[0].Width = 119;
+            _historyListView.Columns[1].Width = 143;
+            _historyListView.Columns[2].Width = 419;
+
+            if (IsHandleCreated)
+                _historyListView.BeginInvoke(new Action(_historyListView.Sort));
         }
 
         public void Save()
@@ -175,6 +109,12 @@ namespace EasyConnect
 
             Directory.CreateDirectory(destinationFile.DirectoryName);
 
+            foreach (KeyValuePair<ListViewItem, HistoricalConnection> connection in _connections.Where(kvp => kvp.Value.LastConnection < DateTime.Now.AddDays(-14)).ToList())
+            {
+                connection.Key.Remove();
+                _connections.Remove(connection.Key);
+            }
+
             using (XmlWriter historyWriter = new XmlTextWriter(_historyFileName, new UnicodeEncoding()))
             {
                 historySerializer.Serialize(historyWriter, _connections.Values.ToList());
@@ -182,25 +122,16 @@ namespace EasyConnect
             }
         }
 
-        private void historyTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right && e.Node.ImageIndex == 2)
-            {
-                historyTreeView.SelectedNode = e.Node;
-                historyContextMenu.Show(Cursor.Position);
-            }
-        }
-
         private void propertiesMenuItem_Click(object sender, EventArgs e)
         {
             RdpConnectionPropertiesWindow connectionWindow = new RdpConnectionPropertiesWindow(_applicationForm,
-                                                                     _connections[historyTreeView.SelectedNode]);
+                                                                      _connections[_historyListView.SelectedItems[0]]);
             connectionWindow.ShowDialog();
         }
 
         private void connectMenuItem_Click(object sender, EventArgs e)
         {
-            _applicationForm.Connect(_connections[historyTreeView.SelectedNode]);
+            _applicationForm.Connect(_connections[_historyListView.SelectedItems[0]]);
         }
 
         public class HistoricalConnection : RdpConnection
@@ -253,6 +184,36 @@ namespace EasyConnect
                 get;
                 set;
             }
+        }
+
+        protected class HistoryComparer : IComparer
+        {
+            private Dictionary<ListViewItem, HistoricalConnection> _connections = null;
+
+            public HistoryComparer(Dictionary<ListViewItem, HistoricalConnection> connections)
+            {
+                _connections = connections;
+            }
+
+            public int Compare(object x, object y)
+            {
+                HistoricalConnection connectionX = _connections[(ListViewItem)x];
+                HistoricalConnection connectionY = _connections[(ListViewItem)y];
+
+                return connectionY.LastConnection.CompareTo(connectionX.LastConnection);
+            }
+        }
+
+        private void _historyListView_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && _historyListView.SelectedItems.Count > 0)
+                historyContextMenu.Show(Cursor.Position);
+        }
+
+        private void _historyListView_DoubleClick(object sender, EventArgs e)
+        {
+            if (_historyListView.SelectedItems.Count > 0)
+                _applicationForm.Connect(_connections[_historyListView.SelectedItems[0]]);
         }
     }
 }

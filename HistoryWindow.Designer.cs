@@ -29,62 +29,23 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Today");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Yesterday");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("This Week");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("This Month");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("This Year");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("History", 1, 1, new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2,
-            treeNode3,
-            treeNode4,
-            treeNode5});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HistoryWindow));
-            this.historyTreeView = new System.Windows.Forms.TreeView();
             this.historyImageList = new System.Windows.Forms.ImageList(this.components);
             this.historyContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.propertiesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._historyListView = new System.Windows.Forms.ListView();
+            this._timeHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this._nameHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this._hostHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.historyContextMenu.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // historyTreeView
-            // 
-            this.historyTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.historyTreeView.ImageIndex = 0;
-            this.historyTreeView.ImageList = this.historyImageList;
-            this.historyTreeView.Location = new System.Drawing.Point(0, 0);
-            this.historyTreeView.Name = "historyTreeView";
-            treeNode1.Name = "Today";
-            treeNode1.Text = "Today";
-            treeNode2.Name = "Yesterday";
-            treeNode2.Text = "Yesterday";
-            treeNode3.Name = "ThisWeek";
-            treeNode3.Text = "This Week";
-            treeNode4.Name = "ThisMonth";
-            treeNode4.Text = "This Month";
-            treeNode5.Name = "ThisYear";
-            treeNode5.Text = "This Year";
-            treeNode6.ImageIndex = 1;
-            treeNode6.Name = "History";
-            treeNode6.SelectedImageIndex = 1;
-            treeNode6.Text = "History";
-            this.historyTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode6});
-            this.historyTreeView.SelectedImageIndex = 0;
-            this.historyTreeView.Size = new System.Drawing.Size(284, 262);
-            this.historyTreeView.TabIndex = 0;
-            this.historyTreeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.historyTreeView_NodeMouseClick);
-            this.historyTreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.historyTreeView_NodeMouseDoubleClick);
             // 
             // historyImageList
             // 
             this.historyImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("historyImageList.ImageStream")));
             this.historyImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.historyImageList.Images.SetKeyName(0, "Calendar.png");
-            this.historyImageList.Images.SetKeyName(1, "History.ico");
-            this.historyImageList.Images.SetKeyName(2, "RDCSmall.ico");
+            this.historyImageList.Images.SetKeyName(0, "RDCSmall.ico");
             // 
             // historyContextMenu
             // 
@@ -109,12 +70,45 @@
             this.connectMenuItem.Text = "Connect";
             this.connectMenuItem.Click += new System.EventHandler(this.connectMenuItem_Click);
             // 
+            // _historyListView
+            // 
+            this._historyListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._historyListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._historyListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this._timeHeader,
+            this._nameHeader,
+            this._hostHeader});
+            this._historyListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this._historyListView.Location = new System.Drawing.Point(0, 0);
+            this._historyListView.Name = "_historyListView";
+            this._historyListView.Size = new System.Drawing.Size(764, 483);
+            this._historyListView.SmallImageList = this.historyImageList;
+            this._historyListView.TabIndex = 1;
+            this._historyListView.UseCompatibleStateImageBehavior = false;
+            this._historyListView.View = System.Windows.Forms.View.Details;
+            this._historyListView.DoubleClick += new System.EventHandler(this._historyListView_DoubleClick);
+            this._historyListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this._historyListView_MouseClick);
+            // 
+            // _timeHeader
+            // 
+            this._timeHeader.Text = "Time";
+            // 
+            // _nameHeader
+            // 
+            this._nameHeader.Text = "Name";
+            // 
+            // _hostHeader
+            // 
+            this._hostHeader.Text = "Host";
+            // 
             // HistoryWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
-            this.Controls.Add(this.historyTreeView);
+            this.ClientSize = new System.Drawing.Size(760, 480);
+            this.Controls.Add(this._historyListView);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "HistoryWindow";
@@ -126,10 +120,13 @@
 
         #endregion
 
-        private System.Windows.Forms.TreeView historyTreeView;
         private System.Windows.Forms.ImageList historyImageList;
         private System.Windows.Forms.ContextMenuStrip historyContextMenu;
         private System.Windows.Forms.ToolStripMenuItem propertiesMenuItem;
         private System.Windows.Forms.ToolStripMenuItem connectMenuItem;
+        private System.Windows.Forms.ListView _historyListView;
+        private System.Windows.Forms.ColumnHeader _timeHeader;
+        private System.Windows.Forms.ColumnHeader _nameHeader;
+        private System.Windows.Forms.ColumnHeader _hostHeader;
     }
 }
