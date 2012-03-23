@@ -433,7 +433,7 @@ namespace EasyConnect
             PopulateBookmarks(ParentTabs.Bookmarks.RootFolder, _bookmarksMenu.Items, true);
 
             _bookmarksMenu.DefaultDropDownDirection = ToolStripDropDownDirection.Left;
-            _bookmarksMenu.Show(_bookmarksButton, -1 * _bookmarksMenu.Width + _bookmarksButton.Width,
+            _bookmarksMenu.Show(_bookmarksButton, -1 * (_bookmarksMenu.Items.Count > 2 ? _bookmarksMenu.Width : 259) + _bookmarksButton.Width,
                                 _bookmarksButton.Height);
         }
 
