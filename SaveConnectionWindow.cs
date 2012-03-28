@@ -39,7 +39,8 @@ namespace EasyConnect
                     folderNode = folderNode.Nodes[pathIndexes[i]];
                 }
 
-                bookmarksTreeView.SelectedNode = folderNode.Nodes[pathIndexes.Last()];
+                if (folderNode.Nodes.Count > 0)
+                    bookmarksTreeView.SelectedNode = folderNode.Nodes[pathIndexes.Last()];
             }
         }
 
