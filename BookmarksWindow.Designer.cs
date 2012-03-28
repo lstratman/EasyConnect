@@ -61,7 +61,7 @@ namespace EasyConnect
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Bookmarks");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Bookmarks");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BookmarksWindow));
             this._splitContainer = new System.Windows.Forms.SplitContainer();
             this._bookmarksFoldersTreeView = new System.Windows.Forms.TreeView();
@@ -136,10 +136,10 @@ namespace EasyConnect
             this._bookmarksFoldersTreeView.LabelEdit = true;
             this._bookmarksFoldersTreeView.Location = new System.Drawing.Point(12, 12);
             this._bookmarksFoldersTreeView.Name = "_bookmarksFoldersTreeView";
-            treeNode1.Name = "root";
-            treeNode1.Text = "Bookmarks";
+            treeNode2.Name = "root";
+            treeNode2.Text = "Bookmarks";
             this._bookmarksFoldersTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            treeNode2});
             this._bookmarksFoldersTreeView.SelectedImageIndex = 1;
             this._bookmarksFoldersTreeView.ShowRootLines = false;
             this._bookmarksFoldersTreeView.Size = new System.Drawing.Size(147, 400);
@@ -251,6 +251,7 @@ namespace EasyConnect
             this._cutFolderMenuItem.Name = "_cutFolderMenuItem";
             this._cutFolderMenuItem.Size = new System.Drawing.Size(247, 22);
             this._cutFolderMenuItem.Text = "Cut";
+            this._cutFolderMenuItem.Click += new System.EventHandler(this._cutFolderMenuItem_Click);
             // 
             // _copyFolderMenuItem
             // 
@@ -359,6 +360,7 @@ namespace EasyConnect
             this._cutBookmarkMenuItem.Name = "_cutBookmarkMenuItem";
             this._cutBookmarkMenuItem.Size = new System.Drawing.Size(170, 22);
             this._cutBookmarkMenuItem.Text = "Cut";
+            this._cutBookmarkMenuItem.Click += new System.EventHandler(this._cutBookmarkMenuItem_Click);
             // 
             // copyToolStripMenuItem
             // 

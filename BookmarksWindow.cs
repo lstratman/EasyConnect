@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Security;
@@ -29,6 +30,7 @@ namespace EasyConnect
         protected BookmarksFolder _rootFolder = new BookmarksFolder();
 
         protected List<object> _copiedItems = new List<object>();
+        protected List<object> _cutItems = new List<object>();
 
         protected MainForm _applicationForm = null;
 
@@ -105,6 +107,21 @@ namespace EasyConnect
                 if (_bookmarksFoldersTreeView.SelectedNode != null)
                 {
                     _pasteFolderMenuItem_Click(null, null);
+                    return true;
+                }
+            }
+
+            else if (keyData == (Keys.Control | Keys.X))
+            {
+                if (_bookmarksFoldersTreeView.Focused && _bookmarksFoldersTreeView.SelectedNode != null)
+                {
+                    _cutFolderMenuItem_Click(null, null);
+                    return true;
+                }
+
+                else if (_bookmarksListView.Focused && _bookmarksListView.SelectedItems.Count > 0)
+                {
+                    _cutBookmarkMenuItem_Click(null, null);
                     return true;
                 }
             }
@@ -370,7 +387,7 @@ namespace EasyConnect
         {
             if (e.Button == MouseButtons.Right && _bookmarksListView.SelectedItems.Count > 0)
             {
-                pasteToolStripMenuItem.Enabled = _copiedItems.Count > 0 && _listViewFolders.ContainsKey(_bookmarksListView.SelectedItems[0]) &&
+                pasteToolStripMenuItem.Enabled = (_copiedItems.Count > 0 || _cutItems.Count > 0) && _listViewFolders.ContainsKey(_bookmarksListView.SelectedItems[0]) &&
                                                  _bookmarksListView.SelectedItems.Count == 1;
                 _bookmarkContextMenu.Show(Cursor.Position);
             }
@@ -445,7 +462,7 @@ namespace EasyConnect
                 if (hitTestInfo.Node != null)
                 {
                     _bookmarksFoldersTreeView.SelectedNode = hitTestInfo.Node;
-                    _pasteFolderMenuItem.Enabled = _copiedItems.Count > 0;
+                    _pasteFolderMenuItem.Enabled = _copiedItems.Count > 0 || _cutItems.Count > 0;
 
                     _folderContextMenu.Show(Cursor.Position);
                 }
@@ -615,11 +632,12 @@ namespace EasyConnect
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _copiedItems.Clear();
+            _cutItems.Clear();
 
             foreach (ListViewItem item in _bookmarksListView.SelectedItems)
                 _copiedItems.Add(
                     _listViewConnections.ContainsKey(item)
-                        ? (object) _listViewConnections[item]
+                        ? _listViewConnections[item]
                         : (object) _listViewFolders[item]);
         }
 
@@ -640,13 +658,15 @@ namespace EasyConnect
         {
             _deferSort = true;
 
-            if ((_copiedItems[0] is BookmarksFolder && ((BookmarksFolder)_copiedItems[0]).ParentFolder == targetFolder) || (_copiedItems[0] is RdpConnection && ((RdpConnection)_copiedItems[0]).ParentFolder == targetFolder))
+            List<object> source = _cutItems.Union(_copiedItems).ToList();
+
+            if ((source[0] is BookmarksFolder && ((BookmarksFolder)source[0]).ParentFolder == targetFolder) || (source[0] is RdpConnection && ((RdpConnection)source[0]).ParentFolder == targetFolder))
             {
                 MessageBox.Show(this, "You cannot paste items into their existing parent folders.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            List<object> clonedItems = (from item in _copiedItems
+            List<object> clonedItems = (from item in source
                                         select ((ICloneable)item).Clone()).ToList();
 
             foreach (object clonedItem in clonedItems)
@@ -656,6 +676,34 @@ namespace EasyConnect
 
                 else
                     targetFolder.MergeFolder((BookmarksFolder)clonedItem);
+            }
+
+            if (_cutItems.Count > 0)
+            {
+                foreach (object cutItem in _cutItems)
+                {
+                    RdpConnection connection = cutItem as RdpConnection;
+
+                    if (connection != null)
+                    {
+                        connection.ParentFolder.Bookmarks.Remove(connection);
+
+                        if (_listViewConnections.ContainsValue(connection))
+                            _bookmarksListView.Items.Remove(_listViewConnections.First(kvp => kvp.Value == connection).Key);
+                    }
+
+                    else
+                    {
+                        BookmarksFolder folder = cutItem as BookmarksFolder;
+
+                        folder.ParentFolder.ChildFolders.Remove(folder);
+
+                        if (_listViewFolders.ContainsValue(folder))
+                            _bookmarksListView.Items.Remove(_listViewFolders.First(kvp => kvp.Value == folder).Key);
+                    }
+                }
+
+                _cutItems.Clear();
             }
 
             _bookmarksFoldersTreeView.BeginInvoke(new Action(SortTreeView));
@@ -669,6 +717,7 @@ namespace EasyConnect
         private void _copyFolderMenuItem_Click(object sender, EventArgs e)
         {
             _copiedItems.Clear();
+            _cutItems.Clear();
             _copiedItems.Add(_folderTreeNodes[FoldersTreeView.SelectedNode]);
         }
 
@@ -678,6 +727,31 @@ namespace EasyConnect
             
             _bookmarksFoldersTreeView.Sort();
             _bookmarksFoldersTreeView.SelectedNode = currentlySelectedNode;
+        }
+
+        private void _cutBookmarkMenuItem_Click(object sender, EventArgs e)
+        {
+            _copiedItems.Clear();
+            _cutItems.Clear();
+
+            foreach (ListViewItem item in _bookmarksListView.SelectedItems)
+            {
+                _cutItems.Add(
+                    _listViewConnections.ContainsKey(item)
+                        ? _listViewConnections[item]
+                        : (object) _listViewFolders[item]);
+
+                item.ForeColor = Color.Gray;
+            }
+        }
+
+        private void _cutFolderMenuItem_Click(object sender, EventArgs e)
+        {
+            _copiedItems.Clear();
+            _cutItems.Clear();
+
+            _cutItems.Add(_folderTreeNodes[FoldersTreeView.SelectedNode]);
+            FoldersTreeView.SelectedNode.ForeColor = Color.Gray;
         }
     }
 }
