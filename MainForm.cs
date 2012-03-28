@@ -442,7 +442,8 @@ namespace EasyConnect
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _bookmarks.Save();
+            if (_bookmarks != null)
+                _bookmarks.Save();
         }
 
         protected override void OnShown(EventArgs e)
