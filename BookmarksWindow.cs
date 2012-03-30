@@ -395,7 +395,9 @@ namespace EasyConnect
 
         private void _openBookmarkNewTabMenuItem_Click(object sender, EventArgs e)
         {
-            ParentTabs.SelectedTab = _applicationForm.Connect(_listViewConnections[_bookmarksListView.SelectedItems[0]]);
+            //ParentTabs.SelectedTab = _applicationForm.Connect(_listViewConnections[_bookmarksListView.SelectedItems[0]]);
+
+            OpenSelectedBookmarks();
         }
 
         private void _editBookmarkMenuItem_Click(object sender, EventArgs e)
@@ -451,6 +453,15 @@ namespace EasyConnect
 
             foreach (BookmarksFolder childFolder in folder.ChildFolders)
                 OpenAllBookmarks(childFolder);
+        }
+
+        private void OpenSelectedBookmarks()
+        {
+
+            foreach (ListViewItem item in _bookmarksListView.SelectedItems)
+            {
+                _applicationForm.Connect(_listViewConnections[item]);
+            }
         }
 
         private void _bookmarksTreeView_MouseClick(object sender, MouseEventArgs e)
