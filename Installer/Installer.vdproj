@@ -7,27 +7,27 @@
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
-"SccProjectName" = "8:SAK"
-"SccLocalPath" = "8:SAK"
-"SccAuxPath" = "8:SAK"
-"SccProvider" = "8:SAK"
+"SccProjectName" = "8:"
+"SccLocalPath" = "8:"
+"SccAuxPath" = "8:"
+"SccProvider" = "8:"
     "Hierarchy"
     {
         "Entry"
         {
-        "MsmKey" = "8:_05D15D2E7740489AA1EE3489CDA468D9"
+        "MsmKey" = "8:_1CB60A2FF66110E9DD42A25A5EDA8982"
         "OwnerKey" = "8:_9FAB19F059224E9D912A66C91EFB6997"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_05D15D2E7740489AA1EE3489CDA468D9"
-        "OwnerKey" = "8:_09D01F450D3DD10EFDA77E1D02962DD3"
+        "MsmKey" = "8:_1CB60A2FF66110E9DD42A25A5EDA8982"
+        "OwnerKey" = "8:_DDC4D1863EAD10701777876DFE876AFF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_09D01F450D3DD10EFDA77E1D02962DD3"
+        "MsmKey" = "8:_2DBCEC425A35191E9791637A14266890"
         "OwnerKey" = "8:_9FAB19F059224E9D912A66C91EFB6997"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -39,13 +39,25 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_6AA8AB4961D55C05B616FF3FE965DF7B"
-        "OwnerKey" = "8:_C86258E327A79F5F4F397D77133DEA41"
+        "MsmKey" = "8:_3C1E29EA20B7D486027F4BF6F06BC5BD"
+        "OwnerKey" = "8:_2DBCEC425A35191E9791637A14266890"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_8FF6BF51E8EEE13B1BD7C61D4EDC3C2B"
+        "MsmKey" = "8:_3C1E29EA20B7D486027F4BF6F06BC5BD"
+        "OwnerKey" = "8:_9FAB19F059224E9D912A66C91EFB6997"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6AA8AB4961D55C05B616FF3FE965DF7B"
+        "OwnerKey" = "8:_3C1E29EA20B7D486027F4BF6F06BC5BD"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8F80A71196E81C26ACF2E71566F4AA29"
         "OwnerKey" = "8:_9FAB19F059224E9D912A66C91EFB6997"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -57,25 +69,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A79C586755DE477F8BE387ED4A7C44F9"
+        "MsmKey" = "8:_B266E581A4D406CB80EAD73F1D329DBA"
         "OwnerKey" = "8:_9FAB19F059224E9D912A66C91EFB6997"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_C521A041B8BDF7E9E232B05997E8F6B3"
-        "OwnerKey" = "8:_9FAB19F059224E9D912A66C91EFB6997"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C86258E327A79F5F4F397D77133DEA41"
-        "OwnerKey" = "8:_C521A041B8BDF7E9E232B05997E8F6B3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C86258E327A79F5F4F397D77133DEA41"
+        "MsmKey" = "8:_DDC4D1863EAD10701777876DFE876AFF"
         "OwnerKey" = "8:_9FAB19F059224E9D912A66C91EFB6997"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -88,37 +88,37 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A79C586755DE477F8BE387ED4A7C44F9"
+        "OwnerKey" = "8:_8F80A71196E81C26ACF2E71566F4AA29"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C521A041B8BDF7E9E232B05997E8F6B3"
+        "OwnerKey" = "8:_2DBCEC425A35191E9791637A14266890"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C86258E327A79F5F4F397D77133DEA41"
+        "OwnerKey" = "8:_3C1E29EA20B7D486027F4BF6F06BC5BD"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_8FF6BF51E8EEE13B1BD7C61D4EDC3C2B"
+        "OwnerKey" = "8:_B266E581A4D406CB80EAD73F1D329DBA"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_09D01F450D3DD10EFDA77E1D02962DD3"
+        "OwnerKey" = "8:_DDC4D1863EAD10701777876DFE876AFF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_05D15D2E7740489AA1EE3489CDA468D9"
+        "OwnerKey" = "8:_1CB60A2FF66110E9DD42A25A5EDA8982"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -218,7 +218,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:3.5.30729   "
+                "FrameworkVersion" = "8:3.5.30729    "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=76617"
                 }
@@ -226,14 +226,14 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_05D15D2E7740489AA1EE3489CDA468D9"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1CB60A2FF66110E9DD42A25A5EDA8982"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_05D15D2E7740489AA1EE3489CDA468D9"
+                    "_1CB60A2FF66110E9DD42A25A5EDA8982"
                     {
                     "Name" = "8:Microsoft.WindowsAPICodePack.dll"
                     "Attributes" = "3:512"
@@ -257,20 +257,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_09D01F450D3DD10EFDA77E1D02962DD3"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2DBCEC425A35191E9791637A14266890"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack.Shell, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:AxInterop.MSTSCLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_09D01F450D3DD10EFDA77E1D02962DD3"
+                    "_2DBCEC425A35191E9791637A14266890"
                     {
-                    "Name" = "8:Microsoft.WindowsAPICodePack.Shell.dll"
+                    "Name" = "8:AxInterop.MSTSCLib.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:Microsoft.WindowsAPICodePack.Shell.dll"
+            "SourcePath" = "8:AxInterop.MSTSCLib.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E0536C4634084F6888C7165652EEF36A"
@@ -308,6 +308,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3C1E29EA20B7D486027F4BF6F06BC5BD"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Interop.MSTSCLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
+                "ScatterAssemblies"
+                {
+                    "_3C1E29EA20B7D486027F4BF6F06BC5BD"
+                    {
+                    "Name" = "8:Interop.MSTSCLib.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Interop.MSTSCLib.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_E0536C4634084F6888C7165652EEF36A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6AA8AB4961D55C05B616FF3FE965DF7B"
             {
             "SourcePath" = "8:mstscax.dll"
@@ -328,45 +359,14 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8FF6BF51E8EEE13B1BD7C61D4EDC3C2B"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SecurePasswordTextBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_8FF6BF51E8EEE13B1BD7C61D4EDC3C2B"
-                    {
-                    "Name" = "8:SecurePasswordTextBox.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:SecurePasswordTextBox.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_E0536C4634084F6888C7165652EEF36A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A79C586755DE477F8BE387ED4A7C44F9"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8F80A71196E81C26ACF2E71566F4AA29"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:Stratman.Windows.Forms.TitleBarTabs, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
-                    "_A79C586755DE477F8BE387ED4A7C44F9"
+                    "_8F80A71196E81C26ACF2E71566F4AA29"
                     {
                     "Name" = "8:Stratman.Windows.Forms.TitleBarTabs.dll"
                     "Attributes" = "3:512"
@@ -390,20 +390,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C521A041B8BDF7E9E232B05997E8F6B3"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B266E581A4D406CB80EAD73F1D329DBA"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AxInterop.MSTSCLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:SecurePasswordTextBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_C521A041B8BDF7E9E232B05997E8F6B3"
+                    "_B266E581A4D406CB80EAD73F1D329DBA"
                     {
-                    "Name" = "8:AxInterop.MSTSCLib.dll"
+                    "Name" = "8:SecurePasswordTextBox.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:AxInterop.MSTSCLib.dll"
+            "SourcePath" = "8:SecurePasswordTextBox.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E0536C4634084F6888C7165652EEF36A"
@@ -421,20 +421,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C86258E327A79F5F4F397D77133DEA41"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DDC4D1863EAD10701777876DFE876AFF"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Interop.MSTSCLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack.Shell, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_C86258E327A79F5F4F397D77133DEA41"
+                    "_DDC4D1863EAD10701777876DFE876AFF"
                     {
-                    "Name" = "8:Interop.MSTSCLib.dll"
+                    "Name" = "8:Microsoft.WindowsAPICodePack.Shell.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:Interop.MSTSCLib.dll"
+            "SourcePath" = "8:Microsoft.WindowsAPICodePack.Shell.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E0536C4634084F6888C7165652EEF36A"
@@ -520,7 +520,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:EasyConnect"
         "ProductCode" = "8:{41AB5772-1A47-445D-BF17-5483A2B68405}"
-        "PackageCode" = "8:{7E3A8592-E28C-45FA-AA8D-D530B3215464}"
+        "PackageCode" = "8:{A2918469-F440-4346-A7F0-6934BBFA812E}"
         "UpgradeCode" = "8:{981E1181-F1D5-434C-B07A-452457AA80AB}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
