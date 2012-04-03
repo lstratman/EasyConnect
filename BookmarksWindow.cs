@@ -334,6 +334,51 @@ namespace EasyConnect
             }
         }
 
+        public void Export(string path)
+        {
+            FileInfo destinationFile = new FileInfo(path);
+            XmlSerializer bookmarksSerializer = new XmlSerializer(typeof(BookmarksFolder));
+
+            Directory.CreateDirectory(destinationFile.DirectoryName);
+
+            object clonedFolder = _rootFolder.CloneAnon();
+
+            using (XmlWriter bookmarksWriter = new XmlTextWriter(path, new UnicodeEncoding()))
+            {
+                bookmarksSerializer.Serialize(bookmarksWriter, clonedFolder);
+                bookmarksWriter.Flush();
+            }
+        }
+
+        public void Import(string path)
+        {
+            _bookmarksListView.ListViewItemSorter = new BookmarksListViewComparer();
+
+            if (File.Exists(path))
+            {
+                XmlSerializer bookmarksSerializer = new XmlSerializer(typeof(BookmarksFolder));
+
+                using (XmlReader bookmarksReader = new XmlTextReader(path))
+                {
+                    //_rootFolder
+                    BookmarksFolder importedRootFolder = (BookmarksFolder)bookmarksSerializer.Deserialize(bookmarksReader);
+                    importedRootFolder.EncryptionPassword = _applicationForm.Password;
+
+                    importedRootFolder.Bookmarks.CollectionModified += Bookmarks_CollectionModified;
+                    importedRootFolder.ChildFolders.CollectionModified += ChildFolders_CollectionModified;
+
+                    _rootFolder = importedRootFolder;
+
+                    _folderTreeNodes[_bookmarksFoldersTreeView.Nodes[0]] = _rootFolder;
+
+                    InitializeTreeView(_rootFolder);
+                }
+
+                _bookmarksFoldersTreeView.Nodes[0].Expand();
+                Save();
+            }
+        }
+
         private void _bookmarksTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             _bookmarksListView.Items.Clear();
@@ -764,5 +809,28 @@ namespace EasyConnect
             _cutItems.Add(_folderTreeNodes[FoldersTreeView.SelectedNode]);
             FoldersTreeView.SelectedNode.ForeColor = Color.Gray;
         }
+
+        private void _exportBookMarkMenuitem_Click(object sender, EventArgs e)
+        {
+            _bookmarkExportDialog.ShowDialog();
+            Export(_bookmarkExportDialog.FileName);
+        }
+
+        private void _importBookmarkMenuItem_Click(object sender, EventArgs e)
+        {
+            _bookmarkImportDialog.ShowDialog();
+            Import(_bookmarkImportDialog.FileName);
+        }
+
+        private void _bookmarkExportDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
+
+        private void _bookmarkImportDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
+
     }
 }

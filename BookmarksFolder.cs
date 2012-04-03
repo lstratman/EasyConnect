@@ -123,6 +123,24 @@ namespace EasyConnect
             return clonedFolder;
         }
 
+        public object CloneAnon()
+        {
+            BookmarksFolder clonedFolder = new BookmarksFolder
+            {
+                Name = Name
+            };
+
+            foreach (RdpConnection bookmark in Bookmarks)
+            {
+                clonedFolder.Bookmarks.Add((RdpConnection)bookmark.CloneAnon());
+            }
+
+            foreach (BookmarksFolder childFolder in ChildFolders)
+                clonedFolder.ChildFolders.Add((BookmarksFolder)childFolder.CloneAnon());
+
+            return clonedFolder;
+        }
+
         public void MergeFolder(BookmarksFolder childFolder)
         {
             if (ChildFolders.Any(f => f.Name == childFolder.Name))
