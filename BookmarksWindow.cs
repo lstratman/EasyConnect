@@ -538,13 +538,17 @@ namespace EasyConnect
                                             {
                                                 Name = "New folder"
                                             };
+
+        	_deferSort = true;
             _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode].ChildFolders.Add(newFolder);
+        	_deferSort = false;
 
             TreeNode newNode = _folderTreeNodes.SingleOrDefault(kvp => kvp.Value == newFolder).Key;
 
             _bookmarksFoldersTreeView.SelectedNode.Expand();
             _bookmarksFoldersTreeView.SelectedNode = newNode;
 
+			SortTreeView();
             Save();
             newNode.BeginEdit();
         }
@@ -781,8 +785,10 @@ namespace EasyConnect
         {
             TreeNode currentlySelectedNode = _bookmarksFoldersTreeView.SelectedNode;
             
+			_bookmarksFoldersTreeView.BeginUpdate();
             _bookmarksFoldersTreeView.Sort();
             _bookmarksFoldersTreeView.SelectedNode = currentlySelectedNode;
+			_bookmarksFoldersTreeView.EndUpdate();
         }
 
         private void _cutBookmarkMenuItem_Click(object sender, EventArgs e)
