@@ -322,6 +322,18 @@ namespace EasyConnect
             return clonedConnection;
         }
 
+        public object CloneAnon()
+        {
+            RdpConnection clonedConnection = SerializationHelper.Clone(this);
+
+            clonedConnection.ParentFolder = null;
+            clonedConnection.Guid = new Guid();
+            clonedConnection.Username = null;
+            clonedConnection.EncryptionPassword = null;
+
+            return clonedConnection;
+        }
+
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("Animations", Animations);
