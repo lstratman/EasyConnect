@@ -61,7 +61,7 @@ namespace EasyConnect
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Bookmarks");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Bookmarks");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BookmarksWindow));
             this._splitContainer = new System.Windows.Forms.SplitContainer();
             this._bookmarksFoldersTreeView = new System.Windows.Forms.TreeView();
@@ -84,6 +84,7 @@ namespace EasyConnect
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this._addBookmarkMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._addFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._exportBookMarkMenuitem = new System.Windows.Forms.ToolStripMenuItem();
             this._bookmarkContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._openBookmarkNewTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._openBookmarkNewWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -96,6 +97,7 @@ namespace EasyConnect
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this._bookmarkExportDialog = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
             this._splitContainer.Panel2.SuspendLayout();
@@ -136,10 +138,10 @@ namespace EasyConnect
             this._bookmarksFoldersTreeView.LabelEdit = true;
             this._bookmarksFoldersTreeView.Location = new System.Drawing.Point(12, 12);
             this._bookmarksFoldersTreeView.Name = "_bookmarksFoldersTreeView";
-            treeNode2.Name = "root";
-            treeNode2.Text = "Bookmarks";
+            treeNode1.Name = "root";
+            treeNode1.Text = "Bookmarks";
             this._bookmarksFoldersTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
+            treeNode1});
             this._bookmarksFoldersTreeView.SelectedImageIndex = 1;
             this._bookmarksFoldersTreeView.ShowRootLines = false;
             this._bookmarksFoldersTreeView.Size = new System.Drawing.Size(147, 400);
@@ -210,7 +212,8 @@ namespace EasyConnect
             this._deleteFolderMenuItem,
             this.toolStripSeparator4,
             this._addBookmarkMenuItem,
-            this._addFolderMenuItem});
+            this._addFolderMenuItem,
+            this._exportBookMarkMenuitem});
             this._folderContextMenu.Name = "_folderContextMenu";
             this._folderContextMenu.ShowImageMargin = false;
             this._folderContextMenu.Size = new System.Drawing.Size(248, 248);
@@ -298,6 +301,13 @@ namespace EasyConnect
             this._addFolderMenuItem.Size = new System.Drawing.Size(247, 22);
             this._addFolderMenuItem.Text = "Add folder...";
             this._addFolderMenuItem.Click += new System.EventHandler(this._addFolderMenuItem_Click);
+            // 
+            // _exportBookMarkMenuitem
+            // 
+            this._exportBookMarkMenuitem.Name = "_exportBookMarkMenuitem";
+            this._exportBookMarkMenuitem.Size = new System.Drawing.Size(247, 22);
+            this._exportBookMarkMenuitem.Text = "Export";
+            this._exportBookMarkMenuitem.Click += new System.EventHandler(this._exportBookMarkMenuitem_Click);
             // 
             // _bookmarkContextMenu
             // 
@@ -389,6 +399,11 @@ namespace EasyConnect
             this.deleteToolStripMenuItem1.Text = "Delete";
             this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
             // 
+            // _bookmarkExportDialog
+            // 
+            this._bookmarkExportDialog.DefaultExt = "xml";
+            this._bookmarkExportDialog.FileOk += new System.ComponentModel.CancelEventHandler(this._bookmarkExportDialog_FileOk);
+            // 
             // BookmarksWindow
             // 
             this.BackColor = System.Drawing.Color.Silver;
@@ -412,5 +427,7 @@ namespace EasyConnect
         private ToolStripMenuItem copyToolStripMenuItem;
         private ToolStripMenuItem pasteToolStripMenuItem;
         private ToolStripMenuItem renameToolStripMenuItem;
+        private SaveFileDialog _bookmarkExportDialog;
+        private ToolStripMenuItem _exportBookMarkMenuitem;
     }
 }

@@ -334,6 +334,22 @@ namespace EasyConnect
             }
         }
 
+        public void Export(string path)
+        {
+            FileInfo destinationFile = new FileInfo(path);
+            XmlSerializer bookmarksSerializer = new XmlSerializer(typeof(BookmarksFolder));
+
+            Directory.CreateDirectory(destinationFile.DirectoryName);
+
+            object clonedFolder = _rootFolder.CloneAnon();
+
+            using (XmlWriter bookmarksWriter = new XmlTextWriter(path, new UnicodeEncoding()))
+            {
+                bookmarksSerializer.Serialize(bookmarksWriter, clonedFolder);
+                bookmarksWriter.Flush();
+            }
+        }
+
         private void _bookmarksTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             _bookmarksListView.Items.Clear();
@@ -764,5 +780,17 @@ namespace EasyConnect
             _cutItems.Add(_folderTreeNodes[FoldersTreeView.SelectedNode]);
             FoldersTreeView.SelectedNode.ForeColor = Color.Gray;
         }
+
+        private void _exportBookMarkMenuitem_Click(object sender, EventArgs e)
+        {
+            _bookmarkExportDialog.ShowDialog();
+            Export(_bookmarkExportDialog.FileName);
+        }
+
+        private void _bookmarkExportDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
+
     }
 }
