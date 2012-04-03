@@ -350,6 +350,35 @@ namespace EasyConnect
             }
         }
 
+        public void Import(string path)
+        {
+            _bookmarksListView.ListViewItemSorter = new BookmarksListViewComparer();
+
+            if (File.Exists(path))
+            {
+                XmlSerializer bookmarksSerializer = new XmlSerializer(typeof(BookmarksFolder));
+
+                using (XmlReader bookmarksReader = new XmlTextReader(path))
+                {
+                    //_rootFolder
+                    BookmarksFolder importedRootFolder = (BookmarksFolder)bookmarksSerializer.Deserialize(bookmarksReader);
+                    importedRootFolder.EncryptionPassword = _applicationForm.Password;
+
+                    importedRootFolder.Bookmarks.CollectionModified += Bookmarks_CollectionModified;
+                    importedRootFolder.ChildFolders.CollectionModified += ChildFolders_CollectionModified;
+
+                    _rootFolder = importedRootFolder;
+
+                    _folderTreeNodes[_bookmarksFoldersTreeView.Nodes[0]] = _rootFolder;
+
+                    InitializeTreeView(_rootFolder);
+                }
+
+                _bookmarksFoldersTreeView.Nodes[0].Expand();
+                Save();
+            }
+        }
+
         private void _bookmarksTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             _bookmarksListView.Items.Clear();
@@ -787,7 +816,18 @@ namespace EasyConnect
             Export(_bookmarkExportDialog.FileName);
         }
 
+        private void _importBookmarkMenuItem_Click(object sender, EventArgs e)
+        {
+            _bookmarkImportDialog.ShowDialog();
+            Import(_bookmarkImportDialog.FileName);
+        }
+
         private void _bookmarkExportDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
+
+        private void _bookmarkImportDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
 
         }

@@ -84,7 +84,9 @@ namespace EasyConnect
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this._addBookmarkMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._addFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this._exportBookMarkMenuitem = new System.Windows.Forms.ToolStripMenuItem();
+            this._importBookmarkMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._bookmarkContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._openBookmarkNewTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._openBookmarkNewWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -98,6 +100,7 @@ namespace EasyConnect
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this._bookmarkExportDialog = new System.Windows.Forms.SaveFileDialog();
+            this._bookmarkImportDialog = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
             this._splitContainer.Panel2.SuspendLayout();
@@ -213,10 +216,12 @@ namespace EasyConnect
             this.toolStripSeparator4,
             this._addBookmarkMenuItem,
             this._addFolderMenuItem,
-            this._exportBookMarkMenuitem});
+            this.toolStripSeparator8,
+            this._exportBookMarkMenuitem,
+            this._importBookmarkMenuItem});
             this._folderContextMenu.Name = "_folderContextMenu";
             this._folderContextMenu.ShowImageMargin = false;
-            this._folderContextMenu.Size = new System.Drawing.Size(248, 248);
+            this._folderContextMenu.Size = new System.Drawing.Size(248, 276);
             // 
             // _folderOpenAllMenuItem
             // 
@@ -302,12 +307,24 @@ namespace EasyConnect
             this._addFolderMenuItem.Text = "Add folder...";
             this._addFolderMenuItem.Click += new System.EventHandler(this._addFolderMenuItem_Click);
             // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(244, 6);
+            // 
             // _exportBookMarkMenuitem
             // 
             this._exportBookMarkMenuitem.Name = "_exportBookMarkMenuitem";
             this._exportBookMarkMenuitem.Size = new System.Drawing.Size(247, 22);
             this._exportBookMarkMenuitem.Text = "Export";
             this._exportBookMarkMenuitem.Click += new System.EventHandler(this._exportBookMarkMenuitem_Click);
+            // 
+            // _importBookmarkMenuItem
+            // 
+            this._importBookmarkMenuItem.Name = "_importBookmarkMenuItem";
+            this._importBookmarkMenuItem.Size = new System.Drawing.Size(247, 22);
+            this._importBookmarkMenuItem.Text = "Import";
+            this._importBookmarkMenuItem.Click += new System.EventHandler(this._importBookmarkMenuItem_Click);
             // 
             // _bookmarkContextMenu
             // 
@@ -401,8 +418,17 @@ namespace EasyConnect
             // 
             // _bookmarkExportDialog
             // 
-            this._bookmarkExportDialog.DefaultExt = "xml";
+            this._bookmarkExportDialog.DefaultExt = "ecx";
+            this._bookmarkExportDialog.FileName = "EasyConnectBookmarks";
+            this._bookmarkExportDialog.Filter = "EasyConnect Bookmark files|*.ecx|All files|*.*";
             this._bookmarkExportDialog.FileOk += new System.ComponentModel.CancelEventHandler(this._bookmarkExportDialog_FileOk);
+            // 
+            // _bookmarkImportDialog
+            // 
+            this._bookmarkImportDialog.DefaultExt = "ecx";
+            this._bookmarkImportDialog.FileName = "EasyConnectBookmarks";
+            this._bookmarkImportDialog.Filter = "EasyConnect Bookmark files|*.ecx|All files|*.*";
+            this._bookmarkImportDialog.FileOk += new System.ComponentModel.CancelEventHandler(this._bookmarkImportDialog_FileOk);
             // 
             // BookmarksWindow
             // 
@@ -429,5 +455,8 @@ namespace EasyConnect
         private ToolStripMenuItem renameToolStripMenuItem;
         private SaveFileDialog _bookmarkExportDialog;
         private ToolStripMenuItem _exportBookMarkMenuitem;
+        private ToolStripSeparator toolStripSeparator8;
+        private ToolStripMenuItem _importBookmarkMenuItem;
+        private OpenFileDialog _bookmarkImportDialog;
     }
 }

@@ -328,7 +328,7 @@ namespace EasyConnect
 
             clonedConnection.ParentFolder = null;
             clonedConnection.Guid = new Guid();
-            clonedConnection.Username = string.Empty;
+            clonedConnection.Username = null;
             clonedConnection.EncryptionPassword = null;
 
             return clonedConnection;
