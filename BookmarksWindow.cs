@@ -352,30 +352,36 @@ namespace EasyConnect
 
         public void Import(string path)
         {
-            _bookmarksListView.ListViewItemSorter = new BookmarksListViewComparer();
+            
+            //ISSUE: Display shows old and new Bookmark items
+            //ISSUE: Dialog shows truncated suggested file name
 
-            if (File.Exists(path))
+            if (MessageBox.Show("This will erase any currently saved bookmarks and import the contents of the selected file. Do you wish to continue?", "Continue with import?", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
             {
-                XmlSerializer bookmarksSerializer = new XmlSerializer(typeof(BookmarksFolder));
 
-                using (XmlReader bookmarksReader = new XmlTextReader(path))
+                if (File.Exists(path))
                 {
-                    //_rootFolder
-                    BookmarksFolder importedRootFolder = (BookmarksFolder)bookmarksSerializer.Deserialize(bookmarksReader);
-                    importedRootFolder.EncryptionPassword = _applicationForm.Password;
+                    XmlSerializer bookmarksSerializer = new XmlSerializer(typeof(BookmarksFolder));
 
-                    importedRootFolder.Bookmarks.CollectionModified += Bookmarks_CollectionModified;
-                    importedRootFolder.ChildFolders.CollectionModified += ChildFolders_CollectionModified;
+                    using (XmlReader bookmarksReader = new XmlTextReader(path))
+                    {
+                        //_rootFolder
+                        BookmarksFolder importedRootFolder = (BookmarksFolder)bookmarksSerializer.Deserialize(bookmarksReader);
+                        importedRootFolder.EncryptionPassword = _applicationForm.Password;
 
-                    _rootFolder = importedRootFolder;
+                        importedRootFolder.Bookmarks.CollectionModified += Bookmarks_CollectionModified;
+                        importedRootFolder.ChildFolders.CollectionModified += ChildFolders_CollectionModified;
 
-                    _folderTreeNodes[_bookmarksFoldersTreeView.Nodes[0]] = _rootFolder;
+                        _rootFolder = importedRootFolder;
 
-                    InitializeTreeView(_rootFolder);
+                        _folderTreeNodes[_bookmarksFoldersTreeView.Nodes[0]] = _rootFolder;
+
+                        InitializeTreeView(_rootFolder);
+                    }
+
+                    _bookmarksFoldersTreeView.Nodes[0].Expand();
+                    Save();
                 }
-
-                _bookmarksFoldersTreeView.Nodes[0].Expand();
-                Save();
             }
         }
 
