@@ -117,7 +117,11 @@ namespace EasyConnect
 
             if (OpenToBookmarks == null && OpenToHistory == Guid.Empty)
             {
+
                 OpenBookmarkManager();
+
+                //TODO: Conditional logic for OpenBookmarkManager || new TitleBarTab
+
                 //Tabs.Add(new TitleBarTab(this)
                 //             {
                 //                 Content = new RdpWindow(_password)
