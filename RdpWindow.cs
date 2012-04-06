@@ -319,7 +319,8 @@ namespace EasyConnect
         {
             base.OnGotFocus(e);
             _rdcWindow.Focus();
-            urlTextBox.Focus();
+            if ( string.IsNullOrEmpty(urlTextBox.Text) )
+                urlTextBox.Focus();
         }
 
         private void rdcWindow_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
@@ -507,6 +508,7 @@ namespace EasyConnect
         private void _newTabMenuItem_Click(object sender, EventArgs e)
         {
             ParentTabs.AddNewTab();
+
  
         }
 
