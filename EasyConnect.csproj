@@ -256,12 +256,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TitleBarTabs\Stratman.Windows.Forms.TitleBarTabs.csproj">
-      <Project>{690BA0F7-D8FE-4EBE-BA39-8058086C7A09}</Project>
-      <Name>Stratman.Windows.Forms.TitleBarTabs</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -277,6 +271,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include=".NETTitleBarTabs\Stratman.Windows.Forms.TitleBarTabs.csproj">
+      <Project>{690ba0f7-d8fe-4ebe-ba39-8058086c7a09}</Project>
+      <Name>Stratman.Windows.Forms.TitleBarTabs</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
