@@ -1,3 +1,1 @@
 This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP), but will soon have a plugin architecture designed to enable third-party support for other protocols such as VNC, Citrix, etc.
-
-For those of you building the application from source, you'll also need to get the source for my .NET Titlebar Tabs library, located at https://github.com/lstratman/.NETTitleBarTabs.
