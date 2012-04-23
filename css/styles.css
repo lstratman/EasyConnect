@@ -358,3 +358,7 @@ footer p + p {
     content: 'at http://github.com/';
   }
 }
+
+a.thumbnail {
+  margin-left: 15px;
+}
