@@ -362,3 +362,11 @@ footer p + p {
 a.thumbnail {
   margin-left: 15px;
 }
+
+a {
+  border: 0px;
+}
+
+img {
+  border: 0px;
+}
