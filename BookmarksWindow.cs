@@ -51,18 +51,19 @@ namespace EasyConnect
                 using (XmlReader bookmarksReader = new XmlTextReader(_bookmarksFileName))
                 {
                     _rootFolder = (BookmarksFolder)bookmarksSerializer.Deserialize(bookmarksReader);
-                    _rootFolder.EncryptionPassword = _applicationForm.Password;
-
-                    _rootFolder.Bookmarks.CollectionModified += Bookmarks_CollectionModified;
-                    _rootFolder.ChildFolders.CollectionModified += ChildFolders_CollectionModified;
-
-                    _folderTreeNodes[_bookmarksFoldersTreeView.Nodes[0]] = _rootFolder;
-
-                    InitializeTreeView(_rootFolder);
                 }
-
-                _bookmarksFoldersTreeView.Nodes[0].Expand();
             }
+
+            _rootFolder.EncryptionPassword = _applicationForm.Password;
+
+            _rootFolder.Bookmarks.CollectionModified += Bookmarks_CollectionModified;
+            _rootFolder.ChildFolders.CollectionModified += ChildFolders_CollectionModified;
+
+            _folderTreeNodes[_bookmarksFoldersTreeView.Nodes[0]] = _rootFolder;
+
+            InitializeTreeView(_rootFolder);
+
+            _bookmarksFoldersTreeView.Nodes[0].Expand();
         }
 
         protected void InitializeTreeView(BookmarksFolder currentFolder)
@@ -390,6 +391,9 @@ namespace EasyConnect
             _bookmarksListView.Items.Clear();
             _listViewConnections.Clear();
             _listViewFolders.Clear();
+
+            if (!_folderTreeNodes.ContainsKey(e.Node))
+                return;
 
             BookmarksFolder folder = _folderTreeNodes[e.Node];
 
