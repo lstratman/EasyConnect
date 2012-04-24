@@ -40,10 +40,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseConnection.cs" />
     <Compile Include="BaseOptionsUi.cs" />
     <Compile Include="BaseProtocol.cs" />
+    <Compile Include="BookmarksFolder.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\.NETTitleBarTabs\Stratman.Windows.Forms.TitleBarTabs.csproj">
+      <Project>{690BA0F7-D8FE-4EBE-BA39-8058086C7A09}</Project>
+      <Name>Stratman.Windows.Forms.TitleBarTabs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\EasyConnect.Common.csproj">
+      <Project>{ABF68708-BDC0-4D29-A523-00EC942449B2}</Project>
+      <Name>EasyConnect.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

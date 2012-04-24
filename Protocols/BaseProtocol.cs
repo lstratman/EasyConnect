@@ -9,5 +9,9 @@ namespace EasyConnect.Protocols
         where TConnection : IConnection
         where TOptionsUi : BaseOptionsUi
     {
+        public abstract string ProtocolPrefix
+        {
+            get;
+        }
     }
 }

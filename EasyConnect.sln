@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyConnect.Protocols", "Pr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyConnect.Protocols.Rdp", "Protocols\Rdp\EasyConnect.Protocols.Rdp.csproj", "{17C67EF4-73FC-46E7-A8C7-2BD963F7D81A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyConnect.Common", "Common\EasyConnect.Common.csproj", "{ABF68708-BDC0-4D29-A523-00EC942449B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,16 @@ Global
 		{17C67EF4-73FC-46E7-A8C7-2BD963F7D81A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{17C67EF4-73FC-46E7-A8C7-2BD963F7D81A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{17C67EF4-73FC-46E7-A8C7-2BD963F7D81A}.Release|x86.ActiveCfg = Release|Any CPU
+		{ABF68708-BDC0-4D29-A523-00EC942449B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABF68708-BDC0-4D29-A523-00EC942449B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABF68708-BDC0-4D29-A523-00EC942449B2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{ABF68708-BDC0-4D29-A523-00EC942449B2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{ABF68708-BDC0-4D29-A523-00EC942449B2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ABF68708-BDC0-4D29-A523-00EC942449B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABF68708-BDC0-4D29-A523-00EC942449B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABF68708-BDC0-4D29-A523-00EC942449B2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{ABF68708-BDC0-4D29-A523-00EC942449B2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{ABF68708-BDC0-4D29-A523-00EC942449B2}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
