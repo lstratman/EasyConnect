@@ -277,6 +277,14 @@
       <Project>{690ba0f7-d8fe-4ebe-ba39-8058086c7a09}</Project>
       <Name>Stratman.Windows.Forms.TitleBarTabs</Name>
     </ProjectReference>
+    <ProjectReference Include="Protocols\EasyConnect.Protocols.csproj">
+      <Project>{9794E3F6-45AA-4841-8AE3-60B9662A1B1E}</Project>
+      <Name>EasyConnect.Protocols</Name>
+    </ProjectReference>
+    <ProjectReference Include="Protocols\Rdp\EasyConnect.Protocols.Rdp.csproj">
+      <Project>{17C67EF4-73FC-46E7-A8C7-2BD963F7D81A}</Project>
+      <Name>EasyConnect.Protocols.Rdp</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
