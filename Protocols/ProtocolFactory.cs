@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EasyConnect.Protocols
 {
-    public abstract class BaseOptionsUi
+    public class ProtocolFactory
     {
     }
 }

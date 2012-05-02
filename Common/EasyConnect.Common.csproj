@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CryptoUtilities.cs" />
+    <Compile Include="DisplayUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializationUtilities.cs" />
   </ItemGroup>

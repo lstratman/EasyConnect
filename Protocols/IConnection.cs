@@ -31,6 +31,12 @@ namespace EasyConnect.Protocols
             set;
         }
 
+        bool IsBookmark
+        {
+            get;
+            set;
+        }
+
         object CloneAnon();
     }
 }

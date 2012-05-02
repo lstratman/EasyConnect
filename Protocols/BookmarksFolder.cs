@@ -7,7 +7,7 @@ using Stratman.Windows.Forms.TitleBarTabs;
 namespace EasyConnect.Protocols
 {
     /// <summary>
-    /// Folder that contains <see cref="RdpConnection"/>s and child <see cref="BookmarksFolder"/> instances.
+    /// Folder that contains <see cref="IConnection"/>s and child <see cref="BookmarksFolder"/> instances.
     /// </summary>
     [Serializable]
     public class BookmarksFolder : ICloneable
