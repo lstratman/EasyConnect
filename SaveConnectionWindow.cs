@@ -3,6 +3,7 @@ using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
 using EasyConnect.Properties;
+using EasyConnect.Protocols;
 
 namespace EasyConnect
 {

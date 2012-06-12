@@ -12,6 +12,8 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using EasyConnect.Properties;
+using EasyConnect.Protocols;
+using EasyConnect.Protocols.Rdp;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
 using Stratman.Windows.Forms.TitleBarTabs;
@@ -36,8 +38,8 @@ namespace EasyConnect
         protected static IpcServerChannel _ipcChannel = null;
         protected JumpList _jumpList = null;
         protected SecureString _password = null;
-        protected Dictionary<RdpWindow, Bitmap> _previews = new Dictionary<RdpWindow, Bitmap>();
-        protected RdpWindow _previousActiveDocument = null;
+        protected Dictionary<TitleBarTab, Bitmap> _previews = new Dictionary<TitleBarTab, Bitmap>();
+        protected TitleBarTab _previousActiveTab = null;
         protected JumpListCustomCategory _recentCategory = new JumpListCustomCategory("Recent");
         protected Options _options = null;
 
@@ -269,24 +271,22 @@ namespace EasyConnect
 
         protected void MainForm_TabDeselecting(object sender, TitleBarTabCancelEventArgs e)
         {
-            if (_previousActiveDocument == null)
+            if (_previousActiveTab == null)
                 return;
 
-            TabbedThumbnail preview =
-                TaskbarManager.Instance.TabbedThumbnail.GetThumbnailPreview(_previousActiveDocument);
+            TabbedThumbnail preview = TaskbarManager.Instance.TabbedThumbnail.GetThumbnailPreview(_previousActiveTab.Content);
 
             if (preview == null)
                 return;
 
-            Bitmap bitmap = TabbedThumbnailScreenCapture.GrabWindowBitmap(_previousActiveDocument.Handle,
-                                                                          _previousActiveDocument.Size);
+            Bitmap bitmap = TabbedThumbnailScreenCapture.GrabWindowBitmap(_previousActiveTab.Content.Handle, _previousActiveTab.Content.Size);
 
             preview.SetImage(bitmap);
 
-            if (_previews.ContainsKey(_previousActiveDocument))
-                _previews[_previousActiveDocument].Dispose();
+            if (_previews.ContainsKey(_previousActiveTab))
+                _previews[_previousActiveTab].Dispose();
 
-            _previews[_previousActiveDocument] = bitmap;
+            _previews[_previousActiveTab] = bitmap;
         }
 
         protected void MainForm_TabSelected(object sender, TitleBarTabEventArgs e)
@@ -294,7 +294,7 @@ namespace EasyConnect
             if (!_addingWindow && SelectedTabIndex != -1)
                 TaskbarManager.Instance.TabbedThumbnail.SetActiveTab(SelectedTab.Content);
 
-            _previousActiveDocument = (RdpWindow) SelectedTab.Content;
+            _previousActiveTab = SelectedTab;
         }
 
         public TitleBarTab ConnectToHistory(Guid historyGuid)
@@ -315,36 +315,36 @@ namespace EasyConnect
             SelectedTabIndex = Tabs.Count - 1;
         }
 
-        public TitleBarTab Connect(RdpConnection connection)
+        public TitleBarTab Connect(IConnection connection)
         {
-            RdpWindow sessionWindow = new RdpWindow(_password);
+            ConnectionWindow connectionWindow = new ConnectionWindow(Password);
 
             _addingWindow = true;
             TitleBarTab newTab = new TitleBarTab(this)
                                      {
-                                         Content = sessionWindow
+                                         Content = connectionWindow
                                      };
             Tabs.Insert(SelectedTabIndex + 1, newTab);
             ResizeTabContents(newTab);
             _addingWindow = false;
 
-            sessionWindow.FormClosing += sessionWindow_FormClosing;
-            sessionWindow.Connected += sessionWindow_Connected;
-            sessionWindow.Connect(connection);
+            connectionWindow.FormClosing += sessionWindow_FormClosing;
+            connectionWindow.Connected += sessionWindow_Connected;
+            connectionWindow.Connect();
 
-            TabbedThumbnail preview = new TabbedThumbnail(Handle, sessionWindow)
+            TabbedThumbnail preview = new TabbedThumbnail(Handle, connectionWindow)
                                           {
-                                              Title = sessionWindow.Text,
-                                              Tooltip = sessionWindow.Text
+                                              Title = connectionWindow.Text,
+                                              Tooltip = connectionWindow.Text
                                           };
 
-            preview.SetWindowIcon(sessionWindow.Icon);
+            preview.SetWindowIcon(connectionWindow.Icon);
             preview.TabbedThumbnailActivated += preview_TabbedThumbnailActivated;
             preview.TabbedThumbnailClosed += preview_TabbedThumbnailClosed;
             preview.TabbedThumbnailBitmapRequested += preview_TabbedThumbnailBitmapRequested;
-            preview.PeekOffset = new Vector(sessionWindow.Location.X, sessionWindow.Location.Y);
+            preview.PeekOffset = new Vector(connectionWindow.Location.X, connectionWindow.Location.Y);
 
-            for (Control currentControl = sessionWindow.Parent;
+            for (Control currentControl = connectionWindow.Parent;
                  currentControl.Parent != null;
                  currentControl = currentControl.Parent)
                 preview.PeekOffset += new Vector(currentControl.Location.X, currentControl.Location.Y);
@@ -356,7 +356,7 @@ namespace EasyConnect
                 _recentConnections.FirstOrDefault((HistoryWindow.HistoricalConnection c) => c.Guid == connection.Guid) ==
                 null)
             {
-                _recentCategory.AddJumpListItems(new JumpListLink(Application.ExecutablePath, sessionWindow.Text)
+                _recentCategory.AddJumpListItems(new JumpListLink(Application.ExecutablePath, connectionWindow.Text)
                                                      {
                                                          Arguments = "/openHistory:" + connection.Guid.ToString(),
                                                          IconReference =
@@ -379,21 +379,9 @@ namespace EasyConnect
             //throw new NotImplementedException();
         }
 
-        protected void GenerateWindowPreview(RdpWindow sessionWindow)
-        {
-            if (SelectedTab.Content != sessionWindow)
-                return;
-
-            Bitmap bitmap = TabbedThumbnailScreenCapture.GrabWindowBitmap(sessionWindow.Handle, sessionWindow.Size);
-            TabbedThumbnail preview = TaskbarManager.Instance.TabbedThumbnail.GetThumbnailPreview(sessionWindow);
-
-            _previews[sessionWindow] = bitmap;
-            preview.SetImage(bitmap);
-        }
-
         private void preview_TabbedThumbnailBitmapRequested(object sender, TabbedThumbnailBitmapRequestedEventArgs e)
         {
-            foreach (RdpWindow rdcWindow in Tabs.Where(tab => tab.Content is RdpWindow).Select(tab => (RdpWindow) tab.Content).Where(rdcWindow => rdcWindow.Handle == e.WindowHandle && _previews.ContainsKey(rdcWindow)))
+            foreach (TitleBarTab rdcWindow in Tabs.Where(tab => tab.Content is IConnectionPanel).Where(rdcWindow => rdcWindow.Content.Handle == e.WindowHandle && _previews.ContainsKey(rdcWindow)))
             {
                 e.SetImage(_previews[rdcWindow]);
                 break;
@@ -402,45 +390,43 @@ namespace EasyConnect
 
         private void sessionWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (_previews.ContainsKey((RdpWindow) sender))
+            TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content == sender);
+
+            if (tab == null)
+                return;
+
+            if (_previews.ContainsKey(tab))
             {
-                _previews[(RdpWindow) sender].Dispose();
-                _previews.Remove((RdpWindow) sender);
+                _previews[tab].Dispose();
+                _previews.Remove(tab);
             }
 
-            if (sender == _previousActiveDocument)
-                _previousActiveDocument = null;
+            if (sender == _previousActiveTab)
+                _previousActiveTab = null;
 
-            if (!((RdpWindow)sender).IsDisposed)
-                TaskbarManager.Instance.TabbedThumbnail.RemoveThumbnailPreview((RdpWindow) sender);
+            if (!tab.Content.IsDisposed)
+                TaskbarManager.Instance.TabbedThumbnail.RemoveThumbnailPreview(tab.Content);
         }
 
         private void preview_TabbedThumbnailClosed(object sender, TabbedThumbnailEventArgs e)
         {
-            foreach (TitleBarTab tab in Tabs)
+            foreach (TitleBarTab tab in Tabs.Where(tab => tab.Content.Handle == e.WindowHandle))
             {
-                RdpWindow rdcWindow = (RdpWindow) tab.Content;
+                tab.Content.Close();
+                TaskbarManager.Instance.TabbedThumbnail.RemoveThumbnailPreview(e.TabbedThumbnail);
 
-                if (rdcWindow.Handle == e.WindowHandle)
-                {
-                    rdcWindow.Close();
-                    TaskbarManager.Instance.TabbedThumbnail.RemoveThumbnailPreview(e.TabbedThumbnail);
-                    break;
-                }
+                break;
             }
         }
 
         private void preview_TabbedThumbnailActivated(object sender, TabbedThumbnailEventArgs e)
         {
-            foreach (TitleBarTab tab in Tabs)
+            foreach (TitleBarTab tab in Tabs.Where(tab => tab.Content.Handle == e.WindowHandle))
             {
-                if (tab.Content.Handle == e.WindowHandle)
-                {
-                    SelectedTabIndex = Tabs.IndexOf(tab);
+                SelectedTabIndex = Tabs.IndexOf(tab);
 
-                    TaskbarManager.Instance.TabbedThumbnail.SetActiveTab(tab.Content);
-                    break;
-                }
+                TaskbarManager.Instance.TabbedThumbnail.SetActiveTab(tab.Content);
+                break;
             }
 
             if (WindowState == FormWindowState.Minimized)
@@ -496,7 +482,7 @@ namespace EasyConnect
         {
             return new TitleBarTab(this)
                        {
-                           Content = new RdpWindow(_password)
+                           Content = new ConnectionWindow(_password)
                        };
         }
     }

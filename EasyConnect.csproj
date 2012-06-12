@@ -95,14 +95,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AudioMode.cs" />
-    <Compile Include="BookmarksFolder.cs" />
     <Compile Include="BookmarksMethods.cs" />
     <Compile Include="BookmarksWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="BookmarksWindow.designer.cs">
       <DependentUpon>BookmarksWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConnectionWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConnectionWindow.Designer.cs">
+      <DependentUpon>ConnectionWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Options.cs" />
     <Compile Include="OptionsWindow.cs">
@@ -111,14 +115,6 @@
     <Compile Include="OptionsWindow.Designer.cs">
       <DependentUpon>OptionsWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="RdpConnectionPropertiesWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RdpConnectionPropertiesWindow.Designer.cs">
-      <DependentUpon>RdpConnectionPropertiesWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CryptoUtilities.cs" />
-    <Compile Include="DisplayHelper.cs" />
     <Compile Include="DragHelper.cs" />
     <Compile Include="HistoryMethods.cs" />
     <Compile Include="HistoryWindow.cs">
@@ -127,7 +123,6 @@
     <Compile Include="HistoryWindow.designer.cs">
       <DependentUpon>HistoryWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="KeyboardMode.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -142,16 +137,14 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RecordingMode.cs" />
-    <Compile Include="SerializationHelper.cs" />
     <EmbeddedResource Include="BookmarksWindow.resx">
       <DependentUpon>BookmarksWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ConnectionWindow.resx">
+      <DependentUpon>ConnectionWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="OptionsWindow.resx">
       <DependentUpon>OptionsWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RdpConnectionPropertiesWindow.resx">
-      <DependentUpon>RdpConnectionPropertiesWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HistoryWindow.resx">
       <DependentUpon>HistoryWindow.cs</DependentUpon>
@@ -166,9 +159,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RdpWindow.resx">
-      <DependentUpon>RdpWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SaveConnectionWindow.resx">
       <DependentUpon>SaveConnectionWindow.cs</DependentUpon>
@@ -188,13 +178,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="RdpConnection.cs" />
-    <Compile Include="RdpWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RdpWindow.Designer.cs">
-      <DependentUpon>RdpWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="SaveConnectionWindow.cs">
       <SubType>Form</SubType>
@@ -276,6 +259,10 @@
     <ProjectReference Include=".NETTitleBarTabs\Stratman.Windows.Forms.TitleBarTabs.csproj">
       <Project>{690ba0f7-d8fe-4ebe-ba39-8058086c7a09}</Project>
       <Name>Stratman.Windows.Forms.TitleBarTabs</Name>
+    </ProjectReference>
+    <ProjectReference Include="Common\EasyConnect.Common.csproj">
+      <Project>{ABF68708-BDC0-4D29-A523-00EC942449B2}</Project>
+      <Name>EasyConnect.Common</Name>
     </ProjectReference>
     <ProjectReference Include="Protocols\EasyConnect.Protocols.csproj">
       <Project>{9794E3F6-45AA-4841-8AE3-60B9662A1B1E}</Project>

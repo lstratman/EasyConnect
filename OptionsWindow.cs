@@ -9,6 +9,8 @@ using System.Security;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using EasyConnect.Common;
+using EasyConnect.Protocols.Rdp;
 
 namespace EasyConnect
 {
@@ -34,7 +36,7 @@ namespace EasyConnect
             DEVMODE devMode = new DEVMODE();
             int modeNumber = 0;
 
-            while (DisplayHelper.EnumDisplaySettings(null, modeNumber, ref devMode) > 0)
+            while (DisplayUtilities.EnumDisplaySettings(null, modeNumber, ref devMode) > 0)
             {
                 if (
                     !_resolutions.Exists(

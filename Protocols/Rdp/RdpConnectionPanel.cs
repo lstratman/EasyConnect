@@ -1,18 +1,35 @@
 ﻿using System;
+using System.Drawing;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
 using System.Windows.Forms;
 using AxMSTSCLib;
 
 namespace EasyConnect.Protocols.Rdp
 {
-    public partial class RdpConnectionForm : Form, IConnectionForm<RdpConnection>
+    public class RdpConnectionPanel : BaseConnectionPanel, IConnectionPanel<RdpConnection>
     {
         protected bool _connectClipboard = false;
+        protected AxMsRdpClient2 _rdpWindow = new AxMsRdpClient2();
 
-        public RdpConnectionForm()
+        public RdpConnectionPanel()
         {
-            InitializeComponent();
+            MemoryStream stream = new MemoryStream(Convert.FromBase64String("AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACFTeXN0ZW0uV2luZG93cy5Gb3Jtcy5BeEhvc3QrU3RhdGUBAAAABERhdGEHAgIAAAAJAwAAAA8DAAAAKQAAAAIBAAAAAQAAAAAAAAAAAAAAABQAAAAAAwAACAACAAAAAAALAAAACwAAAAs="));
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            ((System.ComponentModel.ISupportInitialize)_rdpWindow).BeginInit();
+            _rdpWindow.Enabled = true;
+            _rdpWindow.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            _rdpWindow.Location = new System.Drawing.Point(-1, -1);
+            _rdpWindow.Name = "_rdpWindow";
+            _rdpWindow.OcxState = _rdpWindow.OcxState = formatter.Deserialize(stream) as AxHost.State;
+            _rdpWindow.TabIndex = 0;
+            _rdpWindow.OnDisconnected += _rdpWindow_OnDisconnected;
+
+            Controls.Add(_rdpWindow);
+            ((System.ComponentModel.ISupportInitialize)_rdpWindow).EndInit();
         }
 
         public string Host
@@ -273,47 +290,56 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
-        public void Connect(RdpConnection connection)
+        public override void Connect()
         {
-            DesktopWidth = (connection.DesktopWidth == 0
-                                ? _rdpWindow.Width - 2
-                                : connection.DesktopWidth);
-            DesktopHeight = (connection.DesktopHeight == 0
+            _rdpWindow.Size = new Size(Size.Width + 2, Size.Height + 2);
+
+            DesktopWidth = (Connection.DesktopWidth == 0
+                                ? _rdpWindow.Width
+                                : Connection.DesktopWidth);
+            DesktopHeight = (Connection.DesktopHeight == 0
                                  ? _rdpWindow.Height - 1
-                                 : connection.DesktopHeight);
-            AudioMode = connection.AudioMode;
-            KeyboardMode = connection.KeyboardMode;
-            ConnectPrinters = connection.ConnectPrinters;
-            ConnectClipboard = connection.ConnectClipboard;
-            ConnectDrives = connection.ConnectDrives;
-            DesktopBackground = connection.DesktopBackground;
-            FontSmoothing = connection.FontSmoothing;
-            DesktopComposition = connection.DesktopComposition;
-            WindowContentsWhileDragging = connection.WindowContentsWhileDragging;
-            Animations = connection.Animations;
-            VisualStyles = connection.VisualStyles;
-            PersistentBitmapCaching = connection.PersistentBitmapCaching;
+                                 : Connection.DesktopHeight);
+            AudioMode = Connection.AudioMode;
+            KeyboardMode = Connection.KeyboardMode;
+            ConnectPrinters = Connection.ConnectPrinters;
+            ConnectClipboard = Connection.ConnectClipboard;
+            ConnectDrives = Connection.ConnectDrives;
+            DesktopBackground = Connection.DesktopBackground;
+            FontSmoothing = Connection.FontSmoothing;
+            DesktopComposition = Connection.DesktopComposition;
+            WindowContentsWhileDragging = Connection.WindowContentsWhileDragging;
+            Animations = Connection.Animations;
+            VisualStyles = Connection.VisualStyles;
+            PersistentBitmapCaching = Connection.PersistentBitmapCaching;
 
-            if (!String.IsNullOrEmpty(connection.Username))
-                Username = connection.Username;
+            if (!String.IsNullOrEmpty(Connection.Username))
+                Username = Connection.Username;
 
-            if (connection.Password != null && connection.Password.Length > 0)
-                Password = connection.Password;
+            if (Connection.Password != null && Connection.Password.Length > 0)
+                Password = Connection.Password;
 
-            Host = connection.Host;
+            Host = Connection.Host;
 
+            _rdpWindow.ConnectingText = "Connecting...";
             _rdpWindow.OnConnected += Connected;
             _rdpWindow.Connect();
         }
+
+        public override event EventHandler Connected;
 
         private void _rdpWindow_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {
             if (e.discReason > 3)
                 MessageBox.Show("Unable to establish connection.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            Close();
+            ParentForm.Close();
         }
 
-        public event EventHandler Connected;
+        public RdpConnection Connection
+        {
+            get;
+            set;
+        }
     }
 }

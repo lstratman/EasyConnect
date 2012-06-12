@@ -177,6 +177,8 @@ namespace EasyConnect.Protocols.Rdp
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            base.GetObjectData(info, context);
+
             info.AddValue("Animations", Animations);
             info.AddValue("AudioMode", AudioMode);
             info.AddValue("ColorDepth", ColorDepth);
@@ -191,7 +193,6 @@ namespace EasyConnect.Protocols.Rdp
             info.AddValue("Guid", Guid.ToString());
             info.AddValue("Host", Host);
             info.AddValue("KeyboardMode", KeyboardMode);
-            info.AddValue("Name", Name);
             info.AddValue("PersistentBitmapCaching", PersistentBitmapCaching);
             info.AddValue("RecordingMode", RecordingMode);
             info.AddValue("Username", Username);

@@ -14,6 +14,22 @@ namespace EasyConnect.Protocols
             get;
         }
 
+        string Host
+        {
+            get;
+        }
+
+        string DisplayName
+        {
+            get;
+        }
+
+        string Name
+        {
+            get;
+            set;
+        }
+
         BookmarksFolder ParentFolder
         {
             get;

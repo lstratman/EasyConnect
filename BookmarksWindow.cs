@@ -10,6 +10,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
+using EasyConnect.Protocols;
+using EasyConnect.Protocols.Rdp;
 using Stratman.Windows.Forms.TitleBarTabs;
 
 namespace EasyConnect
@@ -21,8 +23,8 @@ namespace EasyConnect
 
         protected Dictionary<TreeNode, BookmarksFolder> _folderTreeNodes = new Dictionary<TreeNode, BookmarksFolder>();
 
-        protected Dictionary<ListViewItem, RdpConnection> _listViewConnections =
-            new Dictionary<ListViewItem, RdpConnection>();
+        protected Dictionary<ListViewItem, IConnection> _listViewConnections =
+            new Dictionary<ListViewItem, IConnection>();
 
         protected Dictionary<ListViewItem, BookmarksFolder> _listViewFolders =
             new Dictionary<ListViewItem, BookmarksFolder>();
@@ -235,14 +237,14 @@ namespace EasyConnect
 
         void Bookmarks_CollectionModified(object sender, ListModificationEventArgs e)
         {
-            ListWithEvents<RdpConnection> bookmarks = sender as ListWithEvents<RdpConnection>;
+            ListWithEvents<IConnection> bookmarks = sender as ListWithEvents<IConnection>;
             bool sortListView = false;
 
             if (e.Modification == ListModification.ItemModified || e.Modification == ListModification.ItemAdded || e.Modification == ListModification.RangeAdded)
             {
                 for (int i = e.StartIndex; i < e.StartIndex + e.Count; i++)
                 {
-                    RdpConnection currentBookmark = bookmarks[i];
+                    IConnection currentBookmark = bookmarks[i];
                     TreeNode parentTreeNode =
                         _folderTreeNodes.Single(kvp => kvp.Value == currentBookmark.ParentFolder).Key;
 
@@ -457,12 +459,14 @@ namespace EasyConnect
 
         private void _editBookmarkMenuItem_Click(object sender, EventArgs e)
         {
-            RdpConnectionPropertiesWindow connectionWindow = new RdpConnectionPropertiesWindow(_applicationForm,
-                                                                     _listViewConnections[
-                                                                         _bookmarksListView.SelectedItems[0]],
-                                                                     _folderTreeNodes[
-                                                                         _bookmarksFoldersTreeView.SelectedNode]);
-            connectionWindow.ShowDialog();
+            Form optionsWindow = ProtocolFactory.CreateOptionsForm(_listViewConnections[_bookmarksListView.SelectedItems[0]]);
+            TitleBarTab optionsTab = new TitleBarTab(ParentTabs)
+                                         {
+                                             Content = optionsWindow
+                                         };
+
+            ParentTabs.Tabs.Add(optionsTab);
+            ParentTabs.SelectedTab = optionsTab;
         }
 
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -537,9 +541,15 @@ namespace EasyConnect
 
         private void _addBookmarkMenuItem_Click(object sender, EventArgs e)
         {
-            RdpConnectionPropertiesWindow connectionWindow = new RdpConnectionPropertiesWindow(
-                _applicationForm, (RdpConnection)_applicationForm.Options.RdpDefaults.Clone(), _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode]);
-            connectionWindow.ShowDialog();
+            Form optionsWindow =
+                ProtocolFactory.CreateOptionsForm((IConnection) _applicationForm.Options.RdpDefaults.Clone());
+            TitleBarTab optionsTab = new TitleBarTab(ParentTabs)
+                                         {
+                                             Content = optionsWindow
+                                         };
+            
+            ParentTabs.Tabs.Add(optionsTab);
+            ParentTabs.SelectedTab = optionsTab;
         }
 
         private void _addFolderMenuItem_Click(object sender, EventArgs e)
@@ -653,30 +663,27 @@ namespace EasyConnect
             mainForm.Show();
         }
 
-        public RdpConnection FindBookmark(Guid bookmarkGuid)
+        public IConnection FindBookmark(Guid bookmarkGuid)
         {
             return FindBookmark(bookmarkGuid, _rootFolder);
         }
 
-        protected RdpConnection FindBookmark(Guid bookmarkGuid, BookmarksFolder searchFolder)
+        protected IConnection FindBookmark(Guid bookmarkGuid, BookmarksFolder searchFolder)
         {
-            RdpConnection bookmark = searchFolder.Bookmarks.FirstOrDefault(b => b.Guid == bookmarkGuid);
+            IConnection bookmark = searchFolder.Bookmarks.FirstOrDefault(b => b.Guid == bookmarkGuid);
 
             if (bookmark != null)
                 return bookmark;
 
-            else
+            foreach (BookmarksFolder childFolder in searchFolder.ChildFolders)
             {
-                foreach (BookmarksFolder childFolder in searchFolder.ChildFolders)
-                {
-                    bookmark = FindBookmark(bookmarkGuid, childFolder);
+                bookmark = FindBookmark(bookmarkGuid, childFolder);
 
-                    if (bookmark != null)
-                        return bookmark;
-                }
-
-                return null;
+                if (bookmark != null)
+                    return bookmark;
             }
+
+            return null;
         }
 
         private void _folderOpenAllNewWindowMenuItem_Click(object sender, EventArgs e)

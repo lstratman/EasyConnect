@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,12 +43,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseConnection.cs" />
-    <Compile Include="BaseOptionsForm.cs">
-      <SubType>Form</SubType>
+    <Compile Include="BaseConnectionPanel.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="BaseProtocol.cs" />
     <Compile Include="BookmarksFolder.cs" />
     <Compile Include="IConnection.cs" />
+    <Compile Include="IConnectionForm.cs" />
+    <Compile Include="IOptionsForm.cs" />
+    <Compile Include="IProtocol.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtocolFactory.cs" />
   </ItemGroup>

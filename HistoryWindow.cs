@@ -9,6 +9,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
+using EasyConnect.Protocols;
+using EasyConnect.Protocols.Rdp;
+using Stratman.Windows.Forms.TitleBarTabs;
 
 namespace EasyConnect
 {
@@ -124,9 +127,14 @@ namespace EasyConnect
 
         private void propertiesMenuItem_Click(object sender, EventArgs e)
         {
-            RdpConnectionPropertiesWindow connectionWindow = new RdpConnectionPropertiesWindow(_applicationForm,
-                                                                      _connections[_historyListView.SelectedItems[0]]);
-            connectionWindow.ShowDialog();
+            Form optionsWindow = ProtocolFactory.CreateOptionsForm(_connections[_historyListView.SelectedItems[0]]);
+            TitleBarTab optionsTab = new TitleBarTab(_applicationForm)
+            {
+                Content = optionsWindow
+            };
+
+            _applicationForm.Tabs.Add(optionsTab);
+            _applicationForm.SelectedTab = optionsTab;
         }
 
         private void connectMenuItem_Click(object sender, EventArgs e)

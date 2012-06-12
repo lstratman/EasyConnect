@@ -6,6 +6,7 @@ using System.Security;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using EasyConnect.Protocols.Rdp;
 
 namespace EasyConnect
 {

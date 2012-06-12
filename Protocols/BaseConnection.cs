@@ -19,6 +19,7 @@ namespace EasyConnect.Protocols
         protected BaseConnection(SerializationInfo info, StreamingContext context)
         {
             IsBookmark = info.GetBoolean("IsBookmark");
+            Name = info.GetString("Name");
             string encryptedPassword = info.GetString("Password");
 
             if (!String.IsNullOrEmpty(encryptedPassword))
@@ -29,6 +30,7 @@ namespace EasyConnect.Protocols
         {
             info.AddValue("Password", _password == null ? null : Convert.ToBase64String(CryptoUtilities.Encrypt(_encryptionPassword, _password)));
             info.AddValue("IsBookmark", IsBookmark);
+            info.AddValue("Name", Name);
         }
 
         [NonSerialized]
@@ -43,6 +45,32 @@ namespace EasyConnect.Protocols
         public abstract string Uri
         {
             get;
+        }
+
+        public virtual string Host
+        {
+            get
+            {
+                return String.IsNullOrEmpty(Uri)
+                           ? null
+                           : Uri.Substring(Uri.IndexOf("://") + 3);
+            }
+        }
+
+        public string DisplayName
+        {
+            get
+            {
+                return String.IsNullOrEmpty(Name)
+                           ? Host
+                           : Name;
+            }
+        }
+
+        public string Name
+        {
+            get;
+            set;
         }
 
         public virtual BookmarksFolder ParentFolder

@@ -6,10 +6,19 @@ using System.Windows.Forms;
 
 namespace EasyConnect.Protocols
 {
-    public interface IConnectionForm<TConnection>
+    public interface IConnectionPanel<TConnection> : IConnectionPanel
         where TConnection : IConnection
     {
-        void Connect(TConnection connection);
+        TConnection Connection
+        {
+            get;
+            set;
+        }
+    }
+
+    public interface IConnectionPanel
+    {
+        void Connect();
 
         event EventHandler Connected;
     }
