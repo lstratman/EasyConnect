@@ -36,6 +36,7 @@ namespace EasyConnect
 
         protected MainForm _applicationForm = null;
 
+        protected bool _showOptionsAfterItemLabelEdit = false;
         protected bool _deferSort = false;
 
         public BookmarksWindow(MainForm applicationForm)
@@ -542,17 +543,21 @@ namespace EasyConnect
             IConnection connection = (IConnection)ConnectionFactory.GetDefaults(typeof (RdpProtocol)).Clone();
 
             connection.Name = "New Connection";
-            _folderTreeNodes[FoldersTreeView.SelectedNode].Bookmarks.Add(connection);
 
-            Form optionsWindow = ConnectionFactory.CreateOptionsForm(connection);
-            TitleBarTab optionsTab = new TitleBarTab(ParentTabs)
-                                         {
-                                             Content = optionsWindow
-                                         };
-            
-            ParentTabs.Tabs.Add(optionsTab);
-            ParentTabs.ResizeTabContents(optionsTab);
-            ParentTabs.SelectedTab = optionsTab;
+            _deferSort = true;
+            _folderTreeNodes[FoldersTreeView.SelectedNode].Bookmarks.Add(connection);
+            _deferSort = false;
+
+            _showOptionsAfterItemLabelEdit = true;
+
+            ListViewItem newListItem = _listViewConnections.First(pair => pair.Value == connection).Key;
+            _bookmarksListView.SelectedIndices.Clear();
+
+            SortListView();
+            Save();
+
+            newListItem.Selected = true;
+            newListItem.BeginEdit();
         }
 
         private void _addFolderMenuItem_Click(object sender, EventArgs e)
@@ -627,6 +632,21 @@ namespace EasyConnect
                 _listViewFolders[_bookmarksListView.Items[e.Item]].Name = e.Label;
 
             Save();
+
+            if (_showOptionsAfterItemLabelEdit)
+            {
+                Form optionsWindow = ConnectionFactory.CreateOptionsForm(_listViewConnections[_bookmarksListView.Items[e.Item]]);
+                TitleBarTab optionsTab = new TitleBarTab(ParentTabs)
+                    {
+                        Content = optionsWindow
+                    };
+
+                ParentTabs.Tabs.Add(optionsTab);
+                ParentTabs.ResizeTabContents(optionsTab);
+                ParentTabs.SelectedTab = optionsTab;
+
+                _showOptionsAfterItemLabelEdit = false;
+            }
 
             _bookmarksListView.BeginInvoke(new Action(_bookmarksListView.Sort));
         }
@@ -809,6 +829,13 @@ namespace EasyConnect
             _bookmarksFoldersTreeView.Sort();
             _bookmarksFoldersTreeView.SelectedNode = currentlySelectedNode;
 			_bookmarksFoldersTreeView.EndUpdate();
+        }
+
+        private void SortListView()
+        {
+            _bookmarksListView.BeginUpdate();
+            _bookmarksListView.Sort();
+            _bookmarksListView.EndUpdate();
         }
 
         private void _cutBookmarkMenuItem_Click(object sender, EventArgs e)
