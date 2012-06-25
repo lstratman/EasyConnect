@@ -18,6 +18,8 @@ namespace EasyConnect.Protocols.Rdp
 
         private void RdpOptionsForm_Load(object sender, EventArgs e)
         {
+            Text = "Options for " + Connection.DisplayName;
+
             _hostNameTextBox.Text = Connection.Host;
             _userNameTextBox.Text = Connection.Username;
             _passwordTextBox.SecureText = (Connection.Password == null
