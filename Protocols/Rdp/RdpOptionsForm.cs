@@ -18,6 +18,7 @@ namespace EasyConnect.Protocols.Rdp
 
         private void RdpOptionsForm_Load(object sender, EventArgs e)
         {
+            _hostNameTextBox.Text = Connection.Host;
             _userNameTextBox.Text = Connection.Username;
             _passwordTextBox.SecureText = (Connection.Password == null
                                                   ? new SecureString()
@@ -78,10 +79,17 @@ namespace EasyConnect.Protocols.Rdp
             _menuAnimationCheckbox.Checked = Connection.Animations;
             _visualStylesCheckbox.Checked = Connection.VisualStyles;
             _bitmapCachingCheckbox.Checked = Connection.PersistentBitmapCaching;
+
+            if (DefaultsMode)
+            {
+                _hostPanel.Visible = false;
+                _hostDividerPanel.Visible = false;
+            }
         }
 
         private void RdpOptionsForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Connection.Host = _hostNameTextBox.Text;
             Connection.Username = _userNameTextBox.Text;
             Connection.Password = _passwordTextBox.SecureText;
             Connection.DesktopWidth = _resolutionSlider.Value != _resolutionSlider.Maximum
@@ -143,6 +151,11 @@ namespace EasyConnect.Protocols.Rdp
         {
             get;
             set;
+        }
+
+        private void _flowLayoutPanel_Resize(object sender, EventArgs e)
+        {
+
         }
     }
 }
