@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net.Mime;
 using System.Text;
@@ -23,6 +24,14 @@ namespace EasyConnect.Protocols.Rdp
             get
             {
                 return "Remote Desktop";
+            }
+        }
+
+        public override Icon ProtocolIcon
+        {
+            get
+            {
+                return Resources.RdpIcon;
             }
         }
     }

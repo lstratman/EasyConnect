@@ -22,6 +22,11 @@ namespace EasyConnect.Protocols
             get;
         }
 
+        public abstract Icon ProtocolIcon
+        {
+            get;
+        }
+
         public Type ConnectionType
         {
             get
