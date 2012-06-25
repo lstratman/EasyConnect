@@ -56,7 +56,7 @@ namespace EasyConnect
         {
             if (e.KeyCode == Keys.Enter)
             {
-                IConnection newConnection = ProtocolFactory.GetConnection(urlTextBox.Text);
+                IConnection newConnection = ConnectionFactory.GetConnection(urlTextBox.Text);
                 
                 newConnection.EncryptionPassword = _password;
                 newConnection.Host = urlTextBox.Text;
@@ -71,7 +71,7 @@ namespace EasyConnect
 
         public void Connect()
         {
-            BaseConnectionPanel connectionPanel = ProtocolFactory.CreateConnectionForm(_connection, _connectionContainerPanel, this);
+            BaseConnectionPanel connectionPanel = ConnectionFactory.CreateConnectionForm(_connection, _connectionContainerPanel, this);
 
             connectionPanel.Connected += Connected;
             connectionPanel.Connect();

@@ -127,7 +127,7 @@ namespace EasyConnect
 
         private void propertiesMenuItem_Click(object sender, EventArgs e)
         {
-            Form optionsWindow = ProtocolFactory.CreateOptionsForm(_connections[_historyListView.SelectedItems[0]]);
+            Form optionsWindow = ConnectionFactory.CreateOptionsForm(_connections[_historyListView.SelectedItems[0]]);
             TitleBarTab optionsTab = new TitleBarTab(_applicationForm)
             {
                 Content = optionsWindow

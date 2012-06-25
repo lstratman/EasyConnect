@@ -11,16 +11,16 @@ using System.Xml.Serialization;
 
 namespace EasyConnect.Protocols
 {
-    public class ProtocolFactory
+    public class ConnectionFactory
     {
         protected static Dictionary<Type, IProtocol> _protocols = new Dictionary<Type, IProtocol>();
         protected static Dictionary<Type, IConnection> _defaults = new Dictionary<Type, IConnection>();
 
-        private ProtocolFactory()
+        private ConnectionFactory()
         {
         }
 
-        static ProtocolFactory()
+        static ConnectionFactory()
         {
             foreach (string assemblyFile in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll", SearchOption.AllDirectories))
             {

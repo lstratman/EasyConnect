@@ -459,7 +459,7 @@ namespace EasyConnect
 
         private void _editBookmarkMenuItem_Click(object sender, EventArgs e)
         {
-            Form optionsWindow = ProtocolFactory.CreateOptionsForm(_listViewConnections[_bookmarksListView.SelectedItems[0]]);
+            Form optionsWindow = ConnectionFactory.CreateOptionsForm(_listViewConnections[_bookmarksListView.SelectedItems[0]]);
             TitleBarTab optionsTab = new TitleBarTab(ParentTabs)
                                          {
                                              Content = optionsWindow
@@ -542,7 +542,7 @@ namespace EasyConnect
         private void _addBookmarkMenuItem_Click(object sender, EventArgs e)
         {
             Form optionsWindow =
-                ProtocolFactory.CreateOptionsForm((IConnection) _applicationForm.Options.RdpDefaults.Clone());
+                ConnectionFactory.CreateOptionsForm((IConnection) _applicationForm.Options.RdpDefaults.Clone());
             TitleBarTab optionsTab = new TitleBarTab(ParentTabs)
                                          {
                                              Content = optionsWindow

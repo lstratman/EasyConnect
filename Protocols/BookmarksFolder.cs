@@ -199,7 +199,7 @@ namespace EasyConnect.Protocols
                             reader.Read();
 
                             while (reader.MoveToContent() == XmlNodeType.Element)
-                                Bookmarks.Add(ProtocolFactory.Deserialize(reader));
+                                Bookmarks.Add(ConnectionFactory.Deserialize(reader));
                         }
 
                         reader.Read();
