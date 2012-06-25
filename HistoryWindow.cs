@@ -44,10 +44,7 @@ namespace EasyConnect
                 }
 
                 foreach (HistoricalConnection historyEntry in historicalConnections)
-                {
-                    historyEntry.EncryptionPassword = _applicationForm.Password;
                     AddToHistory(historyEntry);
-                }
             }
         }
 
@@ -66,7 +63,7 @@ namespace EasyConnect
 
         public void AddToHistory(RdpConnection connection)
         {
-            HistoricalConnection historyEntry = new HistoricalConnection(connection, _applicationForm.Password)
+            HistoricalConnection historyEntry = new HistoricalConnection(connection)
                                                     {
                                                         LastConnection = DateTime.Now
                                                     };
@@ -154,7 +151,7 @@ namespace EasyConnect
                 LastConnection = info.GetDateTime("LastConnection");
             }
 
-            public HistoricalConnection(RdpConnection connection, SecureString encryptionPassword)
+            public HistoricalConnection(RdpConnection connection)
             {
                 Host = connection.Host;
                 Username = connection.Username;
@@ -177,7 +174,6 @@ namespace EasyConnect
                 PersistentBitmapCaching = connection.PersistentBitmapCaching;
                 Password = connection.Password;
                 Guid = connection.Guid;
-                EncryptionPassword = encryptionPassword;
             }
 
             public override void GetObjectData(SerializationInfo info, StreamingContext context)

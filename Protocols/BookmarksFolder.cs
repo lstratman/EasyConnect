@@ -97,18 +97,6 @@ namespace EasyConnect.Protocols
             }
         }
 
-        public SecureString EncryptionPassword
-        {
-            set
-            {
-                foreach (IConnection bookmark in Bookmarks)
-                    bookmark.EncryptionPassword = value;
-
-                foreach (BookmarksFolder childFolder in ChildFolders)
-                    childFolder.EncryptionPassword = value;
-            }
-        }
-
         public object Clone()
         {
             BookmarksFolder clonedFolder = new BookmarksFolder

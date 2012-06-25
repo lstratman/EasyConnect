@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -15,9 +16,23 @@ namespace EasyConnect.Protocols
     {
         protected static Dictionary<Type, IProtocol> _protocols = new Dictionary<Type, IProtocol>();
         protected static Dictionary<Type, IConnection> _defaults = new Dictionary<Type, IConnection>();
+        protected static SecureString _encryptionPassword = null;
 
         private ConnectionFactory()
         {
+        }
+
+        public static SecureString EncryptionPassword
+        {
+            get
+            {
+                return _encryptionPassword;
+            }
+
+            set
+            {
+                _encryptionPassword = value;
+            }
         }
 
         static ConnectionFactory()
@@ -81,6 +96,11 @@ namespace EasyConnect.Protocols
 
                 writer.WriteEndElement();
             }
+        }
+
+        public static IConnection GetDefaults(Type protocolType)
+        {
+            return GetDefaults(_protocols[protocolType]);
         }
 
         public static IConnection GetDefaults(IProtocol protocol)

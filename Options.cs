@@ -23,7 +23,7 @@ namespace EasyConnect
             set;
         }
 
-        public static Options Load(SecureString password)
+        public static Options Load()
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(Options));
 
@@ -32,10 +32,7 @@ namespace EasyConnect
 
             using (XmlReader optionsFileReader = new XmlTextReader(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Options.xml"))
             {
-                Options options = (Options)xmlSerializer.Deserialize(optionsFileReader);
-                options.RdpDefaults.EncryptionPassword = password;
-
-                return options;
+                return (Options)xmlSerializer.Deserialize(optionsFileReader);
             }
         }
 

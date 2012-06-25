@@ -26,7 +26,25 @@ namespace EasyConnect.Protocols
             string encryptedPassword = info.GetString("Password");
 
             if (!String.IsNullOrEmpty(encryptedPassword))
-                _encryptedPasswordBytes = Convert.FromBase64String(encryptedPassword);
+            {
+                byte[] encryptedPasswordBytes = Convert.FromBase64String(encryptedPassword);
+                byte[] decryptedPassword = CryptoUtilities.Decrypt(ConnectionFactory.EncryptionPassword, encryptedPasswordBytes);
+                SecureString password = new SecureString();
+
+                for (int i = 0; i < decryptedPassword.Length; i++)
+                {
+                    if (decryptedPassword[i] == 0)
+                        break;
+
+                    password.AppendChar((char)decryptedPassword[i]);
+                    decryptedPassword[i] = 0;
+                }
+
+                _password = password;
+
+                for (int i = 0; i < encryptedPasswordBytes.Length; i++)
+                    encryptedPasswordBytes[i] = 0;
+            }
 
             if (Guid == Guid.Empty)
                 Guid = Guid.NewGuid();
@@ -34,7 +52,7 @@ namespace EasyConnect.Protocols
         
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("Password", _password == null ? null : Convert.ToBase64String(CryptoUtilities.Encrypt(_encryptionPassword, _password)));
+            info.AddValue("Password", _password == null ? null : Convert.ToBase64String(CryptoUtilities.Encrypt(ConnectionFactory.EncryptionPassword, _password)));
             info.AddValue("IsBookmark", IsBookmark);
             info.AddValue("Name", Name);
             info.AddValue("Host", Host);
@@ -45,11 +63,7 @@ namespace EasyConnect.Protocols
         [NonSerialized]
         protected BookmarksFolder _parentFolder = null;
         [NonSerialized]
-        protected SecureString _encryptionPassword = null;
-        [NonSerialized]
         protected SecureString _password = null;
-        [NonSerialized]
-        protected byte[] _encryptedPasswordBytes = null;
 
         public string Host
         {
@@ -101,7 +115,7 @@ namespace EasyConnect.Protocols
                 if (Password == null)
                     return null;
 
-                return Convert.ToBase64String(CryptoUtilities.Encrypt(_encryptionPassword, _password));
+                return Convert.ToBase64String(CryptoUtilities.Encrypt(ConnectionFactory.EncryptionPassword, _password));
             }
 
             set
@@ -112,13 +126,7 @@ namespace EasyConnect.Protocols
                     return;
                 }
 
-                if (_encryptionPassword == null)
-                {
-                    _encryptedPasswordBytes = Convert.FromBase64String(value);
-                    return;
-                }
-
-                byte[] decryptedPassword = CryptoUtilities.Decrypt(_encryptionPassword, Convert.FromBase64String(value));
+                byte[] decryptedPassword = CryptoUtilities.Decrypt(ConnectionFactory.EncryptionPassword, Convert.FromBase64String(value));
                 SecureString password = new SecureString();
 
                 for (int i = 0; i < decryptedPassword.Length; i++)
@@ -151,36 +159,6 @@ namespace EasyConnect.Protocols
             }
         }
 
-        public SecureString EncryptionPassword
-        {
-            set
-            {
-                _encryptionPassword = value;
-
-                if (_encryptionPassword != null && _encryptedPasswordBytes != null)
-                {
-                    byte[] decryptedPassword = CryptoUtilities.Decrypt(_encryptionPassword, _encryptedPasswordBytes);
-                    SecureString password = new SecureString();
-
-                    for (int i = 0; i < decryptedPassword.Length; i++)
-                    {
-                        if (decryptedPassword[i] == 0)
-                            break;
-
-                        password.AppendChar((char)decryptedPassword[i]);
-                        decryptedPassword[i] = 0;
-                    }
-
-                    _password = password;
-
-                    for (int i = 0; i < _encryptedPasswordBytes.Length; i++)
-                        _encryptedPasswordBytes[i] = 0;
-
-                    _encryptedPasswordBytes = null;
-                }
-            }
-        }
-
         public bool IsBookmark
         {
             get;
@@ -193,7 +171,6 @@ namespace EasyConnect.Protocols
 
             ((BaseConnection)clonedConnection).ParentFolder = null;
             ((BaseConnection)clonedConnection).Guid = new Guid();
-            ((BaseConnection)clonedConnection).EncryptionPassword = _encryptionPassword;
 
             return clonedConnection;
         }
@@ -204,7 +181,6 @@ namespace EasyConnect.Protocols
 
             ((BaseConnection)clonedConnection).ParentFolder = null;
             ((BaseConnection)clonedConnection).Guid = new Guid();
-            ((BaseConnection)clonedConnection).EncryptionPassword = null;
 
             return clonedConnection;
         }

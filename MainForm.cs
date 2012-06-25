@@ -37,25 +37,18 @@ namespace EasyConnect
         protected HistoryWindow _history = null;
         protected static IpcServerChannel _ipcChannel = null;
         protected JumpList _jumpList = null;
-        protected SecureString _password = null;
         protected Dictionary<TitleBarTab, Bitmap> _previews = new Dictionary<TitleBarTab, Bitmap>();
         protected TitleBarTab _previousActiveTab = null;
         protected JumpListCustomCategory _recentCategory = new JumpListCustomCategory("Recent");
-        protected Options _options = null;
 
         protected Queue<HistoryWindow.HistoricalConnection> _recentConnections =
             new Queue<HistoryWindow.HistoricalConnection>();
 
-        public MainForm() : this(null, null)
-        {
-        }
-
-        public MainForm(Guid[] openToBookmarks, SecureString password)
+        public MainForm(Guid[] openToBookmarks)
         {
             InitializeComponent();
 
             OpenToBookmarks = openToBookmarks;
-            _password = password;
 
             if (
                 !Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
@@ -67,22 +60,21 @@ namespace EasyConnect
                                           "\\EasyConnect");
             }
 
-            while (Bookmarks == null || _history == null || _options == null)
+            while (Bookmarks == null || _history == null)
             {
-                if (_password == null)
+                if (ConnectionFactory.EncryptionPassword == null)
                 {
                     PasswordWindow passwordWindow = new PasswordWindow();
                     passwordWindow.ShowDialog();
 
-                    _password = passwordWindow.Password;
-                    _password.MakeReadOnly();
+                    ConnectionFactory.EncryptionPassword = passwordWindow.Password;
+                    ConnectionFactory.EncryptionPassword.MakeReadOnly();
                 }
 
                 try
                 {
                     _bookmarks = new BookmarksWindow(this);
                     _history = new HistoryWindow(this);
-                    _options = Options.Load(_password);
                 }
 
                 catch (CryptographicException)
@@ -96,7 +88,7 @@ namespace EasyConnect
                         return;
                     }
 
-                    _password = null;
+                    ConnectionFactory.EncryptionPassword = null;
                 }
             }
 
@@ -134,24 +126,11 @@ namespace EasyConnect
 
         }
 
-        public SecureString Password
-        {
-            get
-            {
-                return _password;
-            }
-
-            set
-            {
-                _password = value;
-            }
-        }
-
         public BookmarksWindow Bookmarks
         {
             get
             {
-                if (_bookmarks == null && _password != null)
+                if (_bookmarks == null && ConnectionFactory.EncryptionPassword != null)
                     _bookmarks = new BookmarksWindow(this);
 
                 return _bookmarks;
@@ -162,7 +141,7 @@ namespace EasyConnect
         {
             get
             {
-                if (_history == null && _password != null)
+                if (_history == null && ConnectionFactory.EncryptionPassword != null)
                     _history = new HistoryWindow(this);
 
                 return _history;
@@ -187,14 +166,6 @@ namespace EasyConnect
             set;
         }
 
-        public Options Options
-        {
-            get
-            {
-                return _options;
-            }
-        }
-
         protected void Bookmarks_FormClosed(object sender, FormClosedEventArgs e)
         {
             _bookmarks = null;
@@ -202,22 +173,22 @@ namespace EasyConnect
 
         public void OpenOptions()
         {
-            TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content is OptionsWindow);
+            //TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content is OptionsWindow);
 
-            if (tab != null)
-            {
-                SelectedTab = tab;
-                return;
-            }
+            //if (tab != null)
+            //{
+            //    SelectedTab = tab;
+            //    return;
+            //}
 
-            TitleBarTab newTab = new TitleBarTab(this)
-                                     {
-                                         Content = new OptionsWindow(this)
-                                     };
+            //TitleBarTab newTab = new TitleBarTab(this)
+            //                         {
+            //                             Content = new OptionsWindow(this)
+            //                         };
 
-            Tabs.Add(newTab);
-            ResizeTabContents(newTab);
-            SelectedTabIndex = _tabs.Count - 1;
+            //Tabs.Add(newTab);
+            //ResizeTabContents(newTab);
+            //SelectedTabIndex = _tabs.Count - 1;
         }
 
         public void OpenHistory()
@@ -317,7 +288,7 @@ namespace EasyConnect
 
         public TitleBarTab Connect(IConnection connection)
         {
-            ConnectionWindow connectionWindow = new ConnectionWindow(Password, connection);
+            ConnectionWindow connectionWindow = new ConnectionWindow(connection);
 
             _addingWindow = true;
             TitleBarTab newTab = new TitleBarTab(this)
@@ -482,7 +453,7 @@ namespace EasyConnect
         {
             return new TitleBarTab(this)
                        {
-                           Content = new ConnectionWindow(_password)
+                           Content = new ConnectionWindow()
                        };
         }
     }

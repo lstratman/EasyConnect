@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -19,17 +20,17 @@ namespace EasyConnect.Protocols.Rdp
             MemoryStream stream = new MemoryStream(Convert.FromBase64String("AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACFTeXN0ZW0uV2luZG93cy5Gb3Jtcy5BeEhvc3QrU3RhdGUBAAAABERhdGEHAgIAAAAJAwAAAA8DAAAAKQAAAAIBAAAAAQAAAAAAAAAAAAAAABQAAAAAAwAACAACAAAAAAALAAAACwAAAAs="));
             BinaryFormatter formatter = new BinaryFormatter();
 
-            ((System.ComponentModel.ISupportInitialize)_rdpWindow).BeginInit();
+            ((ISupportInitialize)_rdpWindow).BeginInit();
             _rdpWindow.Enabled = true;
             _rdpWindow.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            _rdpWindow.Location = new System.Drawing.Point(-1, -1);
+            _rdpWindow.Location = new Point(-1, -1);
             _rdpWindow.Name = "_rdpWindow";
             _rdpWindow.OcxState = _rdpWindow.OcxState = formatter.Deserialize(stream) as AxHost.State;
             _rdpWindow.TabIndex = 0;
             _rdpWindow.OnDisconnected += _rdpWindow_OnDisconnected;
 
             Controls.Add(_rdpWindow);
-            ((System.ComponentModel.ISupportInitialize)_rdpWindow).EndInit();
+            ((ISupportInitialize)_rdpWindow).EndInit();
         }
 
         public string Host

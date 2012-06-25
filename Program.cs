@@ -56,10 +56,9 @@ namespace EasyConnect
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            MainForm mainForm = new MainForm
+            MainForm mainForm = new MainForm(bookmarkGuids)
                                     {
-                                        OpenToHistory = historyGuid,
-                                        OpenToBookmarks = bookmarkGuids
+                                        OpenToHistory = historyGuid
                                     };
 
             if (!mainForm.Closing)

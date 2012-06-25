@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Security;
-using System.Text;
 using System.Windows.Forms;
 using EasyConnect.Common;
 
@@ -20,7 +16,7 @@ namespace EasyConnect.Protocols.Rdp
 
         protected List<DEVMODE> _resolutions = new List<DEVMODE>();
 
-        private void OptionsWindow_Load(object sender, EventArgs e)
+        private void RdpOptionsForm_Load(object sender, EventArgs e)
         {
             _userNameTextBox.Text = Connection.Username;
             _passwordTextBox.SecureText = (Connection.Password == null
@@ -84,7 +80,7 @@ namespace EasyConnect.Protocols.Rdp
             _bitmapCachingCheckbox.Checked = Connection.PersistentBitmapCaching;
         }
 
-        private void OptionsWindow_FormClosed(object sender, FormClosedEventArgs e)
+        private void RdpOptionsForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Connection.Username = _userNameTextBox.Text;
             Connection.Password = _passwordTextBox.SecureText;

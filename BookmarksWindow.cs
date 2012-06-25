@@ -56,8 +56,6 @@ namespace EasyConnect
                 }
             }
 
-            _rootFolder.EncryptionPassword = _applicationForm.Password;
-
             _rootFolder.Bookmarks.CollectionModified += Bookmarks_CollectionModified;
             _rootFolder.ChildFolders.CollectionModified += ChildFolders_CollectionModified;
 
@@ -370,7 +368,6 @@ namespace EasyConnect
                     {
                         //_rootFolder
                         BookmarksFolder importedRootFolder = (BookmarksFolder)bookmarksSerializer.Deserialize(bookmarksReader);
-                        importedRootFolder.EncryptionPassword = _applicationForm.Password;
 
                         importedRootFolder.Bookmarks.CollectionModified += Bookmarks_CollectionModified;
                         importedRootFolder.ChildFolders.CollectionModified += ChildFolders_CollectionModified;
@@ -466,6 +463,7 @@ namespace EasyConnect
                                          };
 
             ParentTabs.Tabs.Add(optionsTab);
+            ParentTabs.ResizeTabContents(optionsTab);
             ParentTabs.SelectedTab = optionsTab;
         }
 
@@ -541,14 +539,19 @@ namespace EasyConnect
 
         private void _addBookmarkMenuItem_Click(object sender, EventArgs e)
         {
-            Form optionsWindow =
-                ConnectionFactory.CreateOptionsForm((IConnection) _applicationForm.Options.RdpDefaults.Clone());
+            IConnection connection = (IConnection)ConnectionFactory.GetDefaults(typeof (RdpProtocol)).Clone();
+
+            connection.Name = "New Connection";
+            _folderTreeNodes[FoldersTreeView.SelectedNode].Bookmarks.Add(connection);
+
+            Form optionsWindow = ConnectionFactory.CreateOptionsForm(connection);
             TitleBarTab optionsTab = new TitleBarTab(ParentTabs)
                                          {
                                              Content = optionsWindow
                                          };
             
             ParentTabs.Tabs.Add(optionsTab);
+            ParentTabs.ResizeTabContents(optionsTab);
             ParentTabs.SelectedTab = optionsTab;
         }
 
@@ -659,7 +662,7 @@ namespace EasyConnect
                                                  {
                                                      _listViewConnections[
                                                          _bookmarksListView.SelectedItems[0]].Guid
-                                                 }, _applicationForm.Password);
+                                                 });
             mainForm.Show();
         }
 
@@ -693,7 +696,7 @@ namespace EasyConnect
             
             if (bookmarkGuids.Count > 0)
             {
-                MainForm mainForm = new MainForm(bookmarkGuids.ToArray(), _applicationForm.Password);
+                MainForm mainForm = new MainForm(bookmarkGuids.ToArray());
                 mainForm.Show();
             }
         }

@@ -53,7 +53,7 @@
     <Compile Include="IOptionsForm.cs" />
     <Compile Include="IProtocol.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProtocolFactory.cs" />
+    <Compile Include="ConnectionFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\.NETTitleBarTabs\Stratman.Windows.Forms.TitleBarTabs.csproj">

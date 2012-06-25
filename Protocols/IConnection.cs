@@ -38,11 +38,6 @@ namespace EasyConnect.Protocols
             set;
         }
 
-        SecureString EncryptionPassword
-        {
-            set;
-        }
-
         bool IsBookmark
         {
             get;

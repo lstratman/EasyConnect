@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             System.Security.SecureString secureString1 = new System.Security.SecureString();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RdpOptionsForm));
             this._resolutionSliderLabel = new System.Windows.Forms.Label();
             this._bitmapCachingCheckbox = new System.Windows.Forms.CheckBox();
             this._visualStylesCheckbox = new System.Windows.Forms.CheckBox();
@@ -302,6 +303,7 @@
             this._resolutionSlider.Name = "_resolutionSlider";
             this._resolutionSlider.Size = new System.Drawing.Size(240, 45);
             this._resolutionSlider.TabIndex = 57;
+            this._resolutionSlider.ValueChanged += new System.EventHandler(this._resolutionSlider_ValueChanged);
             // 
             // panel3
             // 
@@ -310,7 +312,7 @@
             this.panel3.BackColor = System.Drawing.Color.Silver;
             this.panel3.Location = new System.Drawing.Point(20, 185);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(428, 1);
+            this.panel3.Size = new System.Drawing.Size(690, 1);
             this.panel3.TabIndex = 56;
             // 
             // panel2
@@ -399,6 +401,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
             this.ClientSize = new System.Drawing.Size(733, 548);
             this.Controls.Add(this._passwordTextBox);
             this.Controls.Add(this._resolutionSliderLabel);
@@ -434,8 +437,11 @@
             this.Controls.Add(this._resolutionLabel);
             this.Controls.Add(this._userNameLabel);
             this.Controls.Add(this._userNameTextBox);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RdpOptionsForm";
-            this.Text = "RdpOptionsForm";
+            this.Text = "Options";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.RdpOptionsForm_FormClosed);
+            this.Load += new System.EventHandler(this.RdpOptionsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this._resolutionSlider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

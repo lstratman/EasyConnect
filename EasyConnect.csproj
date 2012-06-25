@@ -109,12 +109,6 @@
       <DependentUpon>ConnectionWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Options.cs" />
-    <Compile Include="OptionsWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OptionsWindow.Designer.cs">
-      <DependentUpon>OptionsWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="DragHelper.cs" />
     <Compile Include="HistoryMethods.cs" />
     <Compile Include="HistoryWindow.cs">
@@ -142,9 +136,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConnectionWindow.resx">
       <DependentUpon>ConnectionWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OptionsWindow.resx">
-      <DependentUpon>OptionsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HistoryWindow.resx">
       <DependentUpon>HistoryWindow.cs</DependentUpon>

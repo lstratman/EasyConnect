@@ -22,16 +22,12 @@ namespace EasyConnect
         protected Dictionary<ToolStripMenuItem, RdpConnection> _menuItemConnections =
             new Dictionary<ToolStripMenuItem, RdpConnection>();
 
-        protected SecureString _password = null;
-
-        public ConnectionWindow(SecureString password)
+        public ConnectionWindow()
         {
             InitializeComponent();
-            _password = password;
         }
 
-        public ConnectionWindow(SecureString password, IConnection connection)
-            : this(password)
+        public ConnectionWindow(IConnection connection)
         {
             _connection = connection;
         }
@@ -58,7 +54,6 @@ namespace EasyConnect
             {
                 IConnection newConnection = ConnectionFactory.GetConnection(urlTextBox.Text);
                 
-                newConnection.EncryptionPassword = _password;
                 newConnection.Host = urlTextBox.Text;
                 newConnection.Guid = Guid.NewGuid();
 

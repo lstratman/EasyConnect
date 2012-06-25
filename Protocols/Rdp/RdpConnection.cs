@@ -21,12 +21,6 @@ namespace EasyConnect.Protocols.Rdp
             RecordingMode = RecordingMode.RecordFromThisComputer;
         }
 
-        public RdpConnection(SecureString encryptionPassword)
-            : this()
-        {
-            EncryptionPassword = encryptionPassword;
-        }
-
         protected RdpConnection(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
