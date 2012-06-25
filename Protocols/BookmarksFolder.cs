@@ -207,6 +207,8 @@ namespace EasyConnect.Protocols
                         break;
                 }
             }
+
+            reader.Read();
         }
 
         public void WriteXml(XmlWriter writer)

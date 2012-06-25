@@ -41,7 +41,6 @@ namespace EasyConnect.Protocols.Rdp
             DesktopHeight = info.GetInt32("DesktopHeight");
             DesktopWidth = info.GetInt32("DesktopWidth");
             FontSmoothing = info.GetBoolean("FontSmoothing");
-            Host = info.GetString("Host");
             KeyboardMode = info.GetValue<KeyboardMode>("KeyboardMode");
             Name = info.GetString("Name");
             PersistentBitmapCaching = info.GetBoolean("PersistentBitmapCaching");
@@ -61,28 +60,6 @@ namespace EasyConnect.Protocols.Rdp
         {
             get;
             set;
-        }
-
-        public string Host
-        {
-            get;
-            set;
-        }
-
-        public string Name
-        {
-            get;
-            set;
-        }
-
-        public string DisplayName
-        {
-            get
-            {
-                return String.IsNullOrEmpty(Name)
-                           ? Host
-                           : Name;
-            }
         }
 
         public int ColorDepth
@@ -190,8 +167,6 @@ namespace EasyConnect.Protocols.Rdp
             info.AddValue("DesktopHeight", DesktopHeight);
             info.AddValue("DesktopWidth", DesktopWidth);
             info.AddValue("FontSmoothing", FontSmoothing);
-            info.AddValue("Guid", Guid.ToString());
-            info.AddValue("Host", Host);
             info.AddValue("KeyboardMode", KeyboardMode);
             info.AddValue("PersistentBitmapCaching", PersistentBitmapCaching);
             info.AddValue("RecordingMode", RecordingMode);
@@ -206,14 +181,6 @@ namespace EasyConnect.Protocols.Rdp
             clonedConnection.Username = null;
 
             return clonedConnection;
-        }
-
-        public override string Uri
-        {
-            get
-            {
-                return Host;
-            }
         }
     }
 }

@@ -317,7 +317,7 @@ namespace EasyConnect
 
         public TitleBarTab Connect(IConnection connection)
         {
-            ConnectionWindow connectionWindow = new ConnectionWindow(Password);
+            ConnectionWindow connectionWindow = new ConnectionWindow(Password, connection);
 
             _addingWindow = true;
             TitleBarTab newTab = new TitleBarTab(this)

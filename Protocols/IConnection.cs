@@ -9,14 +9,10 @@ namespace EasyConnect.Protocols
 {
     public interface IConnection : ICloneable, ISerializable
     {
-        string Uri
-        {
-            get;
-        }
-
         string Host
         {
             get;
+            set;
         }
 
         string DisplayName

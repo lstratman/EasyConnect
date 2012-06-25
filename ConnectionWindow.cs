@@ -30,6 +30,12 @@ namespace EasyConnect
             _password = password;
         }
 
+        public ConnectionWindow(SecureString password, IConnection connection)
+            : this(password)
+        {
+            _connection = connection;
+        }
+
         protected MainForm ParentTabs
         {
             get
@@ -50,7 +56,7 @@ namespace EasyConnect
         {
             if (e.KeyCode == Keys.Enter)
             {
-                RdpConnection newConnection = SerializationUtilities.Clone(ParentTabs.Options.RdpDefaults);
+                IConnection newConnection = ProtocolFactory.GetConnection(urlTextBox.Text);
                 
                 newConnection.EncryptionPassword = _password;
                 newConnection.Host = urlTextBox.Text;

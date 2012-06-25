@@ -14,16 +14,22 @@ namespace EasyConnect.Protocols
     {
         protected BaseConnection()
         {
+            Guid = Guid.NewGuid();
         }
 
         protected BaseConnection(SerializationInfo info, StreamingContext context)
         {
             IsBookmark = info.GetBoolean("IsBookmark");
             Name = info.GetString("Name");
+            Host = info.GetString("Host");
+            Guid = new Guid(info.GetString("Guid"));
             string encryptedPassword = info.GetString("Password");
 
             if (!String.IsNullOrEmpty(encryptedPassword))
                 _encryptedPasswordBytes = Convert.FromBase64String(encryptedPassword);
+
+            if (Guid == Guid.Empty)
+                Guid = Guid.NewGuid();
         }
         
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
@@ -31,8 +37,11 @@ namespace EasyConnect.Protocols
             info.AddValue("Password", _password == null ? null : Convert.ToBase64String(CryptoUtilities.Encrypt(_encryptionPassword, _password)));
             info.AddValue("IsBookmark", IsBookmark);
             info.AddValue("Name", Name);
+            info.AddValue("Host", Host);
+            info.AddValue("Guid", Guid.ToString());
         }
 
+        [XmlIgnore]
         [NonSerialized]
         protected BookmarksFolder _parentFolder = null;
         [NonSerialized]
@@ -42,19 +51,10 @@ namespace EasyConnect.Protocols
         [NonSerialized]
         protected byte[] _encryptedPasswordBytes = null;
 
-        public abstract string Uri
+        public string Host
         {
             get;
-        }
-
-        public virtual string Host
-        {
-            get
-            {
-                return String.IsNullOrEmpty(Uri)
-                           ? null
-                           : Uri.Substring(Uri.IndexOf("://") + 3);
-            }
+            set;
         }
 
         public string DisplayName
@@ -73,6 +73,7 @@ namespace EasyConnect.Protocols
             set;
         }
 
+        [XmlIgnore]
         public virtual BookmarksFolder ParentFolder
         {
             get
@@ -86,7 +87,7 @@ namespace EasyConnect.Protocols
             }
         }
 
-        public virtual Guid Guid
+        public Guid Guid
         {
             get;
             set;
