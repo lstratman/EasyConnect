@@ -9,9 +9,13 @@ namespace EasyConnect.Protocols.Rdp
 {
     public partial class RdpOptionsForm : Form, IOptionsForm<RdpConnection>
     {
+        protected int _previousWidth;
+
         public RdpOptionsForm()
         {
             InitializeComponent();
+
+            _previousWidth = _flowLayoutPanel.Width;
         }
 
         protected List<DEVMODE> _resolutions = new List<DEVMODE>();
@@ -81,6 +85,7 @@ namespace EasyConnect.Protocols.Rdp
             _menuAnimationCheckbox.Checked = Connection.Animations;
             _visualStylesCheckbox.Checked = Connection.VisualStyles;
             _bitmapCachingCheckbox.Checked = Connection.PersistentBitmapCaching;
+            _adminChannelCheckBox.Checked = Connection.ConnectToAdminChannel;
 
             if (DefaultsMode)
             {
@@ -133,6 +138,7 @@ namespace EasyConnect.Protocols.Rdp
             Connection.Animations = _menuAnimationCheckbox.Checked;
             Connection.VisualStyles = _visualStylesCheckbox.Checked;
             Connection.PersistentBitmapCaching = _bitmapCachingCheckbox.Checked;
+            Connection.ConnectToAdminChannel = _adminChannelCheckBox.Checked;
         }
 
         private void _resolutionSlider_ValueChanged(object sender, EventArgs e)
@@ -157,7 +163,10 @@ namespace EasyConnect.Protocols.Rdp
 
         private void _flowLayoutPanel_Resize(object sender, EventArgs e)
         {
+            foreach (Panel panel in _flowLayoutPanel.Controls.Cast<Panel>())
+                panel.Width += _flowLayoutPanel.Width - _previousWidth;
 
+            _previousWidth = _flowLayoutPanel.Width;
         }
     }
 }

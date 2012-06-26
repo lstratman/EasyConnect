@@ -42,6 +42,7 @@ namespace EasyConnect.Protocols.Rdp
             Username = info.GetString("Username");
             VisualStyles = info.GetBoolean("VisualStyles");
             WindowContentsWhileDragging = info.GetBoolean("WindowContentsWhileDragging");
+            ConnectToAdminChannel = info.GetBoolean("ConnectToAdminChannel");
         }
 
         public int DesktopWidth
@@ -146,6 +147,12 @@ namespace EasyConnect.Protocols.Rdp
             set;
         }
 
+        public bool ConnectToAdminChannel
+        {
+            get;
+            set;
+        }
+
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
@@ -167,6 +174,7 @@ namespace EasyConnect.Protocols.Rdp
             info.AddValue("Username", Username);
             info.AddValue("VisualStyles", VisualStyles);
             info.AddValue("WindowContentsWhileDragging", WindowContentsWhileDragging);
+            info.AddValue("ConnectToAdminChannel", ConnectToAdminChannel);
         }
 
         public override object CloneAnon()

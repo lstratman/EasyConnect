@@ -291,6 +291,19 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        public bool ConnectToAdminChannel
+        {
+            get
+            {
+                return _rdpWindow.AdvancedSettings3.ConnectToServerConsole;
+            }
+
+            set
+            {
+                _rdpWindow.AdvancedSettings3.ConnectToServerConsole = value;
+            }
+        }
+
         public override void Connect()
         {
             _rdpWindow.Size = new Size(Size.Width + 2, Size.Height + 2);
@@ -313,6 +326,7 @@ namespace EasyConnect.Protocols.Rdp
             Animations = Connection.Animations;
             VisualStyles = Connection.VisualStyles;
             PersistentBitmapCaching = Connection.PersistentBitmapCaching;
+            ConnectToAdminChannel = Connection.ConnectToAdminChannel;
 
             if (!String.IsNullOrEmpty(Connection.Username))
                 Username = Connection.Username;

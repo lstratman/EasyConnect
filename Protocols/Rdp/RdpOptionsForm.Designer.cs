@@ -65,22 +65,24 @@
             this._userNameTextBox = new System.Windows.Forms.TextBox();
             this._passwordTextBox = new SecurePasswordTextBox.SecureTextBox();
             this._flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this._hostPanel = new System.Windows.Forms.Panel();
+            this._adminChannelCheckBox = new System.Windows.Forms.CheckBox();
+            this._adminChannelLabel = new System.Windows.Forms.Label();
+            this._hostNameLabel = new System.Windows.Forms.Label();
+            this._hostNameTextBox = new System.Windows.Forms.TextBox();
+            this._hostLabel = new System.Windows.Forms.Label();
+            this._hostDividerPanel = new System.Windows.Forms.Panel();
             this._generalPanel = new System.Windows.Forms.Panel();
             this._displayPanel = new System.Windows.Forms.Panel();
             this._resourcesPanel = new System.Windows.Forms.Panel();
             this._experiencePanel = new System.Windows.Forms.Panel();
-            this._hostPanel = new System.Windows.Forms.Panel();
-            this._hostDividerPanel = new System.Windows.Forms.Panel();
-            this._hostNameLabel = new System.Windows.Forms.Label();
-            this._hostNameTextBox = new System.Windows.Forms.TextBox();
-            this._hostLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this._resolutionSlider)).BeginInit();
             this._flowLayoutPanel.SuspendLayout();
+            this._hostPanel.SuspendLayout();
             this._generalPanel.SuspendLayout();
             this._displayPanel.SuspendLayout();
             this._resourcesPanel.SuspendLayout();
             this._experiencePanel.SuspendLayout();
-            this._hostPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // _resolutionSliderLabel
@@ -267,7 +269,7 @@
             this._resourcesDividerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._resourcesDividerPanel.BackColor = System.Drawing.Color.Silver;
-            this._resourcesDividerPanel.Location = new System.Drawing.Point(6, 435);
+            this._resourcesDividerPanel.Location = new System.Drawing.Point(18, 472);
             this._resourcesDividerPanel.Name = "_resourcesDividerPanel";
             this._resourcesDividerPanel.Size = new System.Drawing.Size(684, 1);
             this._resourcesDividerPanel.TabIndex = 62;
@@ -326,7 +328,7 @@
             this._displayDividerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._displayDividerPanel.BackColor = System.Drawing.Color.Silver;
-            this._displayDividerPanel.Location = new System.Drawing.Point(6, 263);
+            this._displayDividerPanel.Location = new System.Drawing.Point(18, 300);
             this._displayDividerPanel.Name = "_displayDividerPanel";
             this._displayDividerPanel.Size = new System.Drawing.Size(684, 1);
             this._displayDividerPanel.TabIndex = 56;
@@ -336,7 +338,7 @@
             this._generalDividerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._generalDividerPanel.BackColor = System.Drawing.Color.Silver;
-            this._generalDividerPanel.Location = new System.Drawing.Point(6, 141);
+            this._generalDividerPanel.Location = new System.Drawing.Point(18, 178);
             this._generalDividerPanel.Name = "_generalDividerPanel";
             this._generalDividerPanel.Size = new System.Drawing.Size(684, 1);
             this._generalDividerPanel.TabIndex = 52;
@@ -415,6 +417,9 @@
             // 
             // _flowLayoutPanel
             // 
+            this._flowLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this._flowLayoutPanel.Controls.Add(this._hostPanel);
             this._flowLayoutPanel.Controls.Add(this._hostDividerPanel);
             this._flowLayoutPanel.Controls.Add(this._generalPanel);
@@ -424,97 +429,45 @@
             this._flowLayoutPanel.Controls.Add(this._resourcesPanel);
             this._flowLayoutPanel.Controls.Add(this._resourcesDividerPanel);
             this._flowLayoutPanel.Controls.Add(this._experiencePanel);
-            this._flowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._flowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this._flowLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this._flowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this._flowLayoutPanel.Name = "_flowLayoutPanel";
-            this._flowLayoutPanel.Padding = new System.Windows.Forms.Padding(3);
-            this._flowLayoutPanel.Size = new System.Drawing.Size(696, 634);
+            this._flowLayoutPanel.Padding = new System.Windows.Forms.Padding(15);
+            this._flowLayoutPanel.Size = new System.Drawing.Size(721, 681);
             this._flowLayoutPanel.TabIndex = 82;
             this._flowLayoutPanel.WrapContents = false;
             this._flowLayoutPanel.Resize += new System.EventHandler(this._flowLayoutPanel_Resize);
             // 
-            // _generalPanel
-            // 
-            this._generalPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this._generalPanel.Controls.Add(this._userNameLabel);
-            this._generalPanel.Controls.Add(this._userNameTextBox);
-            this._generalPanel.Controls.Add(this._passwordTextBox);
-            this._generalPanel.Controls.Add(this._passwordLabel);
-            this._generalPanel.Controls.Add(this._generalLabel);
-            this._generalPanel.Location = new System.Drawing.Point(6, 61);
-            this._generalPanel.Name = "_generalPanel";
-            this._generalPanel.Size = new System.Drawing.Size(684, 74);
-            this._generalPanel.TabIndex = 83;
-            // 
-            // _displayPanel
-            // 
-            this._displayPanel.Controls.Add(this._displayLabel);
-            this._displayPanel.Controls.Add(this._resolutionLabel);
-            this._displayPanel.Controls.Add(this._resolutionSliderLabel);
-            this._displayPanel.Controls.Add(this.label2);
-            this._displayPanel.Controls.Add(this._resolutionSlider);
-            this._displayPanel.Controls.Add(this._colorDepthDropdown);
-            this._displayPanel.Location = new System.Drawing.Point(6, 148);
-            this._displayPanel.Name = "_displayPanel";
-            this._displayPanel.Size = new System.Drawing.Size(684, 109);
-            this._displayPanel.TabIndex = 83;
-            // 
-            // _resourcesPanel
-            // 
-            this._resourcesPanel.Controls.Add(this._remoteAudioRecordingLabel);
-            this._resourcesPanel.Controls.Add(this._remoteAudioPlaybackLabel);
-            this._resourcesPanel.Controls.Add(this._localResourcesLabel);
-            this._resourcesPanel.Controls.Add(this._audioPlaybackDropdown);
-            this._resourcesPanel.Controls.Add(this._audioRecordingDropdown);
-            this._resourcesPanel.Controls.Add(this._windowsKeysLabel);
-            this._resourcesPanel.Controls.Add(this._windowsKeyDropdown);
-            this._resourcesPanel.Controls.Add(this._localDevicesLabel);
-            this._resourcesPanel.Controls.Add(this._printersCheckbox);
-            this._resourcesPanel.Controls.Add(this._clipboardCheckbox);
-            this._resourcesPanel.Controls.Add(this._drivesCheckbox);
-            this._resourcesPanel.Location = new System.Drawing.Point(6, 270);
-            this._resourcesPanel.Name = "_resourcesPanel";
-            this._resourcesPanel.Size = new System.Drawing.Size(684, 159);
-            this._resourcesPanel.TabIndex = 83;
-            // 
-            // _experiencePanel
-            // 
-            this._experiencePanel.Controls.Add(this._windowContentsWhileDraggingCheckbox);
-            this._experiencePanel.Controls.Add(this._experienceLabel);
-            this._experiencePanel.Controls.Add(this._bitmapCachingCheckbox);
-            this._experiencePanel.Controls.Add(this._allowTheFollowingLabel);
-            this._experiencePanel.Controls.Add(this._visualStylesCheckbox);
-            this._experiencePanel.Controls.Add(this._desktopBackgroundCheckbox);
-            this._experiencePanel.Controls.Add(this._menuAnimationCheckbox);
-            this._experiencePanel.Controls.Add(this._fontSmoothingCheckbox);
-            this._experiencePanel.Controls.Add(this._desktopCompositionCheckbox);
-            this._experiencePanel.Location = new System.Drawing.Point(6, 442);
-            this._experiencePanel.Name = "_experiencePanel";
-            this._experiencePanel.Size = new System.Drawing.Size(684, 185);
-            this._experiencePanel.TabIndex = 83;
-            // 
             // _hostPanel
             // 
+            this._hostPanel.Controls.Add(this._adminChannelCheckBox);
+            this._hostPanel.Controls.Add(this._adminChannelLabel);
             this._hostPanel.Controls.Add(this._hostNameLabel);
             this._hostPanel.Controls.Add(this._hostNameTextBox);
             this._hostPanel.Controls.Add(this._hostLabel);
-            this._hostPanel.Location = new System.Drawing.Point(6, 6);
+            this._hostPanel.Location = new System.Drawing.Point(18, 18);
             this._hostPanel.Name = "_hostPanel";
-            this._hostPanel.Size = new System.Drawing.Size(684, 42);
+            this._hostPanel.Size = new System.Drawing.Size(684, 67);
             this._hostPanel.TabIndex = 84;
             // 
-            // _hostDividerPanel
+            // _adminChannelCheckBox
             // 
-            this._hostDividerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this._hostDividerPanel.BackColor = System.Drawing.Color.Silver;
-            this._hostDividerPanel.Location = new System.Drawing.Point(6, 54);
-            this._hostDividerPanel.Name = "_hostDividerPanel";
-            this._hostDividerPanel.Size = new System.Drawing.Size(684, 1);
-            this._hostDividerPanel.TabIndex = 63;
+            this._adminChannelCheckBox.AutoSize = true;
+            this._adminChannelCheckBox.Location = new System.Drawing.Point(247, 39);
+            this._adminChannelCheckBox.Name = "_adminChannelCheckBox";
+            this._adminChannelCheckBox.Size = new System.Drawing.Size(15, 14);
+            this._adminChannelCheckBox.TabIndex = 56;
+            this._adminChannelCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // _adminChannelLabel
+            // 
+            this._adminChannelLabel.Location = new System.Drawing.Point(91, 34);
+            this._adminChannelLabel.Name = "_adminChannelLabel";
+            this._adminChannelLabel.Size = new System.Drawing.Size(150, 20);
+            this._adminChannelLabel.TabIndex = 55;
+            this._adminChannelLabel.Text = "Use admin channel?:";
+            this._adminChannelLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // _hostNameLabel
             // 
@@ -542,20 +495,93 @@
             this._hostLabel.TabIndex = 54;
             this._hostLabel.Text = "Host";
             // 
+            // _hostDividerPanel
+            // 
+            this._hostDividerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._hostDividerPanel.BackColor = System.Drawing.Color.Silver;
+            this._hostDividerPanel.Location = new System.Drawing.Point(18, 91);
+            this._hostDividerPanel.Name = "_hostDividerPanel";
+            this._hostDividerPanel.Size = new System.Drawing.Size(684, 1);
+            this._hostDividerPanel.TabIndex = 63;
+            // 
+            // _generalPanel
+            // 
+            this._generalPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._generalPanel.Controls.Add(this._userNameLabel);
+            this._generalPanel.Controls.Add(this._userNameTextBox);
+            this._generalPanel.Controls.Add(this._passwordTextBox);
+            this._generalPanel.Controls.Add(this._passwordLabel);
+            this._generalPanel.Controls.Add(this._generalLabel);
+            this._generalPanel.Location = new System.Drawing.Point(18, 98);
+            this._generalPanel.Name = "_generalPanel";
+            this._generalPanel.Size = new System.Drawing.Size(684, 74);
+            this._generalPanel.TabIndex = 83;
+            // 
+            // _displayPanel
+            // 
+            this._displayPanel.Controls.Add(this._displayLabel);
+            this._displayPanel.Controls.Add(this._resolutionLabel);
+            this._displayPanel.Controls.Add(this._resolutionSliderLabel);
+            this._displayPanel.Controls.Add(this.label2);
+            this._displayPanel.Controls.Add(this._resolutionSlider);
+            this._displayPanel.Controls.Add(this._colorDepthDropdown);
+            this._displayPanel.Location = new System.Drawing.Point(18, 185);
+            this._displayPanel.Name = "_displayPanel";
+            this._displayPanel.Size = new System.Drawing.Size(684, 109);
+            this._displayPanel.TabIndex = 83;
+            // 
+            // _resourcesPanel
+            // 
+            this._resourcesPanel.Controls.Add(this._remoteAudioRecordingLabel);
+            this._resourcesPanel.Controls.Add(this._remoteAudioPlaybackLabel);
+            this._resourcesPanel.Controls.Add(this._localResourcesLabel);
+            this._resourcesPanel.Controls.Add(this._audioPlaybackDropdown);
+            this._resourcesPanel.Controls.Add(this._audioRecordingDropdown);
+            this._resourcesPanel.Controls.Add(this._windowsKeysLabel);
+            this._resourcesPanel.Controls.Add(this._windowsKeyDropdown);
+            this._resourcesPanel.Controls.Add(this._localDevicesLabel);
+            this._resourcesPanel.Controls.Add(this._printersCheckbox);
+            this._resourcesPanel.Controls.Add(this._clipboardCheckbox);
+            this._resourcesPanel.Controls.Add(this._drivesCheckbox);
+            this._resourcesPanel.Location = new System.Drawing.Point(18, 307);
+            this._resourcesPanel.Name = "_resourcesPanel";
+            this._resourcesPanel.Size = new System.Drawing.Size(684, 159);
+            this._resourcesPanel.TabIndex = 83;
+            // 
+            // _experiencePanel
+            // 
+            this._experiencePanel.Controls.Add(this._windowContentsWhileDraggingCheckbox);
+            this._experiencePanel.Controls.Add(this._experienceLabel);
+            this._experiencePanel.Controls.Add(this._bitmapCachingCheckbox);
+            this._experiencePanel.Controls.Add(this._allowTheFollowingLabel);
+            this._experiencePanel.Controls.Add(this._visualStylesCheckbox);
+            this._experiencePanel.Controls.Add(this._desktopBackgroundCheckbox);
+            this._experiencePanel.Controls.Add(this._menuAnimationCheckbox);
+            this._experiencePanel.Controls.Add(this._fontSmoothingCheckbox);
+            this._experiencePanel.Controls.Add(this._desktopCompositionCheckbox);
+            this._experiencePanel.Location = new System.Drawing.Point(18, 479);
+            this._experiencePanel.Name = "_experiencePanel";
+            this._experiencePanel.Size = new System.Drawing.Size(684, 185);
+            this._experiencePanel.TabIndex = 83;
+            // 
             // RdpOptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
-            this.ClientSize = new System.Drawing.Size(696, 634);
+            this.ClientSize = new System.Drawing.Size(721, 681);
             this.Controls.Add(this._flowLayoutPanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RdpOptionsForm";
-            this.Text = "Options";
+            this.Text = "Remote Desktop Options";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.RdpOptionsForm_FormClosed);
             this.Load += new System.EventHandler(this.RdpOptionsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this._resolutionSlider)).EndInit();
             this._flowLayoutPanel.ResumeLayout(false);
+            this._hostPanel.ResumeLayout(false);
+            this._hostPanel.PerformLayout();
             this._generalPanel.ResumeLayout(false);
             this._generalPanel.PerformLayout();
             this._displayPanel.ResumeLayout(false);
@@ -564,8 +590,6 @@
             this._resourcesPanel.PerformLayout();
             this._experiencePanel.ResumeLayout(false);
             this._experiencePanel.PerformLayout();
-            this._hostPanel.ResumeLayout(false);
-            this._hostPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -616,5 +640,7 @@
         private System.Windows.Forms.TextBox _hostNameTextBox;
         private System.Windows.Forms.Label _hostLabel;
         private System.Windows.Forms.Panel _hostDividerPanel;
+        private System.Windows.Forms.CheckBox _adminChannelCheckBox;
+        private System.Windows.Forms.Label _adminChannelLabel;
     }
 }

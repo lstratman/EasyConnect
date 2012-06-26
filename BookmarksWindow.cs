@@ -65,6 +65,9 @@ namespace EasyConnect
             InitializeTreeView(_rootFolder);
 
             _bookmarksFoldersTreeView.Nodes[0].Expand();
+
+            foreach (ToolStripMenuItem protocolMenuItem in ConnectionFactory.GetProtocols().Select(protocol => new ToolStripMenuItem(protocol.ProtocolTitle, null, (sender, args) => _addBookmarkMenuItem_Click(protocol))))
+                _addBookmarkMenuItem.DropDownItems.Add(protocolMenuItem);
         }
 
         protected void InitializeTreeView(BookmarksFolder currentFolder)
@@ -457,11 +460,21 @@ namespace EasyConnect
 
         private void _editBookmarkMenuItem_Click(object sender, EventArgs e)
         {
-            Form optionsWindow = ConnectionFactory.CreateOptionsForm(_listViewConnections[_bookmarksListView.SelectedItems[0]]);
+            ListViewItem selectedItem = _bookmarksListView.SelectedItems[0];
             TitleBarTab optionsTab = new TitleBarTab(ParentTabs)
-                                         {
-                                             Content = optionsWindow
-                                         };
+                {
+                    Content = new OptionsWindow(ParentTabs)
+                        {
+                            OptionsForms = new List<Form>
+                                {
+                                    ConnectionFactory.CreateOptionsForm(
+                                        _listViewConnections[selectedItem])
+                                }
+                        }
+                };
+
+            optionsTab.Content.FormClosed +=
+                (o, args) => selectedItem.SubItems[1].Text = _listViewConnections[selectedItem].Host;
 
             ParentTabs.Tabs.Add(optionsTab);
             ParentTabs.ResizeTabContents(optionsTab);
@@ -538,9 +551,9 @@ namespace EasyConnect
             }
         }
 
-        private void _addBookmarkMenuItem_Click(object sender, EventArgs e)
+        private void _addBookmarkMenuItem_Click(IProtocol type)
         {
-            IConnection connection = (IConnection)ConnectionFactory.GetDefaults(typeof (RdpProtocol)).Clone();
+            IConnection connection = (IConnection)ConnectionFactory.GetDefaults(type.GetType()).Clone();
 
             connection.Name = "New Connection";
 
@@ -635,11 +648,21 @@ namespace EasyConnect
 
             if (_showOptionsAfterItemLabelEdit)
             {
-                Form optionsWindow = ConnectionFactory.CreateOptionsForm(_listViewConnections[_bookmarksListView.Items[e.Item]]);
+                ListViewItem selectedItem = _bookmarksListView.SelectedItems[0];
                 TitleBarTab optionsTab = new TitleBarTab(ParentTabs)
                     {
-                        Content = optionsWindow
+                        Content = new OptionsWindow(ParentTabs)
+                            {
+                                OptionsForms = new List<Form>
+                                    {
+                                        ConnectionFactory.CreateOptionsForm(
+                                            _listViewConnections[selectedItem])
+                                    }
+                            }
                     };
+
+                optionsTab.Content.FormClosed +=
+                    (o, args) => selectedItem.SubItems[1].Text = _listViewConnections[selectedItem].Host;
 
                 ParentTabs.Tabs.Add(optionsTab);
                 ParentTabs.ResizeTabContents(optionsTab);

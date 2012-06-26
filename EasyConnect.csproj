@@ -123,6 +123,12 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="OptionsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OptionsWindow.Designer.cs">
+      <DependentUpon>OptionsWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="PasswordWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -142,6 +148,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OptionsWindow.resx">
+      <DependentUpon>OptionsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PasswordWindow.resx">
       <DependentUpon>PasswordWindow.cs</DependentUpon>
