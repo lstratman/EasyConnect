@@ -49,8 +49,11 @@
     <Compile Include="KeyboardMode.cs" />
     <Compile Include="RdpConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RdpConnectionPanel.cs">
-      <SubType>Component</SubType>
+    <Compile Include="RdpConnectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RdpConnectionForm.Designer.cs">
+      <DependentUpon>RdpConnectionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="RdpOptionsForm.cs">
       <SubType>Form</SubType>
@@ -77,6 +80,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="RdpConnectionForm.resx">
+      <DependentUpon>RdpConnectionForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RdpOptionsForm.resx">
       <DependentUpon>RdpOptionsForm.cs</DependentUpon>
     </EmbeddedResource>

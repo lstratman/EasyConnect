@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace EasyConnect.Protocols
 {
-    public interface IConnectionPanel<TConnection> : IConnectionPanel
+    public interface IConnectionForm<TConnection> : IConnectionForm
         where TConnection : IConnection
     {
         TConnection Connection
@@ -16,7 +16,7 @@ namespace EasyConnect.Protocols
         }
     }
 
-    public interface IConnectionPanel
+    public interface IConnectionForm
     {
         void Connect();
 

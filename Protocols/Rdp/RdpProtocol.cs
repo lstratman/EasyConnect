@@ -9,7 +9,7 @@ using AxMSTSCLib;
 
 namespace EasyConnect.Protocols.Rdp
 {
-    public class RdpProtocol : BaseProtocol<RdpConnection, RdpOptionsForm, RdpConnectionPanel>
+    public class RdpProtocol : BaseProtocol<RdpConnection, RdpOptionsForm, RdpConnectionForm>
     {
         public override string ProtocolPrefix
         {

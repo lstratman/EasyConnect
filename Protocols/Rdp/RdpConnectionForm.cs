@@ -1,36 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Drawing;
-using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
+using System.Text;
 using System.Windows.Forms;
 using AxMSTSCLib;
 
 namespace EasyConnect.Protocols.Rdp
 {
-    public class RdpConnectionPanel : BaseConnectionPanel, IConnectionPanel<RdpConnection>
+    public partial class RdpConnectionForm : BaseConnectionForm<RdpConnection>
     {
         protected bool _connectClipboard = false;
-        protected AxMsRdpClient2 _rdpWindow = new AxMsRdpClient2();
 
-        public RdpConnectionPanel()
+        public RdpConnectionForm()
         {
-            MemoryStream stream = new MemoryStream(Convert.FromBase64String("AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACFTeXN0ZW0uV2luZG93cy5Gb3Jtcy5BeEhvc3QrU3RhdGUBAAAABERhdGEHAgIAAAAJAwAAAA8DAAAAKQAAAAIBAAAAAQAAAAAAAAAAAAAAABQAAAAAAwAACAACAAAAAAALAAAACwAAAAs="));
-            BinaryFormatter formatter = new BinaryFormatter();
-
-            ((ISupportInitialize)_rdpWindow).BeginInit();
-            _rdpWindow.Enabled = true;
-            _rdpWindow.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            _rdpWindow.Location = new Point(-1, -1);
-            _rdpWindow.Name = "_rdpWindow";
-            _rdpWindow.OcxState = _rdpWindow.OcxState = formatter.Deserialize(stream) as AxHost.State;
-            _rdpWindow.TabIndex = 0;
-            _rdpWindow.OnDisconnected += _rdpWindow_OnDisconnected;
-
-            Controls.Add(_rdpWindow);
-            ((ISupportInitialize)_rdpWindow).EndInit();
+            InitializeComponent();
         }
 
         public string Host
@@ -349,12 +337,6 @@ namespace EasyConnect.Protocols.Rdp
                 MessageBox.Show("Unable to establish connection.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             ParentForm.Close();
-        }
-
-        public RdpConnection Connection
-        {
-            get;
-            set;
         }
     }
 }

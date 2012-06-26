@@ -28,6 +28,7 @@ namespace EasyConnect
         }
 
         public ConnectionWindow(IConnection connection)
+            : this()
         {
             _connection = connection;
         }
@@ -66,7 +67,7 @@ namespace EasyConnect
 
         public void Connect()
         {
-            BaseConnectionPanel connectionPanel = ConnectionFactory.CreateConnectionForm(_connection, _connectionContainerPanel, this);
+            BaseConnectionForm connectionPanel = ConnectionFactory.CreateConnectionForm(_connection, _connectionContainerPanel);
 
             connectionPanel.Connected += Connected;
             connectionPanel.Connect();

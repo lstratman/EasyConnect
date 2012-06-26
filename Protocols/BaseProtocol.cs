@@ -7,10 +7,10 @@ using System.Windows.Forms;
 
 namespace EasyConnect.Protocols
 {
-    public abstract class BaseProtocol<TConnection, TOptionsForm, TConnectionPanel> : IProtocol 
+    public abstract class BaseProtocol<TConnection, TOptionsForm, TConnectionForm> : IProtocol 
         where TConnection : IConnection
         where TOptionsForm : Form, IOptionsForm<TConnection>, new()
-        where TConnectionPanel : BaseConnectionPanel, IConnectionPanel<TConnection>, new()
+        where TConnectionForm : BaseConnectionForm, IConnectionForm<TConnection>, new()
     {
         public abstract string ProtocolPrefix
         {
@@ -50,20 +50,21 @@ namespace EasyConnect.Protocols
             return GetOptionsFormInDefaultsMode((TConnection) connection);
         }
 
-        public BaseConnectionPanel CreateConnectionPanel(IConnection connection, Panel containerPanel, Form parentForm)
+        public BaseConnectionForm CreateConnectionForm(IConnection connection, Panel containerPanel)
         {
-            TConnectionPanel connectionPanel = new TConnectionPanel
+            TConnectionForm connectionForm = new TConnectionForm
                                                    {
-                                                       Parent = containerPanel,
                                                        Location = new Point(0, 0),
-                                                       Size = containerPanel.Size,
-                                                       Anchor = AnchorStyles.Left | AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Right,
-                                                       ContainerPanel = containerPanel,
-                                                       ParentForm = parentForm,
+                                                       Dock = DockStyle.Fill,
+                                                       FormBorderStyle = FormBorderStyle.None,
+                                                       TopLevel = false,
                                                        Connection = (TConnection)connection
                                                    };
 
-            return connectionPanel;
+            containerPanel.Controls.Add(connectionForm);
+            connectionForm.Show();
+
+            return connectionForm;
         }
 
         public virtual Form GetOptionsForm(TConnection connection)

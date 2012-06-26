@@ -352,7 +352,7 @@ namespace EasyConnect
 
         private void preview_TabbedThumbnailBitmapRequested(object sender, TabbedThumbnailBitmapRequestedEventArgs e)
         {
-            foreach (TitleBarTab rdcWindow in Tabs.Where(tab => tab.Content is IConnectionPanel).Where(rdcWindow => rdcWindow.Content.Handle == e.WindowHandle && _previews.ContainsKey(rdcWindow)))
+            foreach (TitleBarTab rdcWindow in Tabs.Where(tab => tab.Content is IConnectionForm).Where(rdcWindow => rdcWindow.Content.Handle == e.WindowHandle && _previews.ContainsKey(rdcWindow)))
             {
                 e.SetImage(_previews[rdcWindow]);
                 break;

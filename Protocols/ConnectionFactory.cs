@@ -141,9 +141,9 @@ namespace EasyConnect.Protocols
             return connection;
         }
 
-        public static BaseConnectionPanel CreateConnectionForm(IConnection connection, Panel containerPanel, Form parentWindow)
+        public static BaseConnectionForm CreateConnectionForm(IConnection connection, Panel containerPanel)
         {
-            return _protocols.First(pair => pair.Value.ConnectionType.Name == connection.GetType().Name).Value.CreateConnectionPanel(connection, containerPanel, parentWindow);
+            return _protocols.First(pair => pair.Value.ConnectionType.Name == connection.GetType().Name).Value.CreateConnectionForm(connection, containerPanel);
         }
 
         public static Form CreateOptionsForm(IConnection connection)
