@@ -10,6 +10,12 @@ namespace EasyConnect.Protocols
     {
         public abstract event EventHandler Connected;
 
+        public bool IsConnected
+        {
+            get;
+            protected set;
+        }
+
         public abstract void Connect();
     }
 

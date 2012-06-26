@@ -19,6 +19,13 @@ namespace EasyConnect.Protocols.Rdp
         public RdpConnectionForm()
         {
             InitializeComponent();
+
+            Connected += RdpConnectionForm_Connected;
+        }
+
+        protected void RdpConnectionForm_Connected(object sender, EventArgs e)
+        {
+            IsConnected = true;
         }
 
         public string Host
@@ -336,6 +343,7 @@ namespace EasyConnect.Protocols.Rdp
             if (e.discReason > 3)
                 MessageBox.Show("Unable to establish connection.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+            IsConnected = false;
             ParentForm.Close();
         }
     }

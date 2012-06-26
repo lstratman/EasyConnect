@@ -18,6 +18,7 @@ namespace EasyConnect
     {
         protected bool _connectClipboard = true;
         protected IConnection _connection = null;
+        protected BaseConnectionForm _connectionForm = null;
 
         protected Dictionary<ToolStripMenuItem, RdpConnection> _menuItemConnections =
             new Dictionary<ToolStripMenuItem, RdpConnection>();
@@ -41,14 +42,6 @@ namespace EasyConnect
             }
         }
 
-        public Panel ConnectionContainerPanel
-        {
-            get
-            {
-                return _connectionContainerPanel;
-            }
-        }
-
         private void urlTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -67,10 +60,10 @@ namespace EasyConnect
 
         public void Connect()
         {
-            BaseConnectionForm connectionPanel = ConnectionFactory.CreateConnectionForm(_connection, _connectionContainerPanel);
+            _connectionForm = ConnectionFactory.CreateConnectionForm(_connection, _connectionContainerPanel);
 
-            connectionPanel.Connected += Connected;
-            connectionPanel.Connect();
+            _connectionForm.Connected += Connected;
+            _connectionForm.Connect();
         }
 
         private void _bookmarksButton_MouseEnter(object sender, EventArgs e)
@@ -190,32 +183,30 @@ namespace EasyConnect
         private void _newTabMenuItem_Click(object sender, EventArgs e)
         {
             ParentTabs.AddNewTab();
-
- 
         }
 
         private void _bookmarksManagerMenuItem2_Click(object sender, EventArgs e)
         {
             ParentTabs.OpenBookmarkManager();
 
-            //if (!IsConnected)
-            //    Close();
+            if (_connectionForm == null || !_connectionForm.IsConnected)
+                Close();
         }
 
         private void _optionsMenuItem_Click(object sender, EventArgs e)
         {
             ParentTabs.OpenOptions();
 
-            //if (!IsConnected)
-            //    Close();
+            if (_connectionForm == null || !_connectionForm.IsConnected)
+                Close();
         }
 
         private void _historyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ParentTabs.OpenHistory();
 
-            //if (!IsConnected)
-            //    Close();
+            if (_connectionForm == null || !_connectionForm.IsConnected)
+                Close();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace EasyConnect.Protocols
 
         Form GetOptionsForm(IConnection connection);
 
-        Form GetOptionsFormInDefaultsMode(IConnection connection);
+        Form GetOptionsFormInDefaultsMode();
 
         BaseConnectionForm CreateConnectionForm(IConnection connection, Panel containerPanel);
     }

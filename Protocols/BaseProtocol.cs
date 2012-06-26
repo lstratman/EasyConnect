@@ -45,9 +45,11 @@ namespace EasyConnect.Protocols
             return GetOptionsForm((TConnection) connection);
         }
 
-        public Form GetOptionsFormInDefaultsMode(IConnection connection)
+        public Form GetOptionsFormInDefaultsMode()
         {
-            return GetOptionsFormInDefaultsMode((TConnection) connection);
+            TConnection defaults = (TConnection)ConnectionFactory.GetDefaults(GetType());
+
+            return GetOptionsFormInDefaultsMode(defaults);
         }
 
         public BaseConnectionForm CreateConnectionForm(IConnection connection, Panel containerPanel)

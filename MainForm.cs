@@ -173,22 +173,34 @@ namespace EasyConnect
 
         public void OpenOptions()
         {
-            //TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content is OptionsWindow);
+            TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content is OptionsWindow);
 
-            //if (tab != null)
-            //{
-            //    SelectedTab = tab;
-            //    return;
-            //}
+            if (tab != null)
+            {
+                SelectedTab = tab;
+                return;
+            }
 
-            //TitleBarTab newTab = new TitleBarTab(this)
-            //                         {
-            //                             Content = new OptionsWindow(this)
-            //                         };
+            OptionsWindow optionsWindow = new OptionsWindow(this);
+            optionsWindow.OptionsForms.Add(new GlobalOptionsWindow());
 
-            //Tabs.Add(newTab);
-            //ResizeTabContents(newTab);
-            //SelectedTabIndex = _tabs.Count - 1;
+            foreach (IProtocol protocol in ConnectionFactory.GetProtocols())
+            {
+                Form optionsForm = protocol.GetOptionsFormInDefaultsMode();
+
+                optionsForm.Closed +=
+                    (sender, args) => ConnectionFactory.SetDefaults(((IOptionsForm) optionsForm).Connection);
+                optionsWindow.OptionsForms.Add(optionsForm);
+            }
+
+            TitleBarTab newTab = new TitleBarTab(this)
+                                     {
+                                         Content = optionsWindow
+                                     };
+
+            Tabs.Add(newTab);
+            ResizeTabContents(newTab);
+            SelectedTabIndex = _tabs.Count - 1;
         }
 
         public void OpenHistory()

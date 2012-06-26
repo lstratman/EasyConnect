@@ -15,8 +15,9 @@ namespace EasyConnect.Protocols
     public class ConnectionFactory
     {
         protected static Dictionary<Type, IProtocol> _protocols = new Dictionary<Type, IProtocol>();
-        protected static Dictionary<Type, IConnection> _defaults = new Dictionary<Type, IConnection>();
+        protected static Dictionary<Type, IConnection> _defaults = null;
         protected static SecureString _encryptionPassword = null;
+        protected static string _defaultProtocolPrefix = null;
 
         private ConnectionFactory()
         {
@@ -59,34 +60,58 @@ namespace EasyConnect.Protocols
                 {
                 }
             }
+        }
+
+        public static void SetDefaultProtocol(IProtocol protocol)
+        {
+            if (_defaults == null)
+                InitializeDefaults();
+
+            _defaultProtocolPrefix = protocol.ProtocolPrefix;
+            SaveDefaults();
+        }
+
+        public static IProtocol GetDefaultProtocol()
+        {
+            if (_defaults == null)
+                InitializeDefaults();
+
+            return _protocols.First(pair => pair.Value.ProtocolPrefix == (String.IsNullOrEmpty(_defaultProtocolPrefix) ? "rdp" : _defaultProtocolPrefix)).Value;
+        }
+
+        protected static void InitializeDefaults()
+        {
+            _defaults = new Dictionary<Type, IConnection>();
 
             if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Defaults.xml"))
             {
                 using (XmlReader reader = new XmlTextReader(new FileStream(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Defaults.xml", FileMode.Open)))
                 {
                     reader.MoveToContent();
+
+                    _defaultProtocolPrefix = reader.GetAttribute("defaultProtocolPrefix");
+
                     reader.Read();
 
-                    while (reader.Read())
+                    while (reader.MoveToContent() == XmlNodeType.Element)
                     {
                         IConnection defaults = Deserialize(reader);
-                        IProtocol protocol = _protocols.First(pair => pair.Key == defaults.GetType()).Value;
+                        IProtocol protocol = _protocols.First(pair => pair.Value.ConnectionType == defaults.GetType()).Value;
 
                         _defaults[protocol.GetType()] = defaults;
+
+                        reader.Read();
                     }
                 }
             }
         }
 
-        public static void SetDefaults(IConnection defaults)
+        protected static void SaveDefaults()
         {
-            IProtocol protocol = _protocols.First(pair => pair.Value.ConnectionType == defaults.GetType()).Value;
-
-            _defaults[protocol.GetType()] = defaults;
-
             using (XmlWriter writer = new XmlTextWriter(new FileStream(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Defaults.xml", FileMode.Create), Encoding.Unicode))
             {
                 writer.WriteStartElement("Defaults");
+                writer.WriteAttributeString("defaultProtocolPrefix", _defaultProtocolPrefix);
 
                 foreach (IConnection connection in _defaults.Values)
                 {
@@ -98,13 +123,30 @@ namespace EasyConnect.Protocols
             }
         }
 
+        public static void SetDefaults(IConnection defaults)
+        {
+            if (_defaults == null)
+                InitializeDefaults();
+
+            IProtocol protocol = _protocols.First(pair => pair.Value.ConnectionType == defaults.GetType()).Value;
+
+            _defaults[protocol.GetType()] = defaults;
+            SaveDefaults();
+        }
+
         public static IConnection GetDefaults(Type protocolType)
         {
+            if (_defaults == null)
+                InitializeDefaults();
+
             return GetDefaults(_protocols[protocolType]);
         }
 
         public static IConnection GetDefaults(IProtocol protocol)
         {
+            if (_defaults == null)
+                InitializeDefaults();
+
             return _defaults.ContainsKey(protocol.GetType())
                        ? _defaults[protocol.GetType()]
                        : (IConnection) Activator.CreateInstance(_protocols[protocol.GetType()].ConnectionType);
@@ -130,7 +172,7 @@ namespace EasyConnect.Protocols
             Match match = uriCompontents.Match(uri);
             string protocolPrefix = match.Groups["uri"].Success
                                         ? match.Groups["uri"].Value
-                                        : "rdp";
+                                        : GetDefaultProtocol().ProtocolPrefix;
             IProtocol protocol =
                 _protocols.First(
                     pair => pair.Value.ProtocolPrefix.ToLower() == protocolPrefix.ToLower()).Value;

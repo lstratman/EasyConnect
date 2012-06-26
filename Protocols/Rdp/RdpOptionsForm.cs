@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Security;
 using System.Windows.Forms;
@@ -94,7 +95,7 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
-        private void RdpOptionsForm_FormClosed(object sender, FormClosedEventArgs e)
+        private void RdpOptionsForm_FormClosing(object sender, CancelEventArgs e)
         {
             Connection.Host = _hostNameTextBox.Text;
             Connection.Username = _userNameTextBox.Text;
@@ -153,6 +154,19 @@ namespace EasyConnect.Protocols.Rdp
         {
             get;
             set;
+        }
+
+        IConnection IOptionsForm.Connection
+        {
+            get
+            {
+                return Connection;
+            }
+
+            set
+            {
+                Connection = (RdpConnection)value;
+            }
         }
 
         public bool DefaultsMode

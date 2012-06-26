@@ -5,16 +5,25 @@ using System.Text;
 
 namespace EasyConnect.Protocols
 {
-    public interface IOptionsForm<TConnection>
-        where TConnection : IConnection
+    public interface IOptionsForm
     {
-        TConnection Connection
+        IConnection Connection
         {
             get;
             set;
         }
 
         bool DefaultsMode
+        {
+            get;
+            set;
+        }
+    }
+
+    public interface IOptionsForm<TConnection> : IOptionsForm
+        where TConnection : IConnection
+    {
+        TConnection Connection
         {
             get;
             set;

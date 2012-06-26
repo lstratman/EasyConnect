@@ -223,6 +223,7 @@
             // 
             // _windowsKeyDropdown
             // 
+            this._windowsKeyDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this._windowsKeyDropdown.FormattingEnabled = true;
             this._windowsKeyDropdown.Items.AddRange(new object[] {
             "On this computer",
@@ -243,6 +244,7 @@
             // 
             // _audioRecordingDropdown
             // 
+            this._audioRecordingDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this._audioRecordingDropdown.FormattingEnabled = true;
             this._audioRecordingDropdown.Items.AddRange(new object[] {
             "Record from this computer",
@@ -254,6 +256,7 @@
             // 
             // _audioPlaybackDropdown
             // 
+            this._audioPlaybackDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this._audioPlaybackDropdown.FormattingEnabled = true;
             this._audioPlaybackDropdown.Items.AddRange(new object[] {
             "Play on this computer",
@@ -304,6 +307,7 @@
             // 
             // _colorDepthDropdown
             // 
+            this._colorDepthDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this._colorDepthDropdown.FormattingEnabled = true;
             this._colorDepthDropdown.Items.AddRange(new object[] {
             "High Color (15 bit)",
@@ -576,7 +580,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RdpOptionsForm";
             this.Text = "Remote Desktop Options";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.RdpOptionsForm_FormClosed);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RdpOptionsForm_FormClosing);
             this.Load += new System.EventHandler(this.RdpOptionsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this._resolutionSlider)).EndInit();
             this._flowLayoutPanel.ResumeLayout(false);
