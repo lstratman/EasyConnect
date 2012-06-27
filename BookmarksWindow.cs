@@ -411,7 +411,7 @@ namespace EasyConnect
                 _bookmarksListView.Items.Add(item);
             }
 
-            foreach (RdpConnection bookmark in folder.Bookmarks)
+            foreach (IConnection bookmark in folder.Bookmarks)
             {
                 ListViewItem item = new ListViewItem(bookmark.DisplayName, 0);
                 item.SubItems.Add(bookmark.Host);
@@ -519,7 +519,7 @@ namespace EasyConnect
 
         private void OpenAllBookmarks(BookmarksFolder folder)
         {
-            foreach (RdpConnection connection in folder.Bookmarks)
+            foreach (IConnection connection in folder.Bookmarks)
                 _applicationForm.Connect(connection);
 
             foreach (BookmarksFolder childFolder in folder.ChildFolders)
@@ -783,7 +783,7 @@ namespace EasyConnect
 
             List<object> source = _cutItems.Union(_copiedItems).ToList();
 
-            if ((source[0] is BookmarksFolder && ((BookmarksFolder)source[0]).ParentFolder == targetFolder) || (source[0] is RdpConnection && ((RdpConnection)source[0]).ParentFolder == targetFolder))
+            if ((source[0] is BookmarksFolder && ((BookmarksFolder)source[0]).ParentFolder == targetFolder) || (source[0] is IConnection && ((IConnection)source[0]).ParentFolder == targetFolder))
             {
                 MessageBox.Show(this, "You cannot paste items into their existing parent folders.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -794,8 +794,8 @@ namespace EasyConnect
 
             foreach (object clonedItem in clonedItems)
             {
-                if (clonedItem is RdpConnection)
-                    targetFolder.Bookmarks.Add((RdpConnection)clonedItem);
+                if (clonedItem is IConnection)
+                    targetFolder.Bookmarks.Add((IConnection)clonedItem);
 
                 else
                     targetFolder.MergeFolder((BookmarksFolder)clonedItem);
@@ -805,7 +805,7 @@ namespace EasyConnect
             {
                 foreach (object cutItem in _cutItems)
                 {
-                    RdpConnection connection = cutItem as RdpConnection;
+                    IConnection connection = cutItem as IConnection;
 
                     if (connection != null)
                     {

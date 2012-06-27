@@ -114,7 +114,6 @@
     <Compile Include="GlobalOptionsWindow.Designer.cs">
       <DependentUpon>GlobalOptionsWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Options.cs" />
     <Compile Include="DragHelper.cs" />
     <Compile Include="HistoryMethods.cs" />
     <Compile Include="HistoryWindow.cs">

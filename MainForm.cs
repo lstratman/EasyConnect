@@ -26,7 +26,7 @@ namespace EasyConnect
 
         public delegate void ConnectToBookmarksDelegate(Guid[] bookmarkGuids);
 
-        public delegate TitleBarTab ConnectionDelegate(RdpConnection connection);
+        public delegate TitleBarTab ConnectionDelegate(IConnection connection);
 
         public static MainForm ActiveInstance = null;
         public static ConnectToHistoryDelegate ConnectToHistoryMethod = null;
@@ -282,7 +282,7 @@ namespace EasyConnect
 
         public TitleBarTab ConnectToHistory(Guid historyGuid)
         {
-            RdpConnection connection = _history.FindInHistory(historyGuid);
+            IConnection connection = _history.FindInHistory(historyGuid);
 
             if (connection != null)
                 return Connect(connection);
@@ -312,8 +312,9 @@ namespace EasyConnect
             _addingWindow = false;
 
             connectionWindow.FormClosing += sessionWindow_FormClosing;
-            connectionWindow.Connected += sessionWindow_Connected;
             connectionWindow.Connect();
+
+            _history.AddToHistory(connection);
 
             TabbedThumbnail preview = new TabbedThumbnail(Handle, connectionWindow)
                                           {
@@ -335,9 +336,7 @@ namespace EasyConnect
             TaskbarManager.Instance.TabbedThumbnail.AddThumbnailPreview(preview);
             TaskbarManager.Instance.TabbedThumbnail.SetActiveTab(preview);
 
-            if (
-                _recentConnections.FirstOrDefault((HistoryWindow.HistoricalConnection c) => c.Guid == connection.Guid) ==
-                null)
+            if (_recentConnections.FirstOrDefault((HistoryWindow.HistoricalConnection c) => c.Connection.Guid == connection.Guid) == null)
             {
                 _recentCategory.AddJumpListItems(new JumpListLink(Application.ExecutablePath, connectionWindow.Text)
                                                      {
@@ -348,18 +347,13 @@ namespace EasyConnect
                 _jumpList.Refresh();
 
                 _recentConnections.Enqueue(
-                    _history.Connections.First((HistoryWindow.HistoricalConnection c) => c.Guid == connection.Guid));
+                    _history.Connections.First((HistoryWindow.HistoricalConnection c) => c.Connection.Guid == connection.Guid));
 
                 if (_recentConnections.Count > _jumpList.MaxSlotsInList)
                     _recentConnections.Dequeue();
             }
 
             return newTab;
-        }
-
-        private void sessionWindow_Connected(object sender, EventArgs e)
-        {
-            //throw new NotImplementedException();
         }
 
         private void preview_TabbedThumbnailBitmapRequested(object sender, TabbedThumbnailBitmapRequestedEventArgs e)
@@ -441,12 +435,11 @@ namespace EasyConnect
                 foreach (HistoryWindow.HistoricalConnection historicalConnection in historicalConnections)
                 {
                     _recentCategory.AddJumpListItems(new JumpListLink(Application.ExecutablePath,
-                                                                      historicalConnection.DisplayName)
+                                                                      historicalConnection.Connection.DisplayName)
                                                          {
                                                              Arguments =
-                                                                 "/openHistory:" + historicalConnection.Guid.ToString(),
-                                                             IconReference =
-                                                                 new IconReference(Application.ExecutablePath, 0)
+                                                                 "/openHistory:" + historicalConnection.Connection.Guid.ToString(),
+                                                             IconReference = new IconReference(Application.ExecutablePath, 0)
                                                          });
                     _recentConnections.Enqueue(historicalConnection);
                 }

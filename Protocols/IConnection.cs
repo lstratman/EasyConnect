@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Security;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace EasyConnect.Protocols
 {

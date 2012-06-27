@@ -20,8 +20,8 @@ namespace EasyConnect
         protected IConnection _connection = null;
         protected BaseConnectionForm _connectionForm = null;
 
-        protected Dictionary<ToolStripMenuItem, RdpConnection> _menuItemConnections =
-            new Dictionary<ToolStripMenuItem, RdpConnection>();
+        protected Dictionary<ToolStripMenuItem, IConnection> _menuItemConnections =
+            new Dictionary<ToolStripMenuItem, IConnection>();
 
         public ConnectionWindow()
         {
@@ -132,13 +132,15 @@ namespace EasyConnect
             foreach (BookmarksFolder childFolder in currentFolder.ChildFolders.OrderBy(f => f.Name))
                 PopulateBookmarks(childFolder, addLocation, false);
 
-            foreach (RdpConnection bookmark in currentFolder.Bookmarks.OrderBy(b => b.DisplayName))
+            foreach (IConnection bookmark in currentFolder.Bookmarks.OrderBy(b => b.DisplayName))
             {
-                ToolStripMenuItem bookmarkMenuItem = new ToolStripMenuItem(bookmark.DisplayName, Resources.RDCSmall/*,
-                                                                           (object sender, EventArgs e) =>
-                                                                           Connect(
-                                                                               _menuItemConnections[
-                                                                                   (ToolStripMenuItem) sender])*/);
+                ToolStripMenuItem bookmarkMenuItem = new ToolStripMenuItem(
+                    bookmark.DisplayName, Resources.RDCSmall,
+                    (object sender, EventArgs e) =>
+                        {
+                            _connection = bookmark;
+                            Connect();
+                        });
 
                 _menuItemConnections[bookmarkMenuItem] = bookmark;
                 addLocation.Add(bookmarkMenuItem);

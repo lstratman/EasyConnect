@@ -8,6 +8,7 @@ using System.Security;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 using EasyConnect.Protocols;
 using EasyConnect.Protocols.Rdp;
@@ -56,12 +57,14 @@ namespace EasyConnect
             }
         }
 
-        public RdpConnection FindInHistory(Guid historyGuid)
+        public IConnection FindInHistory(Guid historyGuid)
         {
-            return _connections.Values.FirstOrDefault((HistoricalConnection c) => c.Guid == historyGuid);
+            return _connections.Values.FirstOrDefault((HistoricalConnection c) => c.Connection.Guid == historyGuid) == null
+                       ? null
+                       : _connections.Values.First((HistoricalConnection c) => c.Connection.Guid == historyGuid).Connection;
         }
 
-        public void AddToHistory(RdpConnection connection)
+        public void AddToHistory(IConnection connection)
         {
             HistoricalConnection historyEntry = new HistoricalConnection(connection)
                                                     {
@@ -87,8 +90,8 @@ namespace EasyConnect
 
             ListViewItem listViewItem = new ListViewItem(historyEntry.LastConnection.ToLongTimeString(), 0);
 
-            listViewItem.SubItems.Add(historyEntry.DisplayName);
-            listViewItem.SubItems.Add(historyEntry.Host);
+            listViewItem.SubItems.Add(historyEntry.Connection.DisplayName);
+            listViewItem.SubItems.Add(historyEntry.Connection.Host);
 
             _connections[listViewItem] = historyEntry;
 
@@ -124,7 +127,7 @@ namespace EasyConnect
 
         private void propertiesMenuItem_Click(object sender, EventArgs e)
         {
-            Form optionsWindow = ConnectionFactory.CreateOptionsForm(_connections[_historyListView.SelectedItems[0]]);
+            Form optionsWindow = ConnectionFactory.CreateOptionsForm(_connections[_historyListView.SelectedItems[0]].Connection);
             TitleBarTab optionsTab = new TitleBarTab(_applicationForm)
             {
                 Content = optionsWindow
@@ -136,53 +139,110 @@ namespace EasyConnect
 
         private void connectMenuItem_Click(object sender, EventArgs e)
         {
-            _applicationForm.Connect(_connections[_historyListView.SelectedItems[0]]);
+            _applicationForm.Connect(_connections[_historyListView.SelectedItems[0]].Connection);
         }
 
-        public class HistoricalConnection : RdpConnection
+        public class HistoricalConnection : ISerializable, IXmlSerializable
         {
+            public IConnection Connection
+            {
+                get;
+                set;
+            }
+
             public HistoricalConnection()
             {
             }
 
-            public HistoricalConnection(SerializationInfo info, StreamingContext context) 
-                : base(info, context)
+            public HistoricalConnection(SerializationInfo info, StreamingContext context)
             {
                 LastConnection = info.GetDateTime("LastConnection");
+                Connection = (IConnection) info.GetValue("Connection", typeof (IConnection));
             }
 
-            public HistoricalConnection(RdpConnection connection)
+            public HistoricalConnection(IConnection connection)
             {
-                Host = connection.Host;
-                Username = connection.Username;
-                DesktopWidth = connection.DesktopWidth;
-                DesktopHeight = connection.DesktopHeight;
-                ColorDepth = connection.ColorDepth;
-                Name = connection.Name;
-                IsBookmark = connection.IsBookmark;
-                AudioMode = connection.AudioMode;
-                KeyboardMode = connection.KeyboardMode;
-                ConnectPrinters = connection.ConnectPrinters;
-                ConnectClipboard = connection.ConnectClipboard;
-                ConnectDrives = connection.ConnectDrives;
-                DesktopBackground = connection.DesktopBackground;
-                FontSmoothing = connection.FontSmoothing;
-                DesktopComposition = connection.DesktopComposition;
-                WindowContentsWhileDragging = connection.WindowContentsWhileDragging;
-                Animations = connection.Animations;
-                VisualStyles = connection.VisualStyles;
-                PersistentBitmapCaching = connection.PersistentBitmapCaching;
-                Password = connection.Password;
-                Guid = connection.Guid;
+                Connection = connection;
             }
 
-            public override void GetObjectData(SerializationInfo info, StreamingContext context)
+            public void GetObjectData(SerializationInfo info, StreamingContext context)
             {
-                base.GetObjectData(info, context);
-
                 info.AddValue("LastConnection", LastConnection);
+                info.AddValue("Connection", Connection);
             }
 
+            public DateTime LastConnection
+            {
+                get;
+                set;
+            }
+
+            public XmlSchema GetSchema()
+            {
+                return null;
+            }
+
+            public void ReadXml(XmlReader reader)
+            {
+                if (reader.GetAttribute("isLegacy") != "false")
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(LegacyHistoricalConnection));
+                    LegacyHistoricalConnection legacyHistoricalConnection = (LegacyHistoricalConnection)serializer.Deserialize(reader);
+
+                    LastConnection = legacyHistoricalConnection.LastConnection;
+                    Connection = legacyHistoricalConnection;
+                }
+
+                else
+                {
+                    reader.Read();
+
+                    while (reader.MoveToContent() == XmlNodeType.Element)
+                    {
+                        switch (reader.LocalName)
+                        {
+                            case "LastConnection":
+                                LastConnection = DateTime.Parse(reader.ReadElementContentAsString());
+                                break;
+
+                            case "Connection":
+                                reader.Read();
+
+                                XmlSerializer serializer =
+                                    new XmlSerializer(
+                                        reader.LocalName == "HistoricalConnection"
+                                            ? typeof (LegacyHistoricalConnection)
+                                            : ConnectionFactory.GetProtocols().First(p => p.ConnectionType.Name == reader.LocalName).ConnectionType);
+                                Connection = (IConnection)serializer.Deserialize(reader);
+
+                                reader.Read();
+
+                                break;
+                        }
+                    }
+
+                    reader.Read();
+                }
+            }
+
+            public void WriteXml(XmlWriter writer)
+            {
+                writer.WriteAttributeString("isLegacy", "false");
+                writer.WriteElementString("LastConnection", LastConnection.ToString());
+
+                writer.WriteStartElement("Connection");
+
+                XmlSerializer serializer = new XmlSerializer(Connection.GetType());
+
+                serializer.Serialize(writer, Connection);
+                writer.WriteEndElement();
+            }
+        }
+
+        [Serializable]
+        [XmlRoot("HistoricalConnection")]
+        public class LegacyHistoricalConnection : RdpConnection
+        {
             public DateTime LastConnection
             {
                 get;
@@ -217,7 +277,7 @@ namespace EasyConnect
         private void _historyListView_DoubleClick(object sender, EventArgs e)
         {
             if (_historyListView.SelectedItems.Count > 0)
-                _applicationForm.Connect(_connections[_historyListView.SelectedItems[0]]);
+                _applicationForm.Connect(_connections[_historyListView.SelectedItems[0]].Connection);
         }
     }
 }
