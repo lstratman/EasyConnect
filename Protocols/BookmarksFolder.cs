@@ -167,9 +167,10 @@ namespace EasyConnect.Protocols
                     case "ChildFolders":
                         if (!reader.IsEmptyElement)
                         {
+                            reader.Read();
+
                             while (reader.MoveToContent() == XmlNodeType.Element)
                             {
-                                reader.Read();
                                 BookmarksFolder childFolder = new BookmarksFolder();
                                 childFolder.ReadXml(reader);
 
