@@ -32,6 +32,7 @@ namespace EasyConnect
             : this()
         {
             _connection = connection;
+            Text = connection.DisplayName;
         }
 
         protected MainForm ParentTabs
@@ -61,7 +62,8 @@ namespace EasyConnect
         public void Connect()
         {
             _connectionForm = ConnectionFactory.CreateConnectionForm(_connection, _connectionContainerPanel);
-
+            Text = _connection.DisplayName;
+            
             _connectionForm.Connected += Connected;
             _connectionForm.Connect();
         }
