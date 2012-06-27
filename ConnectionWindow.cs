@@ -3,16 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security;
 using System.Windows.Forms;
-using AxMSTSCLib;
-using EasyConnect.Common;
 using EasyConnect.Properties;
 using EasyConnect.Protocols;
-using EasyConnect.Protocols.Rdp;
-using MSTSCLib;
-using Stratman.Windows.Forms.TitleBarTabs;
 
 namespace EasyConnect
 {
