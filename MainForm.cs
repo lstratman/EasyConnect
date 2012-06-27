@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -460,6 +461,26 @@ namespace EasyConnect
                        {
                            Content = new ConnectionWindow()
                        };
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            switch (m.Msg)
+            {
+                case 0x0021:
+                    if (SelectedTab != null && SelectedTab.Content is ConnectionWindow)
+                    {
+                        if ((SelectedTab.Content as ConnectionWindow).IsCursorOverContent)
+                            (SelectedTab.Content as ConnectionWindow).FocusContent();
+                    }
+
+                    base.WndProc(ref m);
+                    break;
+
+                default:
+                    base.WndProc(ref m);
+                    break;
+            }
         }
     }
 }

@@ -252,6 +252,8 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ConnectionWindow";
             this.Text = "New Tab";
+            this.Shown += new System.EventHandler(this.ConnectionWindow_Shown);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ConnectionWindow_MouseDown);
             this._toolsMenu.ResumeLayout(false);
             this._bookmarksMenu.ResumeLayout(false);
             this.toolbarBackground.ResumeLayout(false);

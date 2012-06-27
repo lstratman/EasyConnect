@@ -346,5 +346,10 @@ namespace EasyConnect.Protocols.Rdp
             IsConnected = false;
             ParentForm.Close();
         }
+
+        void RdpConnectionForm_GotFocus(object sender, EventArgs e)
+        {
+            _rdpWindow.Focus();
+        }
     }
 }

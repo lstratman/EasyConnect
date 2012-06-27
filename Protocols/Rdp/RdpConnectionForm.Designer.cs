@@ -54,6 +54,7 @@ namespace EasyConnect.Protocols.Rdp
             this.Controls.Add(this._rdpWindow);
             this.Name = "RdpConnectionForm";
             this.Text = "RdpConnectionForm";
+            this.GotFocus += RdpConnectionForm_GotFocus;
             ((System.ComponentModel.ISupportInitialize)(this._rdpWindow)).EndInit();
             this.ResumeLayout(false);
 

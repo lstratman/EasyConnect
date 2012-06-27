@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -33,6 +35,23 @@ namespace EasyConnect
         {
             _connection = connection;
             Text = connection.DisplayName;
+            urlTextBox.Text = connection.Host;
+        }
+
+        public bool IsCursorOverContent
+        {
+            get
+            {
+                Point relativePosition = _connectionContainerPanel.PointToClient(MousePosition);
+                return (relativePosition.X >= 0 && relativePosition.Y >= 0 && relativePosition.X <= _connectionContainerPanel.Width &&
+                        relativePosition.Y <= _connectionContainerPanel.Height);
+            }
+        }
+
+        public void FocusContent()
+        {
+            if (_connectionForm != null)
+                _connectionForm.Focus();
         }
 
         protected MainForm ParentTabs
@@ -211,6 +230,17 @@ namespace EasyConnect
 
             if (_connectionForm == null || !_connectionForm.IsConnected)
                 Close();
+        }
+
+        private void ConnectionWindow_Shown(object sender, EventArgs e)
+        {
+            if (_connectionForm != null && _connectionForm.IsConnected)
+                _connectionForm.Focus();
+        }
+
+        private void ConnectionWindow_MouseDown(object sender, MouseEventArgs e)
+        {
+            Debug.WriteLine("Captured mouse down");
         }
     }
 }
