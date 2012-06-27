@@ -133,9 +133,6 @@
   <data name="Border" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Border.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ButtonHoverBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ButtonHoverBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="CloseActive" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CloseActive.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -177,5 +174,8 @@ connections.</value>
   </data>
   <data name="SelectedOptionCategoryBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SelectedOptionCategoryBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ButtonHoverBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ButtonHoverBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
