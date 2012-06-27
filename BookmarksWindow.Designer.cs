@@ -197,8 +197,7 @@ namespace EasyConnect
             // 
             this._listViewImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("_listViewImageList.ImageStream")));
             this._listViewImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this._listViewImageList.Images.SetKeyName(0, "RDCSmall.ico");
-            this._listViewImageList.Images.SetKeyName(1, "Folder.png");
+            this._listViewImageList.Images.SetKeyName(0, "Folder.png");
             // 
             // _folderContextMenu
             // 

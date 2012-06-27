@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -21,6 +22,8 @@ namespace EasyConnect
         private readonly Dictionary<ListViewItem, HistoricalConnection> _connections =
             new Dictionary<ListViewItem, HistoricalConnection>();
 
+        protected Dictionary<Type, int> _connectionTypeIcons = new Dictionary<Type, int>();
+
         protected string _historyFileName = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
                                             "\\EasyConnect\\History.xml";
 
@@ -33,6 +36,14 @@ namespace EasyConnect
             InitializeComponent();
 
             _historyListView.ListViewItemSorter = new HistoryComparer(_connections);
+
+            foreach (IProtocol protocol in ConnectionFactory.GetProtocols())
+            {
+                Icon icon = new Icon(protocol.ProtocolIcon, 16, 16);
+
+                historyImageList.Images.Add(icon);
+                _connectionTypeIcons[protocol.ConnectionType] = historyImageList.Images.Count - 1;
+            }
 
             if (File.Exists(_historyFileName))
             {
@@ -88,7 +99,10 @@ namespace EasyConnect
                 _historyListView.Groups.Add(
                     new ListViewGroup(historyEntry.LastConnection.ToString("yyyy-MM-dd"), historyEntry.LastConnection.ToLongDateString()));
 
-            ListViewItem listViewItem = new ListViewItem(historyEntry.LastConnection.ToLongTimeString(), 0);
+            ListViewItem listViewItem = new ListViewItem(
+                historyEntry.LastConnection.ToLongTimeString(), _connectionTypeIcons[historyEntry.Connection.GetType() == typeof (LegacyHistoricalConnection)
+                                                                                         ? typeof (RdpConnection)
+                                                                                         : historyEntry.Connection.GetType()]);
 
             listViewItem.SubItems.Add(historyEntry.Connection.DisplayName);
             listViewItem.SubItems.Add(historyEntry.Connection.Host);

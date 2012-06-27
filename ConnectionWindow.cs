@@ -34,6 +34,8 @@ namespace EasyConnect
             : this()
         {
             _connection = connection;
+
+            Icon = ConnectionFactory.GetProtocol(connection).ProtocolIcon;
             Text = connection.DisplayName;
             urlTextBox.Text = connection.Host;
         }
@@ -81,7 +83,9 @@ namespace EasyConnect
         public void Connect()
         {
             _connectionForm = ConnectionFactory.CreateConnectionForm(_connection, _connectionContainerPanel);
+            Icon = ConnectionFactory.GetProtocol(_connection).ProtocolIcon;
             Text = _connection.DisplayName;
+            urlTextBox.Text = _connection.Host;
             
             _connectionForm.Connected += Connected;
             _connectionForm.Connect();
@@ -156,7 +160,7 @@ namespace EasyConnect
             foreach (IConnection bookmark in currentFolder.Bookmarks.OrderBy(b => b.DisplayName))
             {
                 ToolStripMenuItem bookmarkMenuItem = new ToolStripMenuItem(
-                    bookmark.DisplayName, Resources.RDCSmall,
+                    bookmark.DisplayName, new Icon(ConnectionFactory.GetProtocol(bookmark).ProtocolIcon, 16, 16).ToBitmap(),
                     (object sender, EventArgs e) =>
                         {
                             _connection = bookmark;

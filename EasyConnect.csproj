@@ -202,10 +202,6 @@
     <Content Include="Resources\ToolbarBackground.png" />
     <Content Include="Resources\Tools.ico" />
     <Content Include="Resources\ToolsActive.png" />
-    <None Include="Resources\Calendar.png" />
-    <None Include="Resources\Colors.png" />
-    <None Include="Resources\Computer.png" />
-    <None Include="Resources\Delete.png" />
     <Content Include="lib\Microsoft.WindowsAPICodePack.dll" />
     <Content Include="lib\Microsoft.WindowsAPICodePack.Shell.dll" />
     <Content Include="lib\SecurePasswordTextBox.dll" />
@@ -217,16 +213,8 @@
     <Content Include="Resources\Favorites.ico" />
     <None Include="Resources\Folder.png" />
     <Content Include="Resources\ForwardActive.png" />
-    <None Include="Resources\Monitor.png" />
     <None Include="Resources\Gradient.png" />
     <None Include="Resources\History.ico" />
-    <Content Include="Resources\Keyboard.png" />
-    <None Include="Resources\Performance.png" />
-    <Content Include="Resources\Printer.png" />
-    <Content Include="Resources\RDC.ico" />
-    <None Include="Resources\RDC.png" />
-    <Content Include="Resources\RDCSmall.ico" />
-    <Content Include="Resources\Sound.png" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="AxMSTSCLib">

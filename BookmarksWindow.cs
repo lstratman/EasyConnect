@@ -29,6 +29,8 @@ namespace EasyConnect
         protected Dictionary<ListViewItem, BookmarksFolder> _listViewFolders =
             new Dictionary<ListViewItem, BookmarksFolder>();
 
+        protected Dictionary<Type, int> _connectionTypeIcons = new Dictionary<Type, int>();
+
         protected BookmarksFolder _rootFolder = new BookmarksFolder();
 
         protected List<object> _copiedItems = new List<object>();
@@ -66,8 +68,16 @@ namespace EasyConnect
 
             _bookmarksFoldersTreeView.Nodes[0].Expand();
 
-            foreach (ToolStripMenuItem protocolMenuItem in ConnectionFactory.GetProtocols().Select(protocol => new ToolStripMenuItem(protocol.ProtocolTitle, null, (sender, args) => _addBookmarkMenuItem_Click(protocol))))
+            foreach (IProtocol protocol in ConnectionFactory.GetProtocols())
+            {
+                Icon icon = new Icon(protocol.ProtocolIcon, 16, 16);
+
+                _listViewImageList.Images.Add(icon);
+                _connectionTypeIcons[protocol.ConnectionType] = _listViewImageList.Images.Count - 1;
+
+                ToolStripMenuItem protocolMenuItem = new ToolStripMenuItem(protocol.ProtocolTitle, null, (sender, args) => _addBookmarkMenuItem_Click(protocol));
                 _addBookmarkMenuItem.DropDownItems.Add(protocolMenuItem);
+            }
         }
 
         protected void InitializeTreeView(BookmarksFolder currentFolder)
@@ -185,7 +195,7 @@ namespace EasyConnect
 
                     if (_bookmarksFoldersTreeView.SelectedNode == parentTreeNode)
                     {
-                        ListViewItem newItem = new ListViewItem(currentFolder.Name, 1);
+                        ListViewItem newItem = new ListViewItem(currentFolder.Name, 0);
 
                         _bookmarksListView.Items.Add(newItem);
                         _listViewFolders[newItem] = currentFolder;
@@ -252,7 +262,7 @@ namespace EasyConnect
 
                     if (_bookmarksFoldersTreeView.SelectedNode == parentTreeNode)
                     {
-                        ListViewItem newItem = new ListViewItem(currentBookmark.DisplayName, 0);
+                        ListViewItem newItem = new ListViewItem(currentBookmark.DisplayName, _connectionTypeIcons[currentBookmark.GetType()]);
                         newItem.SubItems.Add(currentBookmark.Host);
 
                         _listViewConnections[newItem] = currentBookmark;
@@ -405,7 +415,7 @@ namespace EasyConnect
                 ListViewItem item = new ListViewItem(new string[]
                                                          {
                                                              childFolder.Name
-                                                         }, 1);
+                                                         }, 0);
 
                 _listViewFolders[item] = childFolder;
                 _bookmarksListView.Items.Add(item);
@@ -413,7 +423,7 @@ namespace EasyConnect
 
             foreach (IConnection bookmark in folder.Bookmarks)
             {
-                ListViewItem item = new ListViewItem(bookmark.DisplayName, 0);
+                ListViewItem item = new ListViewItem(bookmark.DisplayName, _connectionTypeIcons[bookmark.GetType()]);
                 item.SubItems.Add(bookmark.Host);
 
                 _listViewConnections[item] = bookmark;
@@ -681,14 +691,8 @@ namespace EasyConnect
                 ListViewItem item1 = x as ListViewItem;
                 ListViewItem item2 = y as ListViewItem;
 
-                if (item1.ImageIndex != item2.ImageIndex)
-                {
-                    if (item2.ImageIndex > item1.ImageIndex)
-                        return 1;
-
-                    else
-                        return -1;
-                }
+                if (item1.ImageIndex != item2.ImageIndex && item1.ImageIndex == 0)
+                    return -1;
 
                 return String.Compare(item1.Text, item2.Text);
             }

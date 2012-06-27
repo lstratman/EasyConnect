@@ -157,6 +157,11 @@ namespace EasyConnect.Protocols
             return _protocols.Values.ToList();
         }
 
+        public static IProtocol GetProtocol(IConnection connection)
+        {
+            return _protocols.FirstOrDefault(p => p.Value.ConnectionType == connection.GetType()).Value;
+        }
+
         public static IConnection Deserialize(XmlReader reader)
         {
             string typeName = reader.LocalName;

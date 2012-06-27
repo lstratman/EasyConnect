@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -30,5 +31,10 @@ namespace EasyConnect.Protocols
         Form GetOptionsFormInDefaultsMode();
 
         BaseConnectionForm CreateConnectionForm(IConnection connection, Panel containerPanel);
+
+        Icon ProtocolIcon
+        {
+            get;
+        }
     }
 }
