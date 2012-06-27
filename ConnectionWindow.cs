@@ -125,6 +125,9 @@ namespace EasyConnect
                 _bookmarksMenu.Items.Add(new ToolStripSeparator());
 
             _menuItemConnections.Clear();
+            
+            Stopwatch stopwatch = new Stopwatch();
+            
             PopulateBookmarks(ParentTabs.Bookmarks.RootFolder, _bookmarksMenu.Items, true);
 
             _bookmarksMenu.DefaultDropDownDirection = ToolStripDropDownDirection.Left;
@@ -132,23 +135,23 @@ namespace EasyConnect
                                 _bookmarksButton.Height);
         }
 
-        private void PopulateBookmarks(BookmarksFolder currentFolder, ToolStripItemCollection menuItems, bool root)
+        private ToolStripItem PopulateBookmarks(BookmarksFolder currentFolder, ToolStripItemCollection menuItems, bool root)
         {
             ToolStripItemCollection addLocation = menuItems;
+            ToolStripMenuItem folderMenuItem = null;
 
             if (!root)
             {
-                ToolStripMenuItem folderMenuItem = new ToolStripMenuItem(currentFolder.Name, Resources.Folder)
+                folderMenuItem = new ToolStripMenuItem(currentFolder.Name, Resources.Folder)
                                                        {
                                                            DropDownDirection = ToolStripDropDownDirection.Left
                                                        };
 
-                menuItems.Add(folderMenuItem);
                 addLocation = folderMenuItem.DropDownItems;
             }
 
-            foreach (BookmarksFolder childFolder in currentFolder.ChildFolders.OrderBy(f => f.Name))
-                PopulateBookmarks(childFolder, addLocation, false);
+            List<ToolStripItem> addItems =
+                currentFolder.ChildFolders.OrderBy(f => f.Name).Select(childFolder => PopulateBookmarks(childFolder, addLocation, false)).ToList();
 
             foreach (IConnection bookmark in currentFolder.Bookmarks.OrderBy(b => b.DisplayName))
             {
@@ -167,8 +170,12 @@ namespace EasyConnect
                         });
 
                 _menuItemConnections[bookmarkMenuItem] = bookmark;
-                addLocation.Add(bookmarkMenuItem);
+                addItems.Add(bookmarkMenuItem);
             }
+            
+            addLocation.AddRange(addItems.ToArray());
+
+            return folderMenuItem;
         }
 
         private void _bookmarkMenuItem_Click(object sender, EventArgs e)
