@@ -344,7 +344,9 @@ namespace EasyConnect.Protocols.Rdp
                 MessageBox.Show("Unable to establish connection.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             IsConnected = false;
-            ParentForm.Close();
+
+            if (CloseParentFormOnDisconnect)
+                ParentForm.Close();
         }
 
         void RdpConnectionForm_GotFocus(object sender, EventArgs e)

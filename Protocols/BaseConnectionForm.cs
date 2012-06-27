@@ -8,12 +8,23 @@ namespace EasyConnect.Protocols
 {
     public abstract class BaseConnectionForm : Form, IConnectionForm
     {
+        protected BaseConnectionForm()
+        {
+            CloseParentFormOnDisconnect = true;
+        }
+
         public abstract event EventHandler Connected;
 
         public bool IsConnected
         {
             get;
             protected set;
+        }
+
+        public bool CloseParentFormOnDisconnect
+        {
+            get;
+            set;
         }
 
         public abstract void Connect();

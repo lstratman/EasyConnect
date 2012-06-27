@@ -156,6 +156,12 @@ namespace EasyConnect
                     bookmark.DisplayName, new Icon(ConnectionFactory.GetProtocol(bookmark).ProtocolIcon, 16, 16).ToBitmap(),
                     (object sender, EventArgs e) =>
                         {
+                            if (_connectionForm != null)
+                            {
+                                _connectionForm.CloseParentFormOnDisconnect = false;
+                                _connectionForm.Close();
+                            }
+
                             _connection = bookmark;
                             Connect();
                         });
