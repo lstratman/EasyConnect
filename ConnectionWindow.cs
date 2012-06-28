@@ -71,6 +71,17 @@ namespace EasyConnect
             }
         }
 
+        public bool IsConnected
+        {
+            get
+            {
+                if (_connectionForm == null)
+                    return false;
+
+                return _connectionForm.IsConnected;
+            }
+        }
+
         public event EventHandler Connected;
 
         public void Connect()
@@ -221,25 +232,16 @@ namespace EasyConnect
         private void _bookmarksManagerMenuItem2_Click(object sender, EventArgs e)
         {
             ParentTabs.OpenBookmarkManager();
-
-            if (_connectionForm == null || !_connectionForm.IsConnected)
-                Close();
         }
 
         private void _optionsMenuItem_Click(object sender, EventArgs e)
         {
             ParentTabs.OpenOptions();
-
-            if (_connectionForm == null || !_connectionForm.IsConnected)
-                Close();
         }
 
         private void _historyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ParentTabs.OpenHistory();
-
-            if (_connectionForm == null || !_connectionForm.IsConnected)
-                Close();
         }
 
         private void ConnectionWindow_Shown(object sender, EventArgs e)

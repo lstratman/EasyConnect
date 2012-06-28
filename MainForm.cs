@@ -194,14 +194,37 @@ namespace EasyConnect
                 optionsWindow.OptionsForms.Add(optionsForm);
             }
 
-            TitleBarTab newTab = new TitleBarTab(this)
-                                     {
-                                         Content = optionsWindow
-                                     };
+            ShowInEmptyTab(optionsWindow);
+        }
 
-            Tabs.Add(newTab);
-            ResizeTabContents(newTab);
-            SelectedTabIndex = _tabs.Count - 1;
+        protected void ShowInEmptyTab(Form form)
+        {
+            if (SelectedTab != null && SelectedTab.Content is ConnectionWindow && !(SelectedTab.Content as ConnectionWindow).IsConnected)
+            {
+                Form oldWindow = SelectedTab.Content;
+
+                SelectedTab.Content = form;
+                ResizeTabContents();
+
+                oldWindow.Close();
+            }
+
+            else
+            {
+                TitleBarTab newTab = new TitleBarTab(this)
+                {
+                    Content = form
+                };
+
+                Tabs.Add(newTab);
+                ResizeTabContents(newTab);
+                SelectedTabIndex = _tabs.Count - 1;
+            }
+
+            form.Show();
+
+            if (Overlay != null)
+                Overlay.Render(true);
         }
 
         public void OpenHistory()
@@ -214,16 +237,8 @@ namespace EasyConnect
                 return;
             }
 
-            TitleBarTab newTab = new TitleBarTab(this)
-                                     {
-                                         Content = History
-                                     };
-
-            Tabs.Add(newTab);
-            ResizeTabContents(newTab);
-
-            SelectedTabIndex = _tabs.Count - 1;
             History.FormClosed += History_FormClosed;
+            ShowInEmptyTab(History);
         }
 
         private void History_FormClosed(object sender, FormClosedEventArgs e)
@@ -241,16 +256,8 @@ namespace EasyConnect
                 return;
             }
 
-            TitleBarTab newTab = new TitleBarTab(this)
-                                     {
-                                         Content = Bookmarks
-                                     };
-
-            Tabs.Add(newTab);
-            ResizeTabContents(newTab);
-
-            SelectedTabIndex = _tabs.Count - 1;
             Bookmarks.FormClosed += Bookmarks_FormClosed;
+            ShowInEmptyTab(Bookmarks);
         }
 
         protected void MainForm_TabDeselecting(object sender, TitleBarTabCancelEventArgs e)
