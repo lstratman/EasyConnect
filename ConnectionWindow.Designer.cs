@@ -37,6 +37,8 @@
             this._historyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._toolsMenuSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this._optionsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this._updatesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._toolsMenuSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this._exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._bookmarksMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -66,10 +68,12 @@
             this._historyToolStripMenuItem,
             this._toolsMenuSeparator1,
             this._optionsMenuItem,
+            this.toolStripSeparator2,
+            this._updatesMenuItem,
             this._toolsMenuSeparator2,
             this._exitMenuItem});
             this._toolsMenu.Name = "_toolsMenu";
-            this._toolsMenu.Size = new System.Drawing.Size(187, 132);
+            this._toolsMenu.Size = new System.Drawing.Size(187, 160);
             // 
             // _newTabMenuItem
             // 
@@ -110,6 +114,18 @@
             this._optionsMenuItem.Size = new System.Drawing.Size(186, 22);
             this._optionsMenuItem.Text = "Options";
             this._optionsMenuItem.Click += new System.EventHandler(this._optionsMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(183, 6);
+            // 
+            // _updatesMenuItem
+            // 
+            this._updatesMenuItem.Name = "_updatesMenuItem";
+            this._updatesMenuItem.Size = new System.Drawing.Size(186, 22);
+            this._updatesMenuItem.Text = "Check for update";
+            this._updatesMenuItem.Click += new System.EventHandler(this._updatesMenuItem_Click);
             // 
             // _toolsMenuSeparator2
             // 
@@ -286,5 +302,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem _historyToolStripMenuItem;
         private System.Windows.Forms.Panel _connectionContainerPanel;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem _updatesMenuItem;
     }
 }

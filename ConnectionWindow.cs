@@ -43,6 +43,16 @@ namespace EasyConnect
             }
         }
 
+        public void SetUpdateAvailableState(bool updateAvailable)
+        {
+            _updatesMenuItem.Text = updateAvailable
+                                        ? "Install update"
+                                        : "Check for update";
+            _toolsButton.Image = updateAvailable
+                                     ? Resources.ToolsActiveUpdate
+                                     : Resources.ToolsActive;
+        }
+
         public void FocusContent()
         {
             if (_connectionForm != null)
@@ -253,6 +263,21 @@ namespace EasyConnect
         private void ConnectionWindow_MouseDown(object sender, MouseEventArgs e)
         {
             Debug.WriteLine("Captured mouse down");
+        }
+
+        private void _updatesMenuItem_Click(object sender, EventArgs e)
+        {
+            if (ParentTabs.UpdateAvailable)
+                ParentTabs.InstallUpdate();
+
+            else
+            {
+                CheckForUpdatesWindow checkForUpdatesWindow = new CheckForUpdatesWindow();
+                DialogResult result = checkForUpdatesWindow.ShowDialog(ParentTabs);
+
+                if (result == DialogResult.OK)
+                    ParentTabs.InstallUpdate();
+            }
         }
     }
 }

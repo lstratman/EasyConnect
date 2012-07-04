@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -18,6 +19,7 @@ using EasyConnect.Protocols.Rdp;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
 using Stratman.Windows.Forms.TitleBarTabs;
+using wyDay.Controls;
 
 namespace EasyConnect
 {
@@ -41,13 +43,43 @@ namespace EasyConnect
         protected Dictionary<TitleBarTab, Bitmap> _previews = new Dictionary<TitleBarTab, Bitmap>();
         protected TitleBarTab _previousActiveTab = null;
         protected JumpListCustomCategory _recentCategory = new JumpListCustomCategory("Recent");
+        protected AutomaticUpdater _automaticUpdater;
 
         protected Queue<HistoryWindow.HistoricalConnection> _recentConnections =
             new Queue<HistoryWindow.HistoricalConnection>();
 
+        private bool _updateAvailable;
+
+        public AutomaticUpdater AutomaticUpdater
+        {
+            get
+            {
+                return _automaticUpdater;
+            }
+        }
+
         public MainForm(Guid[] openToBookmarks)
         {
             InitializeComponent();
+
+            _automaticUpdater = new AutomaticUpdater();
+
+            (_automaticUpdater as ISupportInitialize).BeginInit();
+            _automaticUpdater.ContainerForm = this;
+            _automaticUpdater.Name = "_automaticUpdater";
+            _automaticUpdater.TabIndex = 0;
+            _automaticUpdater.wyUpdateCommandline = null;
+            _automaticUpdater.Visible = false;
+            _automaticUpdater.KeepHidden = true;
+            _automaticUpdater.GUID = "752f8ae7-47f3-4299-adcc-8be32d63ec7a";
+            _automaticUpdater.DaysBetweenChecks = 2;
+            _automaticUpdater.UpdateType = UpdateType.OnlyCheck;
+            _automaticUpdater.UpdateAvailable += _automaticUpdater_UpdateAvailable;
+            _automaticUpdater.UpToDate += _automaticUpdater_UpToDate;
+            _automaticUpdater.CheckingFailed += _automaticUpdater_CheckingFailed;
+            (_automaticUpdater as ISupportInitialize).EndInit();
+
+            Controls.Add(_automaticUpdater);
 
             OpenToBookmarks = openToBookmarks;
 
@@ -125,6 +157,46 @@ namespace EasyConnect
 
             }
 
+        }
+
+        void _automaticUpdater_CheckingFailed(object sender, FailArgs e)
+        {
+            Debug.WriteLine("fucked up");
+        }
+
+        void _automaticUpdater_UpToDate(object sender, SuccessArgs e)
+        {
+            UpdateAvailable = false;
+        }
+
+        public bool UpdateAvailable
+        {
+            get
+            {
+                return _updateAvailable;
+            }
+
+            set
+            {
+                _updateAvailable = value;
+
+                foreach (TitleBarTab tab in Tabs)
+                {
+                    if (tab.Content is ConnectionWindow)
+                        (tab.Content as ConnectionWindow).SetUpdateAvailableState(_updateAvailable);
+                }
+            }
+        }
+
+        public void InstallUpdate()
+        {
+            if (UpdateAvailable)
+                _automaticUpdater.InstallNow();
+        }
+
+        void _automaticUpdater_UpdateAvailable(object sender, EventArgs e)
+        {
+            UpdateAvailable = true;
         }
 
         public BookmarksWindow Bookmarks
@@ -488,6 +560,11 @@ namespace EasyConnect
                     base.WndProc(ref m);
                     break;
             }
+        }
+
+        public void CheckForUpdate()
+        {
+            bool result = _automaticUpdater.ForceCheckForUpdate(true);
         }
     }
 }
