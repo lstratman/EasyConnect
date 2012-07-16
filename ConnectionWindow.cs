@@ -186,7 +186,7 @@ namespace EasyConnect
                                 _connectionForm.Close();
                             }
 
-                            _connection = bookmark;
+                            _connection = _menuItemConnections[(ToolStripMenuItem)sender];
                             Connect();
                         });
 
