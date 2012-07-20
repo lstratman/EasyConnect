@@ -390,39 +390,49 @@ namespace EasyConnect
             ResizeTabContents(newTab);
             _addingWindow = false;
 
-            connectionWindow.FormClosing += sessionWindow_FormClosing;
             connectionWindow.Connect();
 
+            return newTab;
+        }
+
+        public void RegisterConnection(ConnectionWindow connectionWindow, IConnection connection)
+        {
             _history.AddToHistory(connection);
 
-            TabbedThumbnail preview = new TabbedThumbnail(Handle, connectionWindow)
-                                          {
-                                              Title = connectionWindow.Text,
-                                              Tooltip = connectionWindow.Text
-                                          };
+            if (!_previews.ContainsKey(connectionWindow))
+            {
+                connectionWindow.FormClosing += sessionWindow_FormClosing;
 
-            preview.SetWindowIcon(connectionWindow.Icon);
-            preview.TabbedThumbnailActivated += preview_TabbedThumbnailActivated;
-            preview.TabbedThumbnailClosed += preview_TabbedThumbnailClosed;
-            preview.TabbedThumbnailBitmapRequested += preview_TabbedThumbnailBitmapRequested;
-            preview.PeekOffset = new Vector(connectionWindow.Location.X, connectionWindow.Location.Y);
+                TabbedThumbnail preview = new TabbedThumbnail(Handle, connectionWindow)
+                                              {
+                                                  Title = connectionWindow.Text,
+                                                  Tooltip = connectionWindow.Text
+                                              };
 
-            for (Control currentControl = connectionWindow.Parent;
-                 currentControl.Parent != null;
-                 currentControl = currentControl.Parent)
-                preview.PeekOffset += new Vector(currentControl.Location.X, currentControl.Location.Y);
+                preview.SetWindowIcon(connectionWindow.Icon);
+                preview.TabbedThumbnailActivated += preview_TabbedThumbnailActivated;
+                preview.TabbedThumbnailClosed += preview_TabbedThumbnailClosed;
+                preview.TabbedThumbnailBitmapRequested += preview_TabbedThumbnailBitmapRequested;
+                preview.PeekOffset = new Vector(connectionWindow.Location.X, connectionWindow.Location.Y);
 
-            TaskbarManager.Instance.TabbedThumbnail.AddThumbnailPreview(preview);
-            TaskbarManager.Instance.TabbedThumbnail.SetActiveTab(preview);
+                for (Control currentControl = connectionWindow.Parent;
+                     currentControl.Parent != null;
+                     currentControl = currentControl.Parent)
+                    preview.PeekOffset += new Vector(currentControl.Location.X, currentControl.Location.Y);
+
+                TaskbarManager.Instance.TabbedThumbnail.AddThumbnailPreview(preview);
+                TaskbarManager.Instance.TabbedThumbnail.SetActiveTab(preview);
+            }
 
             if (_recentConnections.FirstOrDefault((HistoryWindow.HistoricalConnection c) => c.Connection.Guid == connection.Guid) == null)
             {
-                _recentCategory.AddJumpListItems(new JumpListLink(Application.ExecutablePath, connectionWindow.Text)
-                                                     {
-                                                         Arguments = "/openHistory:" + connection.Guid.ToString(),
-                                                         IconReference =
-                                                             new IconReference(Application.ExecutablePath, 0)
-                                                     });
+                _recentCategory.AddJumpListItems(
+                    new JumpListLink(Application.ExecutablePath, connectionWindow.Text)
+                        {
+                            Arguments = "/openHistory:" + connection.Guid.ToString(),
+                            IconReference =
+                                new IconReference(Application.ExecutablePath, 0)
+                        });
                 _jumpList.Refresh();
 
                 _recentConnections.Enqueue(
@@ -431,8 +441,6 @@ namespace EasyConnect
                 if (_recentConnections.Count > _jumpList.MaxSlotsInList)
                     _recentConnections.Dequeue();
             }
-
-            return newTab;
         }
 
         private void preview_TabbedThumbnailBitmapRequested(object sender, TabbedThumbnailBitmapRequestedEventArgs e)

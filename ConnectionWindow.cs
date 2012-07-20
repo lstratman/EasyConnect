@@ -103,6 +103,8 @@ namespace EasyConnect
             
             _connectionForm.Connected += Connected;
             _connectionForm.Connect();
+
+            ParentTabs.RegisterConnection(this, _connection);
         }
 
         private void _bookmarksButton_MouseEnter(object sender, EventArgs e)
