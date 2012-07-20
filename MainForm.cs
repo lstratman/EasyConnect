@@ -353,7 +353,7 @@ namespace EasyConnect
 
         protected void MainForm_TabSelected(object sender, TitleBarTabEventArgs e)
         {
-            if (!_addingWindow && SelectedTabIndex != -1)
+            if (!_addingWindow && SelectedTabIndex != -1 && _previews.ContainsKey(SelectedTab.Content))
                 TaskbarManager.Instance.TabbedThumbnail.SetActiveTab(SelectedTab.Content);
 
             _previousActiveTab = SelectedTab;
