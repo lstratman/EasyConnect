@@ -40,7 +40,7 @@ namespace EasyConnect
         protected HistoryWindow _history = null;
         protected static IpcServerChannel _ipcChannel = null;
         protected JumpList _jumpList = null;
-        protected Dictionary<TitleBarTab, Bitmap> _previews = new Dictionary<TitleBarTab, Bitmap>();
+        protected Dictionary<Form, Bitmap> _previews = new Dictionary<Form, Bitmap>();
         protected TitleBarTab _previousActiveTab = null;
         protected JumpListCustomCategory _recentCategory = new JumpListCustomCategory("Recent");
         protected AutomaticUpdater _automaticUpdater;
@@ -156,7 +156,6 @@ namespace EasyConnect
                 //SelectedTabIndex = 0;
 
             }
-
         }
 
         void _automaticUpdater_CheckingFailed(object sender, FailArgs e)
@@ -346,10 +345,10 @@ namespace EasyConnect
 
             preview.SetImage(bitmap);
 
-            if (_previews.ContainsKey(_previousActiveTab))
-                _previews[_previousActiveTab].Dispose();
+            if (_previews.ContainsKey(_previousActiveTab.Content))
+                _previews[_previousActiveTab.Content].Dispose();
 
-            _previews[_previousActiveTab] = bitmap;
+            _previews[_previousActiveTab.Content] = bitmap;
         }
 
         protected void MainForm_TabSelected(object sender, TitleBarTabEventArgs e)
@@ -438,31 +437,28 @@ namespace EasyConnect
 
         private void preview_TabbedThumbnailBitmapRequested(object sender, TabbedThumbnailBitmapRequestedEventArgs e)
         {
-            foreach (TitleBarTab rdcWindow in Tabs.Where(tab => tab.Content is IConnectionForm).Where(rdcWindow => rdcWindow.Content.Handle == e.WindowHandle && _previews.ContainsKey(rdcWindow)))
+            foreach (TitleBarTab rdcWindow in Tabs.Where(tab => tab.Content is IConnectionForm).Where(rdcWindow => rdcWindow.Content.Handle == e.WindowHandle && _previews.ContainsKey(rdcWindow.Content)))
             {
-                e.SetImage(_previews[rdcWindow]);
+                e.SetImage(_previews[rdcWindow.Content]);
                 break;
             }
         }
 
         private void sessionWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content == sender);
+            Form window = (Form) sender;
 
-            if (tab == null)
-                return;
-
-            if (_previews.ContainsKey(tab))
+            if (_previews.ContainsKey(window))
             {
-                _previews[tab].Dispose();
-                _previews.Remove(tab);
+                _previews[window].Dispose();
+                _previews.Remove(window);
             }
 
-            if (sender == _previousActiveTab)
+            if (_previousActiveTab != null && window == _previousActiveTab.Content)
                 _previousActiveTab = null;
 
-            if (!tab.Content.IsDisposed)
-                TaskbarManager.Instance.TabbedThumbnail.RemoveThumbnailPreview(tab.Content);
+            if (!window.IsDisposed)
+                TaskbarManager.Instance.TabbedThumbnail.RemoveThumbnailPreview(window);
         }
 
         private void preview_TabbedThumbnailClosed(object sender, TabbedThumbnailEventArgs e)
