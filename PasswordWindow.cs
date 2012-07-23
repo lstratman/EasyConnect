@@ -9,6 +9,27 @@ namespace EasyConnect
         public PasswordWindow()
         {
             InitializeComponent();
+
+            cancelButton.Visible = false;
+        }
+
+        public bool ShowCancelButton
+        {
+            get
+            {
+                return cancelButton.Visible;
+            }
+
+            set
+            {
+                if (value)
+                    okButton.Left = cancelButton.Left - okButton.Width - 7;
+
+                else
+                    okButton.Left = cancelButton.Left;
+
+                cancelButton.Visible = value;
+            }
         }
 
         public SecureString Password
@@ -27,6 +48,7 @@ namespace EasyConnect
 
         private void okButton_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.OK;
             Close();
         }
 
@@ -34,6 +56,12 @@ namespace EasyConnect
         {
             if (e.KeyCode == Keys.Enter)
                 okButton_Click(null, null);
+        }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }

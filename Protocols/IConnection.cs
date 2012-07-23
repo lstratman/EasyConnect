@@ -45,6 +45,12 @@ namespace EasyConnect.Protocols
             set;
         }
 
+        SecureString Password
+        {
+            get;
+            set;
+        }
+
         object CloneAnon();
     }
 }

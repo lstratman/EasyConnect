@@ -912,5 +912,28 @@ namespace EasyConnect
 
         }
 
+        private void updateAllPasswordsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PasswordWindow passwordWindow = new PasswordWindow
+                {
+                    ShowCancelButton = true
+                };
+            DialogResult result = passwordWindow.ShowDialog(this);
+
+            if (result == DialogResult.OK)
+            {
+                UpdatePasswords(_folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode], passwordWindow.Password);
+                Save();
+            }
+        }
+
+        private void UpdatePasswords(BookmarksFolder folder, SecureString password)
+        {
+            foreach (IConnection connection in folder.Bookmarks)
+                connection.Password = password;
+
+            foreach (BookmarksFolder childFolder in folder.ChildFolders)
+                UpdatePasswords(childFolder, password);
+        }
     }
 }

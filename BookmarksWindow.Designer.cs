@@ -101,6 +101,8 @@ namespace EasyConnect
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this._bookmarkExportDialog = new System.Windows.Forms.SaveFileDialog();
             this._bookmarkImportDialog = new System.Windows.Forms.OpenFileDialog();
+            this.updateAllPasswordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
             this._splitContainer.Panel2.SuspendLayout();
@@ -204,6 +206,8 @@ namespace EasyConnect
             this._folderContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._folderOpenAllMenuItem,
             this._folderOpenAllNewWindowMenuItem,
+            this.toolStripSeparator9,
+            this.updateAllPasswordsToolStripMenuItem,
             this.toolStripSeparator1,
             this._renameFolderMenuItem,
             this.toolStripSeparator2,
@@ -220,7 +224,7 @@ namespace EasyConnect
             this._importBookmarkMenuItem});
             this._folderContextMenu.Name = "_folderContextMenu";
             this._folderContextMenu.ShowImageMargin = false;
-            this._folderContextMenu.Size = new System.Drawing.Size(248, 276);
+            this._folderContextMenu.Size = new System.Drawing.Size(248, 326);
             // 
             // _folderOpenAllMenuItem
             // 
@@ -428,6 +432,18 @@ namespace EasyConnect
             this._bookmarkImportDialog.Filter = "EasyConnect Bookmark files|*.ecx|All files|*.*";
             this._bookmarkImportDialog.FileOk += new System.ComponentModel.CancelEventHandler(this._bookmarkImportDialog_FileOk);
             // 
+            // updateAllPasswordsToolStripMenuItem
+            // 
+            this.updateAllPasswordsToolStripMenuItem.Name = "updateAllPasswordsToolStripMenuItem";
+            this.updateAllPasswordsToolStripMenuItem.Size = new System.Drawing.Size(247, 22);
+            this.updateAllPasswordsToolStripMenuItem.Text = "Update all passwords...";
+            this.updateAllPasswordsToolStripMenuItem.Click += new System.EventHandler(this.updateAllPasswordsToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(244, 6);
+            // 
             // BookmarksWindow
             // 
             this.BackColor = System.Drawing.Color.Silver;
@@ -456,5 +472,7 @@ namespace EasyConnect
         private ToolStripSeparator toolStripSeparator8;
         private ToolStripMenuItem _importBookmarkMenuItem;
         private OpenFileDialog _bookmarkImportDialog;
+        private ToolStripSeparator toolStripSeparator9;
+        private ToolStripMenuItem updateAllPasswordsToolStripMenuItem;
     }
 }

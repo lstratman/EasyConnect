@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PasswordWindow));
             this.okButton = new System.Windows.Forms.Button();
             this.passwordTextBox = new SecurePasswordTextBox.SecureTextBox();
+            this.cancelButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // okButton
@@ -54,6 +55,16 @@
             this.passwordTextBox.TabIndex = 2;
             this.passwordTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.passwordTextBox_KeyDown);
             // 
+            // cancelButton
+            // 
+            this.cancelButton.Location = new System.Drawing.Point(104, 40);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.TabIndex = 3;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            // 
             // PasswordWindow
             // 
             this.AcceptButton = this.okButton;
@@ -63,6 +74,7 @@
             this.ControlBox = false;
             this.Controls.Add(this.passwordTextBox);
             this.Controls.Add(this.okButton);
+            this.Controls.Add(this.cancelButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "PasswordWindow";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
@@ -77,6 +89,7 @@
 
         private System.Windows.Forms.Button okButton;
         private SecurePasswordTextBox.SecureTextBox passwordTextBox;
+        private System.Windows.Forms.Button cancelButton;
 
     }
 }
