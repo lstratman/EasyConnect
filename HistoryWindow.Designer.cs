@@ -53,7 +53,7 @@
             this.propertiesMenuItem,
             this.connectMenuItem});
             this.historyContextMenu.Name = "historyContextMenu";
-            this.historyContextMenu.Size = new System.Drawing.Size(153, 70);
+            this.historyContextMenu.Size = new System.Drawing.Size(137, 48);
             // 
             // propertiesMenuItem
             // 
@@ -65,24 +65,22 @@
             // connectMenuItem
             // 
             this.connectMenuItem.Name = "connectMenuItem";
-            this.connectMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.connectMenuItem.Size = new System.Drawing.Size(136, 22);
             this.connectMenuItem.Text = "Connect";
             this.connectMenuItem.Click += new System.EventHandler(this.connectMenuItem_Click);
             // 
             // _historyListView
             // 
-            this._historyListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this._historyListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this._historyListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this._timeHeader,
             this._nameHeader,
             this._hostHeader});
+            this._historyListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this._historyListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this._historyListView.Location = new System.Drawing.Point(0, 0);
             this._historyListView.Name = "_historyListView";
-            this._historyListView.Size = new System.Drawing.Size(764, 483);
+            this._historyListView.Size = new System.Drawing.Size(760, 480);
             this._historyListView.SmallImageList = this.historyImageList;
             this._historyListView.TabIndex = 1;
             this._historyListView.UseCompatibleStateImageBehavior = false;
