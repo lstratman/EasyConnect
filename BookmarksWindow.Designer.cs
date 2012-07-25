@@ -73,6 +73,8 @@ namespace EasyConnect
             this._folderContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._folderOpenAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._folderOpenAllNewWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.updateAllPasswordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this._renameFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -101,8 +103,7 @@ namespace EasyConnect
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this._bookmarkExportDialog = new System.Windows.Forms.SaveFileDialog();
             this._bookmarkImportDialog = new System.Windows.Forms.OpenFileDialog();
-            this.updateAllPasswordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this._dragImageList = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
             this._splitContainer.Panel2.SuspendLayout();
@@ -164,6 +165,7 @@ namespace EasyConnect
             // 
             // _bookmarksListView
             // 
+            this._bookmarksListView.AllowDrop = true;
             this._bookmarksListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -182,6 +184,10 @@ namespace EasyConnect
             this._bookmarksListView.UseCompatibleStateImageBehavior = false;
             this._bookmarksListView.View = System.Windows.Forms.View.Details;
             this._bookmarksListView.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this._bookmarksListView_AfterLabelEdit);
+            this._bookmarksListView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this._bookmarksListView_ItemDrag);
+            this._bookmarksListView.DragDrop += new System.Windows.Forms.DragEventHandler(this._bookmarksListView_DragDrop);
+            this._bookmarksListView.DragEnter += new System.Windows.Forms.DragEventHandler(this._bookmarksListView_DragEnter);
+            this._bookmarksListView.DragOver += new System.Windows.Forms.DragEventHandler(this._bookmarksListView_DragOver);
             this._bookmarksListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this._bookmarksListView_MouseClick);
             this._bookmarksListView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this._bookmarksListView_MouseDoubleClick);
             // 
@@ -224,7 +230,7 @@ namespace EasyConnect
             this._importBookmarkMenuItem});
             this._folderContextMenu.Name = "_folderContextMenu";
             this._folderContextMenu.ShowImageMargin = false;
-            this._folderContextMenu.Size = new System.Drawing.Size(248, 326);
+            this._folderContextMenu.Size = new System.Drawing.Size(248, 304);
             // 
             // _folderOpenAllMenuItem
             // 
@@ -239,6 +245,18 @@ namespace EasyConnect
             this._folderOpenAllNewWindowMenuItem.Size = new System.Drawing.Size(247, 22);
             this._folderOpenAllNewWindowMenuItem.Text = "Open all bookmarks in a new window";
             this._folderOpenAllNewWindowMenuItem.Click += new System.EventHandler(this._folderOpenAllNewWindowMenuItem_Click);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(244, 6);
+            // 
+            // updateAllPasswordsToolStripMenuItem
+            // 
+            this.updateAllPasswordsToolStripMenuItem.Name = "updateAllPasswordsToolStripMenuItem";
+            this.updateAllPasswordsToolStripMenuItem.Size = new System.Drawing.Size(247, 22);
+            this.updateAllPasswordsToolStripMenuItem.Text = "Update all passwords...";
+            this.updateAllPasswordsToolStripMenuItem.Click += new System.EventHandler(this.updateAllPasswordsToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -432,17 +450,11 @@ namespace EasyConnect
             this._bookmarkImportDialog.Filter = "EasyConnect Bookmark files|*.ecx|All files|*.*";
             this._bookmarkImportDialog.FileOk += new System.ComponentModel.CancelEventHandler(this._bookmarkImportDialog_FileOk);
             // 
-            // updateAllPasswordsToolStripMenuItem
+            // _dragImageList
             // 
-            this.updateAllPasswordsToolStripMenuItem.Name = "updateAllPasswordsToolStripMenuItem";
-            this.updateAllPasswordsToolStripMenuItem.Size = new System.Drawing.Size(247, 22);
-            this.updateAllPasswordsToolStripMenuItem.Text = "Update all passwords...";
-            this.updateAllPasswordsToolStripMenuItem.Click += new System.EventHandler(this.updateAllPasswordsToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator9
-            // 
-            this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(244, 6);
+            this._dragImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this._dragImageList.ImageSize = new System.Drawing.Size(16, 16);
+            this._dragImageList.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // BookmarksWindow
             // 
@@ -474,5 +486,6 @@ namespace EasyConnect
         private OpenFileDialog _bookmarkImportDialog;
         private ToolStripSeparator toolStripSeparator9;
         private ToolStripMenuItem updateAllPasswordsToolStripMenuItem;
+        private ImageList _dragImageList;
     }
 }

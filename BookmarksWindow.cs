@@ -40,6 +40,7 @@ namespace EasyConnect
 
         protected bool _showOptionsAfterItemLabelEdit = false;
         protected bool _deferSort = false;
+        protected ListViewItem _dropTarget = null;
 
         public BookmarksWindow(MainForm applicationForm)
         {
@@ -284,7 +285,7 @@ namespace EasyConnect
                     {
                         ListViewItem bookmark = _bookmarksListView.Items[i];
 
-                        if (bookmark.ImageIndex != 0)
+                        if (bookmark.ImageIndex == 0)
                             continue;
 
                         if (!containerFolder.Value.Bookmarks.Contains(_listViewConnections[bookmark]))
@@ -934,6 +935,70 @@ namespace EasyConnect
 
             foreach (BookmarksFolder childFolder in folder.ChildFolders)
                 UpdatePasswords(childFolder, password);
+        }
+
+        private void _bookmarksListView_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            _dropTarget = null;
+            _bookmarksListView.DoDragDrop(_bookmarksListView.SelectedItems, DragDropEffects.Move);
+        }
+
+        private void _bookmarksListView_DragEnter(object sender, DragEventArgs e)
+        {
+            int length = e.Data.GetFormats().Length - 1;
+
+            for (int i = 0; i <= length; i++)
+            {
+                if (e.Data.GetFormats()[i].Equals("System.Windows.Forms.ListView+SelectedListViewItemCollection"))
+                    e.Effect = DragDropEffects.Move;
+            }
+        }
+
+        private void _bookmarksListView_DragOver(object sender, DragEventArgs e)
+        {
+            Point clientPoint = _bookmarksListView.PointToClient(new Point(e.X, e.Y));
+            ListViewItem targetItem = _bookmarksListView.GetItemAt(clientPoint.X, clientPoint.Y);
+
+            if (_dropTarget != null && _dropTarget != targetItem)
+            {
+                _dropTarget.BackColor = _bookmarksListView.BackColor;
+                _dropTarget.ForeColor = _bookmarksListView.ForeColor;
+
+                e.Effect = DragDropEffects.None;
+            }
+
+            if (targetItem != null && targetItem.ImageIndex == 0 && _dropTarget != targetItem)
+            {
+                if (targetItem.Selected)
+                    _dropTarget = null;
+
+                else
+                {
+                    targetItem.BackColor = SystemColors.Highlight;
+                    targetItem.ForeColor = SystemColors.HighlightText;
+
+                    _dropTarget = targetItem;
+                    e.Effect = DragDropEffects.Move;
+                }
+            }
+
+            if (targetItem == null || targetItem.ImageIndex != 0)
+            {
+                _dropTarget = null;
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void _bookmarksListView_DragDrop(object sender, DragEventArgs e)
+        {
+            if (_dropTarget != null)
+            {
+                _cutBookmarkMenuItem_Click(null, null);
+                PasteItems(_listViewFolders[_dropTarget]);
+
+                _dropTarget.BackColor = _bookmarksListView.BackColor;
+                _dropTarget.ForeColor = _bookmarksListView.ForeColor;
+            }
         }
     }
 }
