@@ -40,7 +40,10 @@ namespace EasyConnect
 
         protected bool _showOptionsAfterItemLabelEdit = false;
         protected bool _deferSort = false;
-        protected ListViewItem _dropTarget = null;
+        protected ListViewItem _listViewDropTarget = null;
+        protected TreeNode _treeViewDropTarget = null;
+        protected bool _draggingFromTree = false;
+        protected bool _draggingFromListView = false;
 
         public BookmarksWindow(MainForm applicationForm)
         {
@@ -939,17 +942,20 @@ namespace EasyConnect
 
         private void _bookmarksListView_ItemDrag(object sender, ItemDragEventArgs e)
         {
-            _dropTarget = null;
+            _listViewDropTarget = null;
+            _treeViewDropTarget = null;
+            _draggingFromListView = true;
+            _draggingFromTree = false;
             _bookmarksListView.DoDragDrop(_bookmarksListView.SelectedItems, DragDropEffects.Move);
         }
 
-        private void _bookmarksListView_DragEnter(object sender, DragEventArgs e)
+        private void _bookmarks_DragEnter(object sender, DragEventArgs e)
         {
             int length = e.Data.GetFormats().Length - 1;
 
             for (int i = 0; i <= length; i++)
             {
-                if (e.Data.GetFormats()[i].Equals("System.Windows.Forms.ListView+SelectedListViewItemCollection"))
+                if (e.Data.GetFormats()[i].Equals("System.Windows.Forms.ListView+SelectedListViewItemCollection") || e.Data.GetFormats()[i].Equals(typeof(TreeNode).FullName))
                     e.Effect = DragDropEffects.Move;
             }
         }
@@ -959,45 +965,123 @@ namespace EasyConnect
             Point clientPoint = _bookmarksListView.PointToClient(new Point(e.X, e.Y));
             ListViewItem targetItem = _bookmarksListView.GetItemAt(clientPoint.X, clientPoint.Y);
 
-            if (_dropTarget != null && _dropTarget != targetItem)
+            if (_treeViewDropTarget != null)
             {
-                _dropTarget.BackColor = _bookmarksListView.BackColor;
-                _dropTarget.ForeColor = _bookmarksListView.ForeColor;
+                _treeViewDropTarget.BackColor = _bookmarksFoldersTreeView.BackColor;
+                _treeViewDropTarget.ForeColor = _bookmarksFoldersTreeView.ForeColor;
+            }
+
+            _treeViewDropTarget = null;
+
+            if (_listViewDropTarget != null && _listViewDropTarget != targetItem)
+            {
+                _listViewDropTarget.BackColor = _bookmarksListView.BackColor;
+                _listViewDropTarget.ForeColor = _bookmarksListView.ForeColor;
 
                 e.Effect = DragDropEffects.None;
             }
 
-            if (targetItem != null && targetItem.ImageIndex == 0 && _dropTarget != targetItem)
+            if (targetItem != null && targetItem.ImageIndex == 0 && _listViewDropTarget != targetItem)
             {
                 if (targetItem.Selected)
-                    _dropTarget = null;
+                    _listViewDropTarget = null;
 
                 else
                 {
                     targetItem.BackColor = SystemColors.Highlight;
                     targetItem.ForeColor = SystemColors.HighlightText;
 
-                    _dropTarget = targetItem;
+                    _listViewDropTarget = targetItem;
                     e.Effect = DragDropEffects.Move;
                 }
             }
 
             if (targetItem == null || targetItem.ImageIndex != 0)
             {
-                _dropTarget = null;
+                _listViewDropTarget = null;
                 e.Effect = DragDropEffects.None;
             }
         }
 
-        private void _bookmarksListView_DragDrop(object sender, DragEventArgs e)
+        private void _bookmarks_DragDrop(object sender, DragEventArgs e)
         {
-            if (_dropTarget != null)
-            {
+            if (_draggingFromListView)
                 _cutBookmarkMenuItem_Click(null, null);
-                PasteItems(_listViewFolders[_dropTarget]);
 
-                _dropTarget.BackColor = _bookmarksListView.BackColor;
-                _dropTarget.ForeColor = _bookmarksListView.ForeColor;
+            else
+            {
+                _copiedItems.Clear();
+                _cutItems.Clear();
+
+                _cutItems.Add(_folderTreeNodes[(TreeNode)e.Data.GetData(typeof(TreeNode))]);
+            }
+
+            if (_listViewDropTarget != null)
+            {
+                PasteItems(_listViewFolders[_listViewDropTarget]);
+
+                _listViewDropTarget.BackColor = _bookmarksListView.BackColor;
+                _listViewDropTarget.ForeColor = _bookmarksListView.ForeColor;
+            }
+
+            else if (_treeViewDropTarget != null)
+            {
+                PasteItems(_folderTreeNodes[_treeViewDropTarget]);
+
+                _treeViewDropTarget.BackColor = _bookmarksFoldersTreeView.BackColor;
+                _treeViewDropTarget.ForeColor = _bookmarksFoldersTreeView.ForeColor;
+            }
+        }
+
+        private void _bookmarksFoldersTreeView_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            _listViewDropTarget = null;
+            _treeViewDropTarget = null;
+            _draggingFromListView = false;
+            _draggingFromTree = true;
+            _bookmarksFoldersTreeView.DoDragDrop(e.Item, DragDropEffects.Move);
+        }
+
+        private void _bookmarksFoldersTreeView_DragOver(object sender, DragEventArgs e)
+        {
+            Point clientPoint = _bookmarksFoldersTreeView.PointToClient(new Point(e.X, e.Y));
+            TreeNode targetItem = _bookmarksFoldersTreeView.GetNodeAt(clientPoint.X, clientPoint.Y);
+
+            if (_listViewDropTarget != null)
+            {
+                _listViewDropTarget.BackColor = _bookmarksListView.BackColor;
+                _listViewDropTarget.ForeColor = _bookmarksListView.ForeColor;
+            }
+
+            _listViewDropTarget = null;
+
+            if (_treeViewDropTarget != null && _treeViewDropTarget != targetItem)
+            {
+                _treeViewDropTarget.BackColor = _bookmarksFoldersTreeView.BackColor;
+                _treeViewDropTarget.ForeColor = _bookmarksFoldersTreeView.ForeColor;
+
+                e.Effect = DragDropEffects.None;
+            }
+
+            if (targetItem != null && _treeViewDropTarget != targetItem)
+            {
+                if (targetItem == _bookmarksFoldersTreeView.SelectedNode)
+                    _treeViewDropTarget = null;
+
+                else
+                {
+                    targetItem.BackColor = SystemColors.Highlight;
+                    targetItem.ForeColor = SystemColors.HighlightText;
+
+                    _treeViewDropTarget = targetItem;
+                    e.Effect = DragDropEffects.Move;
+                }
+            }
+
+            if (targetItem == null)
+            {
+                _treeViewDropTarget = null;
+                e.Effect = DragDropEffects.None;
             }
         }
     }

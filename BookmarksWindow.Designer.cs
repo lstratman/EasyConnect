@@ -134,6 +134,7 @@ namespace EasyConnect
             // 
             // _bookmarksFoldersTreeView
             // 
+            this._bookmarksFoldersTreeView.AllowDrop = true;
             this._bookmarksFoldersTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -153,7 +154,11 @@ namespace EasyConnect
             this._bookmarksFoldersTreeView.Size = new System.Drawing.Size(147, 400);
             this._bookmarksFoldersTreeView.TabIndex = 0;
             this._bookmarksFoldersTreeView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this._bookmarksTreeView_AfterLabelEdit);
+            this._bookmarksFoldersTreeView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this._bookmarksFoldersTreeView_ItemDrag);
             this._bookmarksFoldersTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this._bookmarksTreeView_AfterSelect);
+            this._bookmarksFoldersTreeView.DragDrop += new System.Windows.Forms.DragEventHandler(this._bookmarks_DragDrop);
+            this._bookmarksFoldersTreeView.DragEnter += new System.Windows.Forms.DragEventHandler(this._bookmarks_DragEnter);
+            this._bookmarksFoldersTreeView.DragOver += new System.Windows.Forms.DragEventHandler(this._bookmarksFoldersTreeView_DragOver);
             this._bookmarksFoldersTreeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this._bookmarksTreeView_MouseClick);
             // 
             // _treeViewImageList
@@ -185,8 +190,8 @@ namespace EasyConnect
             this._bookmarksListView.View = System.Windows.Forms.View.Details;
             this._bookmarksListView.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this._bookmarksListView_AfterLabelEdit);
             this._bookmarksListView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this._bookmarksListView_ItemDrag);
-            this._bookmarksListView.DragDrop += new System.Windows.Forms.DragEventHandler(this._bookmarksListView_DragDrop);
-            this._bookmarksListView.DragEnter += new System.Windows.Forms.DragEventHandler(this._bookmarksListView_DragEnter);
+            this._bookmarksListView.DragDrop += new System.Windows.Forms.DragEventHandler(this._bookmarks_DragDrop);
+            this._bookmarksListView.DragEnter += new System.Windows.Forms.DragEventHandler(this._bookmarks_DragEnter);
             this._bookmarksListView.DragOver += new System.Windows.Forms.DragEventHandler(this._bookmarksListView_DragOver);
             this._bookmarksListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this._bookmarksListView_MouseClick);
             this._bookmarksListView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this._bookmarksListView_MouseDoubleClick);
