@@ -31,6 +31,8 @@
             this._defaultProtocolLabel = new System.Windows.Forms.Label();
             this._generalLabel = new System.Windows.Forms.Label();
             this._defaultProtocolDropdown = new System.Windows.Forms.ComboBox();
+            this._autoHideCheckbox = new System.Windows.Forms.CheckBox();
+            this._autoHideLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // _defaultProtocolLabel
@@ -62,18 +64,39 @@
             this._defaultProtocolDropdown.Size = new System.Drawing.Size(182, 21);
             this._defaultProtocolDropdown.TabIndex = 68;
             // 
+            // _autoHideCheckbox
+            // 
+            this._autoHideCheckbox.AutoSize = true;
+            this._autoHideCheckbox.Location = new System.Drawing.Point(267, 57);
+            this._autoHideCheckbox.Name = "_autoHideCheckbox";
+            this._autoHideCheckbox.Size = new System.Drawing.Size(15, 14);
+            this._autoHideCheckbox.TabIndex = 69;
+            this._autoHideCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // _autoHideLabel
+            // 
+            this._autoHideLabel.AutoSize = true;
+            this._autoHideLabel.Location = new System.Drawing.Point(107, 57);
+            this._autoHideLabel.Name = "_autoHideLabel";
+            this._autoHideLabel.Size = new System.Drawing.Size(152, 13);
+            this._autoHideLabel.TabIndex = 70;
+            this._autoHideLabel.Text = "Auto-hide connection toolbar?:";
+            // 
             // GlobalOptionsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
             this.ClientSize = new System.Drawing.Size(597, 384);
+            this.Controls.Add(this._autoHideLabel);
+            this.Controls.Add(this._autoHideCheckbox);
             this.Controls.Add(this._defaultProtocolLabel);
             this.Controls.Add(this._generalLabel);
             this.Controls.Add(this._defaultProtocolDropdown);
             this.Name = "GlobalOptionsWindow";
             this.Text = "Global Options";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GlobalOptionsWindow_FormClosing);
+            this.Shown += new System.EventHandler(this.GlobalOptionsWindow_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -84,5 +107,7 @@
         private System.Windows.Forms.Label _defaultProtocolLabel;
         private System.Windows.Forms.Label _generalLabel;
         private System.Windows.Forms.ComboBox _defaultProtocolDropdown;
+        private System.Windows.Forms.CheckBox _autoHideCheckbox;
+        private System.Windows.Forms.Label _autoHideLabel;
     }
 }

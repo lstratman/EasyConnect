@@ -21,5 +21,6 @@ namespace EasyConnect.Protocols
         void Connect();
 
         event EventHandler Connected;
+        event EventHandler ConnectionFormFocused;
     }
 }

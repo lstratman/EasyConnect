@@ -6,6 +6,8 @@ using System.Linq;
 using System.Windows.Forms;
 using EasyConnect.Properties;
 using EasyConnect.Protocols;
+using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace EasyConnect
 {
@@ -14,9 +16,15 @@ namespace EasyConnect
         protected bool _connectClipboard = true;
         protected IConnection _connection = null;
         protected BaseConnectionForm _connectionForm = null;
+        protected Timer _animationTimer = null;
+        protected int _animationTicks = 0;
+        protected bool _toolbarShown = true;
+        protected bool _sizeSet = false;
 
         protected Dictionary<ToolStripMenuItem, IConnection> _menuItemConnections =
             new Dictionary<ToolStripMenuItem, IConnection>();
+
+        private bool? _autoHideToolbar = null;
 
         public ConnectionWindow()
         {
@@ -94,17 +102,50 @@ namespace EasyConnect
 
         public event EventHandler Connected;
 
+        protected bool AutoHideToolbar
+        {
+            get
+            {
+                if (_autoHideToolbar == null)
+                    _autoHideToolbar = ParentTabs.Options.AutoHideToolbar;
+
+                return _autoHideToolbar.Value;
+            }
+        }
+
         public void Connect()
         {
+            if (AutoHideToolbar && !_sizeSet)
+            {
+                _connectionContainerPanel.Top = 5;
+                _connectionContainerPanel.Height += 31;
+            }
+
+            _sizeSet = true;
             _connectionForm = ConnectionFactory.CreateConnectionForm(_connection, _connectionContainerPanel);
             Icon = ConnectionFactory.GetProtocol(_connection).ProtocolIcon;
             Text = _connection.DisplayName;
             urlTextBox.Text = _connection.Host;
             
+            if (AutoHideToolbar)
+                _connectionForm.ConnectionFormFocused += ConnectionFormFocused;
+
             _connectionForm.Connected += Connected;
             _connectionForm.Connect();
 
             ParentTabs.RegisterConnection(this, _connection);
+            HideToolbar();
+        }
+
+        private void ConnectionFormFocused(object sender, EventArgs eventArgs)
+        {
+            if (PointToClient(Cursor.Position).Y > 36)
+            {
+                _bookmarksMenu.Hide();
+                _toolsMenu.Hide();
+
+                HideToolbar();
+            }
         }
 
         private void _bookmarksButton_MouseEnter(object sender, EventArgs e)
@@ -148,8 +189,6 @@ namespace EasyConnect
                 _bookmarksMenu.Items.Add(new ToolStripSeparator());
 
             _menuItemConnections.Clear();
-            
-            Stopwatch stopwatch = new Stopwatch();
             
             PopulateBookmarks(ParentTabs.Bookmarks.RootFolder, _bookmarksMenu.Items, true);
 
@@ -258,13 +297,8 @@ namespace EasyConnect
 
         private void ConnectionWindow_Shown(object sender, EventArgs e)
         {
-            if (_connectionForm != null && _connectionForm.IsConnected)
+            if (_connectionForm != null && _connectionForm.IsConnected && !_connectionForm.ContainsFocus)
                 _connectionForm.Focus();
-        }
-
-        private void ConnectionWindow_MouseDown(object sender, MouseEventArgs e)
-        {
-            Debug.WriteLine("Captured mouse down");
         }
 
         private void _updatesMenuItem_Click(object sender, EventArgs e)
@@ -280,6 +314,71 @@ namespace EasyConnect
                 if (result == DialogResult.OK)
                     ParentTabs.InstallUpdate();
             }
+        }
+
+        public void ShowToolbar()
+        {
+            if (_toolbarShown || !AutoHideToolbar || !IsHandleCreated || (_animationTimer != null && _animationTimer.Enabled))
+                return;
+
+            _animationTicks = 0;
+            _animationTimer = new Timer(20);
+            _animationTimer.Elapsed += (sender, args) =>
+                {
+                    if (_animationTicks >= 6 || !toolbarBackground.IsHandleCreated)
+                    {
+                        _animationTimer.Enabled = false;
+                        return;
+                    }
+
+                    toolbarBackground.Invoke(
+                        new Action(
+                            () =>
+                                {
+                                    toolbarBackground.Height += 5;
+
+                                    if (toolbarBackground.Height == 35)
+                                        toolbarBackground.Height = 36;
+                                }));
+                    _animationTicks++;
+                };
+            _animationTimer.Enabled = true;
+            _toolbarShown = true;
+        }
+
+        public void HideToolbar()
+        {
+            if (!_toolbarShown || !AutoHideToolbar || !IsHandleCreated || (_animationTimer != null && _animationTimer.Enabled))
+                return;
+
+            _animationTicks = 0;
+            _animationTimer = new Timer(20);
+            _animationTimer.Elapsed += (sender, args) =>
+                {
+                    if (_animationTicks >= 6 || !toolbarBackground.IsHandleCreated)
+                    {
+                        _animationTimer.Enabled = false;
+                        return;
+                    }
+
+                    toolbarBackground.Invoke(
+                        new Action(
+                            () =>
+                                {
+                                    toolbarBackground.Height -= 5;
+
+                                    if (toolbarBackground.Height == 6)
+                                        toolbarBackground.Height = 5;
+                                }));
+                    _animationTicks++;
+                };
+            _animationTimer.Enabled = true;
+            _toolbarShown = false;
+        }
+
+        private void toolbarBackground_Click(object sender, EventArgs e)
+        {
+            ShowToolbar();
         }
     }
 }

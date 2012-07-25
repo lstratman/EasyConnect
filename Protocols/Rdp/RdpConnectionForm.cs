@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -19,8 +20,15 @@ namespace EasyConnect.Protocols.Rdp
         public RdpConnectionForm()
         {
             InitializeComponent();
-
             Connected += RdpConnectionForm_Connected;
+
+            _rdpWindow.GotFocus += _rdpWindow_GotFocus;
+        }
+
+        void _rdpWindow_GotFocus(object sender, EventArgs e)
+        {
+            if (ConnectionFormFocused != null)
+                ConnectionFormFocused(_rdpWindow, e);
         }
 
         protected void RdpConnectionForm_Connected(object sender, EventArgs e)
@@ -337,6 +345,7 @@ namespace EasyConnect.Protocols.Rdp
         }
 
         public override event EventHandler Connected;
+        public override event EventHandler ConnectionFormFocused;
 
         private void _rdpWindow_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {

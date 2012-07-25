@@ -44,6 +44,7 @@ namespace EasyConnect
         protected TitleBarTab _previousActiveTab = null;
         protected JumpListCustomCategory _recentCategory = new JumpListCustomCategory("Recent");
         protected AutomaticUpdater _automaticUpdater;
+        protected Options _options;
 
         protected Queue<HistoryWindow.HistoricalConnection> _recentConnections =
             new Queue<HistoryWindow.HistoricalConnection>();
@@ -55,6 +56,17 @@ namespace EasyConnect
             get
             {
                 return _automaticUpdater;
+            }
+        }
+
+        public Options Options
+        {
+            get
+            {
+                if (_options == null)
+                    _options = Options.Load();
+
+                return _options;
             }
         }
 
@@ -135,6 +147,7 @@ namespace EasyConnect
 
             TabSelected += MainForm_TabSelected;
             TabDeselecting += MainForm_TabDeselecting;
+            TabClicked += MainForm_TabClicked;
 
             ActiveInstance = this;
             ConnectToHistoryMethod = ConnectToHistory;
@@ -156,6 +169,12 @@ namespace EasyConnect
                 //SelectedTabIndex = 0;
 
             }
+        }
+
+        void MainForm_TabClicked(object sender, TitleBarTabEventArgs e)
+        {
+            if (e.Tab.Content is ConnectionWindow && e.Tab == SelectedTab)
+                (e.Tab.Content as ConnectionWindow).ShowToolbar();
         }
 
         void _automaticUpdater_CheckingFailed(object sender, FailArgs e)
@@ -294,8 +313,8 @@ namespace EasyConnect
 
             form.Show();
 
-            if (Overlay != null)
-                Overlay.Render(true);
+            if (_overlay != null)
+                _overlay.Render(true);
         }
 
         public void OpenHistory()

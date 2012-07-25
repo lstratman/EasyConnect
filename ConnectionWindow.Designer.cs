@@ -176,6 +176,7 @@
             this.toolbarBackground.Name = "toolbarBackground";
             this.toolbarBackground.Size = new System.Drawing.Size(622, 36);
             this.toolbarBackground.TabIndex = 5;
+            this.toolbarBackground.Click += new System.EventHandler(this.toolbarBackground_Click);
             // 
             // _toolsButton
             // 
@@ -269,7 +270,6 @@
             this.Name = "ConnectionWindow";
             this.Text = "New Tab";
             this.Shown += new System.EventHandler(this.ConnectionWindow_Shown);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ConnectionWindow_MouseDown);
             this._toolsMenu.ResumeLayout(false);
             this._bookmarksMenu.ResumeLayout(false);
             this.toolbarBackground.ResumeLayout(false);

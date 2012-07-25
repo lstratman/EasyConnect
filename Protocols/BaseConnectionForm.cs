@@ -14,6 +14,7 @@ namespace EasyConnect.Protocols
         }
 
         public abstract event EventHandler Connected;
+        public abstract event EventHandler ConnectionFormFocused;
 
         public bool IsConnected
         {

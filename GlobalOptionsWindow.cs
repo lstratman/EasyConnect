@@ -25,6 +25,14 @@ namespace EasyConnect
         private void GlobalOptionsWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             ConnectionFactory.SetDefaultProtocol((IProtocol)_defaultProtocolDropdown.SelectedItem);
+            (Parent.TopLevelControl as MainForm).Options.AutoHideToolbar = _autoHideCheckbox.Checked;
+
+            (Parent.TopLevelControl as MainForm).Options.Save();
+        }
+
+        private void GlobalOptionsWindow_Shown(object sender, EventArgs e)
+        {
+            _autoHideCheckbox.Checked = (Parent.TopLevelControl as MainForm).Options.AutoHideToolbar;
         }
     }
 }
