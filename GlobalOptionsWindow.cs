@@ -12,6 +12,8 @@ namespace EasyConnect
 {
     public partial class GlobalOptionsWindow : Form
     {
+        protected MainForm _parentTabs = null;
+
         public GlobalOptionsWindow()
         {
             InitializeComponent();
@@ -24,15 +26,19 @@ namespace EasyConnect
 
         private void GlobalOptionsWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            ConnectionFactory.SetDefaultProtocol((IProtocol)_defaultProtocolDropdown.SelectedItem);
-            (Parent.TopLevelControl as MainForm).Options.AutoHideToolbar = _autoHideCheckbox.Checked;
+            if (_parentTabs == null)
+                return;
 
-            (Parent.TopLevelControl as MainForm).Options.Save();
+            ConnectionFactory.SetDefaultProtocol((IProtocol)_defaultProtocolDropdown.SelectedItem);
+            
+            _parentTabs.Options.AutoHideToolbar = _autoHideCheckbox.Checked;
+            _parentTabs.Options.Save();
         }
 
         private void GlobalOptionsWindow_Shown(object sender, EventArgs e)
         {
-            _autoHideCheckbox.Checked = (Parent.TopLevelControl as MainForm).Options.AutoHideToolbar;
+            _parentTabs = Parent.TopLevelControl as MainForm;
+            _autoHideCheckbox.Checked = _parentTabs.Options.AutoHideToolbar;
         }
     }
 }
