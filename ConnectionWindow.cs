@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using EasyConnect.Properties;
 using EasyConnect.Protocols;
@@ -13,6 +15,7 @@ namespace EasyConnect
 {
     public partial class ConnectionWindow : Form
     {
+        protected List<IConnection> _autoCompleteEntries = new List<IConnection>();
         protected bool _connectClipboard = true;
         protected IConnection _connection = null;
         protected BaseConnectionForm _connectionForm = null;
@@ -20,6 +23,7 @@ namespace EasyConnect
         protected int _animationTicks = 0;
         protected bool _toolbarShown = true;
         protected bool _sizeSet = false;
+        protected bool _suppressOmniBar = false;
 
         protected Dictionary<ToolStripMenuItem, IConnection> _menuItemConnections =
             new Dictionary<ToolStripMenuItem, IConnection>();
@@ -38,7 +42,9 @@ namespace EasyConnect
 
             Icon = ConnectionFactory.GetProtocol(connection).ProtocolIcon;
             Text = connection.DisplayName;
+            _suppressOmniBar = true;
             urlTextBox.Text = connection.Host;
+            _suppressOmniBar = false;
         }
 
         public bool IsCursorOverContent
@@ -125,7 +131,10 @@ namespace EasyConnect
             _connectionForm = ConnectionFactory.CreateConnectionForm(_connection, _connectionContainerPanel);
             Icon = ConnectionFactory.GetProtocol(_connection).ProtocolIcon;
             Text = _connection.DisplayName;
+
+            _suppressOmniBar = true;
             urlTextBox.Text = _connection.Host;
+            _suppressOmniBar = false;
             
             if (AutoHideToolbar)
                 _connectionForm.ConnectionFormFocused += ConnectionFormFocused;
@@ -379,6 +388,101 @@ namespace EasyConnect
         private void toolbarBackground_Click(object sender, EventArgs e)
         {
             ShowToolbar();
+        }
+
+        private void urlTextBox_Enter(object sender, EventArgs e)
+        {
+            _autoCompleteEntries.Clear();
+        }
+
+        private void urlTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (urlTextBox.Text.Length == 0 || _suppressOmniBar)
+            {
+                _omniBarPanel.Visible = false;
+                _omniBarBorder.Visible = false;
+                return;
+            }
+
+            if (_autoCompleteEntries.Count == 0)
+            {
+                List<IConnection> bookmarks = new List<IConnection>();
+                GetAllBookmarks(ParentTabs.Bookmarks.RootFolder, bookmarks);
+
+                _autoCompleteEntries.AddRange(bookmarks);
+            }
+
+            List<IConnection> validConnections = _autoCompleteEntries.Where(c => c.DisplayName.Contains(urlTextBox.Text) || c.Host.Contains(urlTextBox.Text)).OrderBy(c => c.DisplayName).Take(6).ToList();
+
+            if (validConnections.Count > 0)
+            {
+                _omniBarPanel.SuspendLayout();
+                _omniBarBorder.SuspendLayout();
+                _omniBarPanel.Controls.Clear();
+                _omniBarPanel.Height = 0;
+
+                List<HtmlPanel> autoCompletePanels = new List<HtmlPanel>();
+
+                for (int i = 0; i < validConnections.Count; i++)
+                {
+                    IConnection connection = validConnections[i];
+                    HtmlPanel autoCompletePanel = new HtmlPanel();
+
+                    autoCompletePanel.AutoScroll = false;
+                    autoCompletePanel.Width = _omniBarPanel.Width;
+                    autoCompletePanel.Height = 30;
+                    autoCompletePanel.Text = String.Format(@"<div style=""padding: 5px; font-family: {3}; font-size: {4}pt; height: 30px; color: #9999BF""><font color=""green"">{0}://{1}</font>{2}</div>", ConnectionFactory.GetProtocol(connection).ProtocolPrefix, Regex.Replace(connection.Host, urlTextBox.Text, "<b>$0</b>", RegexOptions.IgnoreCase), connection.DisplayName == connection.Host ? "" : " - " + Regex.Replace(connection.DisplayName, urlTextBox.Text, "<b>$0</b>", RegexOptions.IgnoreCase), urlTextBox.Font.FontFamily.GetName(0), urlTextBox.Font.SizeInPoints);
+                    autoCompletePanel.Left = 0;
+                    autoCompletePanel.Top = i == 0 ? 0 : i * autoCompletePanel.Height + 1;
+                    autoCompletePanel.Font = urlTextBox.Font;
+                    autoCompletePanel.MouseEnter += autoCompletePanel_MouseEnter;
+                    autoCompletePanel.MouseLeave += autoCompletePanel_MouseLeave;
+                    autoCompletePanel.MouseClick += (o, args) =>
+                        {
+                            _omniBarPanel.Visible = false;
+                            _omniBarBorder.Visible = false;
+
+                            _connection = connection;
+                            Connect();
+                        };
+
+                    autoCompletePanels.Add(autoCompletePanel);
+                }
+
+                _omniBarPanel.Height = autoCompletePanels.Count * 30;
+                _omniBarPanel.Controls.AddRange(autoCompletePanels.ToArray());
+                _omniBarBorder.Height = _omniBarPanel.Height + 2;
+                _omniBarPanel.Visible = true;
+                _omniBarBorder.Visible = true;
+                _omniBarPanel.ResumeLayout();
+                _omniBarBorder.ResumeLayout();
+                _omniBarPanel.PerformLayout();
+                _omniBarBorder.PerformLayout();
+            }
+
+            else
+            {
+                _omniBarPanel.Visible = false;
+                _omniBarBorder.Visible = false;
+            }
+        }
+
+        void autoCompletePanel_MouseLeave(object sender, EventArgs e)
+        {
+            (sender as HtmlPanel).Text = (sender as HtmlPanel).Text.Replace("<div style=\"background-color: #3399FF; ", "<div style=\"");
+        }
+
+        void autoCompletePanel_MouseEnter(object sender, EventArgs e)
+        {
+            (sender as HtmlPanel).Text = (sender as HtmlPanel).Text.Replace("<div style=\"padding: ", "<div style=\"background-color: #3399FF; padding: ");
+        }
+
+        protected void GetAllBookmarks(BookmarksFolder currentFolder, List<IConnection> bookmarks)
+        {
+            bookmarks.AddRange(currentFolder.Bookmarks);
+
+            foreach (BookmarksFolder childFolder in currentFolder.ChildFolders)
+                GetAllBookmarks(childFolder, bookmarks);
         }
     }
 }
