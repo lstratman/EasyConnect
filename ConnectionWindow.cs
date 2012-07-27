@@ -24,15 +24,48 @@ namespace EasyConnect
         protected bool _toolbarShown = true;
         protected bool _sizeSet = false;
         protected bool _suppressOmniBar = false;
+        protected int _omniBarFocusIndex = -1;
+        protected Regex _backgroundColorRegex = new Regex("background-color: #([A-F0-9]{6});");
+        protected Regex _fontColorRegex = new Regex("; color: #([A-F0-9]{6});");
 
         protected Dictionary<ToolStripMenuItem, IConnection> _menuItemConnections =
             new Dictionary<ToolStripMenuItem, IConnection>();
 
         private bool? _autoHideToolbar = null;
+        private List<IConnection> _validAutoCompleteEntries;
 
         public ConnectionWindow()
         {
             InitializeComponent();
+
+            for (int i = 0; i < 6; i++)
+            {
+                HtmlPanel autoCompletePanel = new HtmlPanel
+                    {
+                        AutoScroll = false,
+                        Width = _omniBarPanel.Width,
+                        Height = 30,
+                        Left = 0
+                    };
+
+                autoCompletePanel.Top = i * autoCompletePanel.Height;
+                autoCompletePanel.Font = urlTextBox.Font;
+                autoCompletePanel.MouseEnter += autoCompletePanel_MouseEnter;
+                autoCompletePanel.MouseLeave += autoCompletePanel_MouseLeave;
+                autoCompletePanel.Click += autoCompletePanel_Click;
+                autoCompletePanel.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+
+                _omniBarPanel.Controls.Add(autoCompletePanel);
+            }
+        }
+
+        void autoCompletePanel_Click(object sender, EventArgs e)
+        {
+            _omniBarPanel.Visible = false;
+            _omniBarBorder.Visible = false;
+
+            _connection = _validAutoCompleteEntries[_omniBarPanel.Controls.IndexOf((HtmlPanel)sender)];
+            Connect();
         }
 
         public ConnectionWindow(IConnection connection)
@@ -85,14 +118,62 @@ namespace EasyConnect
         {
             if (e.KeyCode == Keys.Enter)
             {
-                IConnection newConnection = ConnectionFactory.GetConnection(urlTextBox.Text);
-                
-                newConnection.Host = urlTextBox.Text;
-                newConnection.Guid = Guid.NewGuid();
+                if (_omniBarFocusIndex == -1)
+                {
+                    IConnection newConnection = ConnectionFactory.GetConnection(urlTextBox.Text);
 
-                _connection = newConnection;
+                    newConnection.Host = urlTextBox.Text;
+                    newConnection.Guid = Guid.NewGuid();
+
+                    _connection = newConnection;
+                }
+
+                else
+                    _connection = _validAutoCompleteEntries[_omniBarFocusIndex];
+
                 Connect();
             }
+
+            else if (e.KeyCode == Keys.Up && _omniBarPanel.Visible)
+            {
+                if (_omniBarFocusIndex > 0)
+                {
+                    UnfocusOmniBarItem((HtmlPanel)_omniBarPanel.Controls[_omniBarFocusIndex]);
+                    FocusOmniBarItem((HtmlPanel)_omniBarPanel.Controls[--_omniBarFocusIndex]);
+                }
+
+                e.Handled = true;
+            }
+
+            else if (e.KeyCode == Keys.Down && _omniBarPanel.Visible)
+            {
+                if (_omniBarFocusIndex < _omniBarPanel.Controls.Count - 1)
+                {
+                    if (_omniBarFocusIndex > -1)
+                        UnfocusOmniBarItem((HtmlPanel)_omniBarPanel.Controls[_omniBarFocusIndex]);
+
+                    FocusOmniBarItem((HtmlPanel)_omniBarPanel.Controls[++_omniBarFocusIndex]);
+                }
+
+                e.Handled = true;
+            }
+
+            else if (e.KeyCode == Keys.Escape && _omniBarPanel.Visible)
+            {
+                urlTextBox_Leave(null, null);
+
+                e.Handled = true;
+            }
+        }
+
+        protected void FocusOmniBarItem(HtmlPanel omniBarItem)
+        {
+            omniBarItem.Text = _fontColorRegex.Replace(_backgroundColorRegex.Replace(omniBarItem.Text, "background-color: #3D9DFD;"), "; color: #9DCDFD;");
+        }
+
+        protected void UnfocusOmniBarItem(HtmlPanel omniBarItem)
+        {
+            omniBarItem.Text = _fontColorRegex.Replace(_backgroundColorRegex.Replace(omniBarItem.Text, "background-color: #FFFFFF;"), "; color: #9999BF;");
         }
 
         public bool IsConnected
@@ -404,53 +485,55 @@ namespace EasyConnect
                 return;
             }
 
+            IConnection currentlyFocusedItem = null;
+
+            if (_omniBarFocusIndex != -1)
+                currentlyFocusedItem = _validAutoCompleteEntries[_omniBarFocusIndex];
+
             if (_autoCompleteEntries.Count == 0)
             {
                 List<IConnection> bookmarks = new List<IConnection>();
                 GetAllBookmarks(ParentTabs.Bookmarks.RootFolder, bookmarks);
 
                 _autoCompleteEntries.AddRange(bookmarks);
+                _autoCompleteEntries.AddRange(
+                    ParentTabs.History.Connections.OrderByDescending(c => c.LastConnection).Distinct(
+                        new EqualityComparer<HistoryWindow.HistoricalConnection>(
+                            (x, y) => x.Connection.Host == y.Connection.Host)).Where(
+                                c => _autoCompleteEntries.FindIndex(a => a.Host == c.Connection.Host) == -1).Select
+                        (c => c.Connection));
             }
 
-            List<IConnection> validConnections = _autoCompleteEntries.Where(c => c.DisplayName.Contains(urlTextBox.Text) || c.Host.Contains(urlTextBox.Text)).OrderBy(c => c.DisplayName).Take(6).ToList();
+            _validAutoCompleteEntries = _autoCompleteEntries.Where(c => c.DisplayName.IndexOf(urlTextBox.Text, StringComparison.InvariantCultureIgnoreCase) != -1 || c.Host.IndexOf(urlTextBox.Text, StringComparison.InvariantCultureIgnoreCase) != -1).OrderBy(c => c.DisplayName).Take(6).ToList();
 
-            if (validConnections.Count > 0)
+            if (_validAutoCompleteEntries.Count > 0)
             {
                 _omniBarPanel.SuspendLayout();
                 _omniBarBorder.SuspendLayout();
-                _omniBarPanel.Controls.Clear();
-                _omniBarPanel.Height = 0;
 
-                List<HtmlPanel> autoCompletePanels = new List<HtmlPanel>();
-
-                for (int i = 0; i < validConnections.Count; i++)
+                for (int i = 0; i < _validAutoCompleteEntries.Count; i++)
                 {
-                    IConnection connection = validConnections[i];
-                    HtmlPanel autoCompletePanel = new HtmlPanel();
+                    IConnection connection = _validAutoCompleteEntries[i];
+                    HtmlPanel autoCompletePanel = _omniBarPanel.Controls[i] as HtmlPanel;
 
-                    autoCompletePanel.AutoScroll = false;
-                    autoCompletePanel.Width = _omniBarPanel.Width;
-                    autoCompletePanel.Height = 30;
-                    autoCompletePanel.Text = String.Format(@"<div style=""padding: 5px; font-family: {3}; font-size: {4}pt; height: 30px; color: #9999BF""><font color=""green"">{0}://{1}</font>{2}</div>", ConnectionFactory.GetProtocol(connection).ProtocolPrefix, Regex.Replace(connection.Host, urlTextBox.Text, "<b>$0</b>", RegexOptions.IgnoreCase), connection.DisplayName == connection.Host ? "" : " - " + Regex.Replace(connection.DisplayName, urlTextBox.Text, "<b>$0</b>", RegexOptions.IgnoreCase), urlTextBox.Font.FontFamily.GetName(0), urlTextBox.Font.SizeInPoints);
-                    autoCompletePanel.Left = 0;
-                    autoCompletePanel.Top = i == 0 ? 0 : i * autoCompletePanel.Height + 1;
-                    autoCompletePanel.Font = urlTextBox.Font;
-                    autoCompletePanel.MouseEnter += autoCompletePanel_MouseEnter;
-                    autoCompletePanel.MouseLeave += autoCompletePanel_MouseLeave;
-                    autoCompletePanel.MouseClick += (o, args) =>
-                        {
-                            _omniBarPanel.Visible = false;
-                            _omniBarBorder.Visible = false;
+                    autoCompletePanel.Text =
+                        String.Format(
+                            @"<div style=""background-color: #FFFFFF; padding: 5px; font-family: {3}; font-size: {4}pt; height: 30px; color: #9999BF;""><font color=""green"">{0}://{1}</font>{2}</div>",
+                            ConnectionFactory.GetProtocol(connection).ProtocolPrefix,
+                            Regex.Replace(connection.Host, urlTextBox.Text, "<b>$0</b>", RegexOptions.IgnoreCase), connection.DisplayName == connection.Host
+                                                                                                                       ? ""
+                                                                                                                       : " - " +
+                                                                                                                         Regex.Replace(
+                                                                                                                             connection.DisplayName,
+                                                                                                                             urlTextBox.Text, "<b>$0</b>",
+                                                                                                                             RegexOptions.IgnoreCase),
+                            urlTextBox.Font.FontFamily.GetName(0), urlTextBox.Font.SizeInPoints);
 
-                            _connection = connection;
-                            Connect();
-                        };
-
-                    autoCompletePanels.Add(autoCompletePanel);
+                    if (connection == currentlyFocusedItem)
+                        FocusOmniBarItem(autoCompletePanel);
                 }
 
-                _omniBarPanel.Height = autoCompletePanels.Count * 30;
-                _omniBarPanel.Controls.AddRange(autoCompletePanels.ToArray());
+                _omniBarPanel.Height = _validAutoCompleteEntries.Count * 30 - 1;
                 _omniBarBorder.Height = _omniBarPanel.Height + 2;
                 _omniBarPanel.Visible = true;
                 _omniBarBorder.Visible = true;
@@ -469,12 +552,18 @@ namespace EasyConnect
 
         void autoCompletePanel_MouseLeave(object sender, EventArgs e)
         {
-            (sender as HtmlPanel).Text = (sender as HtmlPanel).Text.Replace("<div style=\"background-color: #3399FF; ", "<div style=\"");
+            if (_omniBarFocusIndex != -1 && (sender as HtmlPanel) == (_omniBarPanel.Controls[_omniBarFocusIndex] as HtmlPanel))
+                return;
+
+            (sender as HtmlPanel).Text = _backgroundColorRegex.Replace((sender as HtmlPanel).Text, "background-color: #FFFFFF;");
         }
 
         void autoCompletePanel_MouseEnter(object sender, EventArgs e)
         {
-            (sender as HtmlPanel).Text = (sender as HtmlPanel).Text.Replace("<div style=\"padding: ", "<div style=\"background-color: #3399FF; padding: ");
+            if (_omniBarFocusIndex != -1 && (sender as HtmlPanel) == (_omniBarPanel.Controls[_omniBarFocusIndex] as HtmlPanel))
+                return;
+
+            (sender as HtmlPanel).Text = _backgroundColorRegex.Replace((sender as HtmlPanel).Text, "background-color: #CDE5FE;");
         }
 
         protected void GetAllBookmarks(BookmarksFolder currentFolder, List<IConnection> bookmarks)
@@ -483,6 +572,32 @@ namespace EasyConnect
 
             foreach (BookmarksFolder childFolder in currentFolder.ChildFolders)
                 GetAllBookmarks(childFolder, bookmarks);
+        }
+
+        private void urlTextBox_Leave(object sender, EventArgs e)
+        {
+            _omniBarFocusIndex = -1;
+            _omniBarBorder.Visible = false;
+            _omniBarPanel.Visible = false;
+        }
+
+        protected class EqualityComparer<T> : IEqualityComparer<T>
+        {
+            public EqualityComparer(Func<T, T, bool> cmp)
+            {
+                this.cmp = cmp;
+            }
+            public bool Equals(T x, T y)
+            {
+                return cmp(x, y);
+            }
+
+            public int GetHashCode(T obj)
+            {
+                return obj.GetHashCode();
+            }
+
+            public Func<T, T, bool> cmp { get; set; }
         }
     }
 }

@@ -227,6 +227,7 @@
             this.urlTextBox.TextChanged += new System.EventHandler(this.urlTextBox_TextChanged);
             this.urlTextBox.Enter += new System.EventHandler(this.urlTextBox_Enter);
             this.urlTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.urlTextBox_KeyDown);
+            this.urlTextBox.Leave += new System.EventHandler(this.urlTextBox_Leave);
             // 
             // urlBorder
             // 
