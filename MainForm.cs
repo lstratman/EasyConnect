@@ -85,8 +85,8 @@ namespace EasyConnect
             _automaticUpdater.KeepHidden = true;
             _automaticUpdater.GUID = "752f8ae7-47f3-4299-adcc-8be32d63ec7a";
             _automaticUpdater.DaysBetweenChecks = 2;
-            _automaticUpdater.UpdateType = UpdateType.OnlyCheck;
-            _automaticUpdater.UpdateAvailable += _automaticUpdater_UpdateAvailable;
+            _automaticUpdater.UpdateType = UpdateType.Automatic;
+            _automaticUpdater.ReadyToBeInstalled += _automaticUpdater_ReadyToBeInstalled;
             _automaticUpdater.UpToDate += _automaticUpdater_UpToDate;
             _automaticUpdater.CheckingFailed += _automaticUpdater_CheckingFailed;
             (_automaticUpdater as ISupportInitialize).EndInit();
@@ -212,7 +212,7 @@ namespace EasyConnect
                 _automaticUpdater.InstallNow();
         }
 
-        void _automaticUpdater_UpdateAvailable(object sender, EventArgs e)
+        void _automaticUpdater_ReadyToBeInstalled(object sender, EventArgs e)
         {
             UpdateAvailable = true;
         }
@@ -585,9 +585,9 @@ namespace EasyConnect
             }
         }
 
-        public void CheckForUpdate()
+        public bool CheckForUpdate()
         {
-            bool result = _automaticUpdater.ForceCheckForUpdate(true);
+            return _automaticUpdater.ForceCheckForUpdate(true);
         }
     }
 }

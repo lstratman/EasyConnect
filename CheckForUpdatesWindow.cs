@@ -25,15 +25,36 @@ namespace EasyConnect
             
             ParentTabs.AutomaticUpdater.UpToDate += AutomaticUpdater_UpToDate;
             ParentTabs.AutomaticUpdater.CheckingFailed += AutomaticUpdater_CheckingFailed;
-            ParentTabs.AutomaticUpdater.UpdateAvailable += AutomaticUpdater_UpdateAvailable;
+            ParentTabs.AutomaticUpdater.UpdateAvailable += AutomaticUpdater_ReadyToBeInstalled;
+            ParentTabs.AutomaticUpdater.BeforeDownloading += AutomaticUpdater_BeforeDownloading;
+            ParentTabs.AutomaticUpdater.ProgressChanged += AutomaticUpdater_ProgressChanged;
+            ParentTabs.AutomaticUpdater.ReadyToBeInstalled += AutomaticUpdater_ReadyToBeInstalled;
 
-            ParentTabs.CheckForUpdate();
+            if (!ParentTabs.CheckForUpdate())
+            {
+                if (ParentTabs.AutomaticUpdater.UpdateStepOn == UpdateStepOn.UpdateDownloaded)
+                    AutomaticUpdater_ReadyToBeInstalled(null, null);
+
+                else
+                    AutomaticUpdater_CheckingFailed(null, null);
+            }
         }
 
-        void AutomaticUpdater_UpdateAvailable(object sender, EventArgs e)
+        void AutomaticUpdater_ProgressChanged(object sender, int progress)
+        {
+            _progressBar.Style = ProgressBarStyle.Continuous;
+            _progressBar.Value = progress;
+        }
+
+        void AutomaticUpdater_BeforeDownloading(object sender, BeforeArgs e)
+        {
+            _statusLabel.Text = "Downloading updates...";
+        }
+
+        void AutomaticUpdater_ReadyToBeInstalled(object sender, EventArgs e)
         {
             _statusLabel.Text = "An update is available.  Click \"OK\" to install.";
-            _progressBar.Style = ProgressBarStyle.Blocks;
+            _progressBar.Style = ProgressBarStyle.Continuous;
             _progressBar.Value = 100;
 
             _okButton.Enabled = true;
@@ -42,7 +63,7 @@ namespace EasyConnect
         private void AutomaticUpdater_CheckingFailed(object sender, FailArgs e)
         {
             _statusLabel.Text = "Error occurred while checking for updates.  Please try again later.";
-            _progressBar.Style = ProgressBarStyle.Blocks;
+            _progressBar.Style = ProgressBarStyle.Continuous;
             _progressBar.Value = 100;
 
             _okButton.Enabled = true;
@@ -51,7 +72,7 @@ namespace EasyConnect
         void AutomaticUpdater_UpToDate(object sender, SuccessArgs e)
         {
             _statusLabel.Text = "Application is up-to-date.";
-            _progressBar.Style = ProgressBarStyle.Blocks;
+            _progressBar.Style = ProgressBarStyle.Continuous;
             _progressBar.Value = 100;
 
             _okButton.Enabled = true;
@@ -66,7 +87,9 @@ namespace EasyConnect
         {
             ParentTabs.AutomaticUpdater.UpToDate -= AutomaticUpdater_UpToDate;
             ParentTabs.AutomaticUpdater.CheckingFailed -= AutomaticUpdater_CheckingFailed;
-            ParentTabs.AutomaticUpdater.UpdateAvailable -= AutomaticUpdater_UpdateAvailable;
+            ParentTabs.AutomaticUpdater.UpdateAvailable -= AutomaticUpdater_ReadyToBeInstalled;
+            ParentTabs.AutomaticUpdater.BeforeDownloading -= AutomaticUpdater_BeforeDownloading;
+            ParentTabs.AutomaticUpdater.ProgressChanged -= AutomaticUpdater_ProgressChanged;
         }
 
         private void _okButton_Click(object sender, EventArgs e)
