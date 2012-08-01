@@ -273,6 +273,10 @@
       <Project>{17C67EF4-73FC-46E7-A8C7-2BD963F7D81A}</Project>
       <Name>EasyConnect.Protocols.Rdp</Name>
     </ProjectReference>
+    <ProjectReference Include="Protocols\Vnc\EasyConnect.Protocols.Vnc.csproj">
+      <Project>{13122d85-c813-4217-ae28-7921fc5588b2}</Project>
+      <Name>EasyConnect.Protocols.Vnc</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
