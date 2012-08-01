@@ -121,8 +121,6 @@ namespace EasyConnect
                 if (_omniBarFocusIndex == -1)
                 {
                     IConnection newConnection = ConnectionFactory.GetConnection(urlTextBox.Text);
-
-                    newConnection.Host = urlTextBox.Text;
                     newConnection.Guid = Guid.NewGuid();
 
                     _connection = newConnection;
