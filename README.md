@@ -15,3 +15,5 @@ For an example of implementing a protocol plugin, you can look at the EasyConnec
 * BaseProtocol - This serves simply to aggregate the previous classes and provide some display data for your new protocol.
 
 That's it!  Just make sure that the assembly for your protocol is in the EasyConnect directory and it will be picked up and used automatically by the application.  The protocol plugin architecture is still evolving, so if you find limitations to the API or want other things added to enable you to implement your protocol, please feel free to contact me or send me a pull request.  I'm also happy to accept pull requests for your protocol projects to include them in the main application.
+
+<a href="http://wyday.com/wybuild/" target="_new"><img src="http://programmingnet.weebly.com/files/theme/wybuild.png" valign="middle" hspace="7"/></a> Automatic updates and create update patches with wyBuild.
