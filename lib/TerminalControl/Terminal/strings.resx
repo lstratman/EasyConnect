@@ -1,0 +1,388 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="ResMimeType">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="Version">
+    <value>1.0.0.0</value>
+  </resheader>
+  <resheader name="Reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="Writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Common.MessageBoxTitle">
+    <value>Poderosa</value>
+  </data>
+  <data name="Caption.ConnectionTag.Disconnected">
+    <value>(Disconnected)</value>
+  </data>
+  <data name="Message.ConnectionCommandTarget.CloseError">
+    <value>An error occurred when closing the connection.</value>
+  </data>
+  <data name="Message.ConnectionCommandTarget.AreYouThereCondition">
+    <value>"Are You There" can be executed on Telnet connections only.</value>
+  </data>
+  <data name="Message.ConnectionCommandTarget.BreakCondition">
+    <value>"Send Break" can be executed to serial, Telnet, and SSH2 connections only.</value>
+  </data>
+  <data name="Message.ConnectionCommandTarget.SendError">
+    <value>Failed to transmit.</value>
+  </data>
+  <data name="Caption.ConnectionCommandTarget.DuringPaste">
+    <value>Paste</value>
+  </data>
+  <data name="Message.SSHConnector.Cancelled">
+    <value>The connection is aborted.</value>
+  </data>
+  <data name="Message.CommunicationUtil.FailedToOpenSerial">
+    <value>Failed to open the serial port.</value>
+  </data>
+  <data name="Message.CommunicationUtil.NoSuchDevice">
+    <value>
+The selected device does not exist.</value>
+  </data>
+  <data name="Message.CommunicationUtil.DeviceIsBusy">
+    <value>
+The port is already being used by other applications.</value>
+  </data>
+  <data name="Message.CommunicationUtil.FailedToConfigSerial">
+    <value>Failed to configure the serial port.</value>
+  </data>
+  <data name="Message.CygwinUtil.KeyNotFound">
+    <value>The registry key {0} is not found. Cygwin may be not installed correctly.</value>
+  </data>
+  <data name="Message.SFUUtil.KeyNotFound">
+    <value>The registry key {0} is not found. Services for Unix may be not installed correctly.</value>
+  </data>
+  <data name="Message.CygwinUtil.FailedToConnect">
+    <value>An error occurred while connecting to cygwin.
+</value>
+  </data>
+  <data name="Message.SFUUtil.FailedToConnect">
+    <value>An error occurred while connecting to Services for Unix.
+</value>
+  </data>
+  <data name="Message.InterThread.Disconnected">
+    <value>The host {0} disconnected the connection.</value>
+  </data>
+  <data name="Message.Options.WheelAmountRange">
+    <value>The amount of wheel must be between 1 and 99.</value>
+  </data>
+  <data name="Message.Options.BufferSizeRange">
+    <value>The buffer size must be between 0 and 9999.</value>
+  </data>
+  <data name="Util.Options.JapaneseDefaultFont">
+    <value>Courier New</value>
+  </data>
+  <data name="Message.Options.IntFormatError">
+    <value>Configuration File Format Error: {0} element is not an integer.</value>
+  </data>
+  <data name="Message.Options.FloatFormatError">
+    <value>Configuration File Format Error: {0} element is not a number.</value>
+  </data>
+  <data name="Message.Options.BoolFormatError">
+    <value>Configuration File Format Error: {0} element is not a boolean.</value>
+  </data>
+  <data name="Enum.WarningOption.Ignore">
+    <value>Ignore</value>
+  </data>
+  <data name="Enum.WarningOption.StatusBar">
+    <value>Display in status bar</value>
+  </data>
+  <data name="Enum.WarningOption.MessageBox">
+    <value>Display a message box</value>
+  </data>
+  <data name="Enum.DisconnectNotification.MessageBox">
+    <value>Display a message box</value>
+  </data>
+  <data name="Enum.DisconnectNotification.StatusBar">
+    <value>Display in status bar</value>
+  </data>
+  <data name="Enum.AltKeyAction.Menu">
+    <value>Menus and Shortcuts</value>
+  </data>
+  <data name="Enum.AltKeyAction.ESC">
+    <value>ESC &lt;x&gt;</value>
+  </data>
+  <data name="Enum.AltKeyAction.Meta">
+    <value>Meta Key</value>
+  </data>
+  <data name="Enum.RightButtonAction.ContextMenu">
+    <value>Context Menu</value>
+  </data>
+  <data name="Enum.RightButtonAction.Paste">
+    <value>Paste</value>
+  </data>
+  <data name="Enum.ImageStyle.Center">
+    <value>Center</value>
+  </data>
+  <data name="Enum.ImageStyle.TopLeft">
+    <value>TopLeft</value>
+  </data>
+  <data name="Enum.ImageStyle.TopRight">
+    <value>TopRight</value>
+  </data>
+  <data name="Enum.ImageStyle.BottomLeft">
+    <value>BottomLeft</value>
+  </data>
+  <data name="Enum.ImageStyle.BottomRight">
+    <value>BottomRight</value>
+  </data>
+  <data name="Enum.ImageStyle.Scaled">
+    <value>Scaled</value>
+  </data>
+  <data name="Enum.Language.English">
+    <value>English</value>
+  </data>
+  <data name="Enum.Language.Japanese">
+    <value>Japanese</value>
+  </data>
+  <data name="Enum.LineFeedRule.Normal">
+    <value>Standard</value>
+  </data>
+  <data name="Enum.LineFeedRule.LFOnly">
+    <value>LF:Line Break, CR:Ignore</value>
+  </data>
+  <data name="Enum.LineFeedRule.CROnly">
+    <value>CR:Line Break, LF:Ignore</value>
+  </data>
+  <data name="Message.RenderProfile.FailedToLoadPicture">
+    <value>Failed to load a picture from {0}.</value>
+  </data>
+  <data name="Message.SocketWithTimeout.DestinationNotFound">
+    <value>The {0} {1} was not found.</value>
+  </data>
+  <data name="Message.SocketWithTimeout.FailedtoConnect">
+    <value>Failed to connect {0} {1}. Please check the address and the port.</value>
+  </data>
+  <data name="Message.SocketWithTimeout.SOCKSError">
+    <value>An error occurred while SOCKS negotiation.</value>
+  </data>
+  <data name="Message.SocketWithTimeout.InvalidAddressForSOCKS">
+    <value>{0} is not suitable as a network address.</value>
+  </data>
+  <data name="Message.SOCKS.AddressIsNotSpecified">
+    <value>The address is not specified.</value>
+  </data>
+  <data name="Message.SOCKS.FailedToAuthenticate">
+    <value>SOCKS authentication failed.</value>
+  </data>
+  <data name="Message.SOCKS.FailedToConnect">
+    <value>Failed to communicate with the SOCKS server.</value>
+  </data>
+  <data name="Message.SOCKS.VersionError">
+    <value>The protocol version of the SOCKS server is wrong.</value>
+  </data>
+  <data name="Messaeg.SOCKS.UnknownAuthMethod">
+    <value>The SOCKS server specified an unsupported authentication method [{0}].</value>
+  </data>
+  <data name="Message.FailedToConnect">
+    <value>Failed to connect.</value>
+  </data>
+  <data name="Message.SOCKS.ServerError">
+    <value>SOCKS server error</value>
+  </data>
+  <data name="Message.SOCKS.NotPermitted">
+    <value>The connection is not allowed.</value>
+  </data>
+  <data name="Message.SOCKS.FailedToConnectNetwork">
+    <value>Failed to reach the destination network.</value>
+  </data>
+  <data name="Message.SOCKS.FailedToConnectHost">
+    <value>Failed to reach the destination host.</value>
+  </data>
+  <data name="Message.SOCKS.AccessDenied">
+    <value>The access is denied.</value>
+  </data>
+  <data name="Message.SOCKS.TTLDisposed">
+    <value>TTL is disposed.</value>
+  </data>
+  <data name="Message.SOCKS.UnsupportedCommand">
+    <value>The SOCKS command is not supported.</value>
+  </data>
+  <data name="Message.SOCKS.UnsupportedAddress">
+    <value>The type of address is not supported.</value>
+  </data>
+  <data name="Message.SOCKS.UnknownMessage">
+    <value>Unknown Code {0}</value>
+  </data>
+  <data name="Message.Telnet.FailedToSendTerminalType">
+    <value>Failed to specify terminal type.</value>
+  </data>
+  <data name="Message.Telnet.FailedToSendWidnowSize">
+    <value>Failed to specify window size.</value>
+  </data>
+  <data name="Message.Telnet.FailedToSendSuppressGoAhead">
+    <value>Failed to specify SuppressGoAhead option.</value>
+  </data>
+  <data name="Message.AbstractTerminal.UnsupportedCharSet">
+    <value>An unsupported character set {0} is detected. The screen may not be displayed correctly.</value>
+  </data>
+  <data name="Message.AbstractTerminal.UnexpectedChar">
+    <value>Failed to decode characters by the current encoding {0}. Please check the setting of encoding.</value>
+  </data>
+  <data name="Message.EscapesequenceTerminal.UnsupportedSequence">
+    <value>An unsupported escape sequence is detected.
+</value>
+  </data>
+  <data name="Message.ChannelPoderosaSocket.FailedToPortforward">
+    <value>Port-forwarding failure. Please check whether the host allows port-forwarding.</value>
+  </data>
+  <data name="Caption.TCPTerminalConnection.UsingSOCKS">
+    <value>(Using SOCKS)</value>
+  </data>
+  <data name="Caption.TCPTerminalConnection.UsingRouteSpike">
+    <value>(Using RouteSpike)</value>
+  </data>
+  <data name="Message.SSHTerminalConnection.ReproduceErrorOnSSH1">
+    <value>The "Memory Passphrase until the Application Quits" option in the SSH tab of the option dialog must be set when you reproduce SSH1 connections.</value>
+  </data>
+  <data name="Message.SSHTerminalConnection.ReproduceErrorOnSSH2">
+    <value>The "Memory Passphrase until the Application Quits" option in the SSH tab of the option dialog must be set when you reproduce closed SSH2 connections.</value>
+  </data>
+  <data name="Message.SSHTerminalConnection.CloseError">
+    <value>An error occurred while closing the connection.</value>
+  </data>
+  <data name="Message.SSHTerminalconnection.BreakError">
+    <value>Failed to send break signal. Please check whether the SSH server supports break signals.</value>
+  </data>
+  <data name="Message.SerialTerminalConnection.ReproduceError">
+    <value>Serial connections can not be reproduced.</value>
+  </data>
+  <data name="Message.SerialTerminalConnection.ConfigError">
+    <value>Failed to configure serial port.</value>
+  </data>
+  <data name="Message.TerminalDataReceiver.GenericError">
+    <value>The following error occurred when connecting to {0}. 
+{1}</value>
+  </data>
+  <data name="Message.TerminalDocument.UnexpectedCode">
+    <value>An unexpected code is detected. The screen may not be displayed correctly.</value>
+  </data>
+  <data name="Message.TerminalPane.FailedToSend">
+    <value>Failed to transmit.</value>
+  </data>
+  <data name="Enum.AuthType.Password">
+    <value>Password</value>
+  </data>
+  <data name="Enum.AuthType.PublicKey">
+    <value>PublicKey</value>
+  </data>
+  <data name="Enum.AuthType.KeyboardInteractive">
+    <value>Keyboard Interactive</value>
+  </data>
+  <data name="Enum.EncodingType.ISO8859_1">
+    <value>iso-8859-1</value>
+  </data>
+  <data name="Enum.EncodingType.UTF8">
+    <value>utf-8</value>
+  </data>
+  <data name="Enum.EncodingType.EUC_JP">
+    <value>euc-jp</value>
+  </data>
+  <data name="Enum.EncodingType.SHIFT_JIS">
+    <value>shift-jis</value>
+  </data>
+  <data name="Enum.LogType.None">
+    <value>None</value>
+  </data>
+  <data name="Enum.LogType.Default">
+    <value>Standard</value>
+  </data>
+  <data name="Enum.LogType.Binary">
+    <value>Binary</value>
+  </data>
+  <data name="Enum.LogType.Xml">
+    <value>Debug</value>
+  </data>
+  <data name="Enum.NewLine.CR">
+    <value>CR</value>
+  </data>
+  <data name="Enum.NewLine.LF">
+    <value>LF</value>
+  </data>
+  <data name="Enum.NewLine.CRLF">
+    <value>CR+LF</value>
+  </data>
+  <data name="Enum.TerminalType.KTerm">
+    <value>kterm</value>
+  </data>
+  <data name="Enum.TerminalType.XTerm">
+    <value>xterm</value>
+  </data>
+  <data name="Enum.TerminalType.VT100">
+    <value>vt100</value>
+  </data>
+  <data name="Message.TCPTerminalParam.PropCannotBeSet">
+    <value>This property can not be changed.</value>
+  </data>
+  <data name="Mesage.SSHTerminalParam.MethodSetError">
+    <value>The method must be SSH1 or SSH2.</value>
+  </data>
+  <data name="Enum.FlowControl.None">
+    <value>None</value>
+  </data>
+  <data name="Enum.FlowControl.Xon_Xoff">
+    <value>Xon/Xoff</value>
+  </data>
+  <data name="Enum.FlowControl.Hardware">
+    <value>Hardware</value>
+  </data>
+  <data name="Enum.Parity.NOPARITY">
+    <value>None</value>
+  </data>
+  <data name="Enum.Parity.ODDPARITY">
+    <value>Odd</value>
+  </data>
+  <data name="Enum.Parity.EVENPARITY">
+    <value>Even</value>
+  </data>
+  <data name="Enum.StopBits.ONESTOPBIT">
+    <value>1 bit</value>
+  </data>
+  <data name="Enum.StopBits.ONE5STOPBITS">
+    <value>1.5 bits</value>
+  </data>
+  <data name="Enum.StopBits.TWOSTOPBITS">
+    <value>2 bits</value>
+  </data>
+  <data name="Message.SerialPTerminalParam.TransmitDelayRange">
+    <value>The value of TransmitDelay must be between 0 and 1000.</value>
+  </data>
+  <data name="Message.HostKeyChecker.AskHostKeyRegister">
+    <value>The public key of the SSH server is not registered in ssh_known_hosts. Do you wish to register it and continue?</value>
+  </data>
+  <data name="Message.HostKeyChecker.AskHostKeyRenew">
+    <value>The public key of the SSH server differs from the old key in ssh_known_hosts. Do you wish to renew it and continue?</value>
+  </data>
+  <data name="Message.GUtil.InternalError">
+    <value>An internal error occurred. Please send {0}error.log file. 
+{1}</value>
+  </data>
+  <data name="Form.WarningWithDisableOption.Text">
+    <value>Warning</value>
+  </data>
+  <data name="Form.WarningWithDisableOption._disableCheckBox">
+    <value>Do &amp;not display this message from next time</value>
+  </data>
+  <data name="Message.XModem.StartTimedOut">
+    <value>Timed out of the xmodem negotiation.</value>
+  </data>
+  <data name="Message.XModem.ReceiveComplete">
+    <value>Reception completed successfully.</value>
+  </data>
+  <data name="Message.XModem.SequenceError">
+    <value>An XMODEM sequence number error occurred. The procedure will be aborted.</value>
+  </data>
+  <data name="Message.XModem.CheckSumError">
+    <value>An XMODEM checksum error occurred. The procedure will be aborted.</value>
+  </data>
+  <data name="Message.XModem.SendComplete">
+    <value>Transmission completed successfully.</value>
+  </data>
+  <data name="Message.XModem.BlockStartError">
+    <value>Failed to receive the block start signal of XMODEM. The procedure will be aborted.</value>
+  </data>
+</root>
