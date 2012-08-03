@@ -273,6 +273,10 @@
       <Project>{17C67EF4-73FC-46E7-A8C7-2BD963F7D81A}</Project>
       <Name>EasyConnect.Protocols.Rdp</Name>
     </ProjectReference>
+    <ProjectReference Include="Protocols\Ssh\EasyConnect.Protocols.Ssh.csproj">
+      <Project>{ad8e208e-4e00-4c37-98ab-ac1cf8538fb9}</Project>
+      <Name>EasyConnect.Protocols.Ssh</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

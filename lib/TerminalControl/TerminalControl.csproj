@@ -191,7 +191,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="GFontDialog.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="GFrame.cs">
       <SubType>Form</SubType>
@@ -313,7 +313,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="TabBar.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="TerminalControl.cs">
       <SubType>Component</SubType>
