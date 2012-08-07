@@ -109,40 +109,35 @@ namespace WalburySoftware
                 this.TerminalPane.Detach();
             }
 
-            try
-            {
-                //------------------------------------------------------------------------
-                SSHTerminalParam sshp = new SSHTerminalParam((Poderosa.ConnectionParam.ConnectionMethod)this.Method, this.Host, this.UserName, this.Password);
-                sshp.AuthType = this.AuthType;
-                sshp.IdentityFile = this.IdentifyFile;
-                sshp.Encoding = EncodingType.ISO8859_1;
-                sshp.Port = 22;
-                sshp.RenderProfile = new RenderProfile();
-                sshp.TerminalType = TerminalType.XTerm;
+            //------------------------------------------------------------------------
+            SSHTerminalParam sshp = new SSHTerminalParam((Poderosa.ConnectionParam.ConnectionMethod)this.Method, this.Host, this.UserName, this.Password);
+            sshp.AuthType = this.AuthType;
+            sshp.IdentityFile = this.IdentifyFile;
+            sshp.Encoding = EncodingType.ISO8859_1;
+            sshp.Port = 22;
+            sshp.RenderProfile = new RenderProfile();
+            sshp.TerminalType = TerminalType.XTerm;
 
-                CommunicationUtil.SilentClient s = new CommunicationUtil.SilentClient();
-                Size sz = this.Size;
+            CommunicationUtil.SilentClient s = new CommunicationUtil.SilentClient();
+            Size sz = this.Size;
 
-                SocketWithTimeout swt;
-                swt = new SSHConnector((Poderosa.ConnectionParam.SSHTerminalParam)sshp, sz, sshp.Passphrase, (HostKeyCheckCallback)null);
-                swt.AsyncConnect(s, sshp.Host, sshp.Port);
-                ConnectionTag ct = s.Wait(swt);
+            SocketWithTimeout swt;
+            swt = new SSHConnector((Poderosa.ConnectionParam.SSHTerminalParam)sshp, sz, sshp.Passphrase, (HostKeyCheckCallback)null);
+            swt.AsyncConnect(s, sshp.Host, sshp.Port);
+            ConnectionTag ct = s.Wait(swt);
 
-                this.TerminalPane.FakeVisible = true;
+            if (ct == null)
+                throw new SSHException(swt.ErrorMessage);
 
-                this.TerminalPane.Attach(ct);
-                ct.Receiver.Listen();
-                //-------------------------------------------------------------
-                if (file != null)
-                    this.SetLog((LogType)logType, file, true);
-                this.TerminalPane.ConnectionTag.RenderProfile = new RenderProfile();
-                this.SetPaneColors(Color.LightBlue, Color.Black);
-            }
-            catch
-            {
-                //MessageBox.Show(e.Message, "Connection Error");
-                return;
-            }
+            this.TerminalPane.FakeVisible = true;
+
+            this.TerminalPane.Attach(ct);
+            ct.Receiver.Listen();
+            //-------------------------------------------------------------
+            if (file != null)
+                this.SetLog((LogType)logType, file, true);
+            this.TerminalPane.ConnectionTag.RenderProfile = new RenderProfile();
+            this.SetPaneColors(Color.LightBlue, Color.Black);
         }
         public void Close()
         {

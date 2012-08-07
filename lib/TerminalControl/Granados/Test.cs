@@ -81,7 +81,10 @@ namespace Granados.SSHCTest
 			_pf = channel;
 		}
 
-		public SSHChannel _pf;
+	    public event EventHandler Connected;
+	    public event EventHandler Disconnected;
+
+	    public SSHChannel _pf;
 	}
 
 	class Test

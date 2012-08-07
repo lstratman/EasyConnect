@@ -211,6 +211,9 @@ namespace Poderosa.Communication
 		public void OnConnectionClosed() {
 			EnsureHandler();
 			_callback.DisconnectedFromServer();
+
+            if (Disconnected != null)
+                Disconnected(this, null);
 		}
 		public void OnDebugMessage(bool display, byte[] data) {
 			Debug.WriteLine(String.Format("SSH debug {0}[{1}]", data.Length, data[0] ));
@@ -234,7 +237,10 @@ namespace Poderosa.Communication
 		public void EstablishPortforwarding(ISSHChannelEventReceiver receiver, SSHChannel channel) {
 		}
 
-		private void EnsureHandler() {
+	    public event EventHandler Connected;
+	    public event EventHandler Disconnected;
+
+	    private void EnsureHandler() {
 			if(_callback!=null) return;
 			_event = new AutoResetEvent(false);
 			_event.WaitOne();
@@ -773,6 +779,9 @@ namespace Poderosa.Communication
 				EnsureCallbackHandler();
 				_callback.DisconnectedFromServer();
 			}
+
+            if (Disconnected != null)
+                Disconnected(this, null);
 		}
 		public void OnDebugMessage(bool display, byte[] data) {
 			Debug.WriteLine(String.Format("SSH debug {0}[{1}]", data.Length, data[0] ));
@@ -785,6 +794,8 @@ namespace Poderosa.Communication
 		}
 
 		public void OnChannelReady() { //!!Transmitを許可する通知が必要？
+            if (Connected != null)
+                Connected(this, null);
 		}
 
 		public void OnChannelError(Exception ex, string msg) {
@@ -806,7 +817,10 @@ namespace Poderosa.Communication
 		public void EstablishPortforwarding(ISSHChannelEventReceiver receiver, SSHChannel channel) {
 		}
 
-		private void EnsureCallbackHandler() {
+	    public event EventHandler Connected;
+	    public event EventHandler Disconnected;
+
+	    private void EnsureCallbackHandler() {
 			int n = 0;
 			while(_callback==null && n++<10) //わずかな時間差でハンドラがセットされないこともある
 				Thread.Sleep(100);

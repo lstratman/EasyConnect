@@ -41,10 +41,27 @@
             this._hostLabel = new System.Windows.Forms.Label();
             this._hostDividerPanel = new System.Windows.Forms.Panel();
             this._generalPanel = new System.Windows.Forms.Panel();
+            this._identityFileBrowseButton = new System.Windows.Forms.Button();
+            this._identityFileLabel = new System.Windows.Forms.Label();
             this._passwordTextBox = new SecurePasswordTextBox.SecureTextBox();
+            this._generalDividerPanel = new System.Windows.Forms.Panel();
+            this._displayPanel = new System.Windows.Forms.Panel();
+            this._fontBrowseButton = new System.Windows.Forms.Button();
+            this._fontTextBox = new System.Windows.Forms.TextBox();
+            this._fontLabel = new System.Windows.Forms.Label();
+            this._textColorPanel = new System.Windows.Forms.Panel();
+            this._textColorLabel = new System.Windows.Forms.Label();
+            this._backgroundColorPanel = new System.Windows.Forms.Panel();
+            this._displayLabel = new System.Windows.Forms.Label();
+            this._backgroundColorLabel = new System.Windows.Forms.Label();
+            this._colorDialog = new System.Windows.Forms.ColorDialog();
+            this._fontDialog = new System.Windows.Forms.FontDialog();
+            this._openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this._identityFileTextbox = new System.Windows.Forms.TextBox();
             this._flowLayoutPanel.SuspendLayout();
             this._hostPanel.SuspendLayout();
             this._generalPanel.SuspendLayout();
+            this._displayPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // _passwordLabel
@@ -90,6 +107,8 @@
             this._flowLayoutPanel.Controls.Add(this._hostPanel);
             this._flowLayoutPanel.Controls.Add(this._hostDividerPanel);
             this._flowLayoutPanel.Controls.Add(this._generalPanel);
+            this._flowLayoutPanel.Controls.Add(this._generalDividerPanel);
+            this._flowLayoutPanel.Controls.Add(this._displayPanel);
             this._flowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this._flowLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this._flowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
@@ -150,6 +169,9 @@
             // 
             this._generalPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this._generalPanel.Controls.Add(this._identityFileTextbox);
+            this._generalPanel.Controls.Add(this._identityFileBrowseButton);
+            this._generalPanel.Controls.Add(this._identityFileLabel);
             this._generalPanel.Controls.Add(this._passwordTextBox);
             this._generalPanel.Controls.Add(this._userNameLabel);
             this._generalPanel.Controls.Add(this._userNameTextBox);
@@ -157,8 +179,27 @@
             this._generalPanel.Controls.Add(this._generalLabel);
             this._generalPanel.Location = new System.Drawing.Point(18, 72);
             this._generalPanel.Name = "_generalPanel";
-            this._generalPanel.Size = new System.Drawing.Size(684, 74);
+            this._generalPanel.Size = new System.Drawing.Size(684, 93);
             this._generalPanel.TabIndex = 83;
+            // 
+            // _identityFileBrowseButton
+            // 
+            this._identityFileBrowseButton.Location = new System.Drawing.Point(407, 60);
+            this._identityFileBrowseButton.Name = "_identityFileBrowseButton";
+            this._identityFileBrowseButton.Size = new System.Drawing.Size(25, 23);
+            this._identityFileBrowseButton.TabIndex = 87;
+            this._identityFileBrowseButton.Text = "...";
+            this._identityFileBrowseButton.UseVisualStyleBackColor = true;
+            this._identityFileBrowseButton.Click += new System.EventHandler(this._identityFileBrowseButton_Click);
+            // 
+            // _identityFileLabel
+            // 
+            this._identityFileLabel.Location = new System.Drawing.Point(91, 61);
+            this._identityFileLabel.Name = "_identityFileLabel";
+            this._identityFileLabel.Size = new System.Drawing.Size(150, 20);
+            this._identityFileLabel.TabIndex = 85;
+            this._identityFileLabel.Text = "Identity:";
+            this._identityFileLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // _passwordTextBox
             // 
@@ -168,6 +209,124 @@
             this._passwordTextBox.SecureText = secureString1;
             this._passwordTextBox.Size = new System.Drawing.Size(154, 20);
             this._passwordTextBox.TabIndex = 84;
+            // 
+            // _generalDividerPanel
+            // 
+            this._generalDividerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._generalDividerPanel.BackColor = System.Drawing.Color.Silver;
+            this._generalDividerPanel.Location = new System.Drawing.Point(18, 171);
+            this._generalDividerPanel.Name = "_generalDividerPanel";
+            this._generalDividerPanel.Size = new System.Drawing.Size(684, 1);
+            this._generalDividerPanel.TabIndex = 85;
+            // 
+            // _displayPanel
+            // 
+            this._displayPanel.Controls.Add(this._fontBrowseButton);
+            this._displayPanel.Controls.Add(this._fontTextBox);
+            this._displayPanel.Controls.Add(this._fontLabel);
+            this._displayPanel.Controls.Add(this._textColorPanel);
+            this._displayPanel.Controls.Add(this._textColorLabel);
+            this._displayPanel.Controls.Add(this._backgroundColorPanel);
+            this._displayPanel.Controls.Add(this._displayLabel);
+            this._displayPanel.Controls.Add(this._backgroundColorLabel);
+            this._displayPanel.Location = new System.Drawing.Point(18, 178);
+            this._displayPanel.Name = "_displayPanel";
+            this._displayPanel.Size = new System.Drawing.Size(684, 96);
+            this._displayPanel.TabIndex = 86;
+            // 
+            // _fontBrowseButton
+            // 
+            this._fontBrowseButton.Location = new System.Drawing.Point(406, 62);
+            this._fontBrowseButton.Name = "_fontBrowseButton";
+            this._fontBrowseButton.Size = new System.Drawing.Size(25, 23);
+            this._fontBrowseButton.TabIndex = 88;
+            this._fontBrowseButton.Text = "...";
+            this._fontBrowseButton.UseVisualStyleBackColor = true;
+            this._fontBrowseButton.Click += new System.EventHandler(this._fontBrowseButton_Click);
+            // 
+            // _fontTextBox
+            // 
+            this._fontTextBox.Location = new System.Drawing.Point(246, 64);
+            this._fontTextBox.Name = "_fontTextBox";
+            this._fontTextBox.ReadOnly = true;
+            this._fontTextBox.Size = new System.Drawing.Size(154, 20);
+            this._fontTextBox.TabIndex = 85;
+            // 
+            // _fontLabel
+            // 
+            this._fontLabel.Location = new System.Drawing.Point(91, 62);
+            this._fontLabel.Name = "_fontLabel";
+            this._fontLabel.Size = new System.Drawing.Size(150, 20);
+            this._fontLabel.TabIndex = 84;
+            this._fontLabel.Text = "Font:";
+            this._fontLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // _textColorPanel
+            // 
+            this._textColorPanel.BackColor = System.Drawing.Color.LightGray;
+            this._textColorPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this._textColorPanel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._textColorPanel.Location = new System.Drawing.Point(247, 37);
+            this._textColorPanel.Name = "_textColorPanel";
+            this._textColorPanel.Size = new System.Drawing.Size(35, 21);
+            this._textColorPanel.TabIndex = 83;
+            this._textColorPanel.Click += new System.EventHandler(this._textColorPanel_Click);
+            // 
+            // _textColorLabel
+            // 
+            this._textColorLabel.Location = new System.Drawing.Point(91, 36);
+            this._textColorLabel.Name = "_textColorLabel";
+            this._textColorLabel.Size = new System.Drawing.Size(150, 20);
+            this._textColorLabel.TabIndex = 82;
+            this._textColorLabel.Text = "Text color:";
+            this._textColorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // _backgroundColorPanel
+            // 
+            this._backgroundColorPanel.BackColor = System.Drawing.Color.Black;
+            this._backgroundColorPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this._backgroundColorPanel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._backgroundColorPanel.Location = new System.Drawing.Point(247, 12);
+            this._backgroundColorPanel.Name = "_backgroundColorPanel";
+            this._backgroundColorPanel.Size = new System.Drawing.Size(35, 21);
+            this._backgroundColorPanel.TabIndex = 81;
+            this._backgroundColorPanel.Click += new System.EventHandler(this._backgroundColorPanel_Click);
+            // 
+            // _displayLabel
+            // 
+            this._displayLabel.AutoSize = true;
+            this._displayLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._displayLabel.Location = new System.Drawing.Point(8, 11);
+            this._displayLabel.Name = "_displayLabel";
+            this._displayLabel.Size = new System.Drawing.Size(61, 16);
+            this._displayLabel.TabIndex = 55;
+            this._displayLabel.Text = "Display";
+            // 
+            // _backgroundColorLabel
+            // 
+            this._backgroundColorLabel.Location = new System.Drawing.Point(91, 11);
+            this._backgroundColorLabel.Name = "_backgroundColorLabel";
+            this._backgroundColorLabel.Size = new System.Drawing.Size(150, 20);
+            this._backgroundColorLabel.TabIndex = 54;
+            this._backgroundColorLabel.Text = "Background color:";
+            this._backgroundColorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // _fontDialog
+            // 
+            this._fontDialog.Color = System.Drawing.SystemColors.ControlText;
+            this._fontDialog.FixedPitchOnly = true;
+            // 
+            // _openFileDialog
+            // 
+            this._openFileDialog.Filter = "Identity files (id_rsa, id_dsa)|id_rsa;id_dsa|All files (*.*)|*.*";
+            // 
+            // _identityFileTextbox
+            // 
+            this._identityFileTextbox.Location = new System.Drawing.Point(247, 62);
+            this._identityFileTextbox.Name = "_identityFileTextbox";
+            this._identityFileTextbox.Size = new System.Drawing.Size(154, 20);
+            this._identityFileTextbox.TabIndex = 88;
             // 
             // SshOptionsForm
             // 
@@ -185,6 +344,8 @@
             this._hostPanel.PerformLayout();
             this._generalPanel.ResumeLayout(false);
             this._generalPanel.PerformLayout();
+            this._displayPanel.ResumeLayout(false);
+            this._displayPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -203,5 +364,21 @@
         private System.Windows.Forms.Panel _hostDividerPanel;
         private System.Windows.Forms.Panel _generalPanel;
         private SecurePasswordTextBox.SecureTextBox _passwordTextBox;
+        private System.Windows.Forms.Button _identityFileBrowseButton;
+        private System.Windows.Forms.Label _identityFileLabel;
+        private System.Windows.Forms.Panel _generalDividerPanel;
+        private System.Windows.Forms.Panel _displayPanel;
+        private System.Windows.Forms.Label _displayLabel;
+        private System.Windows.Forms.Label _backgroundColorLabel;
+        private System.Windows.Forms.ColorDialog _colorDialog;
+        private System.Windows.Forms.Panel _textColorPanel;
+        private System.Windows.Forms.Label _textColorLabel;
+        private System.Windows.Forms.Panel _backgroundColorPanel;
+        private System.Windows.Forms.Button _fontBrowseButton;
+        private System.Windows.Forms.TextBox _fontTextBox;
+        private System.Windows.Forms.Label _fontLabel;
+        private System.Windows.Forms.FontDialog _fontDialog;
+        private System.Windows.Forms.OpenFileDialog _openFileDialog;
+        private System.Windows.Forms.TextBox _identityFileTextbox;
     }
 }

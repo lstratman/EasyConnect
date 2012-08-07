@@ -398,6 +398,11 @@ namespace EasyConnect
 
         public TitleBarTab Connect(IConnection connection)
         {
+            return Connect(connection, false);
+        }
+
+        public TitleBarTab Connect(IConnection connection, bool focusNewTab)
+        {
             ConnectionWindow connectionWindow = new ConnectionWindow(connection);
 
             _addingWindow = true;
@@ -408,6 +413,9 @@ namespace EasyConnect
             Tabs.Insert(SelectedTabIndex + 1, newTab);
             ResizeTabContents(newTab);
             _addingWindow = false;
+
+            if (focusNewTab)
+                SelectedTab = newTab;
 
             connectionWindow.Connect();
 

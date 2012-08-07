@@ -55,6 +55,8 @@ namespace Granados.SSHC
 		void OnAuthenticationPrompt(string[] prompts); //keyboard-interactive only
 		PortForwardingCheckResult CheckPortForwardingRequest(string remote_host, int remote_port, string originator_ip, int originator_port);
 		void EstablishPortforwarding(ISSHChannelEventReceiver receiver, SSHChannel channel);
+
+	    event EventHandler Disconnected;
 	}
 
 	/// <summary>
@@ -68,6 +70,8 @@ namespace Granados.SSHC
 		void OnChannelError(Exception error, string msg);
 		void OnChannelReady();
 		void OnMiscPacket(byte packet_type, byte[] data, int offset, int length);
+
+        event EventHandler Connected;
 	}
 
 }

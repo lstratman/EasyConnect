@@ -440,10 +440,7 @@ namespace EasyConnect
             if (_bookmarksListView.SelectedItems.Count > 0)
             {
                 if (_listViewConnections.ContainsKey(_bookmarksListView.SelectedItems[0]))
-                {
-                    ParentTabs.SelectedTab =
-                        _applicationForm.Connect(_listViewConnections[_bookmarksListView.SelectedItems[0]]);
-                }
+                    _applicationForm.Connect(_listViewConnections[_bookmarksListView.SelectedItems[0]], true);
 
                 else
                 {

@@ -7,8 +7,10 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using Granados.SSHC;
 using Poderosa;
 using Poderosa.Config;
+using Poderosa.ConnectionParam;
 
 namespace EasyConnect.Protocols.Ssh
 {
@@ -19,7 +21,6 @@ namespace EasyConnect.Protocols.Ssh
             InitializeComponent();
 
             GEnv.Options.WarningOption = WarningOption.Ignore;
-            GEnv.Options.Font = new Font("Consolas", 14);
 
             Connected += SshConnectionForm_Connected;
             _terminal.GotFocus += _terminal_GotFocus;
@@ -38,16 +39,46 @@ namespace EasyConnect.Protocols.Ssh
 
         public override void Connect()
         {
+            GEnv.Options.Font = Connection.Font;
             _terminal.UserName = Connection.Username;
             _terminal.Host = Connection.Host;
 
-            if (Connection.Password != null && Connection.Password.Length > 0)
+            if (!String.IsNullOrEmpty(Connection.IdentityFile))
             {
-                IntPtr password = Marshal.SecureStringToGlobalAllocAnsi(Connection.Password);
-                _terminal.Password = Marshal.PtrToStringAnsi(password);
+                _terminal.IdentifyFile = Connection.IdentityFile;
+                _terminal.AuthType = AuthType.PublicKey;
             }
 
-            _terminal.Connect();
+            else if (Connection.Password != null && Connection.Password.Length > 0)
+            {
+                IntPtr password = Marshal.SecureStringToGlobalAllocAnsi(Connection.Password);
+                
+                _terminal.Password = Marshal.PtrToStringAnsi(password);
+                _terminal.AuthType = AuthType.Password;
+            }
+
+            try
+            {
+                _terminal.Connect();
+            }
+
+            catch (SSHException e)
+            {
+                MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw;
+            }
+            
+            ((ISSHChannelEventReceiver)_terminal.TerminalPane.Connection).Connected += Connected;
+            ((ISSHConnectionEventReceiver)_terminal.TerminalPane.Connection).Disconnected += OnDisconnected;
+            _terminal.SetPaneColors(Connection.TextColor, Connection.BackgroundColor);
+
+            _terminal.TerminalPane.Focus();
+        }
+
+        private void OnDisconnected(object sender, EventArgs eventArgs)
+        {
+            IsConnected = false;
+            ParentForm.Invoke(new Action(() => ParentForm.Close()));
         }
 
         public override event EventHandler Connected;

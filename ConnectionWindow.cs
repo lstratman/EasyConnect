@@ -219,7 +219,17 @@ namespace EasyConnect
                 _connectionForm.ConnectionFormFocused += ConnectionFormFocused;
 
             _connectionForm.Connected += Connected;
-            _connectionForm.Connect();
+
+            try
+            {
+                _connectionForm.Connect();
+            }
+
+            catch (Exception)
+            {
+                Close();
+                return;
+            }
 
             ParentTabs.RegisterConnection(this, _connection);
             HideToolbar();

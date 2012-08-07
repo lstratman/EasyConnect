@@ -634,5 +634,7 @@ namespace Granados.SSHCV1
 		}
 		public void OnMiscPacket(byte packet_type, byte[] data, int offset, int length) {
 		}
+
+	    public event EventHandler Connected;
 	}
 }

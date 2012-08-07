@@ -294,5 +294,7 @@ namespace Granados.SSHC
 		}
 		public void OnMiscPacket(byte type, byte[] data, int offset, int length) {
 		}
+
+	    public event EventHandler Connected;
 	}
 }
