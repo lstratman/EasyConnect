@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("EasyConnect")]
 [assembly:
     AssemblyDescription(
-        "Tabbed interface and connection management and organization functionality for Remote Desktop connection")]
+        "Tabbed interface and connection management and organization functionality for remote desktop connections")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Luke Stratman")]
 [assembly: AssemblyProduct("EasyConnect")]
@@ -37,5 +37,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("0.4.0.0")]
+[assembly: AssemblyFileVersion("0.4.0.0")]

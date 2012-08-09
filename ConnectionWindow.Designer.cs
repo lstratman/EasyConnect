@@ -37,6 +37,8 @@
             this._historyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._toolsMenuSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this._optionsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this._updatesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._toolsMenuSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this._exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._bookmarksMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -49,6 +51,8 @@
             this.urlBorder = new System.Windows.Forms.Panel();
             this.urlBackground = new System.Windows.Forms.Panel();
             this._connectionContainerPanel = new System.Windows.Forms.Panel();
+            this._omniBarPanel = new System.Windows.Forms.Panel();
+            this._omniBarBorder = new System.Windows.Forms.Panel();
             this._toolsMenu.SuspendLayout();
             this._bookmarksMenu.SuspendLayout();
             this.toolbarBackground.SuspendLayout();
@@ -66,10 +70,12 @@
             this._historyToolStripMenuItem,
             this._toolsMenuSeparator1,
             this._optionsMenuItem,
+            this.toolStripSeparator2,
+            this._updatesMenuItem,
             this._toolsMenuSeparator2,
             this._exitMenuItem});
             this._toolsMenu.Name = "_toolsMenu";
-            this._toolsMenu.Size = new System.Drawing.Size(187, 132);
+            this._toolsMenu.Size = new System.Drawing.Size(187, 160);
             // 
             // _newTabMenuItem
             // 
@@ -110,6 +116,18 @@
             this._optionsMenuItem.Size = new System.Drawing.Size(186, 22);
             this._optionsMenuItem.Text = "Options";
             this._optionsMenuItem.Click += new System.EventHandler(this._optionsMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(183, 6);
+            // 
+            // _updatesMenuItem
+            // 
+            this._updatesMenuItem.Name = "_updatesMenuItem";
+            this._updatesMenuItem.Size = new System.Drawing.Size(186, 22);
+            this._updatesMenuItem.Text = "Check for update";
+            this._updatesMenuItem.Click += new System.EventHandler(this._updatesMenuItem_Click);
             // 
             // _toolsMenuSeparator2
             // 
@@ -160,6 +178,7 @@
             this.toolbarBackground.Name = "toolbarBackground";
             this.toolbarBackground.Size = new System.Drawing.Size(622, 36);
             this.toolbarBackground.TabIndex = 5;
+            this.toolbarBackground.Click += new System.EventHandler(this.toolbarBackground_Click);
             // 
             // _toolsButton
             // 
@@ -205,7 +224,10 @@
             this.urlTextBox.Size = new System.Drawing.Size(529, 19);
             this.urlTextBox.TabIndex = 0;
             this.urlTextBox.WordWrap = false;
+            this.urlTextBox.TextChanged += new System.EventHandler(this.urlTextBox_TextChanged);
+            this.urlTextBox.Enter += new System.EventHandler(this.urlTextBox_Enter);
             this.urlTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.urlTextBox_KeyDown);
+            this.urlTextBox.Leave += new System.EventHandler(this.urlTextBox_Leave);
             // 
             // urlBorder
             // 
@@ -241,11 +263,37 @@
             this._connectionContainerPanel.Size = new System.Drawing.Size(622, 399);
             this._connectionContainerPanel.TabIndex = 6;
             // 
+            // _omniBarPanel
+            // 
+            this._omniBarPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._omniBarPanel.BackColor = System.Drawing.Color.White;
+            this._omniBarPanel.ForeColor = System.Drawing.Color.Silver;
+            this._omniBarPanel.Location = new System.Drawing.Point(6, 30);
+            this._omniBarPanel.Name = "_omniBarPanel";
+            this._omniBarPanel.Size = new System.Drawing.Size(546, 72);
+            this._omniBarPanel.TabIndex = 7;
+            this._omniBarPanel.Visible = false;
+            // 
+            // _omniBarBorder
+            // 
+            this._omniBarBorder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._omniBarBorder.BackColor = System.Drawing.Color.Silver;
+            this._omniBarBorder.ForeColor = System.Drawing.Color.Silver;
+            this._omniBarBorder.Location = new System.Drawing.Point(5, 29);
+            this._omniBarBorder.Name = "_omniBarBorder";
+            this._omniBarBorder.Size = new System.Drawing.Size(548, 74);
+            this._omniBarBorder.TabIndex = 8;
+            this._omniBarBorder.Visible = false;
+            // 
             // ConnectionWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(622, 435);
+            this.Controls.Add(this._omniBarPanel);
+            this.Controls.Add(this._omniBarBorder);
             this.Controls.Add(this.toolbarBackground);
             this.Controls.Add(this._connectionContainerPanel);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
@@ -253,7 +301,6 @@
             this.Name = "ConnectionWindow";
             this.Text = "New Tab";
             this.Shown += new System.EventHandler(this.ConnectionWindow_Shown);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ConnectionWindow_MouseDown);
             this._toolsMenu.ResumeLayout(false);
             this._bookmarksMenu.ResumeLayout(false);
             this.toolbarBackground.ResumeLayout(false);
@@ -286,5 +333,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem _historyToolStripMenuItem;
         private System.Windows.Forms.Panel _connectionContainerPanel;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem _updatesMenuItem;
+        private System.Windows.Forms.Panel _omniBarPanel;
+        private System.Windows.Forms.Panel _omniBarBorder;
     }
 }

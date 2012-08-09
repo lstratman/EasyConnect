@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -18,6 +19,7 @@ using EasyConnect.Protocols.Rdp;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
 using Stratman.Windows.Forms.TitleBarTabs;
+using wyDay.Controls;
 
 namespace EasyConnect
 {
@@ -38,16 +40,58 @@ namespace EasyConnect
         protected HistoryWindow _history = null;
         protected static IpcServerChannel _ipcChannel = null;
         protected JumpList _jumpList = null;
-        protected Dictionary<TitleBarTab, Bitmap> _previews = new Dictionary<TitleBarTab, Bitmap>();
+        protected Dictionary<Form, Bitmap> _previews = new Dictionary<Form, Bitmap>();
         protected TitleBarTab _previousActiveTab = null;
         protected JumpListCustomCategory _recentCategory = new JumpListCustomCategory("Recent");
+        protected AutomaticUpdater _automaticUpdater;
+        protected Options _options;
 
         protected Queue<HistoryWindow.HistoricalConnection> _recentConnections =
             new Queue<HistoryWindow.HistoricalConnection>();
 
+        private bool _updateAvailable;
+
+        public AutomaticUpdater AutomaticUpdater
+        {
+            get
+            {
+                return _automaticUpdater;
+            }
+        }
+
+        public Options Options
+        {
+            get
+            {
+                if (_options == null)
+                    _options = Options.Load();
+
+                return _options;
+            }
+        }
+
         public MainForm(Guid[] openToBookmarks)
         {
             InitializeComponent();
+
+            _automaticUpdater = new AutomaticUpdater();
+
+            (_automaticUpdater as ISupportInitialize).BeginInit();
+            _automaticUpdater.ContainerForm = this;
+            _automaticUpdater.Name = "_automaticUpdater";
+            _automaticUpdater.TabIndex = 0;
+            _automaticUpdater.wyUpdateCommandline = null;
+            _automaticUpdater.Visible = false;
+            _automaticUpdater.KeepHidden = true;
+            _automaticUpdater.GUID = "752f8ae7-47f3-4299-adcc-8be32d63ec7a";
+            _automaticUpdater.DaysBetweenChecks = 2;
+            _automaticUpdater.UpdateType = UpdateType.Automatic;
+            _automaticUpdater.ReadyToBeInstalled += _automaticUpdater_ReadyToBeInstalled;
+            _automaticUpdater.UpToDate += _automaticUpdater_UpToDate;
+            _automaticUpdater.CheckingFailed += _automaticUpdater_CheckingFailed;
+            (_automaticUpdater as ISupportInitialize).EndInit();
+
+            Controls.Add(_automaticUpdater);
 
             OpenToBookmarks = openToBookmarks;
 
@@ -103,6 +147,7 @@ namespace EasyConnect
 
             TabSelected += MainForm_TabSelected;
             TabDeselecting += MainForm_TabDeselecting;
+            TabClicked += MainForm_TabClicked;
 
             ActiveInstance = this;
             ConnectToHistoryMethod = ConnectToHistory;
@@ -124,7 +169,52 @@ namespace EasyConnect
                 //SelectedTabIndex = 0;
 
             }
+        }
 
+        void MainForm_TabClicked(object sender, TitleBarTabEventArgs e)
+        {
+            if (e.Tab.Content is ConnectionWindow && e.Tab == SelectedTab)
+                (e.Tab.Content as ConnectionWindow).ShowToolbar();
+        }
+
+        void _automaticUpdater_CheckingFailed(object sender, FailArgs e)
+        {
+            Debug.WriteLine("fucked up");
+        }
+
+        void _automaticUpdater_UpToDate(object sender, SuccessArgs e)
+        {
+            UpdateAvailable = false;
+        }
+
+        public bool UpdateAvailable
+        {
+            get
+            {
+                return _updateAvailable;
+            }
+
+            set
+            {
+                _updateAvailable = value;
+
+                foreach (TitleBarTab tab in Tabs)
+                {
+                    if (tab.Content is ConnectionWindow)
+                        (tab.Content as ConnectionWindow).SetUpdateAvailableState(_updateAvailable);
+                }
+            }
+        }
+
+        public void InstallUpdate()
+        {
+            if (UpdateAvailable)
+                _automaticUpdater.InstallNow();
+        }
+
+        void _automaticUpdater_ReadyToBeInstalled(object sender, EventArgs e)
+        {
+            UpdateAvailable = true;
         }
 
         public BookmarksWindow Bookmarks
@@ -223,8 +313,8 @@ namespace EasyConnect
 
             form.Show();
 
-            if (Overlay != null)
-                Overlay.Render(true);
+            if (_overlay != null)
+                _overlay.Render(true);
         }
 
         public void OpenHistory()
@@ -274,15 +364,15 @@ namespace EasyConnect
 
             preview.SetImage(bitmap);
 
-            if (_previews.ContainsKey(_previousActiveTab))
-                _previews[_previousActiveTab].Dispose();
+            if (_previews.ContainsKey(_previousActiveTab.Content))
+                _previews[_previousActiveTab.Content].Dispose();
 
-            _previews[_previousActiveTab] = bitmap;
+            _previews[_previousActiveTab.Content] = bitmap;
         }
 
         protected void MainForm_TabSelected(object sender, TitleBarTabEventArgs e)
         {
-            if (!_addingWindow && SelectedTabIndex != -1)
+            if (!_addingWindow && SelectedTabIndex != -1 && _previews.ContainsKey(SelectedTab.Content))
                 TaskbarManager.Instance.TabbedThumbnail.SetActiveTab(SelectedTab.Content);
 
             _previousActiveTab = SelectedTab;
@@ -308,6 +398,11 @@ namespace EasyConnect
 
         public TitleBarTab Connect(IConnection connection)
         {
+            return Connect(connection, false);
+        }
+
+        public TitleBarTab Connect(IConnection connection, bool focusNewTab)
+        {
             ConnectionWindow connectionWindow = new ConnectionWindow(connection);
 
             _addingWindow = true;
@@ -319,39 +414,52 @@ namespace EasyConnect
             ResizeTabContents(newTab);
             _addingWindow = false;
 
-            connectionWindow.FormClosing += sessionWindow_FormClosing;
+            if (focusNewTab)
+                SelectedTab = newTab;
+
             connectionWindow.Connect();
 
+            return newTab;
+        }
+
+        public void RegisterConnection(ConnectionWindow connectionWindow, IConnection connection)
+        {
             _history.AddToHistory(connection);
 
-            TabbedThumbnail preview = new TabbedThumbnail(Handle, connectionWindow)
-                                          {
-                                              Title = connectionWindow.Text,
-                                              Tooltip = connectionWindow.Text
-                                          };
+            if (!_previews.ContainsKey(connectionWindow))
+            {
+                connectionWindow.FormClosing += sessionWindow_FormClosing;
 
-            preview.SetWindowIcon(connectionWindow.Icon);
-            preview.TabbedThumbnailActivated += preview_TabbedThumbnailActivated;
-            preview.TabbedThumbnailClosed += preview_TabbedThumbnailClosed;
-            preview.TabbedThumbnailBitmapRequested += preview_TabbedThumbnailBitmapRequested;
-            preview.PeekOffset = new Vector(connectionWindow.Location.X, connectionWindow.Location.Y);
+                TabbedThumbnail preview = new TabbedThumbnail(Handle, connectionWindow)
+                                              {
+                                                  Title = connectionWindow.Text,
+                                                  Tooltip = connectionWindow.Text
+                                              };
 
-            for (Control currentControl = connectionWindow.Parent;
-                 currentControl.Parent != null;
-                 currentControl = currentControl.Parent)
-                preview.PeekOffset += new Vector(currentControl.Location.X, currentControl.Location.Y);
+                preview.SetWindowIcon(connectionWindow.Icon);
+                preview.TabbedThumbnailActivated += preview_TabbedThumbnailActivated;
+                preview.TabbedThumbnailClosed += preview_TabbedThumbnailClosed;
+                preview.TabbedThumbnailBitmapRequested += preview_TabbedThumbnailBitmapRequested;
+                preview.PeekOffset = new Vector(connectionWindow.Location.X, connectionWindow.Location.Y);
 
-            TaskbarManager.Instance.TabbedThumbnail.AddThumbnailPreview(preview);
-            TaskbarManager.Instance.TabbedThumbnail.SetActiveTab(preview);
+                for (Control currentControl = connectionWindow.Parent;
+                     currentControl.Parent != null;
+                     currentControl = currentControl.Parent)
+                    preview.PeekOffset += new Vector(currentControl.Location.X, currentControl.Location.Y);
+
+                TaskbarManager.Instance.TabbedThumbnail.AddThumbnailPreview(preview);
+                TaskbarManager.Instance.TabbedThumbnail.SetActiveTab(preview);
+            }
 
             if (_recentConnections.FirstOrDefault((HistoryWindow.HistoricalConnection c) => c.Connection.Guid == connection.Guid) == null)
             {
-                _recentCategory.AddJumpListItems(new JumpListLink(Application.ExecutablePath, connectionWindow.Text)
-                                                     {
-                                                         Arguments = "/openHistory:" + connection.Guid.ToString(),
-                                                         IconReference =
-                                                             new IconReference(Application.ExecutablePath, 0)
-                                                     });
+                _recentCategory.AddJumpListItems(
+                    new JumpListLink(Application.ExecutablePath, connectionWindow.Text)
+                        {
+                            Arguments = "/openHistory:" + connection.Guid.ToString(),
+                            IconReference =
+                                new IconReference(Application.ExecutablePath, 0)
+                        });
                 _jumpList.Refresh();
 
                 _recentConnections.Enqueue(
@@ -360,37 +468,32 @@ namespace EasyConnect
                 if (_recentConnections.Count > _jumpList.MaxSlotsInList)
                     _recentConnections.Dequeue();
             }
-
-            return newTab;
         }
 
         private void preview_TabbedThumbnailBitmapRequested(object sender, TabbedThumbnailBitmapRequestedEventArgs e)
         {
-            foreach (TitleBarTab rdcWindow in Tabs.Where(tab => tab.Content is IConnectionForm).Where(rdcWindow => rdcWindow.Content.Handle == e.WindowHandle && _previews.ContainsKey(rdcWindow)))
+            foreach (TitleBarTab rdcWindow in Tabs.Where(tab => tab.Content is IConnectionForm).Where(rdcWindow => rdcWindow.Content.Handle == e.WindowHandle && _previews.ContainsKey(rdcWindow.Content)))
             {
-                e.SetImage(_previews[rdcWindow]);
+                e.SetImage(_previews[rdcWindow.Content]);
                 break;
             }
         }
 
         private void sessionWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content == sender);
+            Form window = (Form) sender;
 
-            if (tab == null)
-                return;
-
-            if (_previews.ContainsKey(tab))
+            if (_previews.ContainsKey(window))
             {
-                _previews[tab].Dispose();
-                _previews.Remove(tab);
+                _previews[window].Dispose();
+                _previews.Remove(window);
             }
 
-            if (sender == _previousActiveTab)
+            if (_previousActiveTab != null && window == _previousActiveTab.Content)
                 _previousActiveTab = null;
 
-            if (!tab.Content.IsDisposed)
-                TaskbarManager.Instance.TabbedThumbnail.RemoveThumbnailPreview(tab.Content);
+            if (!window.IsDisposed)
+                TaskbarManager.Instance.TabbedThumbnail.RemoveThumbnailPreview(window);
         }
 
         private void preview_TabbedThumbnailClosed(object sender, TabbedThumbnailEventArgs e)
@@ -488,6 +591,11 @@ namespace EasyConnect
                     base.WndProc(ref m);
                     break;
             }
+        }
+
+        public bool CheckForUpdate()
+        {
+            return _automaticUpdater.ForceCheckForUpdate(true);
         }
     }
 }

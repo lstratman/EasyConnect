@@ -175,8 +175,8 @@ namespace EasyConnect.Protocols
         {
             Regex uriCompontents = new Regex("^(?<prefix>(?<protocol>.+)://){0,1}(?<host>.+)$");
             Match match = uriCompontents.Match(uri);
-            string protocolPrefix = match.Groups["uri"].Success
-                                        ? match.Groups["uri"].Value
+            string protocolPrefix = match.Groups["protocol"].Success
+                                        ? match.Groups["protocol"].Value
                                         : GetDefaultProtocol().ProtocolPrefix;
             IProtocol protocol =
                 _protocols.First(

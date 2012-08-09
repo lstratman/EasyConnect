@@ -238,6 +238,16 @@ namespace EasyConnect.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ToolsActiveUpdate {
+            get {
+                object obj = ResourceManager.GetObject("ToolsActiveUpdate", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to establish a connection to the remote system..
         /// </summary>
         internal static string UnableToEstablishConnection {

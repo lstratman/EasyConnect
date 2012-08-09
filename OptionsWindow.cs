@@ -18,6 +18,7 @@ namespace EasyConnect
     {
         protected MainForm _applicationForm = null;
         protected List<Form> _optionsForms = new List<Form>();
+        protected Dictionary<Label, Form> _optionsFormLabels = new Dictionary<Label, Form>();
 
         public OptionsWindow(MainForm applicationForm)
         {
@@ -56,18 +57,22 @@ namespace EasyConnect
                             Location = new Point(0, 0)
                         };
 
-                    formLabel.Click += (o, args) => ShowOptionsForm(form, formLabel);
+                    formLabel.Click += (o, args) => ShowOptionsForm(formLabel);
+                    
+                    _optionsFormLabels[formLabel] = form;
                     _sidebarFlowLayoutPanel.Controls.Add(formLabel);
                 }
 
-                ShowOptionsForm(OptionsForms[0], (Label)_sidebarFlowLayoutPanel.Controls[1]);
+                ShowOptionsForm((Label)_sidebarFlowLayoutPanel.Controls[1]);
             }
         }
 
-        private void ShowOptionsForm(Form optionsForm, Label navigationLabel)
+        private void ShowOptionsForm(Label navigationLabel)
         {
             if (navigationLabel.Image != null)
                 return;
+
+            Form optionsForm = _optionsFormLabels[navigationLabel];
 
             optionsForm.FormBorderStyle = FormBorderStyle.None;
             optionsForm.TopLevel = false;

@@ -1,0 +1,388 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="ResMimeType">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="Version">
+    <value>1.0.0.0</value>
+  </resheader>
+  <resheader name="Reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="Writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Common.MessageBoxTitle">
+    <value>Poderosa</value>
+  </data>
+  <data name="Caption.ConnectionTag.Disconnected">
+    <value>(切断)</value>
+  </data>
+  <data name="Message.ConnectionCommandTarget.CloseError">
+    <value>接続を閉じるときにエラーが発生しました。</value>
+  </data>
+  <data name="Message.ConnectionCommandTarget.AreYouThereCondition">
+    <value>AreYouThereを実行できるのはTelnetだけです。</value>
+  </data>
+  <data name="Message.ConnectionCommandTarget.BreakCondition">
+    <value>Break送信を実行できるのはシリアル,Telnet,SSH2です。</value>
+  </data>
+  <data name="Message.ConnectionCommandTarget.SendError">
+    <value>送信に失敗しました。</value>
+  </data>
+  <data name="Caption.ConnectionCommandTarget.DuringPaste">
+    <value>貼り付け中</value>
+  </data>
+  <data name="Message.SSHConnector.Cancelled">
+    <value>接続を中止しました。</value>
+  </data>
+  <data name="Message.CommunicationUtil.FailedToOpenSerial">
+    <value>シリアルポートのオープンに失敗しました。</value>
+  </data>
+  <data name="Message.CommunicationUtil.NoSuchDevice">
+    <value>
+存在しないデバイスが選択されました。</value>
+  </data>
+  <data name="Message.CommunicationUtil.DeviceIsBusy">
+    <value>
+ポートは既に別のアプリケーションに使われています。</value>
+  </data>
+  <data name="Message.CommunicationUtil.FailedToConfigSerial">
+    <value>シリアルポートの設定に失敗しました。</value>
+  </data>
+  <data name="Message.CygwinUtil.KeyNotFound">
+    <value>レジストリキー{0}がみつかりません。Cygwinが正しくインストールされていないと思われます。</value>
+  </data>
+  <data name="Message.SFUUtil.KeyNotFound">
+    <value>レジストリキー{0}がみつかりません。Services for Unixが正しくインストールされていないと思われます。</value>
+  </data>
+  <data name="Message.CygwinUtil.FailedToConnect">
+    <value>cygwinとの接続中にエラーが発生しました。
+</value>
+  </data>
+  <data name="Message.SFUUtil.FailedToConnect">
+    <value>Services for Unixとの接続中にエラーが発生しました。
+</value>
+  </data>
+  <data name="Message.InterThread.Disconnected">
+    <value>ホスト {0} が接続を切断しました。</value>
+  </data>
+  <data name="Message.Options.WheelAmountRange">
+    <value>ホイールでのスクロール量の設定値は1から99までです。</value>
+  </data>
+  <data name="Message.Options.BufferSizeRange">
+    <value>バッファ行数は0から9999までです。</value>
+  </data>
+  <data name="Util.Options.JapaneseDefaultFont">
+    <value>ＭＳ ゴシック</value>
+  </data>
+  <data name="Message.Options.IntFormatError">
+    <value>設定ファイルのフォーマットエラー： {0}要素が整数ではありません。</value>
+  </data>
+  <data name="Message.Options.FloatFormatError">
+    <value>設定ファイルのフォーマットエラー： {0}要素が数値ではありません。</value>
+  </data>
+  <data name="Message.Options.BoolFormatError">
+    <value>設定ファイルのフォーマットエラー： {0}要素がbool値ではありません。</value>
+  </data>
+  <data name="Enum.WarningOption.Ignore">
+    <value>無視</value>
+  </data>
+  <data name="Enum.WarningOption.StatusBar">
+    <value>ステータスバーに表示</value>
+  </data>
+  <data name="Enum.WarningOption.MessageBox">
+    <value>メッセージボックスを表示</value>
+  </data>
+  <data name="Enum.DisconnectNotification.MessageBox">
+    <value>メッセージボックスを表示</value>
+  </data>
+  <data name="Enum.DisconnectNotification.StatusBar">
+    <value>ステータスバーに表示</value>
+  </data>
+  <data name="Enum.AltKeyAction.Menu">
+    <value>メニューとショートカット</value>
+  </data>
+  <data name="Enum.AltKeyAction.ESC">
+    <value>ESC &lt;x&gt;</value>
+  </data>
+  <data name="Enum.AltKeyAction.Meta">
+    <value>Metaキー</value>
+  </data>
+  <data name="Enum.RightButtonAction.ContextMenu">
+    <value>コンテキストメニュー</value>
+  </data>
+  <data name="Enum.RightButtonAction.Paste">
+    <value>貼り付け</value>
+  </data>
+  <data name="Enum.ImageStyle.Center">
+    <value>中央</value>
+  </data>
+  <data name="Enum.ImageStyle.TopLeft">
+    <value>左上</value>
+  </data>
+  <data name="Enum.ImageStyle.TopRight">
+    <value>右上</value>
+  </data>
+  <data name="Enum.ImageStyle.BottomLeft">
+    <value>左下</value>
+  </data>
+  <data name="Enum.ImageStyle.BottomRight">
+    <value>右下</value>
+  </data>
+  <data name="Enum.ImageStyle.Scaled">
+    <value>伸縮</value>
+  </data>
+  <data name="Enum.Language.English">
+    <value>英語</value>
+  </data>
+  <data name="Enum.Language.Japanese">
+    <value>日本語</value>
+  </data>
+  <data name="Enum.LineFeedRule.Normal">
+    <value>標準</value>
+  </data>
+  <data name="Enum.LineFeedRule.LFOnly">
+    <value>LFで改行しCRを無視</value>
+  </data>
+  <data name="Enum.LineFeedRule.CROnly">
+    <value>CRで改行しLFを無視</value>
+  </data>
+  <data name="Message.RenderProfile.FailedToLoadPicture">
+    <value>ファイル {0} から画像を読み込めませんでした。</value>
+  </data>
+  <data name="Message.SocketWithTimeout.DestinationNotFound">
+    <value>{0} {1} が見つかりません。</value>
+  </data>
+  <data name="Message.SocketWithTimeout.FailedtoConnect">
+    <value>{0} {1} へ接続できませんでした。アドレスとポートを確認してください。</value>
+  </data>
+  <data name="Message.SocketWithTimeout.SOCKSError">
+    <value>SOCKSの接続中のエラーです。</value>
+  </data>
+  <data name="Message.SocketWithTimeout.InvalidAddressForSOCKS">
+    <value>{0} はネットワークアドレスとして不適切です</value>
+  </data>
+  <data name="Message.SOCKS.AddressIsNotSpecified">
+    <value>アドレスが指定されていません。</value>
+  </data>
+  <data name="Message.SOCKS.FailedToAuthenticate">
+    <value>SOCKSの認証に失敗しました。</value>
+  </data>
+  <data name="Message.SOCKS.FailedToConnect">
+    <value>SOCKSサーバと通信できませんでした。</value>
+  </data>
+  <data name="Message.SOCKS.VersionError">
+    <value>SOCKSサーバのバージョンが違います。</value>
+  </data>
+  <data name="Messaeg.SOCKS.UnknownAuthMethod">
+    <value>サポートされていないSOCKS認証方式[{0}]がサーバから指定されました。</value>
+  </data>
+  <data name="Message.FailedToConnect">
+    <value>接続が失敗しました。</value>
+  </data>
+  <data name="Message.SOCKS.ServerError">
+    <value>SOCKSサーバのエラーです。</value>
+  </data>
+  <data name="Message.SOCKS.NotPermitted">
+    <value>接続は許可されていません。</value>
+  </data>
+  <data name="Message.SOCKS.FailedToConnectNetwork">
+    <value>ネットワークに到達できません。</value>
+  </data>
+  <data name="Message.SOCKS.FailedToConnectHost">
+    <value>ホストに到達できません。</value>
+  </data>
+  <data name="Message.SOCKS.AccessDenied">
+    <value>アクセスが拒否されました。</value>
+  </data>
+  <data name="Message.SOCKS.TTLDisposed">
+    <value>TTLが無効になりました。</value>
+  </data>
+  <data name="Message.SOCKS.UnsupportedCommand">
+    <value>サポートされていないコマンドです。</value>
+  </data>
+  <data name="Message.SOCKS.UnsupportedAddress">
+    <value>アドレスタイプがサポートされていません。</value>
+  </data>
+  <data name="Message.SOCKS.UnknownMessage">
+    <value>不明なコード {0}</value>
+  </data>
+  <data name="Message.Telnet.FailedToSendTerminalType">
+    <value>ターミナルタイプの指定に失敗しました。</value>
+  </data>
+  <data name="Message.Telnet.FailedToSendWidnowSize">
+    <value>ウィンドウサイズの指定に失敗しました。</value>
+  </data>
+  <data name="Message.Telnet.FailedToSendSuppressGoAhead">
+    <value>SuppressGoAheadの指定に失敗しました。</value>
+  </data>
+  <data name="Message.AbstractTerminal.UnsupportedCharSet">
+    <value>未サポートのキャラクタセット {0} が検出されました。画面表示が乱れるかもしれません。</value>
+  </data>
+  <data name="Message.AbstractTerminal.UnexpectedChar">
+    <value>現在のエンコーディング {0} に合わないデータを受信しました。エンコーディング設定を確認してください。</value>
+  </data>
+  <data name="Message.EscapesequenceTerminal.UnsupportedSequence">
+    <value>未サポートのエスケープシーケンスを見つけました。
+</value>
+  </data>
+  <data name="Message.ChannelPoderosaSocket.FailedToPortforward">
+    <value>ポートフォワーディングに失敗しました。接続先がポートフォワーディングを許可しているかを確認してください。</value>
+  </data>
+  <data name="Caption.TCPTerminalConnection.UsingSOCKS">
+    <value>(SOCKSを使用)</value>
+  </data>
+  <data name="Caption.TCPTerminalConnection.UsingRouteSpike">
+    <value>(RouteSpikeを使用)</value>
+  </data>
+  <data name="Message.SSHTerminalConnection.ReproduceErrorOnSSH1">
+    <value>SSH1で接続を複製するときはオプションのSSHタブでパスフレーズを記憶するようにしていないといけません。</value>
+  </data>
+  <data name="Message.SSHTerminalConnection.ReproduceErrorOnSSH2">
+    <value>SSH2で一度閉じた接続を複製するときはオプションのSSHタブでパスフレーズを記憶するようにしていないといけません。</value>
+  </data>
+  <data name="Message.SSHTerminalConnection.CloseError">
+    <value>接続を閉じるときにエラーが発生しました。</value>
+  </data>
+  <data name="Message.SSHTerminalconnection.BreakError">
+    <value>Break信号の送信ができませんでした。SSHサーバがBreak信号をサポートしているか確認してください。</value>
+  </data>
+  <data name="Message.SerialTerminalConnection.ReproduceError">
+    <value>シリアル接続の複製はできません。</value>
+  </data>
+  <data name="Message.SerialTerminalConnection.ConfigError">
+    <value>シリアルポートの設定に失敗しました。</value>
+  </data>
+  <data name="Message.TerminalDataReceiver.GenericError">
+    <value>{0}との通信時に次のエラーが発生しました。
+{1}</value>
+  </data>
+  <data name="Message.TerminalDocument.UnexpectedCode">
+    <value>予期しないコードがサーバから送られました。画面が乱れるかもしれません。</value>
+  </data>
+  <data name="Message.TerminalPane.FailedToSend">
+    <value>送信に失敗しました。</value>
+  </data>
+  <data name="Enum.AuthType.Password">
+    <value>パスワード</value>
+  </data>
+  <data name="Enum.AuthType.PublicKey">
+    <value>公開鍵</value>
+  </data>
+  <data name="Enum.AuthType.KeyboardInteractive">
+    <value>Keyboard Interactive</value>
+  </data>
+  <data name="Enum.EncodingType.ISO8859_1">
+    <value>iso-8859-1</value>
+  </data>
+  <data name="Enum.EncodingType.UTF8">
+    <value>utf-8</value>
+  </data>
+  <data name="Enum.EncodingType.EUC_JP">
+    <value>euc-jp</value>
+  </data>
+  <data name="Enum.EncodingType.SHIFT_JIS">
+    <value>shift-jis</value>
+  </data>
+  <data name="Enum.LogType.None">
+    <value>なし</value>
+  </data>
+  <data name="Enum.LogType.Default">
+    <value>標準</value>
+  </data>
+  <data name="Enum.LogType.Binary">
+    <value>バイナリ</value>
+  </data>
+  <data name="Enum.LogType.Xml">
+    <value>デバッグ</value>
+  </data>
+  <data name="Enum.NewLine.CR">
+    <value>CR</value>
+  </data>
+  <data name="Enum.NewLine.LF">
+    <value>LF</value>
+  </data>
+  <data name="Enum.NewLine.CRLF">
+    <value>CR+LF</value>
+  </data>
+  <data name="Enum.TerminalType.KTerm">
+    <value>kterm</value>
+  </data>
+  <data name="Enum.TerminalType.XTerm">
+    <value>xterm</value>
+  </data>
+  <data name="Enum.TerminalType.VT100">
+    <value>vt100</value>
+  </data>
+  <data name="Message.TCPTerminalParam.PropCannotBeSet">
+    <value>このプロパティは設定できません。</value>
+  </data>
+  <data name="Mesage.SSHTerminalParam.MethodSetError">
+    <value>SSH1またはSSH2を指定してください。</value>
+  </data>
+  <data name="Enum.FlowControl.None">
+    <value>なし</value>
+  </data>
+  <data name="Enum.FlowControl.Xon_Xoff">
+    <value>Xon/Xoff</value>
+  </data>
+  <data name="Enum.FlowControl.Hardware">
+    <value>ハードウェア</value>
+  </data>
+  <data name="Enum.Parity.NOPARITY">
+    <value>なし</value>
+  </data>
+  <data name="Enum.Parity.ODDPARITY">
+    <value>奇数</value>
+  </data>
+  <data name="Enum.Parity.EVENPARITY">
+    <value>偶数</value>
+  </data>
+  <data name="Enum.StopBits.ONESTOPBIT">
+    <value>1ビット</value>
+  </data>
+  <data name="Enum.StopBits.ONE5STOPBITS">
+    <value>1.5ビット</value>
+  </data>
+  <data name="Enum.StopBits.TWOSTOPBITS">
+    <value>2ビット</value>
+  </data>
+  <data name="Message.SerialPTerminalParam.TransmitDelayRange">
+    <value>TransmitDelayは0から1000まででなければいけません。</value>
+  </data>
+  <data name="Message.HostKeyChecker.AskHostKeyRegister">
+    <value>SSHサーバの公開鍵はssh_known_hostsに登録されていません。登録して続行しますか？</value>
+  </data>
+  <data name="Message.HostKeyChecker.AskHostKeyRenew">
+    <value>SSHサーバの公開鍵はssh_known_hostsに登録されているものと異なります。更新して続行しますか？</value>
+  </data>
+  <data name="Message.GUtil.InternalError">
+    <value>内部エラーです。{0}error.logファイルを送ってください。
+{1}</value>
+  </data>
+  <data name="Form.WarningWithDisableOption.Text">
+    <value>注意</value>
+  </data>
+  <data name="Form.WarningWithDisableOption._disableCheckBox">
+    <value>次回からこのメッセージを表示しない(&amp;N)</value>
+  </data>
+  <data name="Message.XModem.StartTimedOut">
+    <value>XMODEMの開始はタイムアウトしました。</value>
+  </data>
+  <data name="Message.XModem.ReceiveComplete">
+    <value>受信を完了しました。</value>
+  </data>
+  <data name="Message.XModem.SequenceError">
+    <value>XMODEMのシーケンス番号エラーです。処理を中止します。</value>
+  </data>
+  <data name="Message.XModem.CheckSumError">
+    <value>XMODEMのチェックサムエラーです。処理を中止します。</value>
+  </data>
+  <data name="Message.XModem.SendComplete">
+    <value>送信が完了しました。</value>
+  </data>
+  <data name="Message.XModem.BlockStartError">
+    <value>XMODEMのブロック受信信号を受け取れませんでした。処理を中止します。</value>
+  </data>
+</root>
