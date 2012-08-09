@@ -31,6 +31,7 @@ namespace EasyConnect
             Icon = ConnectionFactory.GetProtocol(connection).ProtocolIcon;
             Text = connection.DisplayName;
             urlTextBox.Text = connection.Host;
+               
         }
 
         public bool IsCursorOverContent
@@ -253,6 +254,12 @@ namespace EasyConnect
         private void ConnectionWindow_MouseDown(object sender, MouseEventArgs e)
         {
             Debug.WriteLine("Captured mouse down");
+        }
+
+        private void urlTextBox_VisibleChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(urlTextBox.Text))
+                urlTextBox.Focus();
         }
     }
 }
