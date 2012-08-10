@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
@@ -12,6 +13,7 @@ using System.Security;
 using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Input;
 using System.Xml.Serialization;
 using EasyConnect.Properties;
 using EasyConnect.Protocols;
@@ -49,6 +51,20 @@ namespace EasyConnect
         protected Queue<HistoryWindow.HistoricalConnection> _recentConnections =
             new Queue<HistoryWindow.HistoricalConnection>();
 
+        protected bool ctrlDown = false;
+
+        protected bool shiftDown = false;
+
+        /// <summary>
+        /// Pointer to the low-level mouse hook callback (<see cref="KeyboardHookCallback"/>).
+        /// </summary>
+        protected IntPtr _hookId;
+
+        /// <summary>
+        /// Delegate of <see cref="KeyboardHookCallback"/>; declared as a member variable to keep it from being garbage collected.
+        /// </summary>
+        protected HOOKPROC _hookproc = null;
+
         private bool _updateAvailable;
 
         public AutomaticUpdater AutomaticUpdater
@@ -68,6 +84,83 @@ namespace EasyConnect
 
                 return _options;
             }
+        }
+
+        protected IntPtr KeyboardHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
+        {
+            if (nCode >= 0)
+            {
+                Key key = KeyInterop.KeyFromVirtualKey(Marshal.ReadInt32(lParam));
+
+                switch (wParam.ToInt32())
+                {
+                    case Win32Messages.WM_KEYDOWN:
+                    case Win32Messages.WM_SYSKEYDOWN:
+                        switch (key)
+                        {
+                            case Key.RightCtrl:
+                            case Key.LeftCtrl:
+                                ctrlDown = true;
+                                break;
+
+                            case Key.RightShift:
+                            case Key.LeftShift:
+                                shiftDown = true;
+                                break;
+
+                            case Key.T:
+                                if (ctrlDown)
+                                    AddNewTab();
+
+                                break;
+
+                            case Key.Tab:
+                                if (Tabs.Count > 1)
+                                {
+                                    if (ctrlDown && shiftDown)
+                                    {
+                                        if (SelectedTabIndex == 0)
+                                            SelectedTabIndex = Tabs.Count - 1;
+
+                                        else
+                                            SelectedTabIndex--;
+                                    }
+
+                                    else if (ctrlDown)
+                                    {
+                                        if (SelectedTabIndex == Tabs.Count - 1)
+                                            SelectedTabIndex = 0;
+
+                                        else
+                                            SelectedTabIndex++;
+                                    }
+                                }
+
+                                break;
+                        }
+
+                        break;
+
+                    case Win32Messages.WM_KEYUP:
+                    case Win32Messages.WM_SYSKEYUP:
+                        switch (key)
+                        {
+                            case Key.RightCtrl:
+                            case Key.LeftCtrl:
+                                ctrlDown = false;
+                                break;
+
+                            case Key.RightShift:
+                            case Key.LeftShift:
+                                shiftDown = false;
+                                break;
+                        }
+
+                        break;
+                }
+            }
+
+            return Win32Interop.CallNextHookEx(_hookId, nCode, wParam, lParam);
         }
 
         public MainForm(Guid[] openToBookmarks)
@@ -168,6 +261,13 @@ namespace EasyConnect
                 //             });
                 //SelectedTabIndex = 0;
 
+            }
+
+            using (Process curProcess = Process.GetCurrentProcess())
+            using (ProcessModule curModule = curProcess.MainModule)
+            {
+                _hookproc = KeyboardHookCallback;
+                _hookId = Win32Interop.SetWindowsHookEx(Win32Messages.WH_KEYBOARD_LL, _hookproc, Win32Interop.GetModuleHandle(curModule.ModuleName), 0);
             }
         }
 
