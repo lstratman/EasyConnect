@@ -42,6 +42,7 @@
             this._hostLabel = new System.Windows.Forms.Label();
             this._hostDividerPanel = new System.Windows.Forms.Panel();
             this._generalPanel = new System.Windows.Forms.Panel();
+            this._identityInfoLink = new System.Windows.Forms.LinkLabel();
             this._identityFileTextbox = new System.Windows.Forms.TextBox();
             this._identityFileBrowseButton = new System.Windows.Forms.Button();
             this._identityFileLabel = new System.Windows.Forms.Label();
@@ -56,18 +57,19 @@
             this._backgroundColorPanel = new System.Windows.Forms.Panel();
             this._displayLabel = new System.Windows.Forms.Label();
             this._backgroundColorLabel = new System.Windows.Forms.Label();
-            this._colorDialog = new System.Windows.Forms.ColorDialog();
-            this._fontDialog = new System.Windows.Forms.FontDialog();
-            this._openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this._displayDividerPanel = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this._pasteKeysLabel = new System.Windows.Forms.Label();
+            this._copyKeysLabel = new System.Windows.Forms.Label();
             this._pasteLabel = new System.Windows.Forms.Label();
             this._shortcutsLabel = new System.Windows.Forms.Label();
             this._copyLabel = new System.Windows.Forms.Label();
-            this._copyKeysLabel = new System.Windows.Forms.Label();
-            this._pasteKeysLabel = new System.Windows.Forms.Label();
-            this._identityInfoLink = new System.Windows.Forms.LinkLabel();
+            this._colorDialog = new System.Windows.Forms.ColorDialog();
+            this._fontDialog = new System.Windows.Forms.FontDialog();
+            this._openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this._identityInfoTooltip = new System.Windows.Forms.ToolTip(this.components);
+            this._clearScreenKeysLabel = new System.Windows.Forms.Label();
+            this._clearScreenLabel = new System.Windows.Forms.Label();
             this._flowLayoutPanel.SuspendLayout();
             this._hostPanel.SuspendLayout();
             this._generalPanel.SuspendLayout();
@@ -195,6 +197,18 @@
             this._generalPanel.Name = "_generalPanel";
             this._generalPanel.Size = new System.Drawing.Size(684, 93);
             this._generalPanel.TabIndex = 83;
+            // 
+            // _identityInfoLink
+            // 
+            this._identityInfoLink.AutoSize = true;
+            this._identityInfoLink.Location = new System.Drawing.Point(437, 65);
+            this._identityInfoLink.Name = "_identityInfoLink";
+            this._identityInfoLink.Size = new System.Drawing.Size(13, 13);
+            this._identityInfoLink.TabIndex = 90;
+            this._identityInfoLink.TabStop = true;
+            this._identityInfoLink.Text = "?";
+            this._identityInfoTooltip.SetToolTip(this._identityInfoLink, "Must be an ssh.com-formatted \r\n(---- BEGIN SSH2 ENCRYPTED \r\nPRIVATE KEY ----) pri" +
+        "vate key.");
             // 
             // _identityFileTextbox
             // 
@@ -333,15 +347,6 @@
             this._backgroundColorLabel.Text = "Background color:";
             this._backgroundColorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // _fontDialog
-            // 
-            this._fontDialog.Color = System.Drawing.SystemColors.ControlText;
-            this._fontDialog.FixedPitchOnly = true;
-            // 
-            // _openFileDialog
-            // 
-            this._openFileDialog.Filter = "Identity files (id_rsa, id_dsa)|id_rsa;id_dsa|All files (*.*)|*.*";
-            // 
             // _displayDividerPanel
             // 
             this._displayDividerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -354,6 +359,8 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this._clearScreenKeysLabel);
+            this.panel2.Controls.Add(this._clearScreenLabel);
             this.panel2.Controls.Add(this._pasteKeysLabel);
             this.panel2.Controls.Add(this._copyKeysLabel);
             this.panel2.Controls.Add(this._pasteLabel);
@@ -361,8 +368,28 @@
             this.panel2.Controls.Add(this._copyLabel);
             this.panel2.Location = new System.Drawing.Point(18, 287);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(684, 70);
+            this.panel2.Size = new System.Drawing.Size(684, 93);
             this.panel2.TabIndex = 88;
+            // 
+            // _pasteKeysLabel
+            // 
+            this._pasteKeysLabel.AutoSize = true;
+            this._pasteKeysLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._pasteKeysLabel.Location = new System.Drawing.Point(243, 40);
+            this._pasteKeysLabel.Name = "_pasteKeysLabel";
+            this._pasteKeysLabel.Size = new System.Drawing.Size(37, 13);
+            this._pasteKeysLabel.TabIndex = 90;
+            this._pasteKeysLabel.Text = "Alt+V";
+            // 
+            // _copyKeysLabel
+            // 
+            this._copyKeysLabel.AutoSize = true;
+            this._copyKeysLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._copyKeysLabel.Location = new System.Drawing.Point(243, 15);
+            this._copyKeysLabel.Name = "_copyKeysLabel";
+            this._copyKeysLabel.Size = new System.Drawing.Size(37, 13);
+            this._copyKeysLabel.TabIndex = 89;
+            this._copyKeysLabel.Text = "Alt+C";
             // 
             // _pasteLabel
             // 
@@ -392,37 +419,33 @@
             this._copyLabel.Text = "Copy:";
             this._copyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // _copyKeysLabel
+            // _fontDialog
             // 
-            this._copyKeysLabel.AutoSize = true;
-            this._copyKeysLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._copyKeysLabel.Location = new System.Drawing.Point(243, 15);
-            this._copyKeysLabel.Name = "_copyKeysLabel";
-            this._copyKeysLabel.Size = new System.Drawing.Size(37, 13);
-            this._copyKeysLabel.TabIndex = 89;
-            this._copyKeysLabel.Text = "Alt+C";
+            this._fontDialog.Color = System.Drawing.SystemColors.ControlText;
+            this._fontDialog.FixedPitchOnly = true;
             // 
-            // _pasteKeysLabel
+            // _openFileDialog
             // 
-            this._pasteKeysLabel.AutoSize = true;
-            this._pasteKeysLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._pasteKeysLabel.Location = new System.Drawing.Point(243, 40);
-            this._pasteKeysLabel.Name = "_pasteKeysLabel";
-            this._pasteKeysLabel.Size = new System.Drawing.Size(37, 13);
-            this._pasteKeysLabel.TabIndex = 90;
-            this._pasteKeysLabel.Text = "Alt+V";
+            this._openFileDialog.Filter = "Identity files (id_rsa, id_dsa)|id_rsa;id_dsa|All files (*.*)|*.*";
             // 
-            // _identityInfoLink
+            // _clearScreenKeysLabel
             // 
-            this._identityInfoLink.AutoSize = true;
-            this._identityInfoLink.Location = new System.Drawing.Point(437, 65);
-            this._identityInfoLink.Name = "_identityInfoLink";
-            this._identityInfoLink.Size = new System.Drawing.Size(13, 13);
-            this._identityInfoLink.TabIndex = 90;
-            this._identityInfoLink.TabStop = true;
-            this._identityInfoLink.Text = "?";
-            this._identityInfoTooltip.SetToolTip(this._identityInfoLink, "Must be an ssh.com-formatted \r\n(---- BEGIN SSH2 ENCRYPTED \r\nPRIVATE KEY ----) pri" +
-        "vate key.");
+            this._clearScreenKeysLabel.AutoSize = true;
+            this._clearScreenKeysLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._clearScreenKeysLabel.Location = new System.Drawing.Point(243, 65);
+            this._clearScreenKeysLabel.Name = "_clearScreenKeysLabel";
+            this._clearScreenKeysLabel.Size = new System.Drawing.Size(36, 13);
+            this._clearScreenKeysLabel.TabIndex = 92;
+            this._clearScreenKeysLabel.Text = "Alt+L";
+            // 
+            // _clearScreenLabel
+            // 
+            this._clearScreenLabel.Location = new System.Drawing.Point(91, 61);
+            this._clearScreenLabel.Name = "_clearScreenLabel";
+            this._clearScreenLabel.Size = new System.Drawing.Size(150, 20);
+            this._clearScreenLabel.TabIndex = 91;
+            this._clearScreenLabel.Text = "Clear screen:";
+            this._clearScreenLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // SshOptionsForm
             // 
@@ -487,5 +510,7 @@
         private System.Windows.Forms.Label _copyLabel;
         private System.Windows.Forms.LinkLabel _identityInfoLink;
         private System.Windows.Forms.ToolTip _identityInfoTooltip;
+        private System.Windows.Forms.Label _clearScreenKeysLabel;
+        private System.Windows.Forms.Label _clearScreenLabel;
     }
 }
