@@ -397,6 +397,9 @@ namespace EasyConnect
         {
             if (_connectionForm != null && _connectionForm.IsConnected && !_connectionForm.ContainsFocus)
                 _connectionForm.Focus();
+            
+            if (string.IsNullOrEmpty(urlTextBox.Text))
+                urlTextBox.Focus();
         }
 
         private void _updatesMenuItem_Click(object sender, EventArgs e)
