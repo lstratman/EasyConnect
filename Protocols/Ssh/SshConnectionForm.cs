@@ -23,7 +23,14 @@ namespace EasyConnect.Protocols.Ssh
             GEnv.Options.WarningOption = WarningOption.Ignore;
 
             Connected += SshConnectionForm_Connected;
+            Shown += SshConnectionForm_Shown;
             _terminal.GotFocus += _terminal_GotFocus;
+        }
+
+        void SshConnectionForm_Shown(object sender, EventArgs e)
+        {
+            if (IsConnected)
+                GEnv.Connections.BringToActivationOrderTop(_terminal.TerminalPane.ConnectionTag);
         }
 
         void _terminal_GotFocus(object sender, EventArgs e)
@@ -35,11 +42,15 @@ namespace EasyConnect.Protocols.Ssh
         void SshConnectionForm_Connected(object sender, EventArgs e)
         {
             IsConnected = true;
+
+            GEnv.Connections.Add(_terminal.TerminalPane.ConnectionTag);
+            GEnv.Connections.BringToActivationOrderTop(_terminal.TerminalPane.ConnectionTag);
         }
 
         public override void Connect()
         {
             GEnv.Options.Font = Connection.Font;
+            
             _terminal.UserName = Connection.Username;
             _terminal.Host = Connection.Host;
 

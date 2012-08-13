@@ -146,6 +146,7 @@ namespace Poderosa
 			_interThreadUIService = new ContainerInterThreadUIService();
 			_sshKnownHosts = new SSHKnownHosts();
 
+            _options.Init();
 
 			//この時点ではOSの言語設定に合ったリソースをロードする。起動直前で必要に応じてリロード
 			ReloadStringResource();

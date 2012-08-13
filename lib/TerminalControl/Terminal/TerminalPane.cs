@@ -694,7 +694,11 @@ namespace Poderosa.Terminal {
 
 		private bool ProcessDialogKeyInNormalMode(Keys key, Keys keybody, Keys modifiers, bool cursor) {
 			if((modifiers & Keys.Alt)!=Keys.None && _fakeVisible) {
-				//Alt‚ª—ˆ‚Ä‚¢‚½ê‡
+                CommandResult res = GEnv.Frame.ProcessShortcutKey(key);
+                
+                if (res != CommandResult.NOP) return true;
+
+                //Alt‚ª—ˆ‚Ä‚¢‚½ê‡
 				if(System.Environment.OSVersion.Platform==PlatformID.Win32NT) {
 					if(GEnv.Options.LeftAltKey!=AltKeyAction.Menu && (Win32.GetKeyState(Win32.VK_LMENU) & 0x8000)!=0) {
 						ProcessSpecialAltKey(GEnv.Options.LeftAltKey, modifiers, keybody);
