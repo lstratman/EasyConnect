@@ -215,8 +215,11 @@ namespace EasyConnect
                     _history = new HistoryWindow(this);
                 }
 
-                catch (CryptographicException)
+                catch (Exception e)
                 {
+                    if (!ContainsCryptographicException(e))
+                        throw;
+
                     DialogResult result = MessageBox.Show(Resources.IncorrectPasswordText, Resources.ErrorTitle,
                                                           MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
 
@@ -269,6 +272,14 @@ namespace EasyConnect
                 _hookproc = KeyboardHookCallback;
                 _hookId = Win32Interop.SetWindowsHookEx(Win32Messages.WH_KEYBOARD_LL, _hookproc, Win32Interop.GetModuleHandle(curModule.ModuleName), 0);
             }
+        }
+
+        protected bool ContainsCryptographicException(Exception exception)
+        {
+            if (exception is CryptographicException)
+                return true;
+
+            return exception.InnerException != null && ContainsCryptographicException(exception.InnerException);
         }
 
         void MainForm_TabClicked(object sender, TitleBarTabEventArgs e)
