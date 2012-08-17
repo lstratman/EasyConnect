@@ -20,20 +20,6 @@ namespace EasyConnect.Protocols.Rdp
         public RdpConnectionForm()
         {
             InitializeComponent();
-            Connected += RdpConnectionForm_Connected;
-
-            _rdpWindow.GotFocus += _rdpWindow_GotFocus;
-        }
-
-        void _rdpWindow_GotFocus(object sender, EventArgs e)
-        {
-            if (ConnectionFormFocused != null)
-                ConnectionFormFocused(_rdpWindow, e);
-        }
-
-        protected void RdpConnectionForm_Connected(object sender, EventArgs e)
-        {
-            IsConnected = true;
         }
 
         public string Host
@@ -307,6 +293,14 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        protected override Control ConnectionWindow
+        {
+            get
+            {
+                return _rdpWindow;
+            }
+        }
+
         public override void Connect()
         {
             _rdpWindow.Size = new Size(Size.Width + 2, Size.Height + 2);
@@ -340,12 +334,9 @@ namespace EasyConnect.Protocols.Rdp
             Host = Connection.Host;
 
             _rdpWindow.ConnectingText = "Connecting...";
-            _rdpWindow.OnConnected += Connected;
+            _rdpWindow.OnConnected += ConnectionForm_Connected;
             _rdpWindow.Connect();
         }
-
-        public override event EventHandler Connected;
-        public override event EventHandler ConnectionFormFocused;
 
         private void _rdpWindow_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {

@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 using Granados.SSHC;
 using Poderosa;
@@ -21,10 +15,7 @@ namespace EasyConnect.Protocols.Ssh
             InitializeComponent();
 
             GEnv.Options.WarningOption = WarningOption.Ignore;
-
-            Connected += SshConnectionForm_Connected;
             Shown += SshConnectionForm_Shown;
-            _terminal.GotFocus += _terminal_GotFocus;
         }
 
         void SshConnectionForm_Shown(object sender, EventArgs e)
@@ -33,18 +24,12 @@ namespace EasyConnect.Protocols.Ssh
                 GEnv.Connections.BringToActivationOrderTop(_terminal.TerminalPane.ConnectionTag);
         }
 
-        void _terminal_GotFocus(object sender, EventArgs e)
+        protected override void ConnectionForm_Connected(object sender, EventArgs e)
         {
-            if (ConnectionFormFocused != null)
-                ConnectionFormFocused(_terminal, e);
-        }
-
-        void SshConnectionForm_Connected(object sender, EventArgs e)
-        {
-            IsConnected = true;
-
             GEnv.Connections.Add(_terminal.TerminalPane.ConnectionTag);
             GEnv.Connections.BringToActivationOrderTop(_terminal.TerminalPane.ConnectionTag);
+
+            base.ConnectionForm_Connected(sender, e);
         }
 
         public override void Connect()
@@ -79,7 +64,7 @@ namespace EasyConnect.Protocols.Ssh
                 throw;
             }
             
-            ((ISSHChannelEventReceiver)_terminal.TerminalPane.Connection).Connected += Connected;
+            ((ISSHChannelEventReceiver)_terminal.TerminalPane.Connection).Connected += ConnectionForm_Connected;
             ((ISSHConnectionEventReceiver)_terminal.TerminalPane.Connection).Disconnected += OnDisconnected;
             _terminal.SetPaneColors(Connection.TextColor, Connection.BackgroundColor);
 
@@ -89,10 +74,17 @@ namespace EasyConnect.Protocols.Ssh
         private void OnDisconnected(object sender, EventArgs eventArgs)
         {
             IsConnected = false;
-            ParentForm.Invoke(new Action(() => ParentForm.Close()));
+
+            if (CloseParentFormOnDisconnect)
+                ParentForm.Invoke(new Action(() => ParentForm.Close()));
         }
 
-        public override event EventHandler Connected;
-        public override event EventHandler ConnectionFormFocused;
+        protected override Control ConnectionWindow
+        {
+            get
+            {
+                return _terminal;
+            }
+        }
     }
 }

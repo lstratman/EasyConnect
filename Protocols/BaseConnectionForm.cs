@@ -13,8 +13,33 @@ namespace EasyConnect.Protocols
             CloseParentFormOnDisconnect = true;
         }
 
-        public abstract event EventHandler Connected;
-        public abstract event EventHandler ConnectionFormFocused;
+        protected override void OnLoad(EventArgs e)
+        {
+            ConnectionWindow.GotFocus += ConnectionWindow_GotFocus;
+            base.OnLoad(e);
+        }
+
+        protected virtual void ConnectionWindow_GotFocus(object sender, EventArgs e)
+        {
+            if (ConnectionFormFocused != null)
+                ConnectionFormFocused(ConnectionWindow, e);
+        }
+
+        protected virtual void ConnectionForm_Connected(object sender, EventArgs e)
+        {
+            IsConnected = true;
+
+            if (Connected != null)
+                Connected(sender, e);
+        }
+
+        public event EventHandler Connected;
+        public event EventHandler ConnectionFormFocused;
+
+        protected abstract Control ConnectionWindow
+        {
+            get;
+        }
 
         public bool IsConnected
         {
