@@ -103,8 +103,6 @@ namespace EasyConnect.Protocols
                         IProtocol protocol = _protocols.First(pair => pair.Value.ConnectionType == defaults.GetType()).Value;
 
                         _defaults[protocol.GetType()] = defaults;
-
-                        reader.Read();
                     }
                 }
             }
