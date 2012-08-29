@@ -505,14 +505,15 @@ namespace EasyConnect
             {
                 List<IConnection> bookmarks = new List<IConnection>();
                 GetAllBookmarks(ParentTabs.Bookmarks.RootFolder, bookmarks);
-
                 _autoCompleteEntries.AddRange(bookmarks);
-                _autoCompleteEntries.AddRange(
-                    ParentTabs.History.Connections.OrderByDescending(c => c.LastConnection).Distinct(
-                        new EqualityComparer<HistoryWindow.HistoricalConnection>(
-                            (x, y) => x.Connection.Host == y.Connection.Host)).Where(
-                                c => _autoCompleteEntries.FindIndex(a => a.Host == c.Connection.Host) == -1).Select
-                        (c => c.Connection));
+
+                if (ParentTabs.History.Connections != null)
+                    _autoCompleteEntries.AddRange(
+                        ParentTabs.History.Connections.OrderByDescending(c => c.LastConnection).Distinct(
+                            new EqualityComparer<HistoryWindow.HistoricalConnection>(
+                                (x, y) => x.Connection.Host == y.Connection.Host)).Where(
+                                    c => _autoCompleteEntries.FindIndex(a => a.Host == c.Connection.Host) == -1).Select
+                            (c => c.Connection));
             }
 
             _validAutoCompleteEntries = _autoCompleteEntries.Where(c => c.DisplayName.IndexOf(urlTextBox.Text, StringComparison.InvariantCultureIgnoreCase) != -1 || c.Host.IndexOf(urlTextBox.Text, StringComparison.InvariantCultureIgnoreCase) != -1).OrderBy(c => c.DisplayName).Take(6).ToList();
