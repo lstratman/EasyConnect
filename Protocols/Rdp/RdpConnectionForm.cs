@@ -301,6 +301,18 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        protected override void OnConnected(object sender, EventArgs e)
+        {
+            if (KeyboardMode == KeyboardMode.Remotely)
+            {
+                //IntPtr inputCatpureWindow = Win32Interop.FindWindowEx(Parent.Handle, IntPtr.Zero, "IHWindowClass", "Input Capture Window");
+
+
+            }
+
+            base.OnConnected(sender, e);
+        }
+
         public override void Connect()
         {
             _rdpWindow.Size = new Size(Size.Width + 2, Size.Height + 2);
@@ -334,7 +346,7 @@ namespace EasyConnect.Protocols.Rdp
             Host = Connection.Host;
 
             _rdpWindow.ConnectingText = "Connecting...";
-            _rdpWindow.OnConnected += ConnectionForm_Connected;
+            _rdpWindow.OnConnected += OnConnected;
             _rdpWindow.Connect();
         }
 

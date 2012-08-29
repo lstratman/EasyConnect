@@ -24,12 +24,12 @@ namespace EasyConnect.Protocols.Ssh
                 GEnv.Connections.BringToActivationOrderTop(_terminal.TerminalPane.ConnectionTag);
         }
 
-        protected override void ConnectionForm_Connected(object sender, EventArgs e)
+        protected override void OnConnected(object sender, EventArgs e)
         {
             GEnv.Connections.Add(_terminal.TerminalPane.ConnectionTag);
             GEnv.Connections.BringToActivationOrderTop(_terminal.TerminalPane.ConnectionTag);
 
-            base.ConnectionForm_Connected(sender, e);
+            base.OnConnected(sender, e);
         }
 
         public override void Connect()
@@ -64,7 +64,7 @@ namespace EasyConnect.Protocols.Ssh
                 throw;
             }
             
-            ((ISSHChannelEventReceiver)_terminal.TerminalPane.Connection).Connected += ConnectionForm_Connected;
+            ((ISSHChannelEventReceiver)_terminal.TerminalPane.Connection).Connected += OnConnected;
             ((ISSHConnectionEventReceiver)_terminal.TerminalPane.Connection).Disconnected += OnDisconnected;
             _terminal.SetPaneColors(Connection.TextColor, Connection.BackgroundColor);
 

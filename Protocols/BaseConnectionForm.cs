@@ -15,17 +15,17 @@ namespace EasyConnect.Protocols
 
         protected override void OnLoad(EventArgs e)
         {
-            ConnectionWindow.GotFocus += ConnectionWindow_GotFocus;
+            ConnectionWindow.GotFocus += OnConnectionWindowGotFocus;
             base.OnLoad(e);
         }
 
-        protected virtual void ConnectionWindow_GotFocus(object sender, EventArgs e)
+        protected virtual void OnConnectionWindowGotFocus(object sender, EventArgs e)
         {
             if (ConnectionFormFocused != null)
                 ConnectionFormFocused(ConnectionWindow, e);
         }
 
-        protected virtual void ConnectionForm_Connected(object sender, EventArgs e)
+        protected virtual void OnConnected(object sender, EventArgs e)
         {
             IsConnected = true;
 
