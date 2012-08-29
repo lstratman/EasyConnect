@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
 using Stratman.Windows.Forms.TitleBarTabs;
+using Win32Interop.Methods;
 
 namespace EasyConnect
 {
@@ -21,7 +22,7 @@ namespace EasyConnect
                 components.Dispose();
             }
 
-            Win32Interop.UnhookWindowsHookEx(_hookId);
+            User32.UnhookWindowsHookEx(_hookId);
 
             base.Dispose(disposing);
         }

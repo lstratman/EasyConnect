@@ -21,6 +21,8 @@ using EasyConnect.Protocols.Rdp;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
 using Stratman.Windows.Forms.TitleBarTabs;
+using Win32Interop.Enums;
+using Win32Interop.Methods;
 using wyDay.Controls;
 
 namespace EasyConnect
@@ -88,14 +90,14 @@ namespace EasyConnect
 
         protected IntPtr KeyboardHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
-            if (nCode >= 0)
+            if (nCode >= 0 && User32.GetActiveWindow() == Handle)
             {
                 Key key = KeyInterop.KeyFromVirtualKey(Marshal.ReadInt32(lParam));
 
-                switch (wParam.ToInt32())
+                switch ((WM)wParam.ToInt32())
                 {
-                    case Win32Messages.WM_KEYDOWN:
-                    case Win32Messages.WM_SYSKEYDOWN:
+                    case WM.WM_KEYDOWN:
+                    case WM.WM_SYSKEYDOWN:
                         switch (key)
                         {
                             case Key.RightCtrl:
@@ -141,8 +143,8 @@ namespace EasyConnect
 
                         break;
 
-                    case Win32Messages.WM_KEYUP:
-                    case Win32Messages.WM_SYSKEYUP:
+                    case WM.WM_KEYUP:
+                    case WM.WM_SYSKEYUP:
                         switch (key)
                         {
                             case Key.RightCtrl:
@@ -160,7 +162,7 @@ namespace EasyConnect
                 }
             }
 
-            return Win32Interop.CallNextHookEx(_hookId, nCode, wParam, lParam);
+            return User32.CallNextHookEx(_hookId, nCode, wParam, lParam);
         }
 
         public MainForm(Guid[] openToBookmarks)
@@ -270,7 +272,7 @@ namespace EasyConnect
             using (ProcessModule curModule = curProcess.MainModule)
             {
                 _hookproc = KeyboardHookCallback;
-                _hookId = Win32Interop.SetWindowsHookEx(Win32Messages.WH_KEYBOARD_LL, _hookproc, Win32Interop.GetModuleHandle(curModule.ModuleName), 0);
+                _hookId = User32.SetWindowsHookEx(WH.WH_KEYBOARD_LL, _hookproc, Kernel32.GetModuleHandleW(curModule.ModuleName), 0);
             }
         }
 
@@ -290,7 +292,7 @@ namespace EasyConnect
 
         void _automaticUpdater_CheckingFailed(object sender, FailArgs e)
         {
-            Debug.WriteLine("fucked up");
+            UpdateAvailable = false;
         }
 
         void _automaticUpdater_UpToDate(object sender, SuccessArgs e)

@@ -277,11 +277,21 @@
       <Project>{ad8e208e-4e00-4c37-98ab-ac1cf8538fb9}</Project>
       <Name>EasyConnect.Protocols.Ssh</Name>
     </ProjectReference>
+    <ProjectReference Include="Win32Interop\Kernel32\Win32Interop.Kernel32.csproj">
+      <Project>{C50EB086-0E96-4D7F-9C23-E7632ABC46AB}</Project>
+      <Name>Win32Interop.Kernel32</Name>
+    </ProjectReference>
+    <ProjectReference Include="Win32Interop\User32\Win32Interop.User32.csproj">
+      <Project>{1c09da92-5492-4022-a090-961076a41185}</Project>
+      <Name>Win32Interop.User32</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /y "$(ProjectDir)lib\wyUpdate.*" "$(TargetDir)"
-copy /y "$(ProjectDir)lib\client.wyc" "$(TargetDir)"</PostBuildEvent>
+copy /y "$(ProjectDir)lib\client.wyc" "$(TargetDir)"
+copy /y "$(SolutionDir)Win32Interop\SystemHookCore\$(ConfigurationName)\SystemHookCore.dll" "$(TargetDir)"
+Exit /b 0</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

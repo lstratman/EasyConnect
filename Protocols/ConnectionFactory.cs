@@ -59,6 +59,10 @@ namespace EasyConnect.Protocols
                 catch (BadImageFormatException)
                 {
                 }
+
+                catch (ReflectionTypeLoadException)
+                {
+                }
             }
         }
 
