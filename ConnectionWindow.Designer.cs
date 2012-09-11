@@ -75,7 +75,7 @@
             this._toolsMenuSeparator2,
             this._exitMenuItem});
             this._toolsMenu.Name = "_toolsMenu";
-            this._toolsMenu.Size = new System.Drawing.Size(187, 160);
+            this._toolsMenu.Size = new System.Drawing.Size(187, 182);
             // 
             // _newTabMenuItem
             // 
@@ -127,12 +127,14 @@
             this._updatesMenuItem.Name = "_updatesMenuItem";
             this._updatesMenuItem.Size = new System.Drawing.Size(186, 22);
             this._updatesMenuItem.Text = "Check for update";
+            this._updatesMenuItem.Visible = false;
             this._updatesMenuItem.Click += new System.EventHandler(this._updatesMenuItem_Click);
             // 
             // _toolsMenuSeparator2
             // 
             this._toolsMenuSeparator2.Name = "_toolsMenuSeparator2";
             this._toolsMenuSeparator2.Size = new System.Drawing.Size(183, 6);
+            this._toolsMenuSeparator2.Visible = false;
             // 
             // _exitMenuItem
             // 

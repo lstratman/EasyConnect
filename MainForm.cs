@@ -141,24 +141,24 @@ namespace EasyConnect
             InitializeComponent();
 
             // Create the automatic updater control
-            _automaticUpdater = new AutomaticUpdater();
+            //_automaticUpdater = new AutomaticUpdater();
 
-            (_automaticUpdater as ISupportInitialize).BeginInit();
-            _automaticUpdater.ContainerForm = this;
-            _automaticUpdater.Name = "_automaticUpdater";
-            _automaticUpdater.TabIndex = 0;
-            _automaticUpdater.wyUpdateCommandline = null;
-            _automaticUpdater.Visible = false;
-            _automaticUpdater.KeepHidden = true;
-            _automaticUpdater.GUID = "752f8ae7-47f3-4299-adcc-8be32d63ec7a";
-            _automaticUpdater.DaysBetweenChecks = 2;
-            _automaticUpdater.UpdateType = UpdateType.Automatic;
-            _automaticUpdater.ReadyToBeInstalled += _automaticUpdater_ReadyToBeInstalled;
-            _automaticUpdater.UpToDate += _automaticUpdater_UpToDate;
-            _automaticUpdater.CheckingFailed += _automaticUpdater_CheckingFailed;
-            (_automaticUpdater as ISupportInitialize).EndInit();
+            //(_automaticUpdater as ISupportInitialize).BeginInit();
+            //_automaticUpdater.ContainerForm = this;
+            //_automaticUpdater.Name = "_automaticUpdater";
+            //_automaticUpdater.TabIndex = 0;
+            //_automaticUpdater.wyUpdateCommandline = null;
+            //_automaticUpdater.Visible = false;
+            //_automaticUpdater.KeepHidden = true;
+            //_automaticUpdater.GUID = "752f8ae7-47f3-4299-adcc-8be32d63ec7a";
+            //_automaticUpdater.DaysBetweenChecks = 2;
+            //_automaticUpdater.UpdateType = UpdateType.Automatic;
+            //_automaticUpdater.ReadyToBeInstalled += _automaticUpdater_ReadyToBeInstalled;
+            //_automaticUpdater.UpToDate += _automaticUpdater_UpToDate;
+            //_automaticUpdater.CheckingFailed += _automaticUpdater_CheckingFailed;
+            //(_automaticUpdater as ISupportInitialize).EndInit();
 
-            Controls.Add(_automaticUpdater);
+            //Controls.Add(_automaticUpdater);
 
             OpenToBookmarks = openToBookmarks;
 
