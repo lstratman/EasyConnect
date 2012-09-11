@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\EasyConnect.Protocols.Rdp.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\EasyConnect.Protocols.Rdp.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SecurePasswordTextBox">
@@ -73,6 +75,10 @@
     <ProjectReference Include="..\..\Common\EasyConnect.Common.csproj">
       <Project>{ABF68708-BDC0-4D29-A523-00EC942449B2}</Project>
       <Name>EasyConnect.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Win32Interop\User32\Win32Interop.User32.csproj">
+      <Project>{1C09DA92-5492-4022-A090-961076A41185}</Project>
+      <Name>Win32Interop.User32</Name>
     </ProjectReference>
     <ProjectReference Include="..\EasyConnect.Protocols.csproj">
       <Project>{9794E3F6-45AA-4841-8AE3-60B9662A1B1E}</Project>

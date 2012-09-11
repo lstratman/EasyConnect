@@ -4,14 +4,29 @@ using System.ComponentModel;
 using System.Linq;
 using System.Security;
 using System.Windows.Forms;
-using EasyConnect.Common;
+using Win32Interop.Methods;
+using Win32Interop.Structs;
 
 namespace EasyConnect.Protocols.Rdp
 {
+    /// <summary>
+    /// Form that captures options for a particular <see cref="RdpConnection"/> instance or defaults for the <see cref="RdpProtocol"/> protocol.
+    /// </summary>
     public partial class RdpOptionsForm : Form, IOptionsForm<RdpConnection>
     {
+        /// <summary>
+        /// Contains the previous width of <see cref="_flowLayoutPanel"/> prior to a resize operation.
+        /// </summary>
         protected int _previousWidth;
 
+        /// <summary>
+        /// List of all possible desktop resolutions.
+        /// </summary>
+        protected List<DEVMODEW> _resolutions = new List<DEVMODEW>();
+
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public RdpOptionsForm()
         {
             InitializeComponent();
@@ -19,8 +34,46 @@ namespace EasyConnect.Protocols.Rdp
             _previousWidth = _flowLayoutPanel.Width;
         }
 
-        protected List<DEVMODE> _resolutions = new List<DEVMODE>();
+        /// <summary>
+        /// Connection instance that we're capturing option data for.
+        /// </summary>
+        public RdpConnection Connection
+        {
+            get;
+            set;
+        }
 
+        /// <summary>
+        /// Connection instance that we're capturing option data for.
+        /// </summary>
+        IConnection IOptionsForm.Connection
+        {
+            get
+            {
+                return Connection;
+            }
+
+            set
+            {
+                Connection = (RdpConnection) value;
+            }
+        }
+
+        /// <summary>
+        /// Flag indicating if the options should be for a specific connection or should be for the defaults for the protocol (i.e. should not capture 
+        /// hostname).
+        /// </summary>
+        public bool DefaultsMode
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Handler method that's called when the form loads initially.  Initializes the UI from the data in <see cref="Connection"/>.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void RdpOptionsForm_Load(object sender, EventArgs e)
         {
             Text = "Options for " + Connection.DisplayName;
@@ -28,17 +81,16 @@ namespace EasyConnect.Protocols.Rdp
             _hostNameTextBox.Text = Connection.Host;
             _userNameTextBox.Text = Connection.Username;
             _passwordTextBox.SecureText = (Connection.Password == null
-                                                  ? new SecureString()
-                                                  : Connection.Password.Copy());
+                                               ? new SecureString()
+                                               : Connection.Password.Copy());
 
-            DEVMODE devMode = new DEVMODE();
-            int modeNumber = 0;
+            // Enumerate the desktop display modes and add them to the resolutions slider
+            DEVMODEW devMode = new DEVMODEW();
+            uint modeNumber = 0;
 
-            while (DisplayUtilities.EnumDisplaySettings(null, modeNumber, ref devMode) > 0)
+            while (User32.EnumDisplaySettingsW(null, modeNumber, out devMode))
             {
-                if (
-                    !_resolutions.Exists(
-                        (DEVMODE d) => d.dmPelsWidth == devMode.dmPelsWidth && d.dmPelsHeight == devMode.dmPelsHeight))
+                if (!_resolutions.Exists((DEVMODEW d) => d.dmPelsWidth == devMode.dmPelsWidth && d.dmPelsHeight == devMode.dmPelsHeight))
                     _resolutions.Add(devMode);
 
                 modeNumber++;
@@ -48,12 +100,15 @@ namespace EasyConnect.Protocols.Rdp
             _resolutionSlider.Maximum = _resolutions.Count;
 
             int resolutionIndex =
-                    _resolutions.FindIndex(
-                        (DEVMODE d) =>
-                        d.dmPelsWidth == Connection.DesktopWidth && d.dmPelsHeight == Connection.DesktopHeight);
+                _resolutions.FindIndex(
+                    (DEVMODEW d) =>
+                    d.dmPelsWidth == Connection.DesktopWidth && d.dmPelsHeight == Connection.DesktopHeight);
 
-            _resolutionSlider.Value = resolutionIndex != -1 ? resolutionIndex : _resolutionSlider.Maximum;
+            _resolutionSlider.Value = resolutionIndex != -1
+                                          ? resolutionIndex
+                                          : _resolutionSlider.Maximum;
 
+            // Set the values of the various fields based on the properties in Connection
             switch (Connection.ColorDepth)
             {
                 case 15:
@@ -88,6 +143,7 @@ namespace EasyConnect.Protocols.Rdp
             _bitmapCachingCheckbox.Checked = Connection.PersistentBitmapCaching;
             _adminChannelCheckBox.Checked = Connection.ConnectToAdminChannel;
 
+            // Hide the host panel if we're in defaults mode
             if (DefaultsMode)
             {
                 _hostPanel.Visible = false;
@@ -95,17 +151,22 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        /// <summary>
+        /// Handler method that's called when the form is closing.  Copies the contents of the various fields back into <see cref="Connection"/>.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void RdpOptionsForm_FormClosing(object sender, CancelEventArgs e)
         {
             Connection.Host = _hostNameTextBox.Text;
             Connection.Username = _userNameTextBox.Text;
             Connection.Password = _passwordTextBox.SecureText;
             Connection.DesktopWidth = _resolutionSlider.Value != _resolutionSlider.Maximum
-                                                                    ? _resolutions[_resolutionSlider.Value].dmPelsWidth
-                                                                    : 0;
+                                          ? Convert.ToInt32(_resolutions[_resolutionSlider.Value].dmPelsWidth)
+                                          : 0;
             Connection.DesktopHeight = _resolutionSlider.Value != _resolutionSlider.Maximum
-                                                                     ? _resolutions[_resolutionSlider.Value].dmPelsHeight
-                                                                     : 0;
+                                           ? Convert.ToInt32(_resolutions[_resolutionSlider.Value].dmPelsHeight)
+                                           : 0;
 
             switch (_colorDepthDropdown.SelectedIndex)
             {
@@ -142,39 +203,26 @@ namespace EasyConnect.Protocols.Rdp
             Connection.ConnectToAdminChannel = _adminChannelCheckBox.Checked;
         }
 
+        /// <summary>
+        /// Handler method that's called when the value of <see cref="_resolutionSlider"/> changes.  Updates the text below the slider with the corresponding
+        /// desktop width and height of the value.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated, <see cref="_resolutionSlider"/> in this case.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void _resolutionSlider_ValueChanged(object sender, EventArgs e)
         {
+            // The last position on the slider indicates "Full Screen"
             _resolutionSliderLabel.Text = (_resolutionSlider.Value == _resolutions.Count
                                                ? "Full Screen"
                                                : _resolutions[_resolutionSlider.Value].dmPelsWidth.ToString() + " by " +
                                                  _resolutions[_resolutionSlider.Value].dmPelsHeight.ToString() + " pixels");
         }
 
-        public RdpConnection Connection
-        {
-            get;
-            set;
-        }
-
-        IConnection IOptionsForm.Connection
-        {
-            get
-            {
-                return Connection;
-            }
-
-            set
-            {
-                Connection = (RdpConnection)value;
-            }
-        }
-
-        public bool DefaultsMode
-        {
-            get;
-            set;
-        }
-
+        /// <summary>
+        /// Handler method that's called when the size of <see cref="_flowLayoutPanel"/> changes.  Resizes each child <see cref="Panel"/> instance accordingly.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated, <see cref="_flowLayoutPanel"/> in this case.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void _flowLayoutPanel_Resize(object sender, EventArgs e)
         {
             foreach (Panel panel in _flowLayoutPanel.Controls.Cast<Panel>())

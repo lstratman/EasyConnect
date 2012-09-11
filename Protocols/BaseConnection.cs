@@ -1,24 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Security;
-using System.Text;
-using System.Xml;
-using System.Xml.Schema;
 using System.Xml.Serialization;
 using EasyConnect.Common;
 
 namespace EasyConnect.Protocols
 {
+    /// <summary>
+    /// Base class for all connections, contains common properties for host name, password, GUID, and name.
+    /// </summary>
     [Serializable]
     public abstract class BaseConnection : IConnection
     {
+        /// <summary>
+        /// Pointer to the folder that contains the bookmark of this connection.  Not serialized because of the fact that this data is implicit in the 
+        /// hierarchical folder structure for bookmarks.
+        /// </summary>
+        [XmlIgnore]
+        [NonSerialized]
+        protected BookmarksFolder _parentFolder = null;
+
+        /// <summary>
+        /// Password, if any, used when establishing this connection.  Not serialized because we instead serialize an encrypted, Base64-encoded version of
+        /// this value.
+        /// </summary>
+        [NonSerialized]
+        protected SecureString _password = null;
+
+        /// <summary>
+        /// Default constructor that initializes <see cref="Guid"/>.
+        /// </summary>
         protected BaseConnection()
         {
             Guid = Guid.NewGuid();
         }
 
+        /// <summary>
+        /// Serialization constructor that initializes the properties from the serialization data.
+        /// </summary>
+        /// <param name="info">Serialization data to read from.</param>
+        /// <param name="context">Streaming context to use during deserialization.</param>
         protected BaseConnection(SerializationInfo info, StreamingContext context)
         {
             IsBookmark = info.GetBoolean("IsBookmark");
@@ -28,51 +49,24 @@ namespace EasyConnect.Protocols
             string encryptedPassword = info.GetString("Password");
 
             if (!String.IsNullOrEmpty(encryptedPassword))
-            {
-                byte[] encryptedPasswordBytes = Convert.FromBase64String(encryptedPassword);
-                byte[] decryptedPassword = CryptoUtilities.Decrypt(ConnectionFactory.EncryptionPassword, encryptedPasswordBytes);
-                SecureString password = new SecureString();
-
-                for (int i = 0; i < decryptedPassword.Length; i++)
-                {
-                    if (decryptedPassword[i] == 0)
-                        break;
-
-                    password.AppendChar((char)decryptedPassword[i]);
-                    decryptedPassword[i] = 0;
-                }
-
-                _password = password;
-
-                for (int i = 0; i < encryptedPasswordBytes.Length; i++)
-                    encryptedPasswordBytes[i] = 0;
-            }
+                Base64Password = encryptedPassword;
 
             if (Guid == Guid.Empty)
                 Guid = Guid.NewGuid();
         }
-        
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("Password", _password == null ? null : Convert.ToBase64String(CryptoUtilities.Encrypt(ConnectionFactory.EncryptionPassword, _password)));
-            info.AddValue("IsBookmark", IsBookmark);
-            info.AddValue("Name", Name);
-            info.AddValue("Host", Host);
-            info.AddValue("Guid", Guid.ToString());
-        }
 
-        [XmlIgnore]
-        [NonSerialized]
-        protected BookmarksFolder _parentFolder = null;
-        [NonSerialized]
-        protected SecureString _password = null;
-
+        /// <summary>
+        /// Host name of the server that we are to connect to.
+        /// </summary>
         public string Host
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Display text to use when identifying this connection:  <see cref="Name"/> if it's not null, <see cref="Host"/> otherwise.
+        /// </summary>
         public string DisplayName
         {
             get
@@ -83,12 +77,19 @@ namespace EasyConnect.Protocols
             }
         }
 
+        /// <summary>
+        /// Name used to identify this connection for bookmarking purposes.
+        /// </summary>
         public string Name
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Pointer to the folder that contains the bookmark of this connection.  Not serialized because of the fact that this data is implicit in the 
+        /// hierarchical folder structure for bookmarks.
+        /// </summary>
         [XmlIgnore]
         public virtual BookmarksFolder ParentFolder
         {
@@ -103,12 +104,18 @@ namespace EasyConnect.Protocols
             }
         }
 
+        /// <summary>
+        /// Unique identifier for this connection.
+        /// </summary>
         public Guid Guid
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Encrypted and Base64-encoded data in <see cref="_password"/>
+        /// </summary>
         [XmlElement("Password")]
         public string Base64Password
         {
@@ -128,6 +135,7 @@ namespace EasyConnect.Protocols
                     return;
                 }
 
+                // Decrypt the password and put it into a secure string
                 byte[] decryptedPassword = CryptoUtilities.Decrypt(ConnectionFactory.EncryptionPassword, Convert.FromBase64String(value));
                 SecureString password = new SecureString();
 
@@ -136,7 +144,7 @@ namespace EasyConnect.Protocols
                     if (decryptedPassword[i] == 0)
                         break;
 
-                    password.AppendChar((char)decryptedPassword[i]);
+                    password.AppendChar((char) decryptedPassword[i]);
                     decryptedPassword[i] = 0;
                 }
 
@@ -144,6 +152,10 @@ namespace EasyConnect.Protocols
             }
         }
 
+        /// <summary>
+        /// Password, if any, used when establishing this connection.  Not serialized because we instead serialize an encrypted, Base64-encoded version of
+        /// this value.
+        /// </summary>
         [XmlIgnore]
         public SecureString Password
         {
@@ -161,28 +173,54 @@ namespace EasyConnect.Protocols
             }
         }
 
+        /// <summary>
+        /// Flag indicating whether or not this connection is part of a bookmark.
+        /// </summary>
         public bool IsBookmark
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Serializes the contents of the connection.
+        /// </summary>
+        /// <param name="info">Store where we are to serialize the data.</param>
+        /// <param name="context">Streaming context to use during the serialization process.</param>
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(
+                "Password", _password == null
+                                ? null
+                                : Convert.ToBase64String(CryptoUtilities.Encrypt(ConnectionFactory.EncryptionPassword, _password)));
+            info.AddValue("IsBookmark", IsBookmark);
+            info.AddValue("Name", Name);
+            info.AddValue("Host", Host);
+            info.AddValue("Guid", Guid.ToString());
+        }
+
+        /// <summary>
+        /// Creates a copy of this connection object with a new <see cref="Guid"/> value.
+        /// </summary>
+        /// <returns>A new copy of this connection object with its <see cref="Guid"/> property initialized to a new value.</returns>
         public virtual object Clone()
         {
             object clonedConnection = SerializationUtilities.Clone(this);
 
-            ((BaseConnection)clonedConnection).ParentFolder = null;
-            ((BaseConnection)clonedConnection).Guid = new Guid();
+            ((BaseConnection) clonedConnection).ParentFolder = null;
+            ((BaseConnection) clonedConnection).Guid = new Guid();
 
             return clonedConnection;
         }
 
+        /// <summary>
+        /// Creates an anonymized copy of this connection, with sensitive information, like <see cref="Password"/>, removed.
+        /// </summary>
+        /// <returns>An anonymized copy of this connection, with sensitive information, like <see cref="Password"/>, removed.</returns>
         public virtual object CloneAnon()
         {
-            object clonedConnection = SerializationUtilities.Clone(this);
-
-            ((BaseConnection)clonedConnection).ParentFolder = null;
-            ((BaseConnection)clonedConnection).Guid = new Guid();
+            BaseConnection clonedConnection = (BaseConnection) Clone();
+            clonedConnection.Password = null;
 
             return clonedConnection;
         }

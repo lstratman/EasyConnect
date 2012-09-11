@@ -64,10 +64,6 @@
             this.bookmarksTreeView.SelectedImageIndex = 1;
             this.bookmarksTreeView.Size = new System.Drawing.Size(251, 192);
             this.bookmarksTreeView.TabIndex = 2;
-            this.bookmarksTreeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.bookmarksTreeView_NodeMouseClick);
-            this.bookmarksTreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.bookmarksTreeView_NodeMouseDoubleClick);
-            this.bookmarksTreeView.Enter += new System.EventHandler(this.bookmarksTreeView_Enter);
-            this.bookmarksTreeView.Leave += new System.EventHandler(this.bookmarksTreeView_Leave);
             // 
             // bookmarkImageList
             // 

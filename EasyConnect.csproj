@@ -70,6 +70,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <PlatformTarget>x86</PlatformTarget>
     <OutputPath>bin\x86\Release\</OutputPath>
+    <DocumentationFile>bin\x86\Release\EasyConnect.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutomaticUpdater, Version=2.6.16.0, Culture=neutral, processorArchitecture=MSIL">
@@ -103,7 +104,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BookmarksMethods.cs" />
     <Compile Include="BookmarksWindow.cs">
       <SubType>Form</SubType>
     </Compile>

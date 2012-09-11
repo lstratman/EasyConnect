@@ -1,43 +1,101 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using EasyConnect.Properties;
 using EasyConnect.Protocols;
-using System.Timers;
 using Timer = System.Timers.Timer;
 
 namespace EasyConnect
 {
+    /// <summary>
+    /// Container window for connection protocols.  Implements a toolbar with the URI text box, OmniBar, and bookmarks button and has a container where the UI
+    /// for the various connection protocols will be displayed (created from 
+    /// <see cref="BaseProtocol{TConnection,TOptionsForm,TConnectionForm}.CreateConnectionForm"/>.
+    /// </summary>
     public partial class ConnectionWindow : Form
     {
-        protected List<IConnection> _autoCompleteEntries = new List<IConnection>();
-        protected bool _connectClipboard = true;
-        protected IConnection _connection = null;
-        protected BaseConnectionForm _connectionForm = null;
-        protected Timer _animationTimer = null;
+        /// <summary>
+        /// Number of times that <see cref="_animationTimer"/> has fired, which is used to control the showing/hiding animation of the toolbar when 
+        /// <see cref="Options.AutoHideToolbar"/> is true.
+        /// </summary>
         protected int _animationTicks = 0;
-        protected bool _toolbarShown = true;
-        protected bool _sizeSet = false;
-        protected bool _suppressOmniBar = false;
-        protected int _omniBarFocusIndex = -1;
+
+        /// <summary>
+        /// Timer that is used to animate the showing/hiding of the toolbar when <see cref="Options.AutoHideToolbar"/> is true.
+        /// </summary>
+        protected Timer _animationTimer = null;
+
+        /// <summary>
+        /// A list of all connections, either bookmarks or history entries, that can be used as auto-complete candidates in the OmniBar.
+        /// </summary>
+        protected List<IConnection> _autoCompleteEntries = new List<IConnection>();
+
+        /// <summary>
+        /// Flag indicating whether the toolbar should be automatically hidden when the user's focus is on the remote desktop UI.
+        /// </summary>
+        protected bool? _autoHideToolbar = null;
+
+        /// <summary>
+        /// Regex used to match the background color in a CSS style list.
+        /// </summary>
         protected Regex _backgroundColorRegex = new Regex("background-color: #([A-F0-9]{6});");
+
+        /// <summary>
+        /// Connection that's currently active in this window.
+        /// </summary>
+        protected IConnection _connection = null;
+
+        /// <summary>
+        /// UI for the connection created from <see cref="BaseProtocol{TConnection,TOptionsForm,TConnectionForm}.CreateConnectionForm"/>.
+        /// </summary>
+        protected BaseConnectionForm _connectionForm = null;
+
+        /// <summary>
+        /// Regex used to match the font color in a CSS style list.
+        /// </summary>
         protected Regex _fontColorRegex = new Regex("; color: #([A-F0-9]{6});");
 
-        protected Dictionary<ToolStripMenuItem, IConnection> _menuItemConnections =
-            new Dictionary<ToolStripMenuItem, IConnection>();
+        /// <summary>
+        /// Lookup that associates each bookmark with its corresponding menu item.
+        /// </summary>
+        protected Dictionary<ToolStripMenuItem, IConnection> _menuItemConnections = new Dictionary<ToolStripMenuItem, IConnection>();
 
-        private bool? _autoHideToolbar = null;
-        private List<IConnection> _validAutoCompleteEntries;
+        /// <summary>
+        /// Current auto complete item in the OmniBar that the user is focused on.
+        /// </summary>
+        protected int _omniBarFocusIndex = -1;
 
+        /// <summary>
+        /// Flag indicating whether the size of <see cref="_connectionContainerPanel"/> has been set explicitly.
+        /// </summary>
+        protected bool _connectionContainerPanelSizeSet = false;
+
+        /// <summary>
+        /// Flag indicating whether we should suppress the appearance of the OmniBar when we're setting the value of <see cref="urlTextBox"/> manually in code.
+        /// </summary>
+        protected bool _suppressOmniBar = false;
+
+        /// <summary>
+        /// Flag indicating whether or not the toolbar is currently shown.
+        /// </summary>
+        protected bool _toolbarShown = true;
+
+        /// <summary>
+        /// Subset of <see cref="_autoCompleteEntries"/> that match the current text that the user is entering in <see cref="urlTextBox"/>.
+        /// </summary>
+        protected List<IConnection> _validAutoCompleteEntries;
+
+        /// <summary>
+        /// Default constructor; initializes the UI for the OmniBar.
+        /// </summary>
         public ConnectionWindow()
         {
             InitializeComponent();
 
+            // Create the panels that will contain the display text for each auto complete entry when the user is typing in the URL text box
             for (int i = 0; i < 6; i++)
             {
                 HtmlPanel autoCompletePanel = new HtmlPanel
@@ -59,15 +117,10 @@ namespace EasyConnect
             }
         }
 
-        void autoCompletePanel_Click(object sender, EventArgs e)
-        {
-            _omniBarPanel.Visible = false;
-            _omniBarBorder.Visible = false;
-
-            _connection = _validAutoCompleteEntries[_omniBarPanel.Controls.IndexOf((HtmlPanel)sender)];
-            Connect();
-        }
-
+        /// <summary>
+        /// Constructor that allows us to initialize the window with a connection that we're going to connect to.
+        /// </summary>
+        /// <param name="connection">Connection that we want to use with this window.</param>
         public ConnectionWindow(IConnection connection)
             : this()
         {
@@ -80,6 +133,26 @@ namespace EasyConnect
             _suppressOmniBar = false;
         }
 
+        /// <summary>
+        /// Explicitly sealed override of <see cref="Form.Text"/> that gets rid of the "Virtual member call in constructor" warning in 
+        /// <see cref="ConnectionWindow(IConnection)"/>.
+        /// </summary>
+        public override sealed string Text
+        {
+            get
+            {
+                return base.Text;
+            }
+
+            set
+            {
+                base.Text = value;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the user's cursor is over the remote desktop UI, false otherwise.
+        /// </summary>
         public bool IsCursorOverContent
         {
             get
@@ -90,6 +163,65 @@ namespace EasyConnect
             }
         }
 
+        /// <summary>
+        /// Main application form that this window is associated with.
+        /// </summary>
+        protected MainForm ParentTabs
+        {
+            get
+            {
+                return (MainForm) Parent;
+            }
+        }
+
+        /// <summary>
+        /// Returns the value of the <see cref="BaseConnectionForm.IsConnected"/> property for <see cref="_connectionForm"/>.
+        /// </summary>
+        public bool IsConnected
+        {
+            get
+            {
+                if (_connectionForm == null)
+                    return false;
+
+                return _connectionForm.IsConnected;
+            }
+        }
+
+        /// <summary>
+        /// Returns the value of <see cref="Options.AutoHideToolbar"/>.
+        /// </summary>
+        protected bool AutoHideToolbar
+        {
+            get
+            {
+                if (_autoHideToolbar == null)
+                    _autoHideToolbar = ParentTabs.Options.AutoHideToolbar;
+
+                return _autoHideToolbar.Value;
+            }
+        }
+
+        /// <summary>
+        /// Handler method that's called when a user clicks on an auto complete entry in <see cref="_omniBarPanel"/>.  Sets <see cref="_connection"/> to the
+        /// corresponding entry in <see cref="_validAutoCompleteEntries"/> and calls <see cref="Connect"/>.
+        /// </summary>
+        /// <param name="sender">Object from which this event originates.</param>
+        /// <param name="e">Arguments associated with this event.</param>
+        private void autoCompletePanel_Click(object sender, EventArgs e)
+        {
+            _omniBarPanel.Visible = false;
+            _omniBarBorder.Visible = false;
+
+            _connection = _validAutoCompleteEntries[_omniBarPanel.Controls.IndexOf((HtmlPanel) sender)];
+            Connect();
+        }
+
+        /// <summary>
+        /// Called from <see cref="MainForm.UpdateAvailable"/> to set the icon for the tools button and the text for the updates menu item appropriately when
+        /// an automatic update is available for the application or not.
+        /// </summary>
+        /// <param name="updateAvailable">Whether or not an update is available.</param>
         public void SetUpdateAvailableState(bool updateAvailable)
         {
             _updatesMenuItem.Text = updateAvailable
@@ -100,20 +232,30 @@ namespace EasyConnect
                                      : Resources.ToolsActive;
         }
 
+        /// <summary>
+        /// Focuses on <see cref="_connectionForm"/>.
+        /// </summary>
         public void FocusContent()
         {
             if (_connectionForm != null)
                 _connectionForm.Focus();
         }
 
-        protected MainForm ParentTabs
-        {
-            get
-            {
-                return (MainForm) Parent;
-            }
-        }
-
+        /// <summary>
+        /// Handler method that's called when the user presses a key in <see cref="urlTextBox"/>.  Does the following:
+        /// 
+        /// <list type="bullet">
+        /// <item><description>If it was <see cref="Keys.Enter"/>, it will connect to the focused auto complete entry if one was focused on, otherwise it
+        /// will connect to the host entered in <see cref="urlTextBox"/>.</description></item>
+        /// <item><description>If it was <see cref="Keys.Up"/> and the OmniBar is visible, it focuses on the previous item in the auto complete 
+        /// list.</description></item>
+        /// <item><description>If it was <see cref="Keys.Down"/> and the OmniBar is visible, it focuses on the next item in the auto complete 
+        /// list.</description></item>
+        /// <item><description>If it was <see cref="Keys.Escape"/> and the OmniBar is visible, it hides the OmniBar.</description></item>
+        /// </list>
+        /// </summary>
+        /// <param name="sender">Object from which this event originated, <see cref="urlTextBox"/> in this case.</param>
+        /// <param name="e">Key(s) that were pressed for this event.</param>
         private void urlTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -136,8 +278,8 @@ namespace EasyConnect
             {
                 if (_omniBarFocusIndex > 0)
                 {
-                    UnfocusOmniBarItem((HtmlPanel)_omniBarPanel.Controls[_omniBarFocusIndex]);
-                    FocusOmniBarItem((HtmlPanel)_omniBarPanel.Controls[--_omniBarFocusIndex]);
+                    UnfocusOmniBarItem((HtmlPanel) _omniBarPanel.Controls[_omniBarFocusIndex]);
+                    FocusOmniBarItem((HtmlPanel) _omniBarPanel.Controls[--_omniBarFocusIndex]);
                 }
 
                 e.Handled = true;
@@ -148,9 +290,9 @@ namespace EasyConnect
                 if (_omniBarFocusIndex < _omniBarPanel.Controls.Count - 1)
                 {
                     if (_omniBarFocusIndex > -1)
-                        UnfocusOmniBarItem((HtmlPanel)_omniBarPanel.Controls[_omniBarFocusIndex]);
+                        UnfocusOmniBarItem((HtmlPanel) _omniBarPanel.Controls[_omniBarFocusIndex]);
 
-                    FocusOmniBarItem((HtmlPanel)_omniBarPanel.Controls[++_omniBarFocusIndex]);
+                    FocusOmniBarItem((HtmlPanel) _omniBarPanel.Controls[++_omniBarFocusIndex]);
                 }
 
                 e.Handled = true;
@@ -164,49 +306,38 @@ namespace EasyConnect
             }
         }
 
+        /// <summary>
+        /// Simulates focus on an item in the OmniBar's auto complete list by setting its font and background colors appropriately.
+        /// </summary>
+        /// <param name="omniBarItem">Item that we are to focus on.</param>
         protected void FocusOmniBarItem(HtmlPanel omniBarItem)
         {
             omniBarItem.Text = _fontColorRegex.Replace(_backgroundColorRegex.Replace(omniBarItem.Text, "background-color: #3D9DFD;"), "; color: #9DCDFD;");
         }
 
+        /// <summary>
+        /// Removes focus on an item in the OmniBar's auto complete list by setting its font and background colors appropriately.
+        /// </summary>
+        /// <param name="omniBarItem">Item that we are to remove focus from.</param>
         protected void UnfocusOmniBarItem(HtmlPanel omniBarItem)
         {
             omniBarItem.Text = _fontColorRegex.Replace(_backgroundColorRegex.Replace(omniBarItem.Text, "background-color: #FFFFFF;"), "; color: #9999BF;");
         }
 
-        public bool IsConnected
-        {
-            get
-            {
-                if (_connectionForm == null)
-                    return false;
-
-                return _connectionForm.IsConnected;
-            }
-        }
-
-        public event EventHandler Connected;
-
-        protected bool AutoHideToolbar
-        {
-            get
-            {
-                if (_autoHideToolbar == null)
-                    _autoHideToolbar = ParentTabs.Options.AutoHideToolbar;
-
-                return _autoHideToolbar.Value;
-            }
-        }
-
+        /// <summary>
+        /// Opens a connection to <see cref="_connection"/>.
+        /// </summary>
         public void Connect()
         {
-            if (AutoHideToolbar && !_sizeSet)
+            // Set the top and height of the connection contain panel appropriately depending on if we're auto-hiding the toolbar
+            if (AutoHideToolbar && !_connectionContainerPanelSizeSet)
             {
                 _connectionContainerPanel.Top = 5;
                 _connectionContainerPanel.Height += 31;
             }
 
-            _sizeSet = true;
+            // Initialize the UI elements
+            _connectionContainerPanelSizeSet = true;
             _connectionForm = ConnectionFactory.CreateConnectionForm(_connection, _connectionContainerPanel);
             Icon = ConnectionFactory.GetProtocol(_connection).ProtocolIcon;
             Text = _connection.DisplayName;
@@ -214,11 +345,10 @@ namespace EasyConnect
             _suppressOmniBar = true;
             urlTextBox.Text = _connection.Host;
             _suppressOmniBar = false;
-            
+
+            // Subscribe to the ConnectionFormFocused event so that we can hide the toolbar automatically when necessary
             if (AutoHideToolbar)
                 _connectionForm.ConnectionFormFocused += ConnectionFormFocused;
-
-            _connectionForm.Connected += Connected;
 
             try
             {
@@ -235,6 +365,12 @@ namespace EasyConnect
             HideToolbar();
         }
 
+        /// <summary>
+        /// Handler method that's called when the user focuses on <see cref="_connectionForm"/>.  If the user's mouse cursor is over 
+        /// <see cref="_connectionForm"/>, we close <see cref="_bookmarksMenu"/> and <see cref="_toolsMenu"/> and hide the toolbar.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated, <see cref="_connectionForm"/> in this case.</param>
+        /// <param name="eventArgs">Arguments associated with this event.</param>
         private void ConnectionFormFocused(object sender, EventArgs eventArgs)
         {
             if (PointToClient(Cursor.Position).Y > 36)
@@ -246,55 +382,105 @@ namespace EasyConnect
             }
         }
 
+        /// <summary>
+        /// Handler method that's called when the user's cursor goes over <see cref="_bookmarksButton"/>.  Sets the button's background to the standard
+        /// "hover" image.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated, <see cref="_bookmarksButton"/> in this case.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void _bookmarksButton_MouseEnter(object sender, EventArgs e)
         {
             _bookmarksButton.BackgroundImage = Resources.ButtonHoverBackground;
         }
 
+        /// <summary>
+        /// Handler method that's called when the user's cursor leaves <see cref="_bookmarksButton"/>.  Sets the button's background to nothing.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated, <see cref="_bookmarksButton"/> in this case.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void _bookmarksButton_MouseLeave(object sender, EventArgs e)
         {
             _bookmarksButton.BackgroundImage = null;
         }
 
+        /// <summary>
+        /// Handler method that's called when the user's cursor goes over <see cref="_toolsButton"/>.  Sets the button's background to the standard
+        /// "hover" image.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated, <see cref="_toolsButton"/> in this case.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void _toolsButton_MouseEnter(object sender, EventArgs e)
         {
             _toolsButton.BackgroundImage = Resources.ButtonHoverBackground;
         }
 
+        /// <summary>
+        /// Handler method that's called when the user's cursor leaves <see cref="_toolsButton"/>.  Sets the button's background to nothing.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated, <see cref="_toolsButton"/> in this case.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void _toolsButton_MouseLeave(object sender, EventArgs e)
         {
             _toolsButton.BackgroundImage = null;
         }
 
+        /// <summary>
+        /// Handler method that's called when the user clicks the "Exit" menu item in the tools menu.  Exits the entire application.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void _exitMenuItem_Click(object sender, EventArgs e)
         {
             ((Form) Parent).Close();
         }
 
+        /// <summary>
+        /// Handler method that's called when the user clicks the "Tools" icon in the toolbar.  Opens up <see cref="_toolsMenu"/>.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void _toolsButton_Click(object sender, EventArgs e)
         {
             _toolsMenu.DefaultDropDownDirection = ToolStripDropDownDirection.Left;
             _toolsMenu.Show(_toolsButton, -187 + _toolsButton.Width, _toolsButton.Height);
         }
 
+        /// <summary>
+        /// Handler method that's called when the user clicks the "Bookmarks" icon in the toolbar.  Populates <see cref="_bookmarksMenu"/> and opens it.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void _bookmarksButton_Click(object sender, EventArgs e)
         {
+            // Clear out the bookmarks menu beyond the first two entries, "Bookmarks manager" and "Bookmark this server"
             while (_bookmarksMenu.Items.Count > 2)
                 _bookmarksMenu.Items.RemoveAt(2);
 
+            // If the user has any bookmarks defined, add a separator between the first two entries and what will be the top-level bookmarks folders
             if (ParentTabs.Bookmarks.RootFolder.ChildFolders.Count > 0 ||
                 ParentTabs.Bookmarks.RootFolder.Bookmarks.Count > 0)
                 _bookmarksMenu.Items.Add(new ToolStripSeparator());
 
             _menuItemConnections.Clear();
-            
+
+            // Add the bookmarks folder structure and its descendants recursively
             PopulateBookmarks(ParentTabs.Bookmarks.RootFolder, _bookmarksMenu.Items, true);
 
             _bookmarksMenu.DefaultDropDownDirection = ToolStripDropDownDirection.Left;
-            _bookmarksMenu.Show(_bookmarksButton, -1 * (_bookmarksMenu.Items.Count > 2 ? _bookmarksMenu.Width : 259) + _bookmarksButton.Width,
-                                _bookmarksButton.Height);
+            _bookmarksMenu.Show(
+                _bookmarksButton, -1 * (_bookmarksMenu.Items.Count > 2
+                                            ? _bookmarksMenu.Width
+                                            : 259) + _bookmarksButton.Width,
+                _bookmarksButton.Height);
         }
 
+        /// <summary>
+        /// Recursive method called from <see cref="_bookmarksButton_Click"/> to create the menu items for the bookmarks folder structure.
+        /// </summary>
+        /// <param name="currentFolder">Folder that we're currently processing.</param>
+        /// <param name="menuItems">Menu item that we're supposed to add the immediate children of <paramref name="currentFolder"/> to.</param>
+        /// <param name="root">Flag indicating whether or not this is the root.</param>
+        /// <returns>The newly-created menu item for <paramref name="currentFolder"/>.</returns>
         private ToolStripItem PopulateBookmarks(BookmarksFolder currentFolder, ToolStripItemCollection menuItems, bool root)
         {
             ToolStripItemCollection addLocation = menuItems;
@@ -303,16 +489,18 @@ namespace EasyConnect
             if (!root)
             {
                 folderMenuItem = new ToolStripMenuItem(currentFolder.Name, Resources.Folder)
-                                                       {
-                                                           DropDownDirection = ToolStripDropDownDirection.Left
-                                                       };
+                    {
+                        DropDownDirection = ToolStripDropDownDirection.Left
+                    };
 
                 addLocation = folderMenuItem.DropDownItems;
             }
 
+            // Get and populate the list of child folders recursively
             List<ToolStripItem> addItems =
                 currentFolder.ChildFolders.OrderBy(f => f.Name).Select(childFolder => PopulateBookmarks(childFolder, addLocation, false)).ToList();
 
+            // Add each child bookmark after the child folders
             foreach (IConnection bookmark in currentFolder.Bookmarks.OrderBy(b => b.DisplayName))
             {
                 ToolStripMenuItem bookmarkMenuItem = new ToolStripMenuItem(
@@ -325,36 +513,44 @@ namespace EasyConnect
                                 _connectionForm.Close();
                             }
 
-                            _connection = _menuItemConnections[(ToolStripMenuItem)sender];
+                            _connection = _menuItemConnections[(ToolStripMenuItem) sender];
                             Connect();
                         });
 
                 _menuItemConnections[bookmarkMenuItem] = bookmark;
                 addItems.Add(bookmarkMenuItem);
             }
-            
+
             addLocation.AddRange(addItems.ToArray());
 
             return folderMenuItem;
         }
 
+        /// <summary>
+        /// Handler method that's called when the user clicks on the "Bookmark this server" menu item.  Opens a dialog asking where the user wants to create
+        /// the bookmark and what they want to call it.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void _bookmarkMenuItem_Click(object sender, EventArgs e)
         {
             if (_connection == null)
                 return;
 
-            SaveConnectionWindow saveWindow = new SaveConnectionWindow(ParentTabs, null);
+            SaveConnectionWindow saveWindow = new SaveConnectionWindow(ParentTabs);
             saveWindow.ShowDialog(this);
 
             if (saveWindow.DialogResult != DialogResult.OK)
                 return;
 
+            // Split the folder path and then descend the nodes to find the destination folder that the user wants to save this bookmark to
             string[] pathComponents = saveWindow.DestinationFolderPath.Split('/');
             TreeNode currentNode = ParentTabs.Bookmarks.FoldersTreeView.Nodes[0];
 
             for (int i = 2; i < pathComponents.Length; i++)
                 currentNode = currentNode.Nodes[Convert.ToInt32(pathComponents[i])];
 
+            // If an existing connection matches the one that we're saving, remove it after creating the new bookmark
             IConnection overwriteConnection =
                 ParentTabs.Bookmarks.TreeNodeFolders[currentNode].Bookmarks.SingleOrDefault(
                     b =>
@@ -373,35 +569,70 @@ namespace EasyConnect
             ParentTabs.Bookmarks.Save();
         }
 
+        /// <summary>
+        /// Handler method that's called when the user clicks the "New tab" menu item under the tools menu.  Creates a new tab and then switches to it.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void _newTabMenuItem_Click(object sender, EventArgs e)
         {
             ParentTabs.AddNewTab();
         }
 
+        /// <summary>
+        /// Handler method that's called when the user clicks the "Bookmarks manager" menu item under the bookmarks menu.  Creates the bookmarks manager tab if 
+        /// one doesn't already exist then switches to it.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void _bookmarksManagerMenuItem2_Click(object sender, EventArgs e)
         {
             ParentTabs.OpenBookmarkManager();
         }
 
+        /// <summary>
+        /// Handler method that's called when the user clicks the "Options" menu item under the tools menu.  Creates the options tab if one doesn't exist 
+        /// already and then switches to it.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void _optionsMenuItem_Click(object sender, EventArgs e)
         {
             ParentTabs.OpenOptions();
         }
 
+        /// <summary>
+        /// Handler method that's called when the user clicks the "History" menu item under the tools menu.  Creates the history tab if one doesn't exist 
+        /// already and then switches to it.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void _historyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ParentTabs.OpenHistory();
         }
 
+        /// <summary>
+        /// Handler method that's called when the user focuses on this tab.  Refocuses on the actual connection content (<see cref="_connectionForm"/>) if a
+        /// connection has been established, otherwise focuses on <see cref="urlTextBox"/> if it's empty.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void ConnectionWindow_Shown(object sender, EventArgs e)
         {
             if (_connectionForm != null && _connectionForm.IsConnected && !_connectionForm.ContainsFocus)
                 _connectionForm.Focus();
-            
+
             if (string.IsNullOrEmpty(urlTextBox.Text))
                 urlTextBox.Focus();
         }
 
+        /// <summary>
+        /// Handler method that's called when the user clicks on the "Check for updates" menu item under the tools menu.  Starts the installation process if
+        /// updates are already available, otherwise opens a <see cref="CheckForUpdatesWindow"/>.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void _updatesMenuItem_Click(object sender, EventArgs e)
         {
             if (ParentTabs.UpdateAvailable)
@@ -412,13 +643,20 @@ namespace EasyConnect
                 CheckForUpdatesWindow checkForUpdatesWindow = new CheckForUpdatesWindow();
                 DialogResult result = checkForUpdatesWindow.ShowDialog(ParentTabs);
 
+                // Start the installation process if the user clicked OK from the updates window
                 if (result == DialogResult.OK)
                     ParentTabs.InstallUpdate();
             }
         }
 
+        /// <summary>
+        /// Starts an animation that slides the toolbar down to display it in the case when the user clicks on the tab when <see cref="AutoHideToolbar"/>
+        /// is true.  Kicks off an incremental animation method via <see cref="_animationTimer"/>.
+        /// </summary>
         public void ShowToolbar()
         {
+            // Exit early if the toolbar is already show, we're not supposed to autohide it, the window's handle hasn't been created yet, or we're in the 
+            // middle of animating it already
             if (_toolbarShown || !AutoHideToolbar || !IsHandleCreated || (_animationTimer != null && _animationTimer.Enabled))
                 return;
 
@@ -426,12 +664,14 @@ namespace EasyConnect
             _animationTimer = new Timer(20);
             _animationTimer.Elapsed += (sender, args) =>
                 {
+                    // After six ticks, exit the animation process
                     if (_animationTicks >= 6 || !toolbarBackground.IsHandleCreated)
                     {
                         _animationTimer.Enabled = false;
                         return;
                     }
 
+                    // Update the height of the toolbar incrementally
                     toolbarBackground.Invoke(
                         new Action(
                             () =>
@@ -447,8 +687,14 @@ namespace EasyConnect
             _toolbarShown = true;
         }
 
+        /// <summary>
+        /// Starts an animation that slides the toolbar up to display it in the case when the user clicks on the content area of a tab when 
+        /// <see cref="AutoHideToolbar"/> is true.  Kicks off an incremental animation method via <see cref="_animationTimer"/>.
+        /// </summary>
         public void HideToolbar()
         {
+            // Exit early if the toolbar is already hidden, we're not supposed to autohide it, the window's handle hasn't been created yet, or we're in the 
+            // middle of animating it already
             if (!_toolbarShown || !AutoHideToolbar || !IsHandleCreated || (_animationTimer != null && _animationTimer.Enabled))
                 return;
 
@@ -456,12 +702,14 @@ namespace EasyConnect
             _animationTimer = new Timer(20);
             _animationTimer.Elapsed += (sender, args) =>
                 {
+                    // After six ticks, exit the animation process
                     if (_animationTicks >= 6 || !toolbarBackground.IsHandleCreated)
                     {
                         _animationTimer.Enabled = false;
                         return;
                     }
 
+                    // Update the height of the toolbar incrementally
                     toolbarBackground.Invoke(
                         new Action(
                             () =>
@@ -477,22 +725,41 @@ namespace EasyConnect
             _toolbarShown = false;
         }
 
+        /// <summary>
+        /// Handler method that's called when the user clicks on the toolbar's background.  Displays the toolbar if <see cref="AutoHideToolbar"/> is set to
+        /// true.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void toolbarBackground_Click(object sender, EventArgs e)
         {
             ShowToolbar();
         }
 
+        /// <summary>
+        /// Handler method that's called when the user focuses on <see cref="urlTextBox"/>.  Clears out the list of auto-complete entries.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void urlTextBox_Enter(object sender, EventArgs e)
         {
             _autoCompleteEntries.Clear();
         }
 
+        /// <summary>
+        /// Handler method that's called when the user changes the text in <see cref="urlTextBox"/>.  Updates the list of auto-complete entries and updates
+        /// the OmniBar accordingly.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void urlTextBox_TextChanged(object sender, EventArgs e)
         {
+            // If the text box is blank or we're deliberately suppressing the OmniBar, hide it
             if (urlTextBox.Text.Length == 0 || _suppressOmniBar)
             {
                 _omniBarPanel.Visible = false;
                 _omniBarBorder.Visible = false;
+
                 return;
             }
 
@@ -501,12 +768,15 @@ namespace EasyConnect
             if (_omniBarFocusIndex != -1)
                 currentlyFocusedItem = _validAutoCompleteEntries[_omniBarFocusIndex];
 
+            // If this is the first text change since the user focused on the text box, then we get the list of all bookmarks and history items that weren't
+            // from bookmarks and then use them all as potential auto-complete entries
             if (_autoCompleteEntries.Count == 0)
             {
                 List<IConnection> bookmarks = new List<IConnection>();
                 GetAllBookmarks(ParentTabs.Bookmarks.RootFolder, bookmarks);
                 _autoCompleteEntries.AddRange(bookmarks);
 
+                // Exclude history entries that are from the user clicking a bookmark
                 if (ParentTabs.History.Connections != null)
                     _autoCompleteEntries.AddRange(
                         ParentTabs.History.Connections.OrderByDescending(c => c.LastConnection).Distinct(
@@ -516,7 +786,12 @@ namespace EasyConnect
                             (c => c.Connection));
             }
 
-            _validAutoCompleteEntries = _autoCompleteEntries.Where(c => c.DisplayName.IndexOf(urlTextBox.Text, StringComparison.InvariantCultureIgnoreCase) != -1 || c.Host.IndexOf(urlTextBox.Text, StringComparison.InvariantCultureIgnoreCase) != -1).OrderBy(c => c.DisplayName).Take(6).ToList();
+            // Get a list of valid auto-complete entries by matching on the bookmark's display name or host
+            _validAutoCompleteEntries =
+                _autoCompleteEntries.Where(
+                    c =>
+                    c.DisplayName.IndexOf(urlTextBox.Text, StringComparison.InvariantCultureIgnoreCase) != -1 ||
+                    c.Host.IndexOf(urlTextBox.Text, StringComparison.InvariantCultureIgnoreCase) != -1).OrderBy(c => c.DisplayName).Take(6).ToList();
 
             if (_validAutoCompleteEntries.Count > 0)
             {
@@ -528,6 +803,7 @@ namespace EasyConnect
                     IConnection connection = _validAutoCompleteEntries[i];
                     HtmlPanel autoCompletePanel = _omniBarPanel.Controls[i] as HtmlPanel;
 
+                    // Set the text of the auto-complete item to "{Protocol}://{URI} - {DisplayName}" and bold the matching portions of the text
                     autoCompletePanel.Text =
                         String.Format(
                             @"<div style=""background-color: #FFFFFF; padding: 5px; font-family: {3}; font-size: {4}pt; height: 30px; color: #9999BF;""><font color=""green"">{0}://{1}</font>{2}</div>",
@@ -541,6 +817,7 @@ namespace EasyConnect
                                                                                                                              RegexOptions.IgnoreCase),
                             urlTextBox.Font.FontFamily.GetName(0), urlTextBox.Font.SizeInPoints);
 
+                    // If the user was focused on this item, highlight it
                     if (connection == currentlyFocusedItem)
                         FocusOmniBarItem(autoCompletePanel);
                 }
@@ -555,6 +832,7 @@ namespace EasyConnect
                 _omniBarBorder.PerformLayout();
             }
 
+            // If we found no matching entries, hide the OmniBar
             else
             {
                 _omniBarPanel.Visible = false;
@@ -562,7 +840,12 @@ namespace EasyConnect
             }
         }
 
-        void autoCompletePanel_MouseLeave(object sender, EventArgs e)
+        /// <summary>
+        /// Handler method that's called when the user's cursor leaves an auto-complete panel.  Reverts the panel's background to white.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
+        private void autoCompletePanel_MouseLeave(object sender, EventArgs e)
         {
             if (_omniBarFocusIndex != -1 && (sender as HtmlPanel) == (_omniBarPanel.Controls[_omniBarFocusIndex] as HtmlPanel))
                 return;
@@ -570,7 +853,12 @@ namespace EasyConnect
             (sender as HtmlPanel).Text = _backgroundColorRegex.Replace((sender as HtmlPanel).Text, "background-color: #FFFFFF;");
         }
 
-        void autoCompletePanel_MouseEnter(object sender, EventArgs e)
+        /// <summary>
+        /// Handler method that's called when the user's cursor enters an auto-complete panel.  Sets the panel's background to blue.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
+        private void autoCompletePanel_MouseEnter(object sender, EventArgs e)
         {
             if (_omniBarFocusIndex != -1 && (sender as HtmlPanel) == (_omniBarPanel.Controls[_omniBarFocusIndex] as HtmlPanel))
                 return;
@@ -578,6 +866,12 @@ namespace EasyConnect
             (sender as HtmlPanel).Text = _backgroundColorRegex.Replace((sender as HtmlPanel).Text, "background-color: #CDE5FE;");
         }
 
+        /// <summary>
+        /// Recursive method called from <see cref="urlTextBox_TextChanged"/> to get all of the bookmarks in the folder structure to use for auto-complete 
+        /// items.
+        /// </summary>
+        /// <param name="currentFolder">Current folder that we're looking in.</param>
+        /// <param name="bookmarks">List of bookmarks already assembled.</param>
         protected void GetAllBookmarks(BookmarksFolder currentFolder, List<IConnection> bookmarks)
         {
             bookmarks.AddRange(currentFolder.Bookmarks);
@@ -586,6 +880,11 @@ namespace EasyConnect
                 GetAllBookmarks(childFolder, bookmarks);
         }
 
+        /// <summary>
+        /// Handler method that's called when the user's focus leaves <see cref="urlTextBox"/>.  Hides the OmniBar.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated, <see cref="urlTextBox"/> in this case.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void urlTextBox_Leave(object sender, EventArgs e)
         {
             _omniBarFocusIndex = -1;
@@ -593,23 +892,50 @@ namespace EasyConnect
             _omniBarPanel.Visible = false;
         }
 
+        /// <summary>
+        /// Custom comparer class that takes a generic type parameter and a comparison function so it can be used in sorting and distinct operations.
+        /// </summary>
+        /// <typeparam name="T">Type of the object that we're going to be comparing.</typeparam>
         protected class EqualityComparer<T> : IEqualityComparer<T>
         {
-            public EqualityComparer(Func<T, T, bool> cmp)
+            /// <summary>
+            /// Constructor that initializes <see cref="Comparer"/>.
+            /// </summary>
+            /// <param name="comparer">Comparer function to use.</param>
+            public EqualityComparer(Func<T, T, bool> comparer)
             {
-                this.cmp = cmp;
-            }
-            public bool Equals(T x, T y)
-            {
-                return cmp(x, y);
+                Comparer = comparer;
             }
 
+            /// <summary>
+            /// Comparer function to use.
+            /// </summary>
+            public Func<T, T, bool> Comparer
+            {
+                get;
+                set;
+            }
+
+            /// <summary>
+            /// Uses <see cref="Comparer"/> to compare two objects.
+            /// </summary>
+            /// <param name="x">First object to compare.</param>
+            /// <param name="y">Second object to compare.</param>
+            /// <returns>True if <paramref name="x"/> and <paramref name="y"/> are equivalent, false otherwise.</returns>
+            public bool Equals(T x, T y)
+            {
+                return Comparer(x, y);
+            }
+
+            /// <summary>
+            /// Gets the hash code for a particular object.
+            /// </summary>
+            /// <param name="obj">Object for which we are to get the hash code.</param>
+            /// <returns>The hash code for <paramref name="obj"/>.</returns>
             public int GetHashCode(T obj)
             {
                 return obj.GetHashCode();
             }
-
-            public Func<T, T, bool> cmp { get; set; }
         }
     }
 }
