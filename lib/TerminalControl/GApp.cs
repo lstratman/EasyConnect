@@ -396,11 +396,11 @@ namespace Poderosa
 		private static OptionPreservePlace GetOptionPreservePlace() {
 			RegistryKey g = Registry.CurrentUser.OpenSubKey(GCConst.REGISTRY_PATH, false);
 			if(g==null)
-				return OptionPreservePlace.InstalledDir;
+				return OptionPreservePlace.AppData;
 			else {
 				string v = (string)g.GetValue("option-place");
 				if(v==null || v.Length==0)
-					return OptionPreservePlace.InstalledDir;
+					return OptionPreservePlace.AppData;
 				else
 					return (OptionPreservePlace)Enum.Parse(typeof(OptionPreservePlace), v);
 			}
