@@ -27,16 +27,16 @@
         <p class="view"><a href="https://github.com/lstratman/EasyConnect">View the Project on GitHub <small>lstratman/EasyConnect</small></a></p>
         <ul>
           <li><a href="https://github.com/lstratman/EasyConnect/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/downloads/lstratman/EasyConnect/EasyConnect-0.4.msi">Download <strong>Installer</strong></a></li>
+          <li><a href="https://github.com/downloads/lstratman/EasyConnect/EasyConnect-1.0.msi">Download <strong>Installer</strong></a></li>
           <li><a href="https://github.com/lstratman/EasyConnect">View On <strong>GitHub</strong></a></li>
         </ul>
       </header>
       <section>
-        <strong>Current version: 0.4</strong>
+        <strong>Current version: 1.0</strong>
 
         <br/><br/>
 
-        <p>This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP), but has a plugin architecture designed to enable third-party support for other protocols such as VNC, Citrix, etc.</p>
+        <p>This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP) and Secure Shell (SSH), but has a plugin architecture designed to enable third-party support for other protocols such as VNC, Citrix, etc.</p>
 
         <a href="images/screenshots/bookmarks.jpg" title="Bookmarks" rel="lightbox[screenshots]" class="thumbnail"><img src="images/screenshots/thumbnails/bookmarks.jpg"/></a>
         <a href="images/screenshots/sessions.jpg" title="Sessions" rel="lightbox[screenshots]" class="thumbnail"><img src="images/screenshots/thumbnails/sessions.jpg"/></a>
@@ -47,7 +47,16 @@
 
         <strong>Change Log</strong>
 
-        <br/><br/>v0.4
+        <br/><br/>v1.0
+
+        <ul>
+          <li>Added support for SSH.</li>
+		  <li>Refactored the Win32 interop code and separated it into <a href="https://github.com/lstratman/Win32Interop" target="_new">another library</a>.</li>
+          <li>Added shortcut keys to create new tabs (Ctrl+T) and cycle through them (Ctrl+Tab and Ctrl+Shift+Tab.</li>
+          <li>Cleaned up and commented the codebase.</li>
+        </ul>
+
+        v0.4
 
         <ul>
           <li>Added OmniBar-like functionality to auto-complete entries in the connection bar.</li>
