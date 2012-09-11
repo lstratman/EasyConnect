@@ -31,6 +31,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win32Interop.User32", "Win3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Win32Interop.Uxtheme", "Win32Interop\Uxtheme\Win32Interop.Uxtheme.csproj", "{DFE88B86-31CA-4BDE-A1D1-77FE83F6A541}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReSharper Settings", "ReSharper Settings", "{3F6605D6-12F6-45AB-A9A9-EA1815BECFC2}"
+	ProjectSection(SolutionItems) = preProject
+		EasyConnect.sln.DotSettings = EasyConnect.sln.DotSettings
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
