@@ -1,0 +1,548 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{60BE1158-C079-4603-8BC4-1658133E8EE5}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>poderosa.ico</ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>TerminalControl</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Poderosa</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.JScript">
+      <Name>Microsoft.JScript</Name>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ChangeLogDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangePassphrase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Command.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CommandOptionPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Common\ColorButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Common\ColorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\ColorUtil.cs" />
+    <Compile Include="Common\ConfigAttr.cs" />
+    <Compile Include="Common\ConfigParser.cs" />
+    <Compile Include="Common\ConfigXML.cs" />
+    <Compile Include="Common\DrawUtil.cs" />
+    <Compile Include="Common\EnumDescription.cs" />
+    <Compile Include="Common\GButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Common\GMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Common\SocketWithTimeout.cs" />
+    <Compile Include="Common\socks.cs" />
+    <Compile Include="Common\StringResource.cs" />
+    <Compile Include="Common\ThemeUtil.cs" />
+    <Compile Include="Common\Util.cs" />
+    <Compile Include="ConnectionHistory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConnectionOptionPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ContainerCommandTarget.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ContainerInterThread.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ContainerOptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ContainerUtil.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Credits.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CygwinLoginDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DisplayOptionPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="EditDisplayDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditDisplayDialog.Designer.cs">
+      <DependentUpon>EditDisplayDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditEnvVariable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditEscapeSequenceColor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditRenderProfile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EnvVariable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GApp.cs">
+    </Compile>
+    <Compile Include="GDialogBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GenericOptionPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GFontDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GFrame.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GIcons.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Granados\AlgorithmSupport.cs" />
+    <Compile Include="Granados\Base64.cs" />
+    <Compile Include="Granados\BigInteger.cs" />
+    <Compile Include="Granados\Blowfish.cs" />
+    <Compile Include="Granados\CipherUtil.cs" />
+    <Compile Include="Granados\ConnectionInfo.cs" />
+    <Compile Include="Granados\ConnectionParameter.cs" />
+    <Compile Include="Granados\ConnectionRoot.cs" />
+    <Compile Include="Granados\CRC.cs" />
+    <Compile Include="Granados\DES.cs" />
+    <Compile Include="Granados\DSA.cs" />
+    <Compile Include="Granados\LibraryClient.cs" />
+    <Compile Include="Granados\PKIBase.cs" />
+    <Compile Include="Granados\PrimeSieve.cs" />
+    <Compile Include="Granados\ReaderWriter.cs" />
+    <Compile Include="Granados\Rijndael.cs" />
+    <Compile Include="Granados\RSA.cs" />
+    <Compile Include="Granados\Socket.cs" />
+    <Compile Include="Granados\SSH1Connection.cs" />
+    <Compile Include="Granados\SSH1Packet.cs" />
+    <Compile Include="Granados\SSH1UserAuthKey.cs" />
+    <Compile Include="Granados\SSH1Util.cs" />
+    <Compile Include="Granados\SSH2Connection.cs" />
+    <Compile Include="Granados\SSH2Packet.cs" />
+    <Compile Include="Granados\SSH2UserAuthKey.cs" />
+    <Compile Include="Granados\SSH2Util.cs" />
+    <Compile Include="Granados\SSHUtil.cs" />
+    <Compile Include="Granados\StringResource.cs" />
+    <Compile Include="Granados\Test.cs" />
+    <Compile Include="GStatusBar.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HotKey.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IconList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KeyGenWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KnownHosts.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LineFeedStyleDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LogNoteForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MacroEnv.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MacroExec.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MacroInterface.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MacroList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MacroModule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MacroTrace.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModuleProperty.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MultiPaneControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OptionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PeripheralOptionPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RCollectionUtil.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SendingLargeText.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SerialConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SerialLoginDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SSHOptionPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SSHShortcutLoginDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TabBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TerminalControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TerminalOptionPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Terminal\CommandTarget.cs" />
+    <Compile Include="Terminal\CommunicationUtil.cs" />
+    <Compile Include="Terminal\ConfigColorAttr.cs" />
+    <Compile Include="Terminal\Connections.cs" />
+    <Compile Include="Terminal\DebugUtil.cs" />
+    <Compile Include="Terminal\Encoding.cs" />
+    <Compile Include="Terminal\GDocument.cs" />
+    <Compile Include="Terminal\GEnv.cs" />
+    <Compile Include="Terminal\GLine.cs" />
+    <Compile Include="Terminal\Interface.cs" />
+    <Compile Include="Terminal\InterThread.cs" />
+    <Compile Include="Terminal\KeepAlive.cs" />
+    <Compile Include="Terminal\LocalShell.cs" />
+    <Compile Include="Terminal\Log.cs" />
+    <Compile Include="Terminal\Options.cs" />
+    <Compile Include="Terminal\Paste.cs" />
+    <Compile Include="Terminal\RenderProfile.cs" />
+    <Compile Include="Terminal\SelectionKeyProcessor.cs" />
+    <Compile Include="Terminal\SSH.cs" />
+    <Compile Include="Terminal\Telnet.cs" />
+    <Compile Include="Terminal\TerminalBase.cs" />
+    <Compile Include="Terminal\TerminalConnection.cs" />
+    <Compile Include="Terminal\TerminalDataReceiver.cs" />
+    <Compile Include="Terminal\TerminalDocument.cs" />
+    <Compile Include="Terminal\TerminalInput.cs" />
+    <Compile Include="Terminal\TerminalPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Terminal\TerminalParam.cs" />
+    <Compile Include="Terminal\TerminalUtil.cs" />
+    <Compile Include="Terminal\TextDecoration.cs" />
+    <Compile Include="Terminal\TextSelection.cs" />
+    <Compile Include="Terminal\Util.cs" />
+    <Compile Include="Terminal\VT100.cs" />
+    <Compile Include="Terminal\WarningWithDisableOption.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Terminal\Win32.cs" />
+    <Compile Include="Terminal\XMLUtil.cs" />
+    <Compile Include="Terminal\xmodem.cs" />
+    <Compile Include="Terminal\XTerm.cs" />
+    <Compile Include="TestUtil.cs" />
+    <Compile Include="ThreeButtonMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WelcomeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinApi.cs" />
+    <Compile Include="XModemDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <EmbeddedResource Include="AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeLogDialog.resx">
+      <DependentUpon>ChangeLogDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangePassphrase.resx">
+      <DependentUpon>ChangePassphrase.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Credits.resx">
+      <DependentUpon>Credits.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CygwinLoginDialog.resx">
+      <DependentUpon>CygwinLoginDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditDisplayDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EditDisplayDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditEnvVariable.resx">
+      <DependentUpon>EditEnvVariable.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditEscapeSequenceColor.resx">
+      <DependentUpon>EditEscapeSequenceColor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditRenderProfile.resx">
+      <DependentUpon>EditRenderProfile.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnvVariable.resx">
+      <DependentUpon>EnvVariable.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GDialogBar.resx">
+      <DependentUpon>GDialogBar.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GFontDialog.resx">
+      <DependentUpon>GFontDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GFrame.resx">
+      <DependentUpon>GFrame.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Granados\strings.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Granados\strings_ja.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IconList.resx">
+      <DependentUpon>IconList.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="icons.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputBox.resx">
+      <DependentUpon>InputBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeyGenWizard.resx">
+      <DependentUpon>KeyGenWizard.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LineFeedStyleDialog.resx">
+      <DependentUpon>LineFeedStyleDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginDialog.resx">
+      <DependentUpon>LoginDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogNoteForm.resx">
+      <DependentUpon>LogNoteForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MacroList.resx">
+      <DependentUpon>MacroList.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MacroTrace.resx">
+      <DependentUpon>MacroTrace.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModuleProperty.resx">
+      <DependentUpon>ModuleProperty.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MultiPaneControl.resx">
+      <DependentUpon>MultiPaneControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OptionDialog.resx">
+      <DependentUpon>OptionDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SendingLargeText.resx">
+      <DependentUpon>SendingLargeText.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SerialConfig.resx">
+      <DependentUpon>SerialConfig.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SerialLoginDialog.resx">
+      <DependentUpon>SerialLoginDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerInfo.resx">
+      <DependentUpon>ServerInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SSHShortcutLoginDialog.resx">
+      <DependentUpon>SSHShortcutLoginDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="strings.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="strings_ja.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TabBar.resx">
+      <DependentUpon>TabBar.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TerminalControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TerminalControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Terminal\rulechars.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Terminal\strings.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Terminal\strings_ja.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ThreeButtonMessageBox.resx">
+      <DependentUpon>ThreeButtonMessageBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WelcomeDialog.resx">
+      <DependentUpon>WelcomeDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XModemDialog.resx">
+      <DependentUpon>XModemDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

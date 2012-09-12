@@ -1,41 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Text;
 using System.Windows.Forms;
 using AxMSTSCLib;
 
 namespace EasyConnect.Protocols.Rdp
 {
+    /// <summary>
+    /// UI that displays a Microsoft Remote Desktop (RDP) connection via the built-in <see cref="AxMsRdpClient2"/> class.
+    /// </summary>
     public partial class RdpConnectionForm : BaseConnectionForm<RdpConnection>
     {
+        /// <summary>
+        /// Flag indicating whether the remote session should use the local clipboard.
+        /// </summary>
         protected bool _connectClipboard = false;
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public RdpConnectionForm()
         {
             InitializeComponent();
-            Connected += RdpConnectionForm_Connected;
-
-            _rdpWindow.GotFocus += _rdpWindow_GotFocus;
         }
 
-        void _rdpWindow_GotFocus(object sender, EventArgs e)
-        {
-            if (ConnectionFormFocused != null)
-                ConnectionFormFocused(_rdpWindow, e);
-        }
-
-        protected void RdpConnectionForm_Connected(object sender, EventArgs e)
-        {
-            IsConnected = true;
-        }
-
+        /// <summary>
+        /// Host name of the server that we are to connect to.
+        /// </summary>
         public string Host
         {
             get
@@ -50,6 +42,9 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        /// <summary>
+        /// Width of the resulting desktop.  0 means that it should fill the available window space.
+        /// </summary>
         public int DesktopWidth
         {
             get
@@ -63,6 +58,9 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        /// <summary>
+        /// Height of the resulting desktop.  0 means that it should fill the available window space.
+        /// </summary>
         public int DesktopHeight
         {
             get
@@ -76,6 +74,9 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        /// <summary>
+        /// Username, if any, that should be presented when establishing the connection.
+        /// </summary>
         public string Username
         {
             get
@@ -89,6 +90,9 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        /// <summary>
+        /// Password, if any, used when establishing this connection.
+        /// </summary>
         public SecureString Password
         {
             set
@@ -98,6 +102,9 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        /// <summary>
+        /// Flag indicating whether the connection window is currently focused.
+        /// </summary>
         public override bool Focused
         {
             get
@@ -106,32 +113,41 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        /// <summary>
+        /// Where sounds originating from the remote server should be played (locally or remotely).
+        /// </summary>
         public AudioMode AudioMode
         {
             get
             {
-                return (AudioMode)_rdpWindow.SecuredSettings2.AudioRedirectionMode;
+                return (AudioMode) _rdpWindow.SecuredSettings2.AudioRedirectionMode;
             }
 
             set
             {
-                _rdpWindow.SecuredSettings2.AudioRedirectionMode = (int)value;
+                _rdpWindow.SecuredSettings2.AudioRedirectionMode = (int) value;
             }
         }
 
+        /// <summary>
+        /// Which system (locally or remotely) Windows shortcut keys like Alt+Tab should be directed to.
+        /// </summary>
         public KeyboardMode KeyboardMode
         {
             get
             {
-                return (KeyboardMode)_rdpWindow.SecuredSettings2.KeyboardHookMode;
+                return (KeyboardMode) _rdpWindow.SecuredSettings2.KeyboardHookMode;
             }
 
             set
             {
-                _rdpWindow.SecuredSettings2.KeyboardHookMode = (int)value;
+                _rdpWindow.SecuredSettings2.KeyboardHookMode = (int) value;
             }
         }
 
+        /// <summary>
+        /// Flag indicating whether the remote system should connect to local printers.
+        /// </summary>
         public bool ConnectPrinters
         {
             get
@@ -148,6 +164,9 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        /// <summary>
+        /// Flag indicating whether the remote session should use the local clipboard.
+        /// </summary>
         public bool ConnectClipboard
         {
             get
@@ -164,6 +183,9 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        /// <summary>
+        /// Flag indicating whether the remote system should map network drives to the user's local hard drive instances.
+        /// </summary>
         public bool ConnectDrives
         {
             get
@@ -177,6 +199,9 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        /// <summary>
+        /// Flag indicating whether we should display the remote desktop background.
+        /// </summary>
         public bool DesktopBackground
         {
             get
@@ -194,6 +219,9 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        /// <summary>
+        /// Flag indicating whether we should use font smoothing when rendering text from the remote system.
+        /// </summary>
         public bool FontSmoothing
         {
             get
@@ -211,6 +239,9 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        /// <summary>
+        /// Flag indicating whether advanced visual effects like Aero Glass should be enabled.
+        /// </summary>
         public bool DesktopComposition
         {
             get
@@ -228,6 +259,9 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        /// <summary>
+        /// Flag indicating whether a window's contents should be displayed while it is being dragged around the screen.
+        /// </summary>
         public bool WindowContentsWhileDragging
         {
             get
@@ -245,6 +279,9 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        /// <summary>
+        /// Flag indicating whether we should animate the showing and hiding of menus.
+        /// </summary>
         public bool Animations
         {
             get
@@ -262,6 +299,9 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        /// <summary>
+        /// Flag indicating whether the Windows Basic theme should be used when displaying the user's desktop.
+        /// </summary>
         public bool VisualStyles
         {
             get
@@ -279,6 +319,9 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        /// <summary>
+        /// Flag indicating whether we should use bitmap caching during the rendering process.
+        /// </summary>
         public bool PersistentBitmapCaching
         {
             get
@@ -294,6 +337,9 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        /// <summary>
+        /// Flag indicating whether we should connect to the admin channel (the local, physical desktop display) when establishing a connection.
+        /// </summary>
         public bool ConnectToAdminChannel
         {
             get
@@ -307,6 +353,21 @@ namespace EasyConnect.Protocols.Rdp
             }
         }
 
+        /// <summary>
+        /// Control instance that hosts the actual remote desktop UI.
+        /// </summary>
+        protected override Control ConnectionWindow
+        {
+            get
+            {
+                return _rdpWindow;
+            }
+        }
+
+        /// <summary>
+        /// Establishes the connection to the remote server; initializes this <see cref="_rdpWindow"/>'s properties from 
+        /// <see cref="BaseConnectionForm{T}.Connection"/> and then calls <see cref="AxMsRdpClient2.Connect"/> on <see cref="_rdpWindow"/>.
+        /// </summary>
         public override void Connect()
         {
             _rdpWindow.Size = new Size(Size.Width + 2, Size.Height + 2);
@@ -340,13 +401,16 @@ namespace EasyConnect.Protocols.Rdp
             Host = Connection.Host;
 
             _rdpWindow.ConnectingText = "Connecting...";
-            _rdpWindow.OnConnected += Connected;
+            _rdpWindow.OnConnected += OnConnected;
             _rdpWindow.Connect();
         }
 
-        public override event EventHandler Connected;
-        public override event EventHandler ConnectionFormFocused;
-
+        /// <summary>
+        /// Handler method that's called when an established connection is broken.  Displays an error message to the user if this was not the result of a
+        /// logoff process.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated, <see cref="_rdpWindow"/> in this case.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         private void _rdpWindow_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {
             if (e.discReason > 3)
@@ -354,11 +418,17 @@ namespace EasyConnect.Protocols.Rdp
 
             IsConnected = false;
 
+            // Close the parent window if necessary
             if (CloseParentFormOnDisconnect)
                 ParentForm.Close();
         }
 
-        void RdpConnectionForm_GotFocus(object sender, EventArgs e)
+        /// <summary>
+        /// Handler method that's called when this control gains focus.  Automatically focuses on <see cref="_rdpWindow"/>.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
+        private void RdpConnectionForm_GotFocus(object sender, EventArgs e)
         {
             _rdpWindow.Focus();
         }

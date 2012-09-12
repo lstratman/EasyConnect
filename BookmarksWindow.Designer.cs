@@ -446,14 +446,12 @@ namespace EasyConnect
             this._bookmarkExportDialog.DefaultExt = "ecx";
             this._bookmarkExportDialog.FileName = "EasyConnectBookmarks";
             this._bookmarkExportDialog.Filter = "EasyConnect Bookmark files|*.ecx|All files|*.*";
-            this._bookmarkExportDialog.FileOk += new System.ComponentModel.CancelEventHandler(this._bookmarkExportDialog_FileOk);
             // 
             // _bookmarkImportDialog
             // 
             this._bookmarkImportDialog.DefaultExt = "ecx";
             this._bookmarkImportDialog.FileName = "EasyConnectBookmarks";
             this._bookmarkImportDialog.Filter = "EasyConnect Bookmark files|*.ecx|All files|*.*";
-            this._bookmarkImportDialog.FileOk += new System.ComponentModel.CancelEventHandler(this._bookmarkImportDialog_FileOk);
             // 
             // _dragImageList
             // 
