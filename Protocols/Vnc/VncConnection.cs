@@ -21,6 +21,7 @@ namespace EasyConnect.Protocols.Vnc
             Display = info.GetInt32("Display");
             ViewOnly = info.GetBoolean("ViewOnly");
             Scale = info.GetBoolean("Scale");
+            Username = info.GetString("Username");
         }
 
         public int Port
@@ -47,6 +48,12 @@ namespace EasyConnect.Protocols.Vnc
             set;
         }
 
+        public string Username
+        {
+            get;
+            set;
+        }
+
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
@@ -55,6 +62,7 @@ namespace EasyConnect.Protocols.Vnc
             info.AddValue("Display", Display);
             info.AddValue("ViewOnly", ViewOnly);
             info.AddValue("Scale", Scale);
+            info.AddValue("Username", Username);
         }
     }
 }

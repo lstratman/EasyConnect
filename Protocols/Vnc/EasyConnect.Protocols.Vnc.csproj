@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SecurePasswordTextBox">
+      <HintPath>..\..\lib\SecurePasswordTextBox.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -91,9 +94,28 @@
   <ItemGroup>
     <None Include="Resources\Vnc.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="AxViewerX">
+      <Guid>{2864468C-765F-4EF3-B8CF-42666C92B545}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>aximp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="ViewerX">
+      <Guid>{2864468C-765F-4EF3-B8CF-42666C92B545}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="lib\VncSharp.dll" />
+    <Content Include="lib\scvncctrl.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

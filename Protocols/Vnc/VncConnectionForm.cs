@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using VncSharp;
+using ViewerX;
 
 namespace EasyConnect.Protocols.Vnc
 {
@@ -15,42 +10,32 @@ namespace EasyConnect.Protocols.Vnc
         public VncConnectionForm()
         {
             InitializeComponent();
-
-            Connected += VncConnectionForm_Connected;
-            _vncConnection.GotFocus += _vncConnection_GotFocus;
-        }
-
-        void _vncConnection_GotFocus(object sender, EventArgs e)
-        {
-            if (ConnectionFormFocused != null)
-                ConnectionFormFocused(_vncConnection, e);
-        }
-
-        void VncConnectionForm_Connected(object sender, EventArgs e)
-        {
-            IsConnected = true;
         }
 
         public override void Connect()
         {
-            _vncConnection.VncPort = Connection.Port;
-            _vncConnection.ConnectComplete += _vncConnection_ConnectComplete;
-            _vncConnection.GetPassword = GetPassword;
-            _vncConnection.Connect(Connection.Host, Connection.Display, Connection.ViewOnly, Connection.Scale);
+            string password = null;
+
+            if (Connection.Password != null)
+                password = Marshal.PtrToStringAnsi(Marshal.SecureStringToGlobalAllocAnsi(Connection.Password));
+
+            _vncConnection.MsUser = Connection.Username;
+            _vncConnection.ScaleEnable = Connection.Scale;
+            _vncConnection.StretchMode = Connection.Scale
+                                             ? ScreenStretchMode.SSM_ASPECT
+                                             : ScreenStretchMode.SSM_NONE;
+            _vncConnection.ViewOnly = Connection.ViewOnly;
+            _vncConnection.MsPassword = password;
+            _vncConnection.ConnectedEvent += OnConnected;
+            _vncConnection.ConnectAsyncEx(Connection.Host, Connection.Port + Connection.Display, password);
         }
 
-        private string GetPassword()
+        protected override Control ConnectionWindow
         {
-            return "133t$p3@k";
+            get
+            {
+                return _vncConnection;
+            }
         }
-
-        void _vncConnection_ConnectComplete(object sender, ConnectEventArgs e)
-        {
-            if (Connected != null)
-                Connected(this, null);
-        }
-
-        public override event EventHandler Connected;
-        public override event EventHandler ConnectionFormFocused;
     }
 }

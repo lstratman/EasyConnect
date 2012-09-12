@@ -47,10 +47,14 @@ namespace EasyConnect.Protocols.Vnc
 
             _hostNameTextBox.Text = Connection.Host;
             _portUpDown.Value = Connection.Port;
+            _userNameTextBox.Text = Connection.Username;
 
             _displayUpDown.Value = Connection.Display;
             _scaleCheckbox.Checked = Connection.Scale;
             _viewOnlyCheckbox.Checked = Connection.ViewOnly;
+
+            if (Connection.Password != null)
+                _passwordTextBox.SecureText = Connection.Password;
         }
 
         private void VncOptionsForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -60,6 +64,8 @@ namespace EasyConnect.Protocols.Vnc
             Connection.Display = Convert.ToInt32(_displayUpDown.Value);
             Connection.Scale = _scaleCheckbox.Checked;
             Connection.ViewOnly = _viewOnlyCheckbox.Checked;
+            Connection.Username = _userNameTextBox.Text;
+            Connection.Password = _passwordTextBox.SecureText;
         }
     }
 }
