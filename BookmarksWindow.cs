@@ -912,7 +912,19 @@ namespace EasyConnect
                 return;
 
             if (_listViewConnections.ContainsKey(_bookmarksListView.Items[e.Item]))
-                _listViewConnections[_bookmarksListView.Items[e.Item]].Name = e.Label;
+            {
+                IConnection connection = _listViewConnections[_bookmarksListView.Items[e.Item]];
+
+                connection.Name = e.Label;
+
+                // If this is a new connection (no Host property set) and the item label doesn't contain spaces, we default the host name for the connection to
+                // the label name
+                if (String.IsNullOrEmpty(connection.Host) && !e.Label.Contains(" "))
+                {
+                    connection.Host = e.Label;
+                    _bookmarksListView.Items[e.Item].SubItems[1].Text = e.Label;
+                }
+            }
 
             else
                 _listViewFolders[_bookmarksListView.Items[e.Item]].Name = e.Label;
@@ -929,8 +941,7 @@ namespace EasyConnect
                             {
                                 OptionsForms = new List<Form>
                                     {
-                                        ConnectionFactory.CreateOptionsForm(
-                                            _listViewConnections[selectedItem])
+                                        ConnectionFactory.CreateOptionsForm(_listViewConnections[selectedItem])
                                     }
                             }
                     };
