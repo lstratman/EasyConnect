@@ -2,6 +2,7 @@
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using EasyConnect.Protocols;
 
 namespace EasyConnect
 {
@@ -17,6 +18,12 @@ namespace EasyConnect
         /// area.
         /// </summary>
         public bool AutoHideToolbar
+        {
+            get;
+            set;
+        }
+
+        public EncryptionType? EncryptionType
         {
             get;
             set;

@@ -49,7 +49,7 @@ namespace EasyConnect.Protocols
             string encryptedPassword = info.GetString("Password");
 
             if (!String.IsNullOrEmpty(encryptedPassword))
-                Base64Password = encryptedPassword;
+                EncryptedPassword = encryptedPassword;
 
             if (Guid == Guid.Empty)
                 Guid = Guid.NewGuid();
@@ -117,14 +117,14 @@ namespace EasyConnect.Protocols
         /// Encrypted and Base64-encoded data in <see cref="_password"/>
         /// </summary>
         [XmlElement("Password")]
-        public string Base64Password
+        public string EncryptedPassword
         {
             get
             {
-                if (Password == null)
+                if (Password == null || Password.Length == 0)
                     return null;
 
-                return Convert.ToBase64String(CryptoUtilities.Encrypt(ConnectionFactory.EncryptionPassword, _password));
+                return Convert.ToBase64String(ConnectionFactory.Encrypt(_password));
             }
 
             set
@@ -136,8 +136,8 @@ namespace EasyConnect.Protocols
                 }
 
                 // Decrypt the password and put it into a secure string
-                byte[] decryptedPassword = CryptoUtilities.Decrypt(ConnectionFactory.EncryptionPassword, Convert.FromBase64String(value));
                 SecureString password = new SecureString();
+                byte[] decryptedPassword = ConnectionFactory.Decrypt(Convert.FromBase64String(value));
 
                 for (int i = 0; i < decryptedPassword.Length; i++)
                 {
@@ -192,7 +192,7 @@ namespace EasyConnect.Protocols
             info.AddValue(
                 "Password", _password == null
                                 ? null
-                                : Convert.ToBase64String(CryptoUtilities.Encrypt(ConnectionFactory.EncryptionPassword, _password)));
+                                : EncryptedPassword);
             info.AddValue("IsBookmark", IsBookmark);
             info.AddValue("Name", Name);
             info.AddValue("Host", Host);

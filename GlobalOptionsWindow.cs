@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security;
 using System.Windows.Forms;
 using EasyConnect.Protocols;
 
@@ -14,6 +17,8 @@ namespace EasyConnect
         /// </summary>
         protected MainForm _parentTabs = null;
 
+        protected SecureString _encryptionPassword = null; 
+
         /// <summary>
         /// Default constructor; populates the protocol dropdown.
         /// </summary>
@@ -25,6 +30,14 @@ namespace EasyConnect
                 _defaultProtocolDropdown.Items.Add(protocol);
 
             _defaultProtocolDropdown.SelectedItem = ConnectionFactory.GetDefaultProtocol();
+        }
+
+        public SecureString EncryptionPassword
+        {
+            get
+            {
+                return _encryptionPassword;
+            }
         }
 
         /// <summary>
@@ -40,6 +53,7 @@ namespace EasyConnect
             ConnectionFactory.SetDefaultProtocol((IProtocol)_defaultProtocolDropdown.SelectedItem);
             
             _parentTabs.Options.AutoHideToolbar = _autoHideCheckbox.Checked;
+            _parentTabs.Options.EncryptionType = (EncryptionType) Enum.Parse(typeof (EncryptionType), ((ListItem)_encryptionTypeDropdown.SelectedItem).Value);
             _parentTabs.Options.Save();
         }
 
@@ -52,6 +66,52 @@ namespace EasyConnect
         {
             _parentTabs = Parent.TopLevelControl as MainForm;
             _autoHideCheckbox.Checked = _parentTabs.Options.AutoHideToolbar;
+
+            List<ListItem> items = new List<ListItem>
+                {
+                    new ListItem
+                        {
+                            Text = "Password",
+                            Value = "Rijndael"
+                        },
+                    new ListItem
+                        {
+                            Text = "RSA Key Container",
+                            Value = "Rsa"
+                        }
+                };
+
+            _encryptionTypeDropdown.Items.AddRange(items.ToArray());
+            _encryptionTypeDropdown.SelectedItem = items.First(i => i.Value == _parentTabs.Options.EncryptionType.Value.ToString("G"));
+        }
+
+        protected class ListItem
+        {
+            public string Text
+            {
+                get;
+                set;
+            }
+
+            public string Value
+            {
+                get;
+                set;
+            }
+        }
+
+        private void _encryptionTypeDropdown_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if ((_encryptionTypeDropdown.SelectedItem as ListItem).Value == "Rsa")
+                _encryptionPassword = null;
+
+            else if ((_encryptionTypeDropdown.SelectedItem as ListItem).Value != _parentTabs.Options.EncryptionType.Value.ToString("G"))
+            {
+                PasswordWindow passwordWindow = new PasswordWindow();
+
+                if (passwordWindow.ShowDialog(this) == DialogResult.OK)
+                    _encryptionPassword = passwordWindow.Password;
+            }
         }
     }
 }

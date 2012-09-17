@@ -33,6 +33,8 @@
             this._defaultProtocolDropdown = new System.Windows.Forms.ComboBox();
             this._autoHideCheckbox = new System.Windows.Forms.CheckBox();
             this._autoHideLabel = new System.Windows.Forms.Label();
+            this._encryptionTypeDropdown = new System.Windows.Forms.ComboBox();
+            this._encryptionTypeLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // _defaultProtocolLabel
@@ -82,12 +84,35 @@
             this._autoHideLabel.TabIndex = 70;
             this._autoHideLabel.Text = "Auto-hide connection toolbar?:";
             // 
+            // _encryptionTypeDropdown
+            // 
+            this._encryptionTypeDropdown.DisplayMember = "Text";
+            this._encryptionTypeDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this._encryptionTypeDropdown.FormattingEnabled = true;
+            this._encryptionTypeDropdown.Location = new System.Drawing.Point(267, 78);
+            this._encryptionTypeDropdown.Name = "_encryptionTypeDropdown";
+            this._encryptionTypeDropdown.Size = new System.Drawing.Size(182, 21);
+            this._encryptionTypeDropdown.TabIndex = 71;
+            this._encryptionTypeDropdown.ValueMember = "Value";
+            this._encryptionTypeDropdown.SelectedIndexChanged += new System.EventHandler(this._encryptionTypeDropdown_SelectedIndexChanged);
+            // 
+            // _encryptionTypeLabel
+            // 
+            this._encryptionTypeLabel.AutoSize = true;
+            this._encryptionTypeLabel.Location = new System.Drawing.Point(176, 81);
+            this._encryptionTypeLabel.Name = "_encryptionTypeLabel";
+            this._encryptionTypeLabel.Size = new System.Drawing.Size(83, 13);
+            this._encryptionTypeLabel.TabIndex = 72;
+            this._encryptionTypeLabel.Text = "Encryption type:";
+            // 
             // GlobalOptionsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
             this.ClientSize = new System.Drawing.Size(597, 384);
+            this.Controls.Add(this._encryptionTypeLabel);
+            this.Controls.Add(this._encryptionTypeDropdown);
             this.Controls.Add(this._autoHideLabel);
             this.Controls.Add(this._autoHideCheckbox);
             this.Controls.Add(this._defaultProtocolLabel);
@@ -109,5 +134,7 @@
         private System.Windows.Forms.ComboBox _defaultProtocolDropdown;
         private System.Windows.Forms.CheckBox _autoHideCheckbox;
         private System.Windows.Forms.Label _autoHideLabel;
+        private System.Windows.Forms.ComboBox _encryptionTypeDropdown;
+        private System.Windows.Forms.Label _encryptionTypeLabel;
     }
 }

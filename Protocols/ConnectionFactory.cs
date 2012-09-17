@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -37,6 +39,10 @@ namespace EasyConnect.Protocols
         /// Default URI prefix to assume when the user enters a URI manually without specifying a protocol.
         /// </summary>
         protected static string _defaultProtocolPrefix = null;
+
+        protected static object _crypto;
+
+        protected static EncryptionType _encryptionType;
 
         /// <summary>
         /// Static constructor.  Reads all .dll files in the application's directory and looks for types implementing <see cref="IProtocol"/>; instances of
@@ -82,21 +88,143 @@ namespace EasyConnect.Protocols
         }
 
         /// <summary>
-        /// Password to use when encrypting and decrypting sensitive data in <see cref="IConnection"/> instances.
+        /// Decrypts <paramref name="data"/> by using the <see cref="_crypto"/> currently set.
         /// </summary>
-        public static SecureString EncryptionPassword
+        /// <param name="data">Data that we are to decrypt.</param>
+        /// <returns>Decrypted data.</returns>
+        public static byte[] Decrypt(byte[] data)
+        {
+            if (_crypto is SymmetricAlgorithm)
+            {
+                byte[] decryptedData = new byte[data.Length];
+                MemoryStream memoryStream = new MemoryStream(data, 0, data.Length);
+                CryptoStream cryptoStream = new CryptoStream(memoryStream, ((SymmetricAlgorithm)_crypto).CreateDecryptor(), CryptoStreamMode.Read);
+
+                cryptoStream.Read(decryptedData, 0, decryptedData.Length);
+                cryptoStream.Close();
+                memoryStream.Close();
+
+                return decryptedData;
+            }
+
+            else if (_crypto is RSACryptoServiceProvider)
+                return ((RSACryptoServiceProvider) _crypto).Decrypt(data, true);
+
+            else
+                throw new NotSupportedException("The crypto object " + _crypto.GetType().Name + " is not supported.");
+        }
+
+        /// <summary>
+        /// Encrypts <paramref name="data"/> by using the <see cref="_crypto"/> currently set.
+        /// </summary>
+        /// <param name="data">Data that we are to encrypt.</param>
+        /// <returns>Encrypted data.</returns>
+        public static byte[] Encrypt(byte[] data)
+        {
+            if (_crypto is SymmetricAlgorithm)
+            {
+                MemoryStream memoryStream = new MemoryStream();
+                CryptoStream cryptoStream = new CryptoStream(memoryStream, ((SymmetricAlgorithm)_crypto).CreateEncryptor(), CryptoStreamMode.Write);
+
+                cryptoStream.Write(data, 0, data.Length);
+                cryptoStream.Close();
+                memoryStream.Close();
+
+                return memoryStream.ToArray();
+            }
+
+            else if (_crypto is RSACryptoServiceProvider)
+                return ((RSACryptoServiceProvider)_crypto).Encrypt(data, true);
+
+            else
+                throw new NotSupportedException("The crypto object " + _crypto.GetType().Name + " is not supported.");
+        }
+
+        /// <summary>
+        /// Encrypts a password specified in <paramref name="data"/> by using the <see cref="_crypto"/> currently set.
+        /// </summary>
+        /// <param name="data">Data that we are to encrypt.</param>
+        /// <returns>Encrypted data.</returns>
+        public static byte[] Encrypt(SecureString data)
+        {
+            IntPtr marshalledDataBytes = Marshal.SecureStringToGlobalAllocAnsi(data);
+            byte[] dataBytes = new byte[data.Length];
+
+            Marshal.Copy(marshalledDataBytes, dataBytes, 0, dataBytes.Length);
+
+            byte[] encryptedData = Encrypt(dataBytes);
+
+            // Clear the data bytes from memory
+            for (int i = 0; i < dataBytes.Length; i++)
+                dataBytes[i] = 0;
+
+            Marshal.ZeroFreeGlobalAllocAnsi(marshalledDataBytes);
+
+            return encryptedData;
+        }
+
+        public static EncryptionType EncryptionType
         {
             get
             {
-                return _encryptionPassword;
+                return _encryptionType;
+            }
+        }
+
+        public static void SetEncryptionType(EncryptionType encryptionType)
+        {
+            SetEncryptionType(encryptionType, null);
+        }
+
+        public static void SetEncryptionType(EncryptionType encryptionType, SecureString encryptionKey)
+        {
+            switch (encryptionType)
+            {
+                case EncryptionType.Rsa:
+                    CspParameters parameters = new CspParameters
+                        {
+                            KeyContainerName = "EasyConnect"
+                        };
+
+                    _crypto = new RSACryptoServiceProvider(parameters);
+
+                    break;
+
+                case EncryptionType.Rijndael:
+                    if (encryptionKey == null)
+                        throw new ArgumentException("When Rijndael is used as the encryption type, the encryption password cannot be null.", "encryptionKey");
+
+                    Rijndael rijndael = Rijndael.Create();
+                    rijndael.KeySize = 256;
+
+                    // Get the bytes for the password
+                    IntPtr marshalledKeyBytes = Marshal.SecureStringToGlobalAllocAnsi(encryptionKey);
+                    byte[] keyBytes = new byte[rijndael.KeySize / 8];
+
+                    Marshal.Copy(marshalledKeyBytes, keyBytes, 0, Math.Min(keyBytes.Length, encryptionKey.Length));
+
+                    // Set the encryption key to the key bytes and the IV to a predetermined string
+                    rijndael.Key = keyBytes;
+                    rijndael.IV = Convert.FromBase64String("QGWyKbe+W9H0mL2igm73jw==");
+
+                    Marshal.ZeroFreeGlobalAllocAnsi(marshalledKeyBytes);
+
+                    _crypto = rijndael;
+
+                    break;
+
+                default:
+                    throw new ArgumentException("The encryption type " + encryptionType.ToString("G") + " is not supported.", "encryptionType");
             }
 
-            set
-            {
-                _encryptionPassword = value;
+            _encryptionType = encryptionType;
+        }
 
-                if (_encryptionPassword != null)
-                    _encryptionPassword.MakeReadOnly();
+        public static bool ReadyForCrypto
+        {
+            get
+            {
+                return _crypto != null;
             }
         }
 

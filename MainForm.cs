@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -9,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
+using System.Security;
 using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Forms;
@@ -118,8 +118,7 @@ namespace EasyConnect
         /// <summary>
         /// Queue of the ten most recent connections, indicating which ones are going to show up in the jump list.
         /// </summary>
-        protected Queue<HistoryWindow.HistoricalConnection> _recentConnections =
-            new Queue<HistoryWindow.HistoricalConnection>();
+        protected Queue<HistoryWindow.HistoricalConnection> _recentConnections = new Queue<HistoryWindow.HistoricalConnection>();
 
         /// <summary>
         /// Flag indicating whether the user is pressing the Shift button.
@@ -130,6 +129,8 @@ namespace EasyConnect
         /// Flag indicating whether <see cref="_automaticUpdater"/> has told us that there's an update available for the application.
         /// </summary>
         private bool _updateAvailable;
+
+        protected EncryptionType _previousEncryptionType;
 
         /// <summary>
         /// Constructor; initializes the UI, creates the <see cref="_automaticUpdater"/>, loads the bookmark and history data, and sets up the IPC remoting
@@ -161,25 +162,72 @@ namespace EasyConnect
             //Controls.Add(_automaticUpdater);
 
             OpenToBookmarks = openToBookmarks;
+            bool convertingToRsa = false;
+
+            // If the user hasn't formally selected an encryption type (either they're starting the application for the first time or are running a legacy
+            // version that explicitly used Rijndael), ask them if they want to use RSA
+            if (Options.EncryptionType == null)
+            {
+                string messageBoxText = @"Do you want to use an RSA key container to encrypt your passwords?
+
+The RSA encryption mode uses cryptographic keys associated with 
+your Windows user account to encrypt sensitive data without having 
+to enter an encryption password every time you start this 
+application. However, your bookmarks file will be tied uniquely to 
+this user account and you will be unable to share them between
+multiple users.";
+
+                if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect"))
+                    messageBoxText += @"
+
+The alternative is to derive an encryption key from a password that
+you will need to enter every time that this application starts.";
+
+                else
+                    messageBoxText += @"
+
+Since you've already encrypted your data with a password once, 
+you would need to enter it one more time to decrypt it before RSA 
+can be used.";
+
+                Options.EncryptionType = MessageBox.Show(messageBoxText, "Use RSA?", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes
+                                             ? EncryptionType.Rsa
+                                             : EncryptionType.Rijndael;
+
+                // Since they want to use RSA but already have connection data encrypted with Rijndael, we'll have to capture that password so that we can
+                // decrypt it using Rijndael and then re-encrypt it using the RSA keypair
+                convertingToRsa = Options.EncryptionType == EncryptionType.Rsa &&
+                                  Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect");
+            }
 
             // If this is the first time that the user is running the application, pop up and information box informing them that they're going to enter a
             // password used to encrypt sensitive connection details
             if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect"))
             {
-                MessageBox.Show(Resources.FirstRunPasswordText, Resources.FirstRunPasswordTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (Options.EncryptionType == EncryptionType.Rijndael)
+                    MessageBox.Show(Resources.FirstRunPasswordText, Resources.FirstRunPasswordTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect");
             }
+
+            if (Options.EncryptionType != null)
+                Options.Save();
+
+            bool encryptionTypeSet = false;
 
             while (Bookmarks == null || _history == null)
             {
                 // Get the user's encryption password via the password dialog
-                if (ConnectionFactory.EncryptionPassword == null)
+                if (!encryptionTypeSet && (Options.EncryptionType == EncryptionType.Rijndael || convertingToRsa))
                 {
                     PasswordWindow passwordWindow = new PasswordWindow();
                     passwordWindow.ShowDialog();
 
-                    ConnectionFactory.EncryptionPassword = passwordWindow.Password;
+                    ConnectionFactory.SetEncryptionType(EncryptionType.Rijndael, passwordWindow.Password);
                 }
+
+                else
+                    ConnectionFactory.SetEncryptionType(Options.EncryptionType.Value);
 
                 // Create the bookmark and history windows which will try to use the password to decrypt sensitive connection details; if it's unable to, an
                 // exception will be thrown that wraps a CryptographicException instance
@@ -187,11 +235,15 @@ namespace EasyConnect
                 {
                     _bookmarks = new BookmarksWindow(this);
                     _history = new HistoryWindow(this);
+
+                    ConnectionFactory.GetDefaultProtocol();
+
+                    encryptionTypeSet = true;
                 }
 
                 catch (Exception e)
                 {
-                    if (!ContainsCryptographicException(e))
+                    if ((Options.EncryptionType == EncryptionType.Rijndael || convertingToRsa) && !ContainsCryptographicException(e))
                         throw;
 
                     // Tell the user that their password is incorrect and, if they click OK, repeat the process
@@ -203,10 +255,12 @@ namespace EasyConnect
                         Closing = true;
                         return;
                     }
-
-                    ConnectionFactory.EncryptionPassword = null;
                 }
             }
+
+            // If we're converting over to RSA, we've already loaded and decrypted the sensitive data using 
+            if (convertingToRsa)
+                SetEncryptionType(Options.EncryptionType.Value, null);
 
             // Create a remoting channel used to tell this window to open historical connections when entries in the jump list are clicked
             if (_ipcChannel == null)
@@ -237,6 +291,15 @@ namespace EasyConnect
                 _hookproc = KeyboardHookCallback;
                 _hookId = User32.SetWindowsHookEx(WH.WH_KEYBOARD_LL, _hookproc, Kernel32.GetModuleHandleW(curModule.ModuleName), 0);
             }
+        }
+
+        private void SetEncryptionType(EncryptionType encryptionType, SecureString encryptionPassword)
+        {
+            ConnectionFactory.SetEncryptionType(encryptionType, encryptionPassword);
+
+            _bookmarks.Save();
+            _history.Save();
+            ConnectionFactory.SetDefaults(ConnectionFactory.GetDefaults(ConnectionFactory.GetDefaultProtocol()));
         }
 
         /// <summary>
@@ -289,7 +352,7 @@ namespace EasyConnect
         {
             get
             {
-                if (_bookmarks == null && ConnectionFactory.EncryptionPassword != null)
+                if (_bookmarks == null && ConnectionFactory.ReadyForCrypto)
                     _bookmarks = new BookmarksWindow(this);
 
                 return _bookmarks;
@@ -303,7 +366,7 @@ namespace EasyConnect
         {
             get
             {
-                if (_history == null && ConnectionFactory.EncryptionPassword != null)
+                if (_history == null && ConnectionFactory.ReadyForCrypto)
                     _history = new HistoryWindow(this);
 
                 return _history;
@@ -522,9 +585,14 @@ namespace EasyConnect
                 return;
             }
 
+            _previousEncryptionType = Options.EncryptionType.Value;
+
             // Create the options window and then add entries for each protocol type to the window
             OptionsWindow optionsWindow = new OptionsWindow(this);
-            optionsWindow.OptionsForms.Add(new GlobalOptionsWindow());
+            GlobalOptionsWindow globalOptionsWindow = new GlobalOptionsWindow();
+
+            globalOptionsWindow.Closed += globalOptionsWindow_Closed;
+            optionsWindow.OptionsForms.Add(globalOptionsWindow);
 
             foreach (IProtocol protocol in ConnectionFactory.GetProtocols())
             {
@@ -535,6 +603,12 @@ namespace EasyConnect
             }
 
             ShowInEmptyTab(optionsWindow);
+        }
+
+        void globalOptionsWindow_Closed(object sender, EventArgs e)
+        {
+            if (_previousEncryptionType != Options.EncryptionType)
+                SetEncryptionType(Options.EncryptionType.Value, (sender as GlobalOptionsWindow).EncryptionPassword);
         }
 
         /// <summary>
