@@ -130,6 +130,9 @@ namespace EasyConnect
         /// </summary>
         private bool _updateAvailable;
 
+        /// <summary>
+        /// Encryption type that was previously selected by the user
+        /// </summary>
         protected EncryptionType _previousEncryptionType;
 
         /// <summary>
@@ -518,26 +521,26 @@ can be used.";
                 (e.Tab.Content as ConnectionWindow).ShowToolbar();
         }
 
-        /// <summary>
-        /// Handler method that's called when <see cref="_automaticUpdater"/> fails during update checking.  Sets <see cref="UpdateAvailable"/> to false.
-        /// </summary>
-        /// <param name="sender">Object from which this event originated, <see cref="_automaticUpdater"/> in this case.</param>
-        /// <param name="e">Details about the failure that occurred.</param>
-        private void _automaticUpdater_CheckingFailed(object sender, FailArgs e)
-        {
-            UpdateAvailable = false;
-        }
+        ///// <summary>
+        ///// Handler method that's called when <see cref="_automaticUpdater"/> fails during update checking.  Sets <see cref="UpdateAvailable"/> to false.
+        ///// </summary>
+        ///// <param name="sender">Object from which this event originated, <see cref="_automaticUpdater"/> in this case.</param>
+        ///// <param name="e">Details about the failure that occurred.</param>
+        //private void _automaticUpdater_CheckingFailed(object sender, FailArgs e)
+        //{
+        //    UpdateAvailable = false;
+        //}
 
-        /// <summary>
-        /// Handler method that's called when <see cref="_automaticUpdater"/> finds that the application is already up-to-date.  Sets 
-        /// <see cref="UpdateAvailable"/> to false.
-        /// </summary>
-        /// <param name="sender">Object from which this event originated, <see cref="_automaticUpdater"/> in this case.</param>
-        /// <param name="e">Arguments associated with this event.</param>
-        private void _automaticUpdater_UpToDate(object sender, SuccessArgs e)
-        {
-            UpdateAvailable = false;
-        }
+        ///// <summary>
+        ///// Handler method that's called when <see cref="_automaticUpdater"/> finds that the application is already up-to-date.  Sets 
+        ///// <see cref="UpdateAvailable"/> to false.
+        ///// </summary>
+        ///// <param name="sender">Object from which this event originated, <see cref="_automaticUpdater"/> in this case.</param>
+        ///// <param name="e">Arguments associated with this event.</param>
+        //private void _automaticUpdater_UpToDate(object sender, SuccessArgs e)
+        //{
+        //    UpdateAvailable = false;
+        //}
 
         /// <summary>
         /// Called from <see cref="ConnectionWindow"/> instances when the user chooses to install an available update either from the update checking window
@@ -549,16 +552,16 @@ can be used.";
                 _automaticUpdater.InstallNow();
         }
 
-        /// <summary>
-        /// Handler method that's called when <see cref="_automaticUpdater"/> finds an update available for the application.  Sets 
-        /// <see cref="UpdateAvailable"/> to true.
-        /// </summary>
-        /// <param name="sender">Object from which this event originated, <see cref="_automaticUpdater"/> in this case.</param>
-        /// <param name="e">Arguments associated with this event.</param>
-        private void _automaticUpdater_ReadyToBeInstalled(object sender, EventArgs e)
-        {
-            UpdateAvailable = true;
-        }
+        ///// <summary>
+        ///// Handler method that's called when <see cref="_automaticUpdater"/> finds an update available for the application.  Sets 
+        ///// <see cref="UpdateAvailable"/> to true.
+        ///// </summary>
+        ///// <param name="sender">Object from which this event originated, <see cref="_automaticUpdater"/> in this case.</param>
+        ///// <param name="e">Arguments associated with this event.</param>
+        //private void _automaticUpdater_ReadyToBeInstalled(object sender, EventArgs e)
+        //{
+        //    UpdateAvailable = true;
+        //}
 
         /// <summary>
         /// Handler method that's called when the user closes the <see cref="BookmarksWindow"/> tab.  Sets <see cref="_bookmarks"/> to null so that we know we
@@ -585,7 +588,7 @@ can be used.";
                 return;
             }
 
-            _previousEncryptionType = Options.EncryptionType.Value;
+            _previousEncryptionType = Options.EncryptionType ?? EncryptionType.Rijndael;
 
             // Create the options window and then add entries for each protocol type to the window
             OptionsWindow optionsWindow = new OptionsWindow(this);
@@ -608,7 +611,9 @@ can be used.";
         void globalOptionsWindow_Closed(object sender, EventArgs e)
         {
             if (_previousEncryptionType != Options.EncryptionType)
+                // ReSharper disable PossibleInvalidOperationException
                 SetEncryptionType(Options.EncryptionType.Value, (sender as GlobalOptionsWindow).EncryptionPassword);
+                // ReSharper restore PossibleInvalidOperationException
         }
 
         /// <summary>

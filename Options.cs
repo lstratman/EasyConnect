@@ -23,6 +23,9 @@ namespace EasyConnect
             set;
         }
 
+        /// <summary>
+        /// Type of encryption that should be used to protect passwords and other sensitive data in settings files.
+        /// </summary>
         public EncryptionType? EncryptionType
         {
             get;

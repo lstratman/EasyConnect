@@ -40,8 +40,14 @@ namespace EasyConnect.Protocols
         /// </summary>
         protected static string _defaultProtocolPrefix = null;
 
+        /// <summary>
+        /// Crypto object used in the <see cref="Encrypt(byte[])"/> and <see cref="Decrypt"/> methods.
+        /// </summary>
         protected static object _crypto;
 
+        /// <summary>
+        /// Type of encryption that should be used to protect passwords and other sensitive data in settings files.
+        /// </summary>
         protected static EncryptionType _encryptionType;
 
         /// <summary>
@@ -163,6 +169,9 @@ namespace EasyConnect.Protocols
             return encryptedData;
         }
 
+        /// <summary>
+        /// Type of encryption that should be used to protect passwords and other sensitive data in settings files.
+        /// </summary>
         public static EncryptionType EncryptionType
         {
             get
@@ -171,15 +180,25 @@ namespace EasyConnect.Protocols
             }
         }
 
+        /// <summary>
+        /// Set the <see cref="EncryptionType"/> and <see cref="_crypto"/> objects.
+        /// </summary>
+        /// <param name="encryptionType">Encryption type to be used.</param>
         public static void SetEncryptionType(EncryptionType encryptionType)
         {
             SetEncryptionType(encryptionType, null);
         }
 
+        /// <summary>
+        /// Set the <see cref="EncryptionType"/> and <see cref="_crypto"/> objects.
+        /// </summary>
+        /// <param name="encryptionType">Encryption type to be used.</param>
+        /// <param name="encryptionKey">If <paramref name="encryptionType"/> is a symmetric algorithm, this represents the encryption key to use.</param>
         public static void SetEncryptionType(EncryptionType encryptionType, SecureString encryptionKey)
         {
             switch (encryptionType)
             {
+                // Simply open or create an RSA key container called EasyConnect
                 case EncryptionType.Rsa:
                     CspParameters parameters = new CspParameters
                         {
@@ -190,6 +209,7 @@ namespace EasyConnect.Protocols
 
                     break;
 
+                // Initialize a Rijndael instance with the key in encryptionKey
                 case EncryptionType.Rijndael:
                     if (encryptionKey == null)
                         throw new ArgumentException("When Rijndael is used as the encryption type, the encryption password cannot be null.", "encryptionKey");
@@ -220,6 +240,9 @@ namespace EasyConnect.Protocols
             _encryptionType = encryptionType;
         }
 
+        /// <summary>
+        /// Flag indicating whether the <see cref="_crypto"/> object has been initialized.
+        /// </summary>
         public static bool ReadyForCrypto
         {
             get
