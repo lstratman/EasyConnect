@@ -1272,43 +1272,6 @@ namespace EasyConnect
         }
 
         /// <summary>
-        /// Handler method that's called when the "Update all passwords..." menu item in the context menu that appears when the user right-clicks on a folder 
-        /// in <see cref="_bookmarksFoldersTreeView"/>.  Opens a <see cref="PasswordWindow"/> and then calls <see cref="UpdatePasswords"/> to update the 
-        /// passwords of all descendant <see cref="IConnection"/> instances in the selected <see cref="BookmarksFolder"/>.
-        /// </summary>
-        /// <param name="sender">Object from which this event originated.</param>
-        /// <param name="e">Arguments associated with this event.</param>
-        private void updateAllPasswordsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            PasswordWindow passwordWindow = new PasswordWindow
-                {
-                    ShowCancelButton = true
-                };
-            DialogResult result = passwordWindow.ShowDialog(this);
-
-            if (result == DialogResult.OK)
-            {
-                UpdatePasswords(_folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode], passwordWindow.Password);
-                Save();
-            }
-        }
-
-        /// <summary>
-        /// Recursive method called from <see cref="updateAllPasswordsToolStripMenuItem_Click"/> to update the  passwords of all descendant 
-        /// <see cref="IConnection"/> instances in <paramref name="folder"/> to <paramref name="password"/>.
-        /// </summary>
-        /// <param name="folder">Current folder that we're updating.</param>
-        /// <param name="password">New password for each <see cref="IConnection"/>.</param>
-        private void UpdatePasswords(BookmarksFolder folder, SecureString password)
-        {
-            foreach (IConnection connection in folder.Bookmarks)
-                connection.Password = password;
-
-            foreach (BookmarksFolder childFolder in folder.ChildFolders)
-                UpdatePasswords(childFolder, password);
-        }
-
-        /// <summary>
         /// Handler method that's called when user starts dragging an item in <see cref="_bookmarksListView"/>; calls <see cref="Control.DoDragDrop"/> to begin
         /// the drag/drop operation.
         /// </summary>
@@ -1524,6 +1487,51 @@ namespace EasyConnect
                     return -1;
 
                 return String.CompareOrdinal(item1.Text, item2.Text);
+            }
+        }
+
+        /// <summary>
+        /// Handler method that's called when the "Clear username and password" menu item in the context menu that appears when the user right-clicks on a 
+        /// folder  in <see cref="_bookmarksFoldersTreeView"/>.  Clears the <see cref="BookmarksFolder.Username"/> and <see cref="BookmarksFolder.Password"/> 
+        /// properties in the selected <see cref="BookmarksFolder"/>.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
+        private void _clearUsernamePasswordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BookmarksFolder selectedFolder = _folderTreeNodes[FoldersTreeView.SelectedNode];
+
+            selectedFolder.Username = null;
+            selectedFolder.Password = null;
+
+            Save();
+        }
+
+        /// <summary>
+        /// Handler method that's called when the "Set username and password..." menu item in the context menu that appears when the user right-clicks on a 
+        /// folder  in <see cref="_bookmarksFoldersTreeView"/>.  Opens a <see cref="UsernamePasswordWindow"/> and sets the 
+        /// <see cref="BookmarksFolder.Username"/> and <see cref="BookmarksFolder.Password"/> properties in the selected <see cref="BookmarksFolder"/> to the
+        /// entered values.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
+        private void _setUsernamePasswordMenuItem_Click(object sender, EventArgs e)
+        {
+            BookmarksFolder selectedFolder = _folderTreeNodes[FoldersTreeView.SelectedNode];
+            UsernamePasswordWindow usernamePasswordWindow = new UsernamePasswordWindow
+                {
+                    Username = selectedFolder.Username
+                };
+
+            if (selectedFolder.Password != null)
+                usernamePasswordWindow.Password = selectedFolder.Password;
+
+            if (usernamePasswordWindow.ShowDialog() == DialogResult.OK)
+            {
+                selectedFolder.Username = usernamePasswordWindow.Username;
+                selectedFolder.Password = usernamePasswordWindow.Password;
+
+                Save();
             }
         }
     }

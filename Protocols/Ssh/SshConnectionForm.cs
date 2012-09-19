@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Windows.Forms;
 using Granados.SSHC;
 using Poderosa;
@@ -72,8 +73,10 @@ namespace EasyConnect.Protocols.Ssh
         {
             GEnv.Options.Font = Connection.Font;
 
-            _terminal.UserName = Connection.Username;
+            _terminal.UserName = Connection.InheritedUsername;
             _terminal.Host = Connection.Host;
+
+            SecureString password = Connection.InheritedPassword;
 
             // Set the auth file and the auth method to PublicKey if an identity file was specified
             if (!String.IsNullOrEmpty(Connection.IdentityFile))
@@ -82,12 +85,12 @@ namespace EasyConnect.Protocols.Ssh
                 _terminal.AuthType = AuthType.PublicKey;
             }
 
-                // Otherwise, set the auth type to Password
-            else if (Connection.Password != null && Connection.Password.Length > 0)
+            // Otherwise, set the auth type to Password
+            else if (password != null && password.Length > 0)
             {
-                IntPtr password = Marshal.SecureStringToGlobalAllocAnsi(Connection.Password);
+                IntPtr passwordBytes = Marshal.SecureStringToGlobalAllocAnsi(password);
 
-                _terminal.Password = Marshal.PtrToStringAnsi(password);
+                _terminal.Password = Marshal.PtrToStringAnsi(passwordBytes);
                 _terminal.AuthType = AuthType.Password;
             }
 

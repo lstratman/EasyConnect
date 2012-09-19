@@ -81,15 +81,6 @@ namespace EasyConnect.Protocols.Rdp
         }
 
         /// <summary>
-        /// Username, if any, that should be presented when establishing the connection.
-        /// </summary>
-        public string Username
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Where sounds originating from the remote server should be played (locally or remotely).
         /// </summary>
         public AudioMode AudioMode

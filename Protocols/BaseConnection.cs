@@ -114,6 +114,15 @@ namespace EasyConnect.Protocols
         }
 
         /// <summary>
+        /// Username, if any, that should be presented when establishing the connection.
+        /// </summary>
+        public string Username
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Encrypted and Base64-encoded data in <see cref="_password"/>
         /// </summary>
         [XmlElement("Password")]
@@ -167,10 +176,53 @@ namespace EasyConnect.Protocols
             set
             {
                 _password = value;
-
-                if (_password != null)
-                    _password.MakeReadOnly();
             }
+        }
+
+        [XmlIgnore]
+        public string InheritedUsername
+        {
+            get
+            {
+                if (!String.IsNullOrEmpty(Username))
+                    return Username;
+
+                return GetInheritedUsername(ParentFolder);
+            }
+        }
+
+        public string GetInheritedUsername(BookmarksFolder currentFolder)
+        {
+            if (currentFolder == null)
+                return null;
+
+            else if (!String.IsNullOrEmpty(currentFolder.Username))
+                return currentFolder.Username;
+
+            return GetInheritedUsername(currentFolder.ParentFolder);
+        }
+
+        [XmlIgnore]
+        public SecureString InheritedPassword
+        {
+            get
+            {
+                if (_password != null && _password.Length > 0)
+                    return _password;
+
+                return GetInheritedPassword(ParentFolder);
+            }
+        }
+
+        public SecureString GetInheritedPassword(BookmarksFolder currentFolder)
+        {
+            if (currentFolder == null)
+                return null;
+
+            else if (currentFolder.Password != null && currentFolder.Password.Length > 0)
+                return currentFolder.Password;
+
+            return GetInheritedPassword(currentFolder.ParentFolder);
         }
 
         /// <summary>

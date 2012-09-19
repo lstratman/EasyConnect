@@ -61,7 +61,7 @@ namespace EasyConnect
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Bookmarks");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Bookmarks");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BookmarksWindow));
             this._splitContainer = new System.Windows.Forms.SplitContainer();
             this._bookmarksFoldersTreeView = new System.Windows.Forms.TreeView();
@@ -74,7 +74,6 @@ namespace EasyConnect
             this._folderOpenAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._folderOpenAllNewWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-            this.updateAllPasswordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this._renameFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -89,6 +88,7 @@ namespace EasyConnect
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this._exportBookMarkMenuitem = new System.Windows.Forms.ToolStripMenuItem();
             this._importBookmarkMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._setUsernamePasswordMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._bookmarkContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._openBookmarkNewTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._openBookmarkNewWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -104,6 +104,7 @@ namespace EasyConnect
             this._bookmarkExportDialog = new System.Windows.Forms.SaveFileDialog();
             this._bookmarkImportDialog = new System.Windows.Forms.OpenFileDialog();
             this._dragImageList = new System.Windows.Forms.ImageList(this.components);
+            this._clearUsernamePasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
             this._splitContainer.Panel2.SuspendLayout();
@@ -145,10 +146,10 @@ namespace EasyConnect
             this._bookmarksFoldersTreeView.LabelEdit = true;
             this._bookmarksFoldersTreeView.Location = new System.Drawing.Point(12, 12);
             this._bookmarksFoldersTreeView.Name = "_bookmarksFoldersTreeView";
-            treeNode1.Name = "root";
-            treeNode1.Text = "Bookmarks";
+            treeNode2.Name = "root";
+            treeNode2.Text = "Bookmarks";
             this._bookmarksFoldersTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            treeNode2});
             this._bookmarksFoldersTreeView.SelectedImageIndex = 1;
             this._bookmarksFoldersTreeView.ShowRootLines = false;
             this._bookmarksFoldersTreeView.Size = new System.Drawing.Size(147, 400);
@@ -218,7 +219,8 @@ namespace EasyConnect
             this._folderOpenAllMenuItem,
             this._folderOpenAllNewWindowMenuItem,
             this.toolStripSeparator9,
-            this.updateAllPasswordsToolStripMenuItem,
+            this._setUsernamePasswordMenuItem,
+            this._clearUsernamePasswordToolStripMenuItem,
             this.toolStripSeparator1,
             this._renameFolderMenuItem,
             this.toolStripSeparator2,
@@ -235,7 +237,7 @@ namespace EasyConnect
             this._importBookmarkMenuItem});
             this._folderContextMenu.Name = "_folderContextMenu";
             this._folderContextMenu.ShowImageMargin = false;
-            this._folderContextMenu.Size = new System.Drawing.Size(248, 304);
+            this._folderContextMenu.Size = new System.Drawing.Size(248, 348);
             // 
             // _folderOpenAllMenuItem
             // 
@@ -255,13 +257,6 @@ namespace EasyConnect
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
             this.toolStripSeparator9.Size = new System.Drawing.Size(244, 6);
-            // 
-            // updateAllPasswordsToolStripMenuItem
-            // 
-            this.updateAllPasswordsToolStripMenuItem.Name = "updateAllPasswordsToolStripMenuItem";
-            this.updateAllPasswordsToolStripMenuItem.Size = new System.Drawing.Size(247, 22);
-            this.updateAllPasswordsToolStripMenuItem.Text = "Update all passwords...";
-            this.updateAllPasswordsToolStripMenuItem.Click += new System.EventHandler(this.updateAllPasswordsToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -350,6 +345,13 @@ namespace EasyConnect
             this._importBookmarkMenuItem.Size = new System.Drawing.Size(247, 22);
             this._importBookmarkMenuItem.Text = "Import";
             this._importBookmarkMenuItem.Click += new System.EventHandler(this._importBookmarkMenuItem_Click);
+            // 
+            // _setUsernamePasswordMenuItem
+            // 
+            this._setUsernamePasswordMenuItem.Name = "_setUsernamePasswordMenuItem";
+            this._setUsernamePasswordMenuItem.Size = new System.Drawing.Size(247, 22);
+            this._setUsernamePasswordMenuItem.Text = "Set username and password...";
+            this._setUsernamePasswordMenuItem.Click += new System.EventHandler(this._setUsernamePasswordMenuItem_Click);
             // 
             // _bookmarkContextMenu
             // 
@@ -459,6 +461,13 @@ namespace EasyConnect
             this._dragImageList.ImageSize = new System.Drawing.Size(16, 16);
             this._dragImageList.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // _clearUsernamePasswordToolStripMenuItem
+            // 
+            this._clearUsernamePasswordToolStripMenuItem.Name = "_clearUsernamePasswordToolStripMenuItem";
+            this._clearUsernamePasswordToolStripMenuItem.Size = new System.Drawing.Size(247, 22);
+            this._clearUsernamePasswordToolStripMenuItem.Text = "Clear username and password";
+            this._clearUsernamePasswordToolStripMenuItem.Click += new System.EventHandler(this._clearUsernamePasswordToolStripMenuItem_Click);
+            // 
             // BookmarksWindow
             // 
             this.BackColor = System.Drawing.Color.Silver;
@@ -488,7 +497,8 @@ namespace EasyConnect
         private ToolStripMenuItem _importBookmarkMenuItem;
         private OpenFileDialog _bookmarkImportDialog;
         private ToolStripSeparator toolStripSeparator9;
-        private ToolStripMenuItem updateAllPasswordsToolStripMenuItem;
         private ImageList _dragImageList;
+        private ToolStripMenuItem _setUsernamePasswordMenuItem;
+        private ToolStripMenuItem _clearUsernamePasswordToolStripMenuItem;
     }
 }

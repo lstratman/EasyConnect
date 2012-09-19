@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Windows.Forms;
 using ViewerX;
 
@@ -15,11 +16,12 @@ namespace EasyConnect.Protocols.Vnc
         public override void Connect()
         {
             string password = null;
+            SecureString inheritedPassword = Connection.InheritedPassword;
 
-            if (Connection.Password != null)
-                password = Marshal.PtrToStringAnsi(Marshal.SecureStringToGlobalAllocAnsi(Connection.Password));
+            if (inheritedPassword != null && inheritedPassword.Length > 0)
+                password = Marshal.PtrToStringAnsi(Marshal.SecureStringToGlobalAllocAnsi(inheritedPassword));
 
-            _vncConnection.MsUser = Connection.Username;
+            _vncConnection.MsUser = Connection.InheritedUsername;
             _vncConnection.ScaleEnable = Connection.Scale;
             _vncConnection.StretchMode = Connection.Scale
                                              ? ScreenStretchMode.SSM_ASPECT

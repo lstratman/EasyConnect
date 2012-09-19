@@ -84,6 +84,12 @@ namespace EasyConnect.Protocols.Rdp
                                                ? new SecureString()
                                                : Connection.Password.Copy());
 
+            if (String.IsNullOrEmpty(Connection.Username) && !String.IsNullOrEmpty(Connection.InheritedUsername))
+                _inheritedUsernameLabel.Text = "Inheriting " + Connection.InheritedUsername + " from parent folders";
+
+            if ((Connection.Password == null || Connection.Password.Length == 0) && Connection.InheritedPassword != null && Connection.InheritedPassword.Length > 0)
+                _inheritedPasswordLabel.Text = "Inheriting a password from parent folders";
+
             // Enumerate the desktop display modes and add them to the resolutions slider
             DEVMODEW devMode = new DEVMODEW();
             uint modeNumber = 0;
@@ -229,6 +235,29 @@ namespace EasyConnect.Protocols.Rdp
                 panel.Width += _flowLayoutPanel.Width - _previousWidth;
 
             _previousWidth = _flowLayoutPanel.Width;
+        }
+
+        private void _userNameTextBox_TextChanged(object sender, EventArgs e)
+        {
+            _inheritedUsernameLabel.Text = String.IsNullOrEmpty(_userNameTextBox.Text) &&
+                                           !String.IsNullOrEmpty(Connection.GetInheritedUsername(Connection.ParentFolder))
+                                               ? "Inheriting " + Connection.InheritedUsername + " from parent folders"
+                                               : "";
+        }
+
+        private void _passwordTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (_passwordTextBox.SecureText != null && _passwordTextBox.SecureText.Length > 0)
+                _inheritedPasswordLabel.Text = "";
+
+            else
+            {
+                SecureString inheritedPassword = Connection.GetInheritedPassword(Connection.ParentFolder);
+
+                _inheritedPasswordLabel.Text = inheritedPassword != null && inheritedPassword.Length > 0
+                                                   ? "Inheriting a password from parent folders"
+                                                   : "";
+            }
         }
     }
 }

@@ -38,15 +38,6 @@ namespace EasyConnect.Protocols.Ssh
         }
 
         /// <summary>
-        /// Username, if any, that should be presented when establishing the connection.
-        /// </summary>
-        public string Username
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// RSA key file that should be presented when establishing the connection.
         /// </summary>
         public string IdentityFile

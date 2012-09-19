@@ -33,6 +33,13 @@
             this._displayLabel = new System.Windows.Forms.Label();
             this._displayNumberLabel = new System.Windows.Forms.Label();
             this._flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this._generalPanel = new System.Windows.Forms.Panel();
+            this._passwordTextBox = new SecurePasswordTextBox.SecureTextBox();
+            this._userNameLabel = new System.Windows.Forms.Label();
+            this._userNameTextBox = new System.Windows.Forms.TextBox();
+            this._passwordLabel = new System.Windows.Forms.Label();
+            this._generalLabel = new System.Windows.Forms.Label();
+            this._generalDividerPanel = new System.Windows.Forms.Panel();
             this._hostPanel = new System.Windows.Forms.Panel();
             this._portUpDown = new System.Windows.Forms.NumericUpDown();
             this._portLabel = new System.Windows.Forms.Label();
@@ -46,19 +53,14 @@
             this._scaleCheckbox = new System.Windows.Forms.CheckBox();
             this._displayUpDown = new System.Windows.Forms.NumericUpDown();
             this._scaleLabel = new System.Windows.Forms.Label();
-            this._generalPanel = new System.Windows.Forms.Panel();
-            this._userNameLabel = new System.Windows.Forms.Label();
-            this._userNameTextBox = new System.Windows.Forms.TextBox();
-            this._passwordLabel = new System.Windows.Forms.Label();
-            this._generalLabel = new System.Windows.Forms.Label();
-            this._generalDividerPanel = new System.Windows.Forms.Panel();
-            this._passwordTextBox = new SecurePasswordTextBox.SecureTextBox();
+            this._inheritedPasswordLabel = new System.Windows.Forms.Label();
+            this._inheritedUsernameLabel = new System.Windows.Forms.Label();
             this._flowLayoutPanel.SuspendLayout();
+            this._generalPanel.SuspendLayout();
             this._hostPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._portUpDown)).BeginInit();
             this._displayPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._displayUpDown)).BeginInit();
-            this._generalPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // _displayLabel
@@ -96,6 +98,78 @@
             this._flowLayoutPanel.Size = new System.Drawing.Size(719, 683);
             this._flowLayoutPanel.TabIndex = 83;
             this._flowLayoutPanel.WrapContents = false;
+            // 
+            // _generalPanel
+            // 
+            this._generalPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._generalPanel.Controls.Add(this._inheritedPasswordLabel);
+            this._generalPanel.Controls.Add(this._inheritedUsernameLabel);
+            this._generalPanel.Controls.Add(this._passwordTextBox);
+            this._generalPanel.Controls.Add(this._userNameLabel);
+            this._generalPanel.Controls.Add(this._userNameTextBox);
+            this._generalPanel.Controls.Add(this._passwordLabel);
+            this._generalPanel.Controls.Add(this._generalLabel);
+            this._generalPanel.Location = new System.Drawing.Point(18, 18);
+            this._generalPanel.Name = "_generalPanel";
+            this._generalPanel.Size = new System.Drawing.Size(684, 74);
+            this._generalPanel.TabIndex = 86;
+            // 
+            // _passwordTextBox
+            // 
+            this._passwordTextBox.Location = new System.Drawing.Point(247, 36);
+            this._passwordTextBox.Name = "_passwordTextBox";
+            this._passwordTextBox.PasswordChar = '*';
+            this._passwordTextBox.SecureText = secureString1;
+            this._passwordTextBox.Size = new System.Drawing.Size(154, 20);
+            this._passwordTextBox.TabIndex = 82;
+            this._passwordTextBox.TextChanged += new System.EventHandler(this._passwordTextBox_TextChanged);
+            // 
+            // _userNameLabel
+            // 
+            this._userNameLabel.Location = new System.Drawing.Point(91, 9);
+            this._userNameLabel.Name = "_userNameLabel";
+            this._userNameLabel.Size = new System.Drawing.Size(150, 20);
+            this._userNameLabel.TabIndex = 49;
+            this._userNameLabel.Text = "User name:";
+            this._userNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // _userNameTextBox
+            // 
+            this._userNameTextBox.Location = new System.Drawing.Point(247, 10);
+            this._userNameTextBox.Name = "_userNameTextBox";
+            this._userNameTextBox.Size = new System.Drawing.Size(154, 20);
+            this._userNameTextBox.TabIndex = 48;
+            this._userNameTextBox.TextChanged += new System.EventHandler(this._userNameTextBox_TextChanged);
+            // 
+            // _passwordLabel
+            // 
+            this._passwordLabel.Location = new System.Drawing.Point(91, 35);
+            this._passwordLabel.Name = "_passwordLabel";
+            this._passwordLabel.Size = new System.Drawing.Size(150, 20);
+            this._passwordLabel.TabIndex = 50;
+            this._passwordLabel.Text = "Password:";
+            this._passwordLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // _generalLabel
+            // 
+            this._generalLabel.AutoSize = true;
+            this._generalLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._generalLabel.Location = new System.Drawing.Point(8, 11);
+            this._generalLabel.Name = "_generalLabel";
+            this._generalLabel.Size = new System.Drawing.Size(63, 16);
+            this._generalLabel.TabIndex = 51;
+            this._generalLabel.Text = "General";
+            // 
+            // _generalDividerPanel
+            // 
+            this._generalDividerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._generalDividerPanel.BackColor = System.Drawing.Color.Silver;
+            this._generalDividerPanel.Location = new System.Drawing.Point(18, 98);
+            this._generalDividerPanel.Name = "_generalDividerPanel";
+            this._generalDividerPanel.Size = new System.Drawing.Size(684, 1);
+            this._generalDividerPanel.TabIndex = 85;
             // 
             // _hostPanel
             // 
@@ -228,73 +302,23 @@
             this._scaleLabel.Text = "Scale?:";
             this._scaleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // _generalPanel
+            // _inheritedPasswordLabel
             // 
-            this._generalPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this._inheritedPasswordLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._generalPanel.Controls.Add(this._passwordTextBox);
-            this._generalPanel.Controls.Add(this._userNameLabel);
-            this._generalPanel.Controls.Add(this._userNameTextBox);
-            this._generalPanel.Controls.Add(this._passwordLabel);
-            this._generalPanel.Controls.Add(this._generalLabel);
-            this._generalPanel.Location = new System.Drawing.Point(18, 18);
-            this._generalPanel.Name = "_generalPanel";
-            this._generalPanel.Size = new System.Drawing.Size(684, 74);
-            this._generalPanel.TabIndex = 86;
+            this._inheritedPasswordLabel.Location = new System.Drawing.Point(407, 37);
+            this._inheritedPasswordLabel.Name = "_inheritedPasswordLabel";
+            this._inheritedPasswordLabel.Size = new System.Drawing.Size(263, 16);
+            this._inheritedPasswordLabel.TabIndex = 94;
             // 
-            // _userNameLabel
+            // _inheritedUsernameLabel
             // 
-            this._userNameLabel.Location = new System.Drawing.Point(91, 9);
-            this._userNameLabel.Name = "_userNameLabel";
-            this._userNameLabel.Size = new System.Drawing.Size(150, 20);
-            this._userNameLabel.TabIndex = 49;
-            this._userNameLabel.Text = "User name:";
-            this._userNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // _userNameTextBox
-            // 
-            this._userNameTextBox.Location = new System.Drawing.Point(247, 10);
-            this._userNameTextBox.Name = "_userNameTextBox";
-            this._userNameTextBox.Size = new System.Drawing.Size(154, 20);
-            this._userNameTextBox.TabIndex = 48;
-            // 
-            // _passwordLabel
-            // 
-            this._passwordLabel.Location = new System.Drawing.Point(91, 35);
-            this._passwordLabel.Name = "_passwordLabel";
-            this._passwordLabel.Size = new System.Drawing.Size(150, 20);
-            this._passwordLabel.TabIndex = 50;
-            this._passwordLabel.Text = "Password:";
-            this._passwordLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // _generalLabel
-            // 
-            this._generalLabel.AutoSize = true;
-            this._generalLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._generalLabel.Location = new System.Drawing.Point(8, 11);
-            this._generalLabel.Name = "_generalLabel";
-            this._generalLabel.Size = new System.Drawing.Size(63, 16);
-            this._generalLabel.TabIndex = 51;
-            this._generalLabel.Text = "General";
-            // 
-            // _generalDividerPanel
-            // 
-            this._generalDividerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this._inheritedUsernameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._generalDividerPanel.BackColor = System.Drawing.Color.Silver;
-            this._generalDividerPanel.Location = new System.Drawing.Point(18, 98);
-            this._generalDividerPanel.Name = "_generalDividerPanel";
-            this._generalDividerPanel.Size = new System.Drawing.Size(684, 1);
-            this._generalDividerPanel.TabIndex = 85;
-            // 
-            // _passwordTextBox
-            // 
-            this._passwordTextBox.Location = new System.Drawing.Point(247, 36);
-            this._passwordTextBox.Name = "_passwordTextBox";
-            this._passwordTextBox.PasswordChar = '*';
-            this._passwordTextBox.SecureText = secureString1;
-            this._passwordTextBox.Size = new System.Drawing.Size(154, 20);
-            this._passwordTextBox.TabIndex = 82;
+            this._inheritedUsernameLabel.Location = new System.Drawing.Point(407, 11);
+            this._inheritedUsernameLabel.Name = "_inheritedUsernameLabel";
+            this._inheritedUsernameLabel.Size = new System.Drawing.Size(263, 16);
+            this._inheritedUsernameLabel.TabIndex = 93;
             // 
             // VncOptionsForm
             // 
@@ -308,14 +332,14 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VncOptionsForm_FormClosing);
             this.Load += new System.EventHandler(this.VncOptionsForm_Load);
             this._flowLayoutPanel.ResumeLayout(false);
+            this._generalPanel.ResumeLayout(false);
+            this._generalPanel.PerformLayout();
             this._hostPanel.ResumeLayout(false);
             this._hostPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._portUpDown)).EndInit();
             this._displayPanel.ResumeLayout(false);
             this._displayPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._displayUpDown)).EndInit();
-            this._generalPanel.ResumeLayout(false);
-            this._generalPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -345,5 +369,7 @@
         private System.Windows.Forms.Label _generalLabel;
         private System.Windows.Forms.Panel _generalDividerPanel;
         private SecurePasswordTextBox.SecureTextBox _passwordTextBox;
+        private System.Windows.Forms.Label _inheritedPasswordLabel;
+        private System.Windows.Forms.Label _inheritedUsernameLabel;
     }
 }

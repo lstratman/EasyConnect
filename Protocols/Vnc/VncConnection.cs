@@ -48,12 +48,6 @@ namespace EasyConnect.Protocols.Vnc
             set;
         }
 
-        public string Username
-        {
-            get;
-            set;
-        }
-
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);

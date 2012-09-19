@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -30,6 +31,9 @@ namespace EasyConnect.Protocols
         [NonSerialized]
         protected BookmarksFolder _parentFolder = null;
 
+        [NonSerialized]
+        protected SecureString _password = null;
+
         /// <summary>
         /// Default constructor, wires up the collection modification events in <see cref="_bookmarks"/> and <see cref="_childFolders"/>.
         /// </summary>
@@ -54,6 +58,65 @@ namespace EasyConnect.Protocols
             set
             {
                 _parentFolder = value;
+            }
+        }
+
+        public string Username
+        {
+            get;
+            set;
+        }
+
+        [XmlIgnore]
+        public SecureString Password
+        {
+            get
+            {
+                return _password;
+            }
+
+            set
+            {
+                _password = value;
+            }
+        }
+
+        /// <summary>
+        /// Encrypted and Base64-encoded data in <see cref="_password"/>
+        /// </summary>
+        [XmlElement("Password")]
+        public string EncryptedPassword
+        {
+            get
+            {
+                if (Password == null || Password.Length == 0)
+                    return null;
+
+                return Convert.ToBase64String(ConnectionFactory.Encrypt(_password));
+            }
+
+            set
+            {
+                if (String.IsNullOrEmpty(value))
+                {
+                    Password = null;
+                    return;
+                }
+
+                // Decrypt the password and put it into a secure string
+                SecureString password = new SecureString();
+                byte[] decryptedPassword = ConnectionFactory.Decrypt(Convert.FromBase64String(value));
+
+                for (int i = 0; i < decryptedPassword.Length; i++)
+                {
+                    if (decryptedPassword[i] == 0)
+                        break;
+
+                    password.AppendChar((char)decryptedPassword[i]);
+                    decryptedPassword[i] = 0;
+                }
+
+                Password = password;
             }
         }
 
@@ -210,6 +273,14 @@ namespace EasyConnect.Protocols
                         Name = reader.ReadElementContentAsString();
                         break;
 
+                    case "Username":
+                        Username = reader.ReadElementContentAsString();
+                        break;
+
+                    case "Password":
+                        EncryptedPassword = reader.ReadElementContentAsString();
+                        break;
+
                     case "ChildFolders":
                         if (!reader.IsEmptyElement)
                         {
@@ -254,6 +325,13 @@ namespace EasyConnect.Protocols
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteElementString("Name", Name);
+
+            if (Password != null)
+                writer.WriteElementString("Password", EncryptedPassword);
+
+            if (!String.IsNullOrEmpty(Username))
+                writer.WriteElementString("Username", Username);
+
             writer.WriteStartElement("ChildFolders");
 
             foreach (BookmarksFolder childFolder in ChildFolders)

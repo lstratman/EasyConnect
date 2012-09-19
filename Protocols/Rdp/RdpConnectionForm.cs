@@ -392,11 +392,13 @@ namespace EasyConnect.Protocols.Rdp
             PersistentBitmapCaching = Connection.PersistentBitmapCaching;
             ConnectToAdminChannel = Connection.ConnectToAdminChannel;
 
-            if (!String.IsNullOrEmpty(Connection.Username))
-                Username = Connection.Username;
+            if (!String.IsNullOrEmpty(Connection.InheritedUsername))
+                Username = Connection.InheritedUsername;
 
-            if (Connection.Password != null && Connection.Password.Length > 0)
-                Password = Connection.Password;
+            SecureString password = Connection.InheritedPassword;
+
+            if (password != null && password.Length > 0)
+                Password = password;
 
             Host = Connection.Host;
 

@@ -59,6 +59,8 @@
             this._backgroundColorLabel = new System.Windows.Forms.Label();
             this._displayDividerPanel = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this._clearScreenKeysLabel = new System.Windows.Forms.Label();
+            this._clearScreenLabel = new System.Windows.Forms.Label();
             this._pasteKeysLabel = new System.Windows.Forms.Label();
             this._copyKeysLabel = new System.Windows.Forms.Label();
             this._pasteLabel = new System.Windows.Forms.Label();
@@ -68,8 +70,8 @@
             this._fontDialog = new System.Windows.Forms.FontDialog();
             this._openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this._identityInfoTooltip = new System.Windows.Forms.ToolTip(this.components);
-            this._clearScreenKeysLabel = new System.Windows.Forms.Label();
-            this._clearScreenLabel = new System.Windows.Forms.Label();
+            this._inheritedPasswordLabel = new System.Windows.Forms.Label();
+            this._inheritedUsernameLabel = new System.Windows.Forms.Label();
             this._flowLayoutPanel.SuspendLayout();
             this._hostPanel.SuspendLayout();
             this._generalPanel.SuspendLayout();
@@ -111,6 +113,7 @@
             this._userNameTextBox.Name = "_userNameTextBox";
             this._userNameTextBox.Size = new System.Drawing.Size(154, 20);
             this._userNameTextBox.TabIndex = 48;
+            this._userNameTextBox.TextChanged += new System.EventHandler(this._userNameTextBox_TextChanged);
             // 
             // _flowLayoutPanel
             // 
@@ -184,6 +187,8 @@
             // 
             this._generalPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this._generalPanel.Controls.Add(this._inheritedPasswordLabel);
+            this._generalPanel.Controls.Add(this._inheritedUsernameLabel);
             this._generalPanel.Controls.Add(this._identityInfoLink);
             this._generalPanel.Controls.Add(this._identityFileTextbox);
             this._generalPanel.Controls.Add(this._identityFileBrowseButton);
@@ -244,6 +249,7 @@
             this._passwordTextBox.SecureText = secureString1;
             this._passwordTextBox.Size = new System.Drawing.Size(154, 20);
             this._passwordTextBox.TabIndex = 84;
+            this._passwordTextBox.TextChanged += new System.EventHandler(this._passwordTextBox_TextChanged);
             // 
             // _generalDividerPanel
             // 
@@ -371,6 +377,25 @@
             this.panel2.Size = new System.Drawing.Size(684, 93);
             this.panel2.TabIndex = 88;
             // 
+            // _clearScreenKeysLabel
+            // 
+            this._clearScreenKeysLabel.AutoSize = true;
+            this._clearScreenKeysLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._clearScreenKeysLabel.Location = new System.Drawing.Point(243, 65);
+            this._clearScreenKeysLabel.Name = "_clearScreenKeysLabel";
+            this._clearScreenKeysLabel.Size = new System.Drawing.Size(36, 13);
+            this._clearScreenKeysLabel.TabIndex = 92;
+            this._clearScreenKeysLabel.Text = "Alt+L";
+            // 
+            // _clearScreenLabel
+            // 
+            this._clearScreenLabel.Location = new System.Drawing.Point(91, 61);
+            this._clearScreenLabel.Name = "_clearScreenLabel";
+            this._clearScreenLabel.Size = new System.Drawing.Size(150, 20);
+            this._clearScreenLabel.TabIndex = 91;
+            this._clearScreenLabel.Text = "Clear screen:";
+            this._clearScreenLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // _pasteKeysLabel
             // 
             this._pasteKeysLabel.AutoSize = true;
@@ -428,24 +453,23 @@
             // 
             this._openFileDialog.Filter = "Identity files (id_rsa, id_dsa)|id_rsa;id_dsa|All files (*.*)|*.*";
             // 
-            // _clearScreenKeysLabel
+            // _inheritedPasswordLabel
             // 
-            this._clearScreenKeysLabel.AutoSize = true;
-            this._clearScreenKeysLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._clearScreenKeysLabel.Location = new System.Drawing.Point(243, 65);
-            this._clearScreenKeysLabel.Name = "_clearScreenKeysLabel";
-            this._clearScreenKeysLabel.Size = new System.Drawing.Size(36, 13);
-            this._clearScreenKeysLabel.TabIndex = 92;
-            this._clearScreenKeysLabel.Text = "Alt+L";
+            this._inheritedPasswordLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._inheritedPasswordLabel.Location = new System.Drawing.Point(407, 39);
+            this._inheritedPasswordLabel.Name = "_inheritedPasswordLabel";
+            this._inheritedPasswordLabel.Size = new System.Drawing.Size(263, 16);
+            this._inheritedPasswordLabel.TabIndex = 92;
             // 
-            // _clearScreenLabel
+            // _inheritedUsernameLabel
             // 
-            this._clearScreenLabel.Location = new System.Drawing.Point(91, 61);
-            this._clearScreenLabel.Name = "_clearScreenLabel";
-            this._clearScreenLabel.Size = new System.Drawing.Size(150, 20);
-            this._clearScreenLabel.TabIndex = 91;
-            this._clearScreenLabel.Text = "Clear screen:";
-            this._clearScreenLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this._inheritedUsernameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._inheritedUsernameLabel.Location = new System.Drawing.Point(407, 13);
+            this._inheritedUsernameLabel.Name = "_inheritedUsernameLabel";
+            this._inheritedUsernameLabel.Size = new System.Drawing.Size(263, 16);
+            this._inheritedUsernameLabel.TabIndex = 91;
             // 
             // SshOptionsForm
             // 
@@ -512,5 +536,7 @@
         private System.Windows.Forms.ToolTip _identityInfoTooltip;
         private System.Windows.Forms.Label _clearScreenKeysLabel;
         private System.Windows.Forms.Label _clearScreenLabel;
+        private System.Windows.Forms.Label _inheritedPasswordLabel;
+        private System.Windows.Forms.Label _inheritedUsernameLabel;
     }
 }
