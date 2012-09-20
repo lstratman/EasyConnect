@@ -29,7 +29,6 @@ namespace EasyConnect.Protocols.Ssh
         public SshConnection(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            Username = info.GetString("Username");
             IdentityFile = info.GetString("IdentityFile");
             BackgroundColor = Color.FromArgb(info.GetInt32("BackgroundColor"));
             TextColor = Color.FromArgb(info.GetInt32("TextColor"));

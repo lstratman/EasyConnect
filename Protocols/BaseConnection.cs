@@ -46,6 +46,7 @@ namespace EasyConnect.Protocols
             Name = info.GetString("Name");
             Host = info.GetString("Host");
             Guid = new Guid(info.GetString("Guid"));
+            Username = info.GetString("Username");
             string encryptedPassword = info.GetString("Password");
 
             if (!String.IsNullOrEmpty(encryptedPassword))
@@ -179,11 +180,15 @@ namespace EasyConnect.Protocols
             }
         }
 
+        /// <summary>
+        /// <see cref="BookmarksFolder.Username"/> value for the first parent <see cref="BookmarksFolder"/> that contains a value for that property.
+        /// </summary>
         [XmlIgnore]
         public string InheritedUsername
         {
             get
             {
+                // If there's a username defined for this connection, return that, otherwise look at the parent folders
                 if (!String.IsNullOrEmpty(Username))
                     return Username;
 
@@ -191,6 +196,13 @@ namespace EasyConnect.Protocols
             }
         }
 
+        /// <summary>
+        /// Recursive method that searches parent <see cref="BookmarksFolder"/> instances for one that contains a value for 
+        /// <see cref="BookmarksFolder.Username"/> and returns that value.
+        /// </summary>
+        /// <param name="currentFolder">Current folder that we're looking at.</param>
+        /// <returns><see cref="BookmarksFolder.Username"/> value for <paramref name="currentFolder"/> if a value is present for that property, otherwise the
+        /// value for the nearest parent folder.</returns>
         public string GetInheritedUsername(BookmarksFolder currentFolder)
         {
             if (currentFolder == null)
@@ -202,11 +214,15 @@ namespace EasyConnect.Protocols
             return GetInheritedUsername(currentFolder.ParentFolder);
         }
 
+        /// <summary>
+        /// <see cref="BookmarksFolder.Password"/> value for the first parent <see cref="BookmarksFolder"/> that contains a value for that property.
+        /// </summary>
         [XmlIgnore]
         public SecureString InheritedPassword
         {
             get
             {
+                // If there's a password defined for this connection, return that, otherwise look at the parent folders
                 if (_password != null && _password.Length > 0)
                     return _password;
 
@@ -214,6 +230,13 @@ namespace EasyConnect.Protocols
             }
         }
 
+        /// <summary>
+        /// Recursive method that searches parent <see cref="BookmarksFolder"/> instances for one that contains a value for 
+        /// <see cref="BookmarksFolder.Password"/> and returns that value.
+        /// </summary>
+        /// <param name="currentFolder">Current folder that we're looking at.</param>
+        /// <returns><see cref="BookmarksFolder.Password"/> value for <paramref name="currentFolder"/> if a value is present for that property, otherwise the
+        /// value for the nearest parent folder.</returns>
         public SecureString GetInheritedPassword(BookmarksFolder currentFolder)
         {
             if (currentFolder == null)
@@ -249,6 +272,7 @@ namespace EasyConnect.Protocols
             info.AddValue("Name", Name);
             info.AddValue("Host", Host);
             info.AddValue("Guid", Guid.ToString());
+            info.AddValue("Username", Username);
         }
 
         /// <summary>
@@ -273,6 +297,7 @@ namespace EasyConnect.Protocols
         {
             BaseConnection clonedConnection = (BaseConnection) Clone();
             clonedConnection.Password = null;
+            clonedConnection.Username = null;
 
             return clonedConnection;
         }

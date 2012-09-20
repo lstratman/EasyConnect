@@ -31,6 +31,9 @@ namespace EasyConnect.Protocols
         [NonSerialized]
         protected BookmarksFolder _parentFolder = null;
 
+        /// <summary>
+        /// Password that should be used for all descendant <see cref="IConnection"/>s unless they have their own value explicitly defined.
+        /// </summary>
         [NonSerialized]
         protected SecureString _password = null;
 
@@ -61,12 +64,18 @@ namespace EasyConnect.Protocols
             }
         }
 
+        /// <summary>
+        /// Username that should be used for all descendant <see cref="IConnection"/>s unless they have their own value explicitly defined.
+        /// </summary>
         public string Username
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Password that should be used for all descendant <see cref="IConnection"/>s unless they have their own value explicitly defined.
+        /// </summary>
         [XmlIgnore]
         public SecureString Password
         {

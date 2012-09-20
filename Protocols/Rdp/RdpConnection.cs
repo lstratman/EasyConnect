@@ -44,10 +44,8 @@ namespace EasyConnect.Protocols.Rdp
             DesktopWidth = info.GetInt32("DesktopWidth");
             FontSmoothing = info.GetBoolean("FontSmoothing");
             KeyboardMode = info.GetValue<KeyboardMode>("KeyboardMode");
-            Name = info.GetString("Name");
             PersistentBitmapCaching = info.GetBoolean("PersistentBitmapCaching");
             RecordingMode = info.GetValue<RecordingMode>("RecordingMode");
-            Username = info.GetString("Username");
             VisualStyles = info.GetBoolean("VisualStyles");
             WindowContentsWhileDragging = info.GetBoolean("WindowContentsWhileDragging");
             ConnectToAdminChannel = info.GetBoolean("ConnectToAdminChannel");
@@ -229,23 +227,9 @@ namespace EasyConnect.Protocols.Rdp
             info.AddValue("KeyboardMode", KeyboardMode);
             info.AddValue("PersistentBitmapCaching", PersistentBitmapCaching);
             info.AddValue("RecordingMode", RecordingMode);
-            info.AddValue("Username", Username);
             info.AddValue("VisualStyles", VisualStyles);
             info.AddValue("WindowContentsWhileDragging", WindowContentsWhileDragging);
             info.AddValue("ConnectToAdminChannel", ConnectToAdminChannel);
-        }
-
-        /// <summary>
-        /// Creates an anonymized copy of this object with sensitive data, like <see cref="Username"/> and <see cref="BaseConnection.Password"/>, scrubbed.
-        /// </summary>
-        /// <returns>an anonymized copy of this object with sensitive data, like <see cref="Username"/> and <see cref="BaseConnection.Password"/>, 
-        /// scrubbed.</returns>
-        public override object CloneAnon()
-        {
-            RdpConnection clonedConnection = (RdpConnection) base.CloneAnon();
-            clonedConnection.Username = null;
-
-            return clonedConnection;
         }
     }
 }
