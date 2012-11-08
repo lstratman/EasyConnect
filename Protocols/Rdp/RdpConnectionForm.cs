@@ -176,6 +176,7 @@ namespace EasyConnect.Protocols.Rdp
 
             set
             {
+                _rdpWindow.AdvancedSettings6.RedirectClipboard = value;
                 _rdpWindow.AdvancedSettings.DisableRdpdr = (!(value || ConnectPrinters)
                                                                 ? 1
                                                                 : 0);
@@ -350,6 +351,7 @@ namespace EasyConnect.Protocols.Rdp
             set
             {
                 _rdpWindow.AdvancedSettings3.ConnectToServerConsole = value;
+                _rdpWindow.AdvancedSettings7.ConnectToAdministerServer = value;
             }
         }
 

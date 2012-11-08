@@ -31,20 +31,20 @@ namespace EasyConnect.Protocols.Rdp
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RdpConnectionForm));
-            this._rdpWindow = new AxMSTSCLib.AxMsRdpClient2();
+            this._rdpWindow = new AxMSTSCLib.AxMsRdpClient6NotSafeForScripting();
             ((System.ComponentModel.ISupportInitialize)(this._rdpWindow)).BeginInit();
             this.SuspendLayout();
             // 
             // _rdpWindow
             // 
+            this._rdpWindow.Dock = System.Windows.Forms.DockStyle.Fill;
             this._rdpWindow.Enabled = true;
-            this._rdpWindow.Location = new System.Drawing.Point(-1, -1);
-            this._rdpWindow.Name = "_rdpClient";
-            this._rdpWindow.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("_rdpClient.OcxState")));
-            this._rdpWindow.Size = new System.Drawing.Size(286, 264);
-            this._rdpWindow.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+            this._rdpWindow.Location = new System.Drawing.Point(0, 0);
+            this._rdpWindow.Name = "_rdpWindow";
+            this._rdpWindow.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("_rdpWindow.OcxState")));
+            this._rdpWindow.Size = new System.Drawing.Size(284, 262);
             this._rdpWindow.TabIndex = 0;
-            this._rdpWindow.OnDisconnected += _rdpWindow_OnDisconnected;
+            this._rdpWindow.OnDisconnected += new AxMSTSCLib.IMsTscAxEvents_OnDisconnectedEventHandler(this._rdpWindow_OnDisconnected);
             // 
             // RdpConnectionForm
             // 
@@ -62,6 +62,7 @@ namespace EasyConnect.Protocols.Rdp
 
         #endregion
 
-        private AxMSTSCLib.AxMsRdpClient2 _rdpWindow;
+        private AxMSTSCLib.AxMsRdpClient6NotSafeForScripting _rdpWindow;
+
     }
 }
