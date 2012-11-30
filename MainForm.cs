@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -10,7 +9,6 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Security;
 using System.Security.Cryptography;
-using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using EasyConnect.Properties;
@@ -98,17 +96,6 @@ namespace EasyConnect
         /// Application-level (not connection protocol defaults) that the user has set.
         /// </summary>
         protected Options _options;
-
-        /// <summary>
-        /// The preview images for each tab used to display each tab when Aero Peek is activated.
-        /// </summary>
-        protected Dictionary<Form, Bitmap> _previews = new Dictionary<Form, Bitmap>();
-
-        /// <summary>
-        /// When switching between tabs, this keeps track of the tab that was previously active so that, when it is switched away from, we can generate a
-        /// fresh Aero Peek preview image for it.
-        /// </summary>
-        protected TitleBarTab _previousActiveTab = null;
 
         /// <summary>
         /// When populating the application's jump list with the recent connections that the user has made, this is the category that the items go under.
@@ -274,8 +261,6 @@ can be used.";
             }
 
             // Wire up the tab event handlers
-            TabSelected += MainForm_TabSelected;
-            TabDeselecting += MainForm_TabDeselecting;
             TabClicked += MainForm_TabClicked;
 
             ActiveInstance = this;
@@ -508,9 +493,9 @@ can be used.";
         }
 
         /// <summary>
-        /// Handler method that's called when a tab is clicked on.  This is different from the <see cref="MainForm_TabSelected"/> event handler in that this is
-        /// called even if the tab is currently active.  This is used to show the toolbar for <see cref="ConnectionWindow"/> instances that automatically hide
-        /// their toolbars when the connection's UI is focused on.
+        /// Handler method that's called when a tab is clicked on.  This is different from the <see cref="TitleBarTabs.TabSelected"/> event handler in that 
+        /// this is called even if the tab is currently active.  This is used to show the toolbar for <see cref="ConnectionWindow"/> instances that 
+        /// automatically hide their toolbars when the connection's UI is focused on.
         /// </summary>
         /// <param name="sender">Object from which this event originated.</param>
         /// <param name="e">Arguments associated with this event.</param>
@@ -608,6 +593,11 @@ can be used.";
             ShowInEmptyTab(optionsWindow);
         }
 
+        /// <summary>
+        /// Handler method that's closed when the user closes the global options window.  Sets the encryption type and the password that the user selected.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
         void globalOptionsWindow_Closed(object sender, EventArgs e)
         {
             if (_previousEncryptionType != Options.EncryptionType)
@@ -702,47 +692,6 @@ can be used.";
         }
 
         /// <summary>
-        /// Handler method that's called when a <see cref="TitleBarTab"/> is in the process of losing focus.  Grabs an image of the tab's content to be used
-        /// when Aero Peek is activated.
-        /// </summary>
-        /// <param name="sender">Object from which this event originated.</param>
-        /// <param name="e">Arguments associated with this event.</param>
-        protected void MainForm_TabDeselecting(object sender, TitleBarTabCancelEventArgs e)
-        {
-            if (_previousActiveTab == null)
-                return;
-
-            TabbedThumbnail preview = TaskbarManager.Instance.TabbedThumbnail.GetThumbnailPreview(_previousActiveTab.Content);
-
-            if (preview == null)
-                return;
-
-            Bitmap bitmap = TabbedThumbnailScreenCapture.GrabWindowBitmap(_previousActiveTab.Content.Handle, _previousActiveTab.Content.Size);
-
-            preview.SetImage(bitmap);
-
-            // If we already had a preview image for the tab, dispose of it
-            if (_previews.ContainsKey(_previousActiveTab.Content))
-                _previews[_previousActiveTab.Content].Dispose();
-
-            _previews[_previousActiveTab.Content] = bitmap;
-        }
-
-        /// <summary>
-        /// Handler method that's called when a <see cref="TitleBarTab"/> gains focus.  Sets the active window in Aero Peek via a call to 
-        /// <see cref="TabbedThumbnailManager.SetActiveTab(Control)"/>.
-        /// </summary>
-        /// <param name="sender">Object from which this event originated.</param>
-        /// <param name="e">Arguments associated with this event.</param>
-        protected void MainForm_TabSelected(object sender, TitleBarTabEventArgs e)
-        {
-            if (!_addingWindow && SelectedTabIndex != -1 && _previews.ContainsKey(SelectedTab.Content))
-                TaskbarManager.Instance.TabbedThumbnail.SetActiveTab(SelectedTab.Content);
-
-            _previousActiveTab = SelectedTab;
-        }
-
-        /// <summary>
         /// Opens the <see cref="HistoryWindow.HistoricalConnection"/> whose <see cref="IConnection.Guid"/> property matches <paramref name="historyGuid"/>.
         /// </summary>
         /// <param name="historyGuid">GUID used to identify the <see cref="HistoryWindow.HistoricalConnection"/> to open.</param>
@@ -817,30 +766,6 @@ can be used.";
         {
             _history.AddToHistory(connection);
 
-            // Create the Aero Peek preview instance
-            if (!_previews.ContainsKey(connectionWindow))
-            {
-                connectionWindow.FormClosing += ConnectionWindow_FormClosing;
-
-                TabbedThumbnail preview = new TabbedThumbnail(Handle, connectionWindow)
-                    {
-                        Title = connectionWindow.Text,
-                        Tooltip = connectionWindow.Text
-                    };
-
-                preview.SetWindowIcon(connectionWindow.Icon);
-                preview.TabbedThumbnailActivated += preview_TabbedThumbnailActivated;
-                preview.TabbedThumbnailClosed += preview_TabbedThumbnailClosed;
-                preview.TabbedThumbnailBitmapRequested += preview_TabbedThumbnailBitmapRequested;
-                preview.PeekOffset = new Vector(connectionWindow.Location.X, connectionWindow.Location.Y);
-
-                for (Control currentControl = connectionWindow.Parent; currentControl.Parent != null; currentControl = currentControl.Parent)
-                    preview.PeekOffset += new Vector(currentControl.Location.X, currentControl.Location.Y);
-
-                TaskbarManager.Instance.TabbedThumbnail.AddThumbnailPreview(preview);
-                TaskbarManager.Instance.TabbedThumbnail.SetActiveTab(preview);
-            }
-
             // Add the connection to the jump list
             if (_recentConnections.FirstOrDefault((HistoryWindow.HistoricalConnection c) => c.Connection.Guid == connection.Guid) == null)
             {
@@ -858,84 +783,6 @@ can be used.";
                 if (_recentConnections.Count > _jumpList.MaxSlotsInList)
                     _recentConnections.Dequeue();
             }
-        }
-
-        /// <summary>
-        /// Handler method that's called when Aero Peek needs to display a thumbnail for a <see cref="ConnectionWindow"/>; finds the preview bitmap generated
-        /// in <see cref="MainForm_TabDeselecting"/> and returns that.
-        /// </summary>
-        /// <param name="sender">Object from which this event originated.</param>
-        /// <param name="e">Arguments associated with this event.</param>
-        private void preview_TabbedThumbnailBitmapRequested(object sender, TabbedThumbnailBitmapRequestedEventArgs e)
-        {
-            foreach (
-                TitleBarTab rdcWindow in
-                    Tabs.Where(tab => tab.Content is IConnectionForm).Where(
-                        rdcWindow => rdcWindow.Content.Handle == e.WindowHandle && _previews.ContainsKey(rdcWindow.Content)))
-            {
-                e.SetImage(_previews[rdcWindow.Content]);
-                break;
-            }
-        }
-
-        /// <summary>
-        /// Handler method that's called when a <see cref="ConnectionWindow"/> instance is closed.  Cleans up data associated with the window's Aero Peek
-        /// instance.
-        /// </summary>
-        /// <param name="sender">Object from which this event originated.</param>
-        /// <param name="e">Arguments associated with this event.</param>
-        private void ConnectionWindow_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Form window = (Form) sender;
-
-            if (_previews.ContainsKey(window))
-            {
-                _previews[window].Dispose();
-                _previews.Remove(window);
-            }
-
-            if (_previousActiveTab != null && window == _previousActiveTab.Content)
-                _previousActiveTab = null;
-
-            if (!window.IsDisposed)
-                TaskbarManager.Instance.TabbedThumbnail.RemoveThumbnailPreview(window);
-        }
-
-        /// <summary>
-        /// Handler method that's called when the user clicks the close button in an Aero Peek preview thumbnail.  Finds the window associated with the
-        /// thumbnail and calls <see cref="Form.Close"/> on it.
-        /// </summary>
-        /// <param name="sender">Object from which this event originated.</param>
-        /// <param name="e">Arguments associated with this event.</param>
-        private void preview_TabbedThumbnailClosed(object sender, TabbedThumbnailEventArgs e)
-        {
-            foreach (TitleBarTab tab in Tabs.Where(tab => tab.Content.Handle == e.WindowHandle))
-            {
-                tab.Content.Close();
-                TaskbarManager.Instance.TabbedThumbnail.RemoveThumbnailPreview(e.TabbedThumbnail);
-
-                break;
-            }
-        }
-
-        /// <summary>
-        /// Handler method that's called when the user clicks on an Aero Peek preview thumbnail.  Finds the tab associated with the thumbnail and focuses on
-        /// it.
-        /// </summary>
-        /// <param name="sender">Object from which this event originated.</param>
-        /// <param name="e">Arguments associated with this event.</param>
-        private void preview_TabbedThumbnailActivated(object sender, TabbedThumbnailEventArgs e)
-        {
-            foreach (TitleBarTab tab in Tabs.Where(tab => tab.Content.Handle == e.WindowHandle))
-            {
-                SelectedTabIndex = Tabs.IndexOf(tab);
-
-                TaskbarManager.Instance.TabbedThumbnail.SetActiveTab(tab.Content);
-                break;
-            }
-
-            if (WindowState == FormWindowState.Minimized)
-                WindowState = FormWindowState.Normal;
         }
 
         /// <summary>
