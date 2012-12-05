@@ -115,6 +115,8 @@ namespace EasyConnect
 
                 _omniBarPanel.Controls.Add(autoCompletePanel);
             }
+
+            urlTextBox.LostFocus += urlTextBox_LostFocus;
         }
 
         /// <summary>
@@ -199,6 +201,23 @@ namespace EasyConnect
                     _autoHideToolbar = ParentTabs.Options.AutoHideToolbar;
 
                 return _autoHideToolbar.Value;
+            }
+        }
+
+        /// <summary>
+        /// Handler method that's called when focus leaves <see cref="urlTextBox"/>; if the user has chosen to auto hide the toolbar and the mouse was clicked
+        /// outside of the bounds of the toolbar, begin the auto hide process.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated (<see cref="urlTextBox"/> in this case).</param>
+        /// <param name="e">Arguments associated with this event.</param>
+        private void urlTextBox_LostFocus(object sender, EventArgs e)
+        {
+            if (AutoHideToolbar && PointToClient(Cursor.Position).Y > toolbarBackground.Height)
+            {
+                _bookmarksMenu.Hide();
+                _toolsMenu.Hide();
+
+                HideToolbar();
             }
         }
 
@@ -362,10 +381,6 @@ namespace EasyConnect
             urlTextBox.Text = _connection.Host;
             _suppressOmniBar = false;
 
-            // Subscribe to the ConnectionFormFocused event so that we can hide the toolbar automatically when necessary
-            if (AutoHideToolbar)
-                _connectionForm.ConnectionFormFocused += ConnectionFormFocused;
-
             try
             {
                 _connectionForm.Connect();
@@ -379,23 +394,6 @@ namespace EasyConnect
 
             ParentTabs.RegisterConnection(this, _connection);
             HideToolbar();
-        }
-
-        /// <summary>
-        /// Handler method that's called when the user focuses on <see cref="_connectionForm"/>.  If the user's mouse cursor is over 
-        /// <see cref="_connectionForm"/>, we close <see cref="_bookmarksMenu"/> and <see cref="_toolsMenu"/> and hide the toolbar.
-        /// </summary>
-        /// <param name="sender">Object from which this event originated, <see cref="_connectionForm"/> in this case.</param>
-        /// <param name="eventArgs">Arguments associated with this event.</param>
-        private void ConnectionFormFocused(object sender, EventArgs eventArgs)
-        {
-            if (PointToClient(Cursor.Position).Y > 36)
-            {
-                _bookmarksMenu.Hide();
-                _toolsMenu.Hide();
-
-                HideToolbar();
-            }
         }
 
         /// <summary>
@@ -675,6 +673,8 @@ namespace EasyConnect
             // middle of animating it already
             if (_toolbarShown || !AutoHideToolbar || !IsHandleCreated || (_animationTimer != null && _animationTimer.Enabled))
                 return;
+
+            urlTextBox.Focus();
 
             _animationTicks = 0;
             _animationTimer = new Timer(20);
