@@ -240,8 +240,6 @@
     <Content Include="Resources\ToolbarBackground.png" />
     <Content Include="Resources\Tools.ico" />
     <Content Include="Resources\ToolsActive.png" />
-    <Content Include="lib\Microsoft.WindowsAPICodePack.dll" />
-    <Content Include="lib\Microsoft.WindowsAPICodePack.Shell.dll" />
     <Content Include="lib\SecurePasswordTextBox.dll" />
     <Content Include="Resources\BackActive.png" />
     <Content Include="Resources\BookmarksActive.png" />
