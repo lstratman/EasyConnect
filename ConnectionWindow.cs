@@ -49,6 +49,11 @@ namespace EasyConnect
         protected IConnection _connection = null;
 
         /// <summary>
+        /// Flag indicating whether the size of <see cref="_connectionContainerPanel"/> has been set explicitly.
+        /// </summary>
+        protected bool _connectionContainerPanelSizeSet = false;
+
+        /// <summary>
         /// UI for the connection created from <see cref="BaseProtocol{TConnection,TOptionsForm,TConnectionForm}.CreateConnectionForm"/>.
         /// </summary>
         protected BaseConnectionForm _connectionForm = null;
@@ -67,11 +72,6 @@ namespace EasyConnect
         /// Current auto complete item in the OmniBar that the user is focused on.
         /// </summary>
         protected int _omniBarFocusIndex = -1;
-
-        /// <summary>
-        /// Flag indicating whether the size of <see cref="_connectionContainerPanel"/> has been set explicitly.
-        /// </summary>
-        protected bool _connectionContainerPanelSizeSet = false;
 
         /// <summary>
         /// Flag indicating whether we should suppress the appearance of the OmniBar when we're setting the value of <see cref="urlTextBox"/> manually in code.
@@ -99,12 +99,12 @@ namespace EasyConnect
             for (int i = 0; i < 6; i++)
             {
                 HtmlPanel autoCompletePanel = new HtmlPanel
-                    {
-                        AutoScroll = false,
-                        Width = _omniBarPanel.Width,
-                        Height = 30,
-                        Left = 0
-                    };
+                                                  {
+                                                      AutoScroll = false,
+                                                      Width = _omniBarPanel.Width,
+                                                      Height = 30,
+                                                      Left = 0
+                                                  };
 
                 autoCompletePanel.Top = i * autoCompletePanel.Height;
                 autoCompletePanel.Font = urlTextBox.Font;
@@ -199,6 +199,22 @@ namespace EasyConnect
                     _autoHideToolbar = ParentTabs.Options.AutoHideToolbar;
 
                 return _autoHideToolbar.Value;
+            }
+        }
+
+        /// <summary>
+        /// Handler method that's called when the window is loaded.  If a <see cref="_connection"/> was specified (i.e. we're establishing a connection
+        /// directly) and <see cref="AutoHideToolbar"/> is true, we hide the toolbar automatically.
+        /// </summary>
+        /// <param name="e">Arguments associated with this event.</param>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            if (_connection != null && AutoHideToolbar)
+            {
+                toolbarBackground.Height = 5;
+                _toolbarShown = false;
             }
         }
 
@@ -489,9 +505,9 @@ namespace EasyConnect
             if (!root)
             {
                 folderMenuItem = new ToolStripMenuItem(currentFolder.Name, Resources.Folder)
-                    {
-                        DropDownDirection = ToolStripDropDownDirection.Left
-                    };
+                                     {
+                                         DropDownDirection = ToolStripDropDownDirection.Left
+                                     };
 
                 addLocation = folderMenuItem.DropDownItems;
             }
@@ -778,12 +794,14 @@ namespace EasyConnect
 
                 // Exclude history entries that are from the user clicking a bookmark
                 if (ParentTabs.History.Connections != null)
+                {
                     _autoCompleteEntries.AddRange(
                         ParentTabs.History.Connections.OrderByDescending(c => c.LastConnection).Distinct(
                             new EqualityComparer<HistoryWindow.HistoricalConnection>(
                                 (x, y) => x.Connection.Host == y.Connection.Host)).Where(
                                     c => _autoCompleteEntries.FindIndex(a => a.Host == c.Connection.Host) == -1).Select
                             (c => c.Connection));
+                }
             }
 
             // Get a list of valid auto-complete entries by matching on the bookmark's display name or host
@@ -832,7 +850,7 @@ namespace EasyConnect
                 _omniBarBorder.PerformLayout();
             }
 
-            // If we found no matching entries, hide the OmniBar
+                // If we found no matching entries, hide the OmniBar
             else
             {
                 _omniBarPanel.Visible = false;
