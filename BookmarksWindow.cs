@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -10,6 +12,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using EasyConnect.Protocols;
 using Stratman.Windows.Forms.TitleBarTabs;
+using Win32Interop.Enums;
 
 namespace EasyConnect
 {
@@ -100,6 +103,14 @@ namespace EasyConnect
         /// If the user is dragging to a location in <see cref="_bookmarksFoldersTreeView"/>, this is the target that they are dropping on.
         /// </summary>
         protected TreeNode _treeViewDropTarget = null;
+
+		/// <summary>
+		/// When right clicking on a tree node in <see cref="FoldersTreeView"/> or a list item in <see cref="_bookmarksListView"/>, this contains the item that
+		/// was clicked on.
+		/// </summary>
+        protected object _contextMenuItem = null;
+
+	    protected bool _setContextMenuItem = true;
 
         /// <summary>
         /// Constructor; deserializes the bookmarks folder structure, adds the various folder nodes to <see cref="_bookmarksFoldersTreeView"/>, and gets the
@@ -238,6 +249,7 @@ namespace EasyConnect
                 // If the user has the tree view focused currently, then copy the currently selected folder in the tree
                 if (_bookmarksFoldersTreeView.Focused && _bookmarksFoldersTreeView.SelectedNode != null)
                 {
+                    _contextMenuItem = _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode];
                     _copyFolderMenuItem_Click(null, null);
                     return true;
                 }
@@ -255,6 +267,7 @@ namespace EasyConnect
                 // Paste whatever is in the list of cut or copied objects into the currently selected folder in the tree
                 if (_bookmarksFoldersTreeView.SelectedNode != null)
                 {
+                    _contextMenuItem = _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode];
                     _pasteFolderMenuItem_Click(null, null);
                     return true;
                 }
@@ -265,6 +278,7 @@ namespace EasyConnect
                 // If the user has the tree view focused currently, then cut the currently selected folder in the tree
                 if (_bookmarksFoldersTreeView.Focused && _bookmarksFoldersTreeView.SelectedNode != null)
                 {
+                    _contextMenuItem = _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode];
                     _cutFolderMenuItem_Click(null, null);
                     return true;
                 }
@@ -282,6 +296,7 @@ namespace EasyConnect
                 // If the user has the tree view focused currently, then delete the currently selected folder in the tree
                 if (_bookmarksFoldersTreeView.Focused && _bookmarksFoldersTreeView.SelectedNode != null)
                 {
+                    _contextMenuItem = _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode];
                     _deleteFolderMenuItem_Click(null, null);
                     return true;
                 }
@@ -638,12 +653,27 @@ namespace EasyConnect
         /// <param name="e">Arguments associated with the click event.</param>
         private void _bookmarksListView_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right && _bookmarksListView.SelectedItems.Count > 0)
+            if (e.Button == MouseButtons.Right)
             {
-                pasteToolStripMenuItem.Enabled = (_copiedItems.Count > 0 || _cutItems.Count > 0) &&
-                                                 _listViewFolders.ContainsKey(_bookmarksListView.SelectedItems[0]) &&
-                                                 _bookmarksListView.SelectedItems.Count == 1;
-                _bookmarkContextMenu.Show(Cursor.Position);
+                ListViewHitTestInfo hitTestInfo = _bookmarksListView.HitTest(e.Location);
+
+                if (hitTestInfo.Item != null)
+                {
+                    if (_listViewConnections.ContainsKey(hitTestInfo.Item))
+                    {
+                        _contextMenuItem = _listViewConnections[hitTestInfo.Item];
+
+	                    _bookmarksListView.ContextMenuStrip = null;
+                        _bookmarkContextMenu.Show(Cursor.Position);
+                    }
+
+                    else
+                    {
+                        _contextMenuItem = _listViewFolders[hitTestInfo.Item];
+	                    _setContextMenuItem = false;
+                        _folderContextMenu.Show(Cursor.Position);
+                    }
+                }
             }
         }
 
@@ -731,7 +761,7 @@ namespace EasyConnect
         /// <param name="e">Arguments associated with this event.</param>
         private void _folderOpenAllMenuItem_Click(object sender, EventArgs e)
         {
-            OpenAllBookmarks(_folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode]);
+            OpenAllBookmarks(_contextMenuItem as BookmarksFolder);
         }
 
         /// <summary>
@@ -771,7 +801,8 @@ namespace EasyConnect
                 if (hitTestInfo.Node != null)
                 {
                     _bookmarksFoldersTreeView.SelectedNode = hitTestInfo.Node;
-                    _pasteFolderMenuItem.Enabled = _copiedItems.Count > 0 || _cutItems.Count > 0;
+                    _contextMenuItem = _folderTreeNodes[hitTestInfo.Node];
+	                _setContextMenuItem = false;
 
                     _folderContextMenu.Show(Cursor.Position);
                 }
@@ -791,8 +822,14 @@ namespace EasyConnect
             connection.Name = "New Connection";
 
             // Add the bookmark to the current folder
-            _deferSort = true;
-            _folderTreeNodes[FoldersTreeView.SelectedNode].Bookmarks.Add(connection);
+	        if (_folderTreeNodes[FoldersTreeView.SelectedNode] != (_contextMenuItem as BookmarksFolder))
+	        {
+		        FoldersTreeView.SelectedNode = _folderTreeNodes.Single(n => n.Value == (_contextMenuItem as BookmarksFolder)).Key;
+				FoldersTreeView.SelectedNode.Expand();
+	        }
+
+	        _deferSort = true;
+            (_contextMenuItem as BookmarksFolder).Bookmarks.Add(connection);
             _deferSort = false;
 
             // Set the flag so that once the user is finished renaming the connection, we open the options for it
@@ -824,7 +861,7 @@ namespace EasyConnect
                 };
 
             _deferSort = true;
-            _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode].ChildFolders.Add(newFolder);
+            (_contextMenuItem as BookmarksFolder).ChildFolders.Add(newFolder);
             _deferSort = false;
 
             TreeNode newNode = _folderTreeNodes.SingleOrDefault(kvp => kvp.Value == newFolder).Key;
@@ -862,7 +899,11 @@ namespace EasyConnect
         /// <param name="e">Arguments associated with this event.</param>
         private void _renameFolderMenuItem_Click(object sender, EventArgs e)
         {
-            _bookmarksFoldersTreeView.SelectedNode.BeginEdit();
+            if (_bookmarksFoldersTreeView.Focused)
+                _bookmarksFoldersTreeView.SelectedNode.BeginEdit();
+
+            else
+                _listViewFolders.Single(kvp => kvp.Value == _contextMenuItem as BookmarksFolder).Key.BeginEdit();
         }
 
         /// <summary>
@@ -875,7 +916,8 @@ namespace EasyConnect
         {
             _deferSort = true;
 
-            _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode.Parent].ChildFolders.Remove(_folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode]);
+            BookmarksFolder folder = (BookmarksFolder) _contextMenuItem;
+            folder.ParentFolder.ChildFolders.Remove(folder);
 
             _bookmarksListView.Items.Clear();
             _bookmarksFoldersTreeView.BeginInvoke(new Action(_bookmarksFoldersTreeView.Sort));
@@ -1032,7 +1074,7 @@ namespace EasyConnect
         {
             // Look recursively into this folder and its descendants to get all of the bookmarks
             List<Guid> bookmarkGuids = new List<Guid>();
-            FindAllBookmarks(_folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode], bookmarkGuids);
+            FindAllBookmarks(_contextMenuItem as BookmarksFolder, bookmarkGuids);
 
             if (bookmarkGuids.Count > 0)
             {
@@ -1076,18 +1118,7 @@ namespace EasyConnect
             }
         }
 
-        /// <summary>
-        /// Handler method that's called when the "Paste" menu item in the context menu that appears when the user right-clicks on a folder in 
-        /// <see cref="_bookmarksListView"/>.  Calls <see cref="PasteItems"/> to add the items to the selected folder.
-        /// </summary>
-        /// <param name="sender">Object from which this event originated.</param>
-        /// <param name="e">Arguments associated with this event.</param>
-        private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            PasteItems(_listViewFolders[_bookmarksListView.SelectedItems[0]]);
-        }
-
-        /// <summary>
+	    /// <summary>
         /// Handler method that's called when the "Paste" menu item in the context menu that appears when the user right-clicks on a folder in 
         /// <see cref="_bookmarksFoldersTreeView"/>.  Calls <see cref="PasteItems"/> to add the items to the selected folder.
         /// </summary>
@@ -1095,15 +1126,12 @@ namespace EasyConnect
         /// <param name="e">Arguments associated with this event.</param>
         private void _pasteFolderMenuItem_Click(object sender, EventArgs e)
         {
-            TreeNode currentFolderNode = FoldersTreeView.SelectedNode;
-
-            PasteItems(_folderTreeNodes[currentFolderNode]);
-            FoldersTreeView.SelectedNode = currentFolderNode;
+            PasteItems(_contextMenuItem as BookmarksFolder);
         }
 
         /// <summary>
         /// Adds the <see cref="IConnection"/> and <see cref="BookmarksFolder"/> items in <see cref="_copiedItems"/> or <see cref="_cutItems"/> to 
-        /// <paramref name="targetFolder"/>.  Called from <see cref="pasteToolStripMenuItem_Click"/> and <see cref="_pasteFolderMenuItem_Click"/>.
+        /// <paramref name="targetFolder"/>.  Called from <see cref="_pasteFolderMenuItem_Click"/>.
         /// </summary>
         /// <param name="targetFolder">Target folder that we're pasting items into.</param>
         private void PasteItems(BookmarksFolder targetFolder)
@@ -1126,14 +1154,16 @@ namespace EasyConnect
             // Add the items to the target folder
             foreach (object clonedItem in clonedItems)
             {
-                if (clonedItem is IConnection)
-                    targetFolder.Bookmarks.Add((IConnection) clonedItem);
+	            IConnection item = clonedItem as IConnection;
+	            
+				if (item != null)
+                    targetFolder.Bookmarks.Add(item);
 
                 else
                     targetFolder.MergeFolder((BookmarksFolder) clonedItem);
             }
 
-            // If we're pasting cut items, remove those items from their previous parent folders
+	        // If we're pasting cut items, remove those items from their previous parent folders
             if (_cutItems.Count > 0)
             {
                 foreach (object cutItem in _cutItems)
@@ -1181,7 +1211,7 @@ namespace EasyConnect
         {
             _copiedItems.Clear();
             _cutItems.Clear();
-            _copiedItems.Add(_folderTreeNodes[FoldersTreeView.SelectedNode]);
+            _copiedItems.Add(_contextMenuItem as BookmarksFolder);
         }
 
         /// <summary>
@@ -1242,8 +1272,12 @@ namespace EasyConnect
             _copiedItems.Clear();
             _cutItems.Clear();
 
-            _cutItems.Add(_folderTreeNodes[FoldersTreeView.SelectedNode]);
-            FoldersTreeView.SelectedNode.ForeColor = Color.Gray;
+            _cutItems.Add(_contextMenuItem as BookmarksFolder);
+
+            _folderTreeNodes.Single(kvp => kvp.Value == _contextMenuItem as BookmarksFolder).Key.ForeColor = Color.Gray;
+
+            if (_listViewFolders.FirstOrDefault(kvp => kvp.Value == _contextMenuItem as BookmarksFolder).Value != null)
+                _listViewFolders.Single(kvp => kvp.Value == _contextMenuItem as BookmarksFolder).Key.ForeColor = Color.Gray;
         }
 
         /// <summary>
@@ -1498,7 +1532,7 @@ namespace EasyConnect
         /// <param name="e">Arguments associated with this event.</param>
         private void _clearUsernamePasswordToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BookmarksFolder selectedFolder = _folderTreeNodes[FoldersTreeView.SelectedNode];
+            BookmarksFolder selectedFolder = _contextMenuItem as BookmarksFolder;
 
             selectedFolder.Username = null;
             selectedFolder.Password = null;
@@ -1516,7 +1550,7 @@ namespace EasyConnect
         /// <param name="e">Arguments associated with this event.</param>
         private void _setUsernamePasswordMenuItem_Click(object sender, EventArgs e)
         {
-            BookmarksFolder selectedFolder = _folderTreeNodes[FoldersTreeView.SelectedNode];
+            BookmarksFolder selectedFolder = _contextMenuItem as BookmarksFolder;
             UsernamePasswordWindow usernamePasswordWindow = new UsernamePasswordWindow
                 {
                     Username = selectedFolder.Username
@@ -1533,5 +1567,23 @@ namespace EasyConnect
                 Save();
             }
         }
+
+		private void _folderContextMenu_Opening(object sender, CancelEventArgs e)
+		{
+			if (_setContextMenuItem)
+				_contextMenuItem = _folderTreeNodes[FoldersTreeView.SelectedNode];
+
+			_pasteFolderMenuItem.Enabled = _copiedItems.Count > 0 || _cutItems.Count > 0;
+		}
+
+		private void _bookmarkContextMenu_Closed(object sender, ToolStripDropDownClosedEventArgs e)
+		{
+			_bookmarksListView.ContextMenuStrip = _folderContextMenu;
+		}
+
+		private void _folderContextMenu_Closed(object sender, ToolStripDropDownClosedEventArgs e)
+		{
+			_setContextMenuItem = true;
+		}
     }
 }
