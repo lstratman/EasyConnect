@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using ViewerX;
 
 namespace EasyConnect.Protocols.Vnc
 {
@@ -12,16 +13,46 @@ namespace EasyConnect.Protocols.Vnc
         public VncConnection()
         {
             Port = 5900;
+			AuthenticationType = ViewerLoginType.VLT_VNC;
+			EncryptionType = EncryptionPluginType.EPT_NONE;
         }
 
         protected VncConnection(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            Port = info.GetInt32("Port");
-            Display = info.GetInt32("Display");
-            ViewOnly = info.GetBoolean("ViewOnly");
-            Scale = info.GetBoolean("Scale");
-            Username = info.GetString("Username");
+			foreach (SerializationEntry entry in info)
+			{
+				switch (entry.Name)
+				{
+					case "Port":
+						Port = (int) entry.Value;
+						break;
+
+					case "Display":
+						Display = (int) entry.Value;
+						break;
+
+					case "ViewOnly":
+						ViewOnly = (bool) entry.Value;
+						break;
+
+					case "Scale":
+						Scale = (bool) entry.Value;
+						break;
+
+					case "AuthenticationType":
+						AuthenticationType = (ViewerLoginType) Enum.Parse(typeof (ViewerLoginType), (string) entry.Value);
+						break;
+
+					case "EncryptionType":
+						EncryptionType = (EncryptionPluginType) Enum.Parse(typeof (EncryptionPluginType), (string) entry.Value);
+						break;
+
+					case "KeyFile":
+						KeyFile = (string) entry.Value;
+						break;
+				}
+			}
         }
 
         public int Port
@@ -48,6 +79,24 @@ namespace EasyConnect.Protocols.Vnc
             set;
         }
 
+		public ViewerLoginType AuthenticationType
+		{
+			get;
+			set;
+		}
+
+		public EncryptionPluginType EncryptionType
+		{
+			get;
+			set;
+		}
+
+		public string KeyFile
+		{
+			get;
+			set;
+		}
+
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
@@ -56,7 +105,9 @@ namespace EasyConnect.Protocols.Vnc
             info.AddValue("Display", Display);
             info.AddValue("ViewOnly", ViewOnly);
             info.AddValue("Scale", Scale);
-            info.AddValue("Username", Username);
+			info.AddValue("AuthenticationType", AuthenticationType.ToString("G"));
+			info.AddValue("EncryptionType", EncryptionType.ToString("G"));
+			info.AddValue("KeyFile", KeyFile);
         }
     }
 }

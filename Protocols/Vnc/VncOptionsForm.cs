@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Security;
-using System.Text;
 using System.Windows.Forms;
+using ViewerX;
 
 namespace EasyConnect.Protocols.Vnc
 {
@@ -62,6 +57,34 @@ namespace EasyConnect.Protocols.Vnc
 
             if ((Connection.Password == null || Connection.Password.Length == 0) && Connection.InheritedPassword != null && Connection.InheritedPassword.Length > 0)
                 _inheritedPasswordLabel.Text = "Inheriting a password from parent folders";
+
+	        switch (Connection.AuthenticationType)
+	        {
+				case ViewerLoginType.VLT_VNC:
+			        _authenticationTypeDropdown.SelectedIndex = 0;
+			        break;
+
+				case ViewerLoginType.VLT_MSWIN:
+			        _authenticationTypeDropdown.SelectedIndex = 1;
+			        break;
+	        }
+
+	        switch (Connection.EncryptionType)
+	        {
+				case EncryptionPluginType.EPT_NONE:
+			        _encryptionTypeDropdown.SelectedIndex = 0;
+			        break;
+
+				case EncryptionPluginType.EPT_MSRC4:
+			        _encryptionTypeDropdown.SelectedIndex = 1;
+			        break;
+
+				case EncryptionPluginType.EPT_SECUREVNC:
+			        _encryptionTypeDropdown.SelectedIndex = 2;
+			        break;
+	        }
+
+	        _keyFileTextBox.Text = Connection.KeyFile;
         }
 
         private void VncOptionsForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -73,6 +96,35 @@ namespace EasyConnect.Protocols.Vnc
             Connection.ViewOnly = _viewOnlyCheckbox.Checked;
             Connection.Username = _userNameTextBox.Text;
             Connection.Password = _passwordTextBox.SecureText;
+
+	        switch (_authenticationTypeDropdown.SelectedIndex)
+	        {
+				case 0:
+					Connection.AuthenticationType = ViewerLoginType.VLT_VNC;
+			        break;
+
+				case 1:
+					Connection.AuthenticationType = ViewerLoginType.VLT_MSWIN;
+			        break;
+	        }
+
+	        switch (_encryptionTypeDropdown.SelectedIndex)
+	        {
+				case 0:
+					Connection.EncryptionType = EncryptionPluginType.EPT_NONE;
+			        Connection.KeyFile = null;
+			        break;
+
+				case 1:
+					Connection.EncryptionType = EncryptionPluginType.EPT_MSRC4;
+			        Connection.KeyFile = _keyFileTextBox.Text;
+			        break;
+
+				case 2:
+					Connection.EncryptionType = EncryptionPluginType.EPT_SECUREVNC;
+					Connection.KeyFile = _keyFileTextBox.Text;
+					break;
+	        }
         }
 
         private void _userNameTextBox_TextChanged(object sender, EventArgs e)
@@ -97,5 +149,46 @@ namespace EasyConnect.Protocols.Vnc
                                                    : "";
             }
         }
+
+		private void _keyFileBrowseButton_Click(object sender, EventArgs e)
+		{
+			if (!String.IsNullOrEmpty(_keyFileTextBox.Text))
+				_openFileDialog.FileName = _keyFileTextBox.Text;
+
+			switch (_encryptionTypeDropdown.SelectedIndex)
+			{
+				case 1:
+					_openFileDialog.Filter = "MSRC4 key files (*.key)|*.key|All files (*.*)|*.*";
+					break;
+
+				case 2:
+					_openFileDialog.Filter = "SecureVNC key files (*.pkey)|*.pkey|All files (*.*)|*.*";
+					break;
+			}
+
+			DialogResult result = _openFileDialog.ShowDialog();
+
+			if (result == DialogResult.OK)
+				_keyFileTextBox.Text = _openFileDialog.FileName;
+		}
+
+		private void _encryptionTypeDropdown_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (_encryptionTypeDropdown.SelectedIndex == 0)
+			{
+				_hostPanel.Height = 93;
+				_keyFileLabel.Visible = false;
+				_keyFileTextBox.Visible = false;
+				_keyFileBrowseButton.Visible = false;
+			}
+
+			else
+			{
+				_hostPanel.Height = 119;
+				_keyFileLabel.Visible = true;
+				_keyFileTextBox.Visible = true;
+				_keyFileBrowseButton.Visible = true;
+			}
+		}
     }
 }
