@@ -63,6 +63,10 @@
 			this._keyFileTextBox = new System.Windows.Forms.TextBox();
 			this._keyFileBrowseButton = new System.Windows.Forms.Button();
 			this._openFileDialog = new System.Windows.Forms.OpenFileDialog();
+			this._encodingTypeLabel = new System.Windows.Forms.Label();
+			this._encodingTypeDropdown = new System.Windows.Forms.ComboBox();
+			this._colorDepthLabel = new System.Windows.Forms.Label();
+			this._colorDepthDropdown = new System.Windows.Forms.ComboBox();
 			this._flowLayoutPanel.SuspendLayout();
 			this._generalPanel.SuspendLayout();
 			this._hostPanel.SuspendLayout();
@@ -324,6 +328,10 @@
 			// 
 			// _displayPanel
 			// 
+			this._displayPanel.Controls.Add(this._colorDepthLabel);
+			this._displayPanel.Controls.Add(this._colorDepthDropdown);
+			this._displayPanel.Controls.Add(this._encodingTypeLabel);
+			this._displayPanel.Controls.Add(this._encodingTypeDropdown);
 			this._displayPanel.Controls.Add(this._viewOnlyCheckbox);
 			this._displayPanel.Controls.Add(this._viewOnlyLabel);
 			this._displayPanel.Controls.Add(this._scaleCheckbox);
@@ -333,7 +341,7 @@
 			this._displayPanel.Controls.Add(this._scaleLabel);
 			this._displayPanel.Location = new System.Drawing.Point(18, 259);
 			this._displayPanel.Name = "_displayPanel";
-			this._displayPanel.Size = new System.Drawing.Size(684, 87);
+			this._displayPanel.Size = new System.Drawing.Size(684, 140);
 			this._displayPanel.TabIndex = 83;
 			// 
 			// _viewOnlyCheckbox
@@ -405,6 +413,58 @@
 			this._keyFileBrowseButton.UseVisualStyleBackColor = true;
 			this._keyFileBrowseButton.Click += new System.EventHandler(this._keyFileBrowseButton_Click);
 			// 
+			// _encodingTypeLabel
+			// 
+			this._encodingTypeLabel.Location = new System.Drawing.Point(141, 80);
+			this._encodingTypeLabel.Name = "_encodingTypeLabel";
+			this._encodingTypeLabel.Size = new System.Drawing.Size(100, 18);
+			this._encodingTypeLabel.TabIndex = 86;
+			this._encodingTypeLabel.Text = "Encoding type:";
+			this._encodingTypeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// _encodingTypeDropdown
+			// 
+			this._encodingTypeDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this._encodingTypeDropdown.FormattingEnabled = true;
+			this._encodingTypeDropdown.Items.AddRange(new object[] {
+            "RAW",
+            "RRE",
+            "CORRE",
+            "HEXTILE",
+            "ZLIB",
+            "TIGHT",
+            "ZLIBHEX",
+            "ULTRA",
+            "ZRLE",
+            "ZYWRLE"});
+			this._encodingTypeDropdown.Location = new System.Drawing.Point(247, 80);
+			this._encodingTypeDropdown.Name = "_encodingTypeDropdown";
+			this._encodingTypeDropdown.Size = new System.Drawing.Size(121, 21);
+			this._encodingTypeDropdown.TabIndex = 85;
+			// 
+			// _colorDepthLabel
+			// 
+			this._colorDepthLabel.Location = new System.Drawing.Point(141, 107);
+			this._colorDepthLabel.Name = "_colorDepthLabel";
+			this._colorDepthLabel.Size = new System.Drawing.Size(100, 18);
+			this._colorDepthLabel.TabIndex = 88;
+			this._colorDepthLabel.Text = "Color depth:";
+			this._colorDepthLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// _colorDepthDropdown
+			// 
+			this._colorDepthDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this._colorDepthDropdown.FormattingEnabled = true;
+			this._colorDepthDropdown.Items.AddRange(new object[] {
+            "Full",
+            "256 colors",
+            "64 colors",
+            "8 colors"});
+			this._colorDepthDropdown.Location = new System.Drawing.Point(247, 107);
+			this._colorDepthDropdown.Name = "_colorDepthDropdown";
+			this._colorDepthDropdown.Size = new System.Drawing.Size(121, 21);
+			this._colorDepthDropdown.TabIndex = 87;
+			// 
 			// VncOptionsForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -464,5 +524,9 @@
 		private System.Windows.Forms.TextBox _keyFileTextBox;
 		private System.Windows.Forms.Button _keyFileBrowseButton;
 		private System.Windows.Forms.OpenFileDialog _openFileDialog;
+		private System.Windows.Forms.Label _colorDepthLabel;
+		private System.Windows.Forms.ComboBox _colorDepthDropdown;
+		private System.Windows.Forms.Label _encodingTypeLabel;
+		private System.Windows.Forms.ComboBox _encodingTypeDropdown;
     }
 }

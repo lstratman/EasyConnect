@@ -2,6 +2,7 @@
 using System.Security;
 using System.Windows.Forms;
 using ViewerX;
+using ColorDepth = ViewerX.ColorDepth;
 
 namespace EasyConnect.Protocols.Vnc
 {
@@ -85,6 +86,68 @@ namespace EasyConnect.Protocols.Vnc
 	        }
 
 	        _keyFileTextBox.Text = Connection.KeyFile;
+
+	        switch (Connection.EncodingType)
+	        {
+				case VNCEncoding.RFB_RAW:
+			        _encodingTypeDropdown.SelectedIndex = 0;
+			        break;
+
+				case VNCEncoding.RFB_RRE:
+					_encodingTypeDropdown.SelectedIndex = 1;
+					break;
+
+				case VNCEncoding.RFB_CORRE:
+					_encodingTypeDropdown.SelectedIndex = 2;
+					break;
+
+				case VNCEncoding.RFB_HEXTILE:
+					_encodingTypeDropdown.SelectedIndex = 3;
+					break;
+
+				case VNCEncoding.RFB_ZLIB:
+					_encodingTypeDropdown.SelectedIndex = 4;
+					break;
+
+				case VNCEncoding.RFB_TIGHT:
+					_encodingTypeDropdown.SelectedIndex = 5;
+					break;
+
+				case VNCEncoding.RFB_ZLIBHEX:
+					_encodingTypeDropdown.SelectedIndex = 6;
+					break;
+
+				case VNCEncoding.RFB_ULTRA:
+					_encodingTypeDropdown.SelectedIndex = 7;
+					break;
+
+				case VNCEncoding.RFB_ZRLE:
+					_encodingTypeDropdown.SelectedIndex = 8;
+					break;
+
+				case VNCEncoding.RFB_ZYWRLE:
+					_encodingTypeDropdown.SelectedIndex = 9;
+					break;
+	        }
+
+	        switch (Connection.ColorDepth)
+	        {
+				case ColorDepth.COLOR_FULL:
+			        _colorDepthDropdown.SelectedIndex = 0;
+			        break;
+
+				case ColorDepth.COLOR_256:
+					_colorDepthDropdown.SelectedIndex = 1;
+					break;
+
+				case ColorDepth.COLOR_64:
+					_colorDepthDropdown.SelectedIndex = 2;
+					break;
+
+				case ColorDepth.COLOR_8:
+					_colorDepthDropdown.SelectedIndex = 3;
+					break;
+	        }
         }
 
         private void VncOptionsForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -123,6 +186,68 @@ namespace EasyConnect.Protocols.Vnc
 				case 2:
 					Connection.EncryptionType = EncryptionPluginType.EPT_SECUREVNC;
 					Connection.KeyFile = _keyFileTextBox.Text;
+					break;
+	        }
+
+	        switch (_encodingTypeDropdown.SelectedIndex)
+	        {
+				case 0:
+					Connection.EncodingType = VNCEncoding.RFB_RAW;
+			        break;
+
+				case 1:
+					Connection.EncodingType = VNCEncoding.RFB_RRE;
+					break;
+
+				case 2:
+					Connection.EncodingType = VNCEncoding.RFB_CORRE;
+					break;
+
+				case 3:
+					Connection.EncodingType = VNCEncoding.RFB_HEXTILE;
+					break;
+
+				case 4:
+					Connection.EncodingType = VNCEncoding.RFB_ZLIB;
+					break;
+
+				case 5:
+					Connection.EncodingType = VNCEncoding.RFB_TIGHT;
+					break;
+
+				case 6:
+					Connection.EncodingType = VNCEncoding.RFB_ZLIBHEX;
+					break;
+
+				case 7:
+					Connection.EncodingType = VNCEncoding.RFB_ULTRA;
+					break;
+
+				case 8:
+					Connection.EncodingType = VNCEncoding.RFB_ZRLE;
+					break;
+
+				case 9:
+					Connection.EncodingType = VNCEncoding.RFB_ZYWRLE;
+					break;
+	        }
+
+	        switch (_colorDepthDropdown.SelectedIndex)
+	        {
+				case 0:
+					Connection.ColorDepth = ColorDepth.COLOR_FULL;
+			        break;
+
+				case 1:
+					Connection.ColorDepth = ColorDepth.COLOR_256;
+					break;
+
+				case 2:
+					Connection.ColorDepth = ColorDepth.COLOR_64;
+					break;
+
+				case 3:
+					Connection.ColorDepth = ColorDepth.COLOR_8;
 					break;
 	        }
         }

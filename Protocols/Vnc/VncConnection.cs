@@ -15,6 +15,8 @@ namespace EasyConnect.Protocols.Vnc
             Port = 5900;
 			AuthenticationType = ViewerLoginType.VLT_VNC;
 			EncryptionType = EncryptionPluginType.EPT_NONE;
+			EncodingType = VNCEncoding.RFB_ZRLE;
+			ColorDepth = ColorDepth.COLOR_FULL;
         }
 
         protected VncConnection(SerializationInfo info, StreamingContext context)
@@ -50,6 +52,14 @@ namespace EasyConnect.Protocols.Vnc
 
 					case "KeyFile":
 						KeyFile = (string) entry.Value;
+						break;
+
+					case "EncodingType":
+						EncodingType = (VNCEncoding) Enum.Parse(typeof (VNCEncoding), (string) entry.Value);
+						break;
+
+					case "ColorDepth":
+						ColorDepth = (ColorDepth) Enum.Parse(typeof (ColorDepth), (string) entry.Value);
 						break;
 				}
 			}
@@ -97,6 +107,18 @@ namespace EasyConnect.Protocols.Vnc
 			set;
 		}
 
+		public VNCEncoding EncodingType
+		{
+			get;
+			set;
+		}
+
+		public ColorDepth ColorDepth
+		{
+			get;
+			set;
+		}
+
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
@@ -108,6 +130,8 @@ namespace EasyConnect.Protocols.Vnc
 			info.AddValue("AuthenticationType", AuthenticationType.ToString("G"));
 			info.AddValue("EncryptionType", EncryptionType.ToString("G"));
 			info.AddValue("KeyFile", KeyFile);
+			info.AddValue("EncodingType", EncodingType.ToString("G"));
+			info.AddValue("ColorDepth", ColorDepth.ToString("G"));
         }
     }
 }

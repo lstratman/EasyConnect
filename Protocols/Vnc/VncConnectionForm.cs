@@ -26,6 +26,8 @@ namespace EasyConnect.Protocols.Vnc
                                              ? ScreenStretchMode.SSM_ASPECT
                                              : ScreenStretchMode.SSM_NONE;
             _vncConnection.ViewOnly = Connection.ViewOnly;
+	        _vncConnection.Encoding = Connection.EncodingType;
+	        _vncConnection.ColorDepth = Connection.ColorDepth;
 			_vncConnection.LoginType = Connection.AuthenticationType;
 
 	        switch (Connection.AuthenticationType)
