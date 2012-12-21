@@ -2,30 +2,42 @@
 
 namespace EasyConnect.Protocols.Vnc
 {
-    public class VncProtocol : BaseProtocol<VncConnection, VncOptionsForm, VncConnectionForm>
-    {
-        public override string ProtocolPrefix
-        {
-            get
-            {
-                return "vnc";
-            }
-        }
+	/// <summary>
+	/// Protocol class for the VNC protocol.
+	/// </summary>
+	public class VncProtocol : BaseProtocol<VncConnection, VncOptionsForm, VncConnectionForm>
+	{
+		/// <summary>
+		/// Prefix used to identify this protocol in URIs.
+		/// </summary>
+		public override string ProtocolPrefix
+		{
+			get
+			{
+				return "vnc";
+			}
+		}
 
-        public override string ProtocolTitle
-        {
-            get
-            {
-                return "VNC";
-            }
-        }
+		/// <summary>
+		/// Descriptive text used to identify this protocol.
+		/// </summary>
+		public override string ProtocolTitle
+		{
+			get
+			{
+				return "VNC";
+			}
+		}
 
-        public override Icon ProtocolIcon
-        {
-            get
-            {
-                return Resources.VncIcon;
-            }
-        }
-    }
+		/// <summary>
+		/// Icon used to identify connections for this protocol in the bookmarks manager.
+		/// </summary>
+		public override Icon ProtocolIcon
+		{
+			get
+			{
+				return Resources.VncIcon;
+			}
+		}
+	}
 }

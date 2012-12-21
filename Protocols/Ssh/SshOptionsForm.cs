@@ -197,6 +197,12 @@ namespace EasyConnect.Protocols.Ssh
                 _identityFileTextbox.Text = _openFileDialog.FileName;
         }
 
+		/// <summary>
+		/// Handler method that's called when the contents of <see cref="_userNameTextBox"/> change.  If the textbox is empty, display 
+		/// <see cref="_inheritedUsernameLabel"/>, hide it otherwise.
+		/// </summary>
+		/// <param name="sender">Object from which this event originated, <see cref="_userNameTextBox"/> in this case.</param>
+		/// <param name="e">Arguments associated with the event.</param>
         private void _userNameTextBox_TextChanged(object sender, EventArgs e)
         {
             _inheritedUsernameLabel.Text = String.IsNullOrEmpty(_userNameTextBox.Text) &&
@@ -205,6 +211,12 @@ namespace EasyConnect.Protocols.Ssh
                                                : "";
         }
 
+		/// <summary>
+		/// Handler method that's called when the contents of <see cref="_passwordTextBox"/> change.  If the textbox is empty, display 
+		/// <see cref="_inheritedPasswordLabel"/>, hide it otherwise.
+		/// </summary>
+		/// <param name="sender">Object from which this event originated, <see cref="_passwordTextBox"/> in this case.</param>
+		/// <param name="e">Arguments associated with the event.</param>
         private void _passwordTextBox_TextChanged(object sender, EventArgs e)
         {
             if (_passwordTextBox.SecureText != null && _passwordTextBox.SecureText.Length > 0)
