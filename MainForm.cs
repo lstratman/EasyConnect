@@ -168,8 +168,6 @@ namespace EasyConnect
 		/// </summary>
 		protected void Init()
 		{
-			EasyConnect.OpenWindows.Add(this);
-
 			// Create the automatic updater control
 			//_automaticUpdater = new AutomaticUpdater();
 
@@ -828,8 +826,6 @@ can be used.";
         {
             if (_bookmarks != null)
                 _bookmarks.Save();
-
-	        EasyConnect.OpenWindows.Remove(this);
         }
 
         /// <summary>
