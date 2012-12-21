@@ -122,43 +122,81 @@ namespace EasyConnect
         /// </summary>
         protected EncryptionType _previousEncryptionType;
 
+		/// <summary>
+		/// Constructor; initializes the UI.
+		/// </summary>
+		/// <param name="openToBookmarks">Bookmarks, if any, that we should open when initially creating the UI.</param>
+		public MainForm(IEnumerable<Guid> openToBookmarks)
+		{
+			InitializeComponent();
+
+			Init();
+
+			if (openToBookmarks != null)
+			{
+				IEnumerable<Guid> toBookmarks = openToBookmarks.ToList();
+
+				if (toBookmarks.Any())
+					OpenToBookmarks = (from Guid bookmarkGuid in toBookmarks
+					                   select Bookmarks.FindBookmark(bookmarkGuid)).ToList();
+			}
+
+			// Show the bookmarks manager window initially if we're not opening bookmarks or history entries
+			if (OpenToBookmarks == null && OpenToHistory == Guid.Empty)
+				OpenBookmarkManager();
+		}
+
         /// <summary>
-        /// Constructor; initializes the UI, creates the <see cref="_automaticUpdater"/>, loads the bookmark and history data, and sets up the IPC remoting
-        /// channel and low-level keyboard hook.
+        /// Constructor; initializes the UI.
         /// </summary>
         /// <param name="openToBookmarks">Bookmarks, if any, that we should open when initially creating the UI.</param>
-        public MainForm(Guid[] openToBookmarks)
+		public MainForm(List<IConnection> openToBookmarks)
         {
             InitializeComponent();
 
-            // Create the automatic updater control
-            //_automaticUpdater = new AutomaticUpdater();
+			OpenToBookmarks = openToBookmarks;
+			Init();
 
-            //(_automaticUpdater as ISupportInitialize).BeginInit();
-            //_automaticUpdater.ContainerForm = this;
-            //_automaticUpdater.Name = "_automaticUpdater";
-            //_automaticUpdater.TabIndex = 0;
-            //_automaticUpdater.wyUpdateCommandline = null;
-            //_automaticUpdater.Visible = false;
-            //_automaticUpdater.KeepHidden = true;
-            //_automaticUpdater.GUID = "752f8ae7-47f3-4299-adcc-8be32d63ec7a";
-            //_automaticUpdater.DaysBetweenChecks = 2;
-            //_automaticUpdater.UpdateType = UpdateType.Automatic;
-            //_automaticUpdater.ReadyToBeInstalled += _automaticUpdater_ReadyToBeInstalled;
-            //_automaticUpdater.UpToDate += _automaticUpdater_UpToDate;
-            //_automaticUpdater.CheckingFailed += _automaticUpdater_CheckingFailed;
-            //(_automaticUpdater as ISupportInitialize).EndInit();
+			// Show the bookmarks manager window initially if we're not opening bookmarks or history entries
+			if (OpenToBookmarks == null && OpenToHistory == Guid.Empty)
+				OpenBookmarkManager();
+        }
 
-            //Controls.Add(_automaticUpdater);
+		/// <summary>
+		/// Initializes the UI, creates the <see cref="_automaticUpdater"/>, loads the bookmark and history data, and sets up the IPC remoting channel and 
+		/// low-level keyboard hook.
+		/// </summary>
+		protected void Init()
+		{
+			EasyConnect.OpenWindows.Add(this);
 
-            OpenToBookmarks = openToBookmarks;
-            bool convertingToRsa = false;
+			// Create the automatic updater control
+			//_automaticUpdater = new AutomaticUpdater();
 
-            // If the user hasn't formally selected an encryption type (either they're starting the application for the first time or are running a legacy
-            // version that explicitly used Rijndael), ask them if they want to use RSA
-            if (Options.EncryptionType == null)
-            {
-                string messageBoxText = @"Do you want to use an RSA key container to encrypt your passwords?
+			//(_automaticUpdater as ISupportInitialize).BeginInit();
+			//_automaticUpdater.ContainerForm = this;
+			//_automaticUpdater.Name = "_automaticUpdater";
+			//_automaticUpdater.TabIndex = 0;
+			//_automaticUpdater.wyUpdateCommandline = null;
+			//_automaticUpdater.Visible = false;
+			//_automaticUpdater.KeepHidden = true;
+			//_automaticUpdater.GUID = "752f8ae7-47f3-4299-adcc-8be32d63ec7a";
+			//_automaticUpdater.DaysBetweenChecks = 2;
+			//_automaticUpdater.UpdateType = UpdateType.Automatic;
+			//_automaticUpdater.ReadyToBeInstalled += _automaticUpdater_ReadyToBeInstalled;
+			//_automaticUpdater.UpToDate += _automaticUpdater_UpToDate;
+			//_automaticUpdater.CheckingFailed += _automaticUpdater_CheckingFailed;
+			//(_automaticUpdater as ISupportInitialize).EndInit();
+
+			//Controls.Add(_automaticUpdater);
+
+			bool convertingToRsa = false;
+
+			// If the user hasn't formally selected an encryption type (either they're starting the application for the first time or are running a legacy
+			// version that explicitly used Rijndael), ask them if they want to use RSA
+			if (Options.EncryptionType == null)
+			{
+				string messageBoxText = @"Do you want to use an RSA key container to encrypt your passwords?
 
 The RSA encryption mode uses cryptographic keys associated with 
 your Windows user account to encrypt sensitive data without having 
@@ -167,119 +205,115 @@ application. However, your bookmarks file will be tied uniquely to
 this user account and you will be unable to share them between
 multiple users.";
 
-                if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect"))
-                    messageBoxText += @"
+				if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect"))
+					messageBoxText += @"
 
 The alternative is to derive an encryption key from a password that
 you will need to enter every time that this application starts.";
 
-                else
-                    messageBoxText += @"
+				else
+					messageBoxText += @"
 
 Since you've already encrypted your data with a password once, 
 you would need to enter it one more time to decrypt it before RSA 
 can be used.";
 
-                Options.EncryptionType = MessageBox.Show(messageBoxText, "Use RSA?", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes
-                                             ? EncryptionType.Rsa
-                                             : EncryptionType.Rijndael;
+				Options.EncryptionType = MessageBox.Show(messageBoxText, "Use RSA?", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes
+											 ? EncryptionType.Rsa
+											 : EncryptionType.Rijndael;
 
-                // Since they want to use RSA but already have connection data encrypted with Rijndael, we'll have to capture that password so that we can
-                // decrypt it using Rijndael and then re-encrypt it using the RSA keypair
-                convertingToRsa = Options.EncryptionType == EncryptionType.Rsa &&
-                                  Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect");
-            }
+				// Since they want to use RSA but already have connection data encrypted with Rijndael, we'll have to capture that password so that we can
+				// decrypt it using Rijndael and then re-encrypt it using the RSA keypair
+				convertingToRsa = Options.EncryptionType == EncryptionType.Rsa &&
+								  Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect");
+			}
 
-            // If this is the first time that the user is running the application, pop up and information box informing them that they're going to enter a
-            // password used to encrypt sensitive connection details
-            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect"))
-            {
-                if (Options.EncryptionType == EncryptionType.Rijndael)
-                    MessageBox.Show(Resources.FirstRunPasswordText, Resources.FirstRunPasswordTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+			// If this is the first time that the user is running the application, pop up and information box informing them that they're going to enter a
+			// password used to encrypt sensitive connection details
+			if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect"))
+			{
+				if (Options.EncryptionType == EncryptionType.Rijndael)
+					MessageBox.Show(Resources.FirstRunPasswordText, Resources.FirstRunPasswordTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect");
-            }
+				Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect");
+			}
 
-            if (Options.EncryptionType != null)
-                Options.Save();
+			if (Options.EncryptionType != null)
+				Options.Save();
 
-            bool encryptionTypeSet = false;
+			bool encryptionTypeSet = false;
 
-            while (Bookmarks == null || _history == null)
-            {
-                // Get the user's encryption password via the password dialog
-                if (!encryptionTypeSet && (Options.EncryptionType == EncryptionType.Rijndael || convertingToRsa))
-                {
-                    PasswordWindow passwordWindow = new PasswordWindow();
-                    passwordWindow.ShowDialog();
+			while (Bookmarks == null || _history == null)
+			{
+				// Get the user's encryption password via the password dialog
+				if (!encryptionTypeSet && (Options.EncryptionType == EncryptionType.Rijndael || convertingToRsa))
+				{
+					PasswordWindow passwordWindow = new PasswordWindow();
+					passwordWindow.ShowDialog();
 
-                    ConnectionFactory.SetEncryptionType(EncryptionType.Rijndael, passwordWindow.Password);
-                }
+					ConnectionFactory.SetEncryptionType(EncryptionType.Rijndael, passwordWindow.Password);
+				}
 
-                else
-                    ConnectionFactory.SetEncryptionType(Options.EncryptionType.Value);
+				else
+					ConnectionFactory.SetEncryptionType(Options.EncryptionType.Value);
 
-                // Create the bookmark and history windows which will try to use the password to decrypt sensitive connection details; if it's unable to, an
-                // exception will be thrown that wraps a CryptographicException instance
-                try
-                {
-                    _bookmarks = new BookmarksWindow(this);
-                    _history = new HistoryWindow(this);
+				// Create the bookmark and history windows which will try to use the password to decrypt sensitive connection details; if it's unable to, an
+				// exception will be thrown that wraps a CryptographicException instance
+				try
+				{
+					_bookmarks = new BookmarksWindow(this);
+					_history = new HistoryWindow(this);
 
-                    ConnectionFactory.GetDefaultProtocol();
+					ConnectionFactory.GetDefaultProtocol();
 
-                    encryptionTypeSet = true;
-                }
+					encryptionTypeSet = true;
+				}
 
-                catch (Exception e)
-                {
-                    if ((Options.EncryptionType == EncryptionType.Rijndael || convertingToRsa) && !ContainsCryptographicException(e))
-                        throw;
+				catch (Exception e)
+				{
+					if ((Options.EncryptionType == EncryptionType.Rijndael || convertingToRsa) && !ContainsCryptographicException(e))
+						throw;
 
-                    // Tell the user that their password is incorrect and, if they click OK, repeat the process
-                    DialogResult result = MessageBox.Show(
-                        Resources.IncorrectPasswordText, Resources.ErrorTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+					// Tell the user that their password is incorrect and, if they click OK, repeat the process
+					DialogResult result = MessageBox.Show(
+						Resources.IncorrectPasswordText, Resources.ErrorTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
 
-                    if (result != DialogResult.OK)
-                    {
-                        Closing = true;
-                        return;
-                    }
-                }
-            }
+					if (result != DialogResult.OK)
+					{
+						Closing = true;
+						return;
+					}
+				}
+			}
 
-            // If we're converting over to RSA, we've already loaded and decrypted the sensitive data using 
-            if (convertingToRsa)
-                SetEncryptionType(Options.EncryptionType.Value, null);
+			// If we're converting over to RSA, we've already loaded and decrypted the sensitive data using 
+			if (convertingToRsa)
+				SetEncryptionType(Options.EncryptionType.Value, null);
 
-            // Create a remoting channel used to tell this window to open historical connections when entries in the jump list are clicked
-            if (_ipcChannel == null)
-            {
-                _ipcChannel = new IpcServerChannel("EasyConnect");
-                ChannelServices.RegisterChannel(_ipcChannel, false);
-                RemotingConfiguration.RegisterWellKnownServiceType(typeof (HistoryMethods), "HistoryMethods", WellKnownObjectMode.SingleCall);
-            }
+			// Create a remoting channel used to tell this window to open historical connections when entries in the jump list are clicked
+			if (_ipcChannel == null)
+			{
+				_ipcChannel = new IpcServerChannel("EasyConnect");
+				ChannelServices.RegisterChannel(_ipcChannel, false);
+				RemotingConfiguration.RegisterWellKnownServiceType(typeof(HistoryMethods), "HistoryMethods", WellKnownObjectMode.SingleCall);
+			}
 
-            // Wire up the tab event handlers
-            TabClicked += MainForm_TabClicked;
+			// Wire up the tab event handlers
+			TabClicked += MainForm_TabClicked;
 
-            ActiveInstance = this;
-            ConnectToHistoryMethod = ConnectToHistory;
+			ActiveInstance = this;
+			ConnectToHistoryMethod = ConnectToHistory;
 
-            TabRenderer = new ChromeTabRenderer(this);
+			TabRenderer = new ChromeTabRenderer(this);
 
-            // Show the bookmarks manager window initially if we're not opening bookmarks or history entries
-            if (OpenToBookmarks == null && OpenToHistory == Guid.Empty)
-                OpenBookmarkManager();
-
-            // Get the low-level keyboard hook that will be used to process shortcut keys
-            using (Process curProcess = Process.GetCurrentProcess())
-            using (ProcessModule curModule = curProcess.MainModule)
-            {
-                _hookproc = KeyboardHookCallback;
-                _hookId = User32.SetWindowsHookEx(WH.WH_KEYBOARD_LL, _hookproc, Kernel32.GetModuleHandleW(curModule.ModuleName), 0);
-            }
-        }
+			// Get the low-level keyboard hook that will be used to process shortcut keys
+			using (Process curProcess = Process.GetCurrentProcess())
+			using (ProcessModule curModule = curProcess.MainModule)
+			{
+				_hookproc = KeyboardHookCallback;
+				_hookId = User32.SetWindowsHookEx(WH.WH_KEYBOARD_LL, _hookproc, Kernel32.GetModuleHandleW(curModule.ModuleName), 0);
+			}
+		}
 
         private void SetEncryptionType(EncryptionType encryptionType, SecureString encryptionPassword)
         {
@@ -382,7 +416,7 @@ can be used.";
         /// <summary>
         /// Bookmarks, if any, that we should open when initially creating the UI.
         /// </summary>
-        public Guid[] OpenToBookmarks
+        public List<IConnection> OpenToBookmarks
         {
             get;
             set;
@@ -708,13 +742,13 @@ can be used.";
         }
 
         /// <summary>
-        /// Opens the <see cref="IConnection"/>s whose <see cref="IConnection.Guid"/> property matches items in <paramref name="bookmarkGuids"/>.
+        /// Opens the <see cref="IConnection"/>s in <paramref name="bookmarks"/>.
         /// </summary>
-        /// <param name="bookmarkGuids">GUIDs used to identify the <see cref="IConnection"/>s to open.</param>
-        public void ConnectToBookmarks(Guid[] bookmarkGuids)
+        /// <param name="bookmarks">Bookmarks to open.</param>
+        public void ConnectToBookmarks(List<IConnection> bookmarks)
         {
-            foreach (Guid bookmarkGuid in bookmarkGuids)
-                Connect(_bookmarks.FindBookmark(bookmarkGuid));
+            foreach (IConnection bookmark in bookmarks)
+                Connect(bookmark);
 
             SelectedTabIndex = Tabs.Count - 1;
         }
@@ -794,6 +828,8 @@ can be used.";
         {
             if (_bookmarks != null)
                 _bookmarks.Save();
+
+	        EasyConnect.OpenWindows.Remove(this);
         }
 
         /// <summary>

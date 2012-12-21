@@ -72,6 +72,9 @@
     <OutputPath>bin\x86\Release\</OutputPath>
     <DocumentationFile>bin\x86\Release\EasyConnect.XML</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>EasyConnect.EasyConnect</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutomaticUpdater, Version=2.6.16.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -160,7 +163,7 @@
     <Compile Include="PasswordWindow.Designer.cs">
       <DependentUpon>PasswordWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="EasyConnect.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UsernamePasswordWindow.cs">
       <SubType>Form</SubType>

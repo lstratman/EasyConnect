@@ -1022,11 +1022,12 @@ namespace EasyConnect
 		private void _openBookmarkNewWindowMenuItem_Click(object sender, EventArgs e)
 		{
 			MainForm mainForm = new MainForm(
-				new Guid[]
+				new List<IConnection>
 					{
-						_listViewConnections[_bookmarksListView.SelectedItems[0]].Guid
+						_listViewConnections[_bookmarksListView.SelectedItems[0]]
 					});
-			mainForm.Show();
+			
+			EasyConnect.Launch(mainForm);
 		}
 
 		/// <summary>
@@ -1075,13 +1076,13 @@ namespace EasyConnect
 		private void _folderOpenAllNewWindowMenuItem_Click(object sender, EventArgs e)
 		{
 			// Look recursively into this folder and its descendants to get all of the bookmarks
-			List<Guid> bookmarkGuids = new List<Guid>();
-			FindAllBookmarks(_contextMenuItem as BookmarksFolder, bookmarkGuids);
+			List<IConnection> bookmarks = new List<IConnection>();
+			FindAllBookmarks(_contextMenuItem as BookmarksFolder, bookmarks);
 
-			if (bookmarkGuids.Count > 0)
+			if (bookmarks.Count > 0)
 			{
-				MainForm mainForm = new MainForm(bookmarkGuids.ToArray());
-				mainForm.Show();
+				MainForm mainForm = new MainForm(bookmarks);
+				EasyConnect.Launch(mainForm);
 			}
 		}
 
@@ -1089,14 +1090,14 @@ namespace EasyConnect
 		/// Recursive method that searches <paramref name="bookmarksFolder"/> and its descendants for all bookmarks.  Called from 
 		/// <see cref="_folderOpenAllNewWindowMenuItem_Click"/>.
 		/// </summary>
-		/// <param name="bookmarkGuids">List of bookmarks that have been assembled so far.</param>
+		/// <param name="bookmarks">List of bookmarks that have been assembled so far.</param>
 		/// <param name="bookmarksFolder">Current folder that we're searching.</param>
-		private void FindAllBookmarks(BookmarksFolder bookmarksFolder, List<Guid> bookmarkGuids)
+		private void FindAllBookmarks(BookmarksFolder bookmarksFolder, List<IConnection> bookmarks)
 		{
-			bookmarkGuids.AddRange(bookmarksFolder.Bookmarks.Select(bookmark => bookmark.Guid));
+			bookmarks.AddRange(bookmarksFolder.Bookmarks);
 
 			foreach (BookmarksFolder childFolder in bookmarksFolder.ChildFolders)
-				FindAllBookmarks(childFolder, bookmarkGuids);
+				FindAllBookmarks(childFolder, bookmarks);
 		}
 
 		/// <summary>
