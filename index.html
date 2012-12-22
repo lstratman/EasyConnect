@@ -27,16 +27,16 @@
         <p class="view"><a href="https://github.com/lstratman/EasyConnect">View the Project on GitHub <small>lstratman/EasyConnect</small></a></p>
         <ul>
           <li><a href="https://github.com/lstratman/EasyConnect/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://www.dropbox.com/sh/8ogll1orn68seux/nLA_Z5nO5T/EasyConnect-1.0.msi" target="_new">Download <strong>Installer</strong></a></li>
+          <li><a href="https://www.dropbox.com/s/mp8f6a5bgwbyww0/EasyConnect-1.1.msi" target="_new">Download <strong>Installer</strong></a></li>
           <li><a href="https://github.com/lstratman/EasyConnect">View On <strong>GitHub</strong></a></li>
         </ul>
       </header>
       <section>
-        <strong>Current version: 1.0</strong>
+        <strong>Current version: 1.1</strong>
 
         <br/><br/>
 
-        <p>This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP) and Secure Shell (SSH), but has a plugin architecture designed to enable third-party support for other protocols such as VNC, Citrix, etc.</p>
+        <p>This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP), Secure Shell (SSH), and VNC, but has a plugin architecture designed to enable third-party support for other protocols such as Citrix, etc.</p>
 
         <a href="images/screenshots/bookmarks.jpg" title="Bookmarks" rel="lightbox[screenshots]" class="thumbnail"><img src="images/screenshots/thumbnails/bookmarks.jpg"/></a>
         <a href="images/screenshots/sessions.jpg" title="Sessions" rel="lightbox[screenshots]" class="thumbnail"><img src="images/screenshots/thumbnails/sessions.jpg"/></a>
@@ -47,7 +47,18 @@
 
         <strong>Change Log</strong>
 
-        <br/><br/>v1.0
+        <br/><br/>v1.1
+
+        <ul>
+        	<li>Added support for VNC.</li>
+        	<li>Added support for using an RSA key container to encrypt passwords in settings files instead of using a symmetric key that forced the user to enter an explicit password every time.</li>
+        	<li>Added the ability to associate usernames and passwords with bookmark folders, meaning that connections within those folders will inherit those credentials instead of forcing the user to specify the credentials for each individual connection.</li>
+        	<li>Improved the reliability of the Aero Peek functionality in the taskbar.</li>
+        	<li>Improved the reliability of opening bookmarks in new windows.</li>
+        	<li>Made the context menu that appears when right-clicking on a bookmarks folder in the treeview and the one that appears when right-clicking on a folder in the list view consistent.</li>
+        </ul>
+
+        v1.0
 
         <ul>
           <li>Added support for SSH.</li>
