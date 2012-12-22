@@ -1,6 +1,6 @@
-### Get the installer for the latest version (1.0) <a href="https://www.dropbox.com/sh/8ogll1orn68seux/nLA_Z5nO5T/EasyConnect-1.0.msi">here</a>.
+### Get the installer for the latest version (1.1) <a href="https://www.dropbox.com/s/mp8f6a5bgwbyww0/EasyConnect-1.1.msi">here</a>.
 
-This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP) and Secure Shell (SSH), but has a plugin architecture designed to enable third-party support for other protocols such as VNC, Citrix, etc.
+This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP), Secure Shell (SSH), and VNC but has a plugin architecture designed to enable third-party support for other protocols such as Citrix, etc.
 
 <a href="http://lstratman.github.com/EasyConnect/images/screenshots/bookmarks.jpg" target="_new"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/bookmarks.jpg"/></a>
 <a href="http://lstratman.github.com/EasyConnect/images/screenshots/sessions.jpg" target="_new"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/sessions.jpg"/></a>
