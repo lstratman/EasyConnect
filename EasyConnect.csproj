@@ -82,16 +82,20 @@
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.NETTitleBarTabs\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+      <HintPath>packages\TitleBarTabs.1.0.0\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.NETTitleBarTabs\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+      <HintPath>packages\TitleBarTabs.1.0.0\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="SecurePasswordTextBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Stratman.Windows.Forms.TitleBarTabs, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\TitleBarTabs.1.0.0\lib\Stratman.Windows.Forms.TitleBarTabs.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -108,6 +112,26 @@
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Win32Interop.Dwmapi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Win32Interop.Dwmapi.1.0.0\lib\Win32Interop.Dwmapi.dll</HintPath>
+    </Reference>
+    <Reference Include="Win32Interop.Gdi32, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Win32Interop.Gdi32.1.0.0\lib\Win32Interop.Gdi32.dll</HintPath>
+    </Reference>
+    <Reference Include="Win32Interop.Kernel32, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Win32Interop.Kernel32.1.0.0\lib\Win32Interop.Kernel32.dll</HintPath>
+    </Reference>
+    <Reference Include="Win32Interop.User32, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Win32Interop.User32.1.0.0\lib\Win32Interop.User32.dll</HintPath>
+    </Reference>
+    <Reference Include="Win32Interop.Uxtheme, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Win32Interop.Uxtheme.1.0.0\lib\Win32Interop.Uxtheme.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -215,6 +239,7 @@
     <None Include="app.config" />
     <None Include="lib\client.wyc" />
     <None Include="lib\wyUpdate.vshost.exe.manifest" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -273,10 +298,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include=".NETTitleBarTabs\Stratman.Windows.Forms.TitleBarTabs.csproj">
-      <Project>{690ba0f7-d8fe-4ebe-ba39-8058086c7a09}</Project>
-      <Name>Stratman.Windows.Forms.TitleBarTabs</Name>
-    </ProjectReference>
     <ProjectReference Include="Common\EasyConnect.Common.csproj">
       <Project>{ABF68708-BDC0-4D29-A523-00EC942449B2}</Project>
       <Name>EasyConnect.Common</Name>
@@ -296,14 +317,6 @@
     <ProjectReference Include="Protocols\Vnc\EasyConnect.Protocols.Vnc.csproj">
       <Project>{13122d85-c813-4217-ae28-7921fc5588b2}</Project>
       <Name>EasyConnect.Protocols.Vnc</Name>
-    </ProjectReference>
-    <ProjectReference Include="Win32Interop\Kernel32\Win32Interop.Kernel32.csproj">
-      <Project>{C50EB086-0E96-4D7F-9C23-E7632ABC46AB}</Project>
-      <Name>Win32Interop.Kernel32</Name>
-    </ProjectReference>
-    <ProjectReference Include="Win32Interop\User32\Win32Interop.User32.csproj">
-      <Project>{1c09da92-5492-4022-a090-961076a41185}</Project>
-      <Name>Win32Interop.User32</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

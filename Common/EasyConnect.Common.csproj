@@ -45,12 +45,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializationUtilities.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\.NETTitleBarTabs\Stratman.Windows.Forms.TitleBarTabs.csproj">
-      <Project>{690BA0F7-D8FE-4EBE-BA39-8058086C7A09}</Project>
-      <Name>Stratman.Windows.Forms.TitleBarTabs</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

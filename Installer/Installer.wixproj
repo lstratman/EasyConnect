@@ -33,14 +33,6 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\.NETTitleBarTabs\Stratman.Windows.Forms.TitleBarTabs.csproj">
-      <Name>Stratman.Windows.Forms.TitleBarTabs</Name>
-      <Project>{690ba0f7-d8fe-4ebe-ba39-8058086c7a09}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
     <ProjectReference Include="..\Common\EasyConnect.Common.csproj">
       <Name>EasyConnect.Common</Name>
       <Project>{abf68708-bdc0-4d29-a523-00ec942449b2}</Project>
@@ -84,46 +76,6 @@
     <ProjectReference Include="..\Protocols\Vnc\EasyConnect.Protocols.Vnc.csproj">
       <Name>EasyConnect.Protocols.Vnc</Name>
       <Project>{13122d85-c813-4217-ae28-7921fc5588b2}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\Win32Interop\Dwmapi\Win32Interop.Dwmapi.csproj">
-      <Name>Win32Interop.Dwmapi</Name>
-      <Project>{88d97bb0-77cc-4431-8c6d-63ef9ad461b4}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\Win32Interop\Gdi32\Win32Interop.Gdi32.csproj">
-      <Name>Win32Interop.Gdi32</Name>
-      <Project>{7b9b5218-ac11-48ce-83f9-465a3c897a14}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\Win32Interop\Kernel32\Win32Interop.Kernel32.csproj">
-      <Name>Win32Interop.Kernel32</Name>
-      <Project>{c50eb086-0e96-4d7f-9c23-e7632abc46ab}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\Win32Interop\User32\Win32Interop.User32.csproj">
-      <Name>Win32Interop.User32</Name>
-      <Project>{1c09da92-5492-4022-a090-961076a41185}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\Win32Interop\Uxtheme\Win32Interop.Uxtheme.csproj">
-      <Name>Win32Interop.Uxtheme</Name>
-      <Project>{dfe88b86-31ca-4bde-a1d1-77fe83f6a541}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

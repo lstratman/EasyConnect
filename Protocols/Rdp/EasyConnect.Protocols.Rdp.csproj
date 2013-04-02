@@ -45,6 +45,14 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Win32Interop.Gdi32, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Win32Interop.Gdi32.1.0.0\lib\Win32Interop.Gdi32.dll</HintPath>
+    </Reference>
+    <Reference Include="Win32Interop.User32, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Win32Interop.User32.1.0.0\lib\Win32Interop.User32.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioMode.cs" />
@@ -75,10 +83,6 @@
     <ProjectReference Include="..\..\Common\EasyConnect.Common.csproj">
       <Project>{ABF68708-BDC0-4D29-A523-00EC942449B2}</Project>
       <Name>EasyConnect.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Win32Interop\User32\Win32Interop.User32.csproj">
-      <Project>{1C09DA92-5492-4022-A090-961076A41185}</Project>
-      <Name>Win32Interop.User32</Name>
     </ProjectReference>
     <ProjectReference Include="..\EasyConnect.Protocols.csproj">
       <Project>{9794E3F6-45AA-4841-8AE3-60B9662A1B1E}</Project>
@@ -118,6 +122,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Rdp.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -22,7 +22,7 @@ namespace EasyConnect.Protocols.Rdp
         /// <summary>
         /// List of all possible desktop resolutions.
         /// </summary>
-        protected List<DEVMODEW> _resolutions = new List<DEVMODEW>();
+        protected List<DEVMODE> _resolutions = new List<DEVMODE>();
 
         /// <summary>
         /// Default constructor.
@@ -91,12 +91,12 @@ namespace EasyConnect.Protocols.Rdp
                 _inheritedPasswordLabel.Text = "Inheriting a password from parent folders";
 
             // Enumerate the desktop display modes and add them to the resolutions slider
-            DEVMODEW devMode = new DEVMODEW();
+            DEVMODE devMode = new DEVMODE();
             uint modeNumber = 0;
 
-            while (User32.EnumDisplaySettingsW(null, modeNumber, out devMode))
+            while (User32.EnumDisplaySettings(null, modeNumber, out devMode))
             {
-                if (!_resolutions.Exists((DEVMODEW d) => d.dmPelsWidth == devMode.dmPelsWidth && d.dmPelsHeight == devMode.dmPelsHeight))
+                if (!_resolutions.Exists((DEVMODE d) => d.dmPelsWidth == devMode.dmPelsWidth && d.dmPelsHeight == devMode.dmPelsHeight))
                     _resolutions.Add(devMode);
 
                 modeNumber++;
@@ -107,7 +107,7 @@ namespace EasyConnect.Protocols.Rdp
 
             int resolutionIndex =
                 _resolutions.FindIndex(
-                    (DEVMODEW d) =>
+                    (DEVMODE d) =>
                     d.dmPelsWidth == Connection.DesktopWidth && d.dmPelsHeight == Connection.DesktopHeight);
 
             _resolutionSlider.Value = resolutionIndex != -1

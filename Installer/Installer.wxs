@@ -64,24 +64,24 @@
 				<File Id="SystemDrawingHtmlAssembly" Name="System.Drawing.Html.dll" Source="$(var.EasyConnect.TargetDir)System.Drawing.Html.dll"/>
 			</Component>
 			<Component Id="TitleBarTabsComponent" Guid="99CFCC2A-BBC5-47A5-BFBA-E7164413A52D">
-				<File Id="TitleBarTabsAssembly" Name="$(var.Stratman.Windows.Forms.TitleBarTabs.TargetFileName)" Source="$(var.Stratman.Windows.Forms.TitleBarTabs.TargetPath)"/>
-				<File Id="WindowsAPICodePackAssembly" Name="Microsoft.WindowsAPICodePack.dll" Source="$(var.Stratman.Windows.Forms.TitleBarTabs.TargetDir)Microsoft.WindowsAPICodePack.dll"/>
-				<File Id="WindowsAPICodePackShellAssembly" Name="Microsoft.WindowsAPICodePack.Shell.dll" Source="$(var.Stratman.Windows.Forms.TitleBarTabs.TargetDir)Microsoft.WindowsAPICodePack.Shell.dll"/>
+				<File Id="TitleBarTabsAssembly" Name="Stratman.Windows.Forms.TitleBarTabs.dll" Source="$(var.EasyConnect.TargetDir)Stratman.Windows.Forms.TitleBarTabs.dll"/>
+				<File Id="WindowsAPICodePackAssembly" Name="Microsoft.WindowsAPICodePack.dll" Source="$(var.EasyConnect.TargetDir)Microsoft.WindowsAPICodePack.dll"/>
+				<File Id="WindowsAPICodePackShellAssembly" Name="Microsoft.WindowsAPICodePack.Shell.dll" Source="$(var.EasyConnect.TargetDir)Microsoft.WindowsAPICodePack.Shell.dll"/>
 			</Component>
 			<Component Id="DwmapiInteropAssemblyComponent" Guid="9E0D791D-5829-447F-8FF2-A0C0D0395B42">
-				<File Id="DwmapiInteropAssembly" Name="$(var.Win32Interop.Dwmapi.TargetFileName)" Source="$(var.Win32Interop.Dwmapi.TargetPath)"/>
+				<File Id="DwmapiInteropAssembly" Name="Win32Interop.Dwmapi.dll" Source="$(var.EasyConnect.TargetDir)Win32Interop.Dwmapi.dll"/>
 			</Component>
 			<Component Id="Gdi32InteropAssemblyComponent" Guid="24CEA737-0699-4C32-8030-85F54D2E5129">
-				<File Id="Gdi32InteropAssembly" Name="$(var.Win32Interop.Gdi32.TargetFileName)" Source="$(var.Win32Interop.Gdi32.TargetPath)"/>
+				<File Id="Gdi32InteropAssembly" Name="Win32Interop.Gdi32.dll" Source="$(var.EasyConnect.TargetDir)Win32Interop.Gdi32.dll"/>
 			</Component>
 			<Component Id="Kernel32InteropAssemblyComponent" Guid="40AA7397-9EC5-4462-B6AB-C762218BED83">
-				<File Id="Kernel32InteropAssembly" Name="$(var.Win32Interop.Kernel32.TargetFileName)" Source="$(var.Win32Interop.Kernel32.TargetPath)"/>
+				<File Id="Kernel32InteropAssembly" Name="Win32Interop.Kernel32.dll" Source="$(var.EasyConnect.TargetDir)Win32Interop.Kernel32.dll"/>
 			</Component>
 			<Component Id="User32InteropAssemblyComponent" Guid="13C89588-5893-4514-B86D-0698D647D9AC">
-				<File Id="User32InteropAssembly" Name="$(var.Win32Interop.User32.TargetFileName)" Source="$(var.Win32Interop.User32.TargetPath)"/>
+				<File Id="User32InteropAssembly" Name="Win32Interop.User32.dll" Source="$(var.EasyConnect.TargetDir)Win32Interop.User32.dll"/>
 			</Component>
 			<Component Id="UxthemeInteropAssemblyComponent" Guid="45859B10-E9BD-4439-B393-607A8AC523C4">
-				<File Id="UxthemeInteropAssembly" Name="$(var.Win32Interop.Uxtheme.TargetFileName)" Source="$(var.Win32Interop.Uxtheme.TargetPath)"/>
+				<File Id="UxthemeInteropAssembly" Name="Win32Interop.Uxtheme.dll" Source="$(var.EasyConnect.TargetDir)Win32Interop.Uxtheme.dll"/>
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="RdpPluginComponents" Directory="INSTALLFOLDER">

@@ -1,6 +1,0 @@
-[submodule ".NETTitleBarTabs"]
-	path = .NETTitleBarTabs
-	url = git@github.com:lstratman/.NETTitleBarTabs.git
-[submodule "Win32Interop"]
-	path = Win32Interop
-	url = git@github.com:lstratman/Win32Interop.git
