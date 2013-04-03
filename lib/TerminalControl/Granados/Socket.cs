@@ -283,6 +283,9 @@ namespace Granados.SSHC
 
 		public void OnChannelClosed() {
 			_handler.OnClosed();
+
+			if (LoggedOff != null)
+				LoggedOff(this, null);
 		}
 
 		public void OnChannelReady() {
@@ -296,5 +299,6 @@ namespace Granados.SSHC
 		}
 
 	    public event EventHandler Connected;
+		public event EventHandler LoggedOff;
 	}
 }

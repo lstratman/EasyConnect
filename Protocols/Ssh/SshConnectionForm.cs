@@ -107,9 +107,10 @@ namespace EasyConnect.Protocols.Ssh
 
             // Wire up the connection event handlers and set the text and background colors
             ((ISSHChannelEventReceiver) _terminal.TerminalPane.Connection).Connected += OnConnected;
-            ((ISSHConnectionEventReceiver) _terminal.TerminalPane.Connection).Disconnected += OnDisconnected;
-            _terminal.SetPaneColors(Connection.TextColor, Connection.BackgroundColor);
+	        ((ISSHChannelEventReceiver) _terminal.TerminalPane.Connection).LoggedOff += OnLoggedOff;
+	        ((ISSHConnectionEventReceiver) _terminal.TerminalPane.Connection).Disconnected += OnConnectionLost;
 
+            _terminal.SetPaneColors(Connection.TextColor, Connection.BackgroundColor);
             _terminal.TerminalPane.Focus();
         }
 
@@ -121,9 +122,6 @@ namespace EasyConnect.Protocols.Ssh
         private void OnDisconnected(object sender, EventArgs eventArgs)
         {
             IsConnected = false;
-
-            if (CloseParentFormOnDisconnect)
-                ParentForm.Invoke(new Action(() => ParentForm.Close()));
         }
     }
 }

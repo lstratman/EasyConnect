@@ -1,6 +1,6 @@
 using System;
+using System.ComponentModel;
 using System.Windows.Forms;
-using EasyConnect.Protocols.Properties;
 using Stratman.Windows.Forms.TitleBarTabs;
 
 namespace EasyConnect.Protocols
@@ -11,12 +11,11 @@ namespace EasyConnect.Protocols
 	public abstract partial class BaseConnectionForm : Form, IConnectionForm
 	{
 		/// <summary>
-		/// Default constructor, sets <see cref="CloseParentFormOnDisconnect"/> to true.
+		/// Default constructor.
 		/// </summary>
 		protected BaseConnectionForm()
 		{
 			InitializeComponent();
-			CloseParentFormOnDisconnect = true;
 		}
 
 		/// <summary>
@@ -36,13 +35,16 @@ namespace EasyConnect.Protocols
 			protected set;
 		}
 
-		/// <summary>
-		/// Flag indicating if the parent window should be closed when the connection is terminated.
-		/// </summary>
-		public bool CloseParentFormOnDisconnect
+		protected bool IsClosing
 		{
 			get;
 			set;
+		}
+
+		protected override void OnClosing(CancelEventArgs e)
+		{
+			IsClosing = true;
+			base.OnClosing(e);
 		}
 
 		/// <summary>
@@ -84,19 +86,23 @@ namespace EasyConnect.Protocols
 		}
 
 		/// <summary>
-		/// Handler method that's called when the connection is lost.  Sets <see cref="IsConnected"/> to false and calls the <see cref="Disconnected"/>
+		/// Handler method that's called when the connection is lost.  Sets <see cref="IsConnected"/> to false and calls the <see cref="LoggedOff"/>
 		/// event.
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		protected virtual void OnDisconnected(object sender, EventArgs e)
+		protected virtual void OnLoggedOff(object sender, EventArgs e)
 		{
+			if (IsClosing)
+				return;
+
 			IsConnected = false;
 			ConnectionWindow.Visible = false;
 
-			if (Disconnected != null)
-				Disconnected(sender, e);
+			if (LoggedOff != null)
+				LoggedOff(sender, e);
 
+			IsClosing = true;
 			ParentForm.Invoke(new Action(() => ParentForm.Close()));
 		}
 
@@ -108,6 +114,9 @@ namespace EasyConnect.Protocols
 		/// <param name="e">Arguments associated with this event.</param>
 		protected virtual void OnConnectionLost(object sender, EventArgs e)
 		{
+			if (IsClosing)
+				return;
+
 			IsConnected = false;
 			ConnectionWindow.Visible = false;
 			disconnectedPanel.Visible = true;
@@ -124,7 +133,7 @@ namespace EasyConnect.Protocols
 		/// <summary>
 		/// Event that is fired when the connection for this window is lost.
 		/// </summary>
-		public event EventHandler Disconnected;
+		public event EventHandler LoggedOff;
 
 		/// <summary>
 		/// Event that is fired when the connection for this window is lost.

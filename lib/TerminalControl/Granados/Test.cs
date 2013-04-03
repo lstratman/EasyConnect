@@ -83,6 +83,7 @@ namespace Granados.SSHCTest
 
 	    public event EventHandler Connected;
 	    public event EventHandler Disconnected;
+		public event EventHandler LoggedOff;
 
 	    public SSHChannel _pf;
 	}

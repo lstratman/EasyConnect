@@ -82,6 +82,8 @@ namespace EasyConnect.Protocols.Vnc
 
 			// Establish the actual connection
 			_vncConnection.ConnectedEvent += OnConnected;
+			_vncConnection.Disconnected += OnConnectionLost;
+
 			_vncConnection.ConnectAsyncEx(Connection.Host, Connection.Port + Connection.Display, password);
 		}
 	}

@@ -72,6 +72,7 @@ namespace Granados.SSHC
 		void OnMiscPacket(byte packet_type, byte[] data, int offset, int length);
 
         event EventHandler Connected;
+		event EventHandler LoggedOff;
 	}
 
 }

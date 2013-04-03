@@ -420,6 +420,9 @@ namespace EasyConnect.Protocols.Rdp
         {
             if (e.discReason > 3)
                 OnConnectionLost(sender, null);
+
+            else
+				OnLoggedOff(sender, null);
         }
 
         /// <summary>

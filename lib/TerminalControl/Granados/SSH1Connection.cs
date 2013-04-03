@@ -636,5 +636,6 @@ namespace Granados.SSHCV1
 		}
 
 	    public event EventHandler Connected;
+		public event EventHandler LoggedOff;
 	}
 }

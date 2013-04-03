@@ -191,6 +191,9 @@ namespace Poderosa.Communication
 		public void OnChannelClosed() {
 			EnsureHandler();
 			_callback.DisconnectedFromServer();
+
+			if (LoggedOff != null)
+				LoggedOff(this, null);
 		}
 
 		public void OnChannelReady() {
@@ -239,6 +242,7 @@ namespace Poderosa.Communication
 
 	    public event EventHandler Connected;
 	    public event EventHandler Disconnected;
+		public event EventHandler LoggedOff;
 
 	    private void EnsureHandler() {
 			if(_callback!=null) return;
@@ -743,6 +747,9 @@ namespace Poderosa.Communication
 		public void OnChannelClosed() {
 			if(!_closed)
 				_callback.DisconnectedFromServer();
+
+			if (LoggedOff != null)
+				LoggedOff(this, null);
 		}
 		public void OnChannelEOF() {
 			if(!_closed)
@@ -819,6 +826,7 @@ namespace Poderosa.Communication
 
 	    public event EventHandler Connected;
 	    public event EventHandler Disconnected;
+		public event EventHandler LoggedOff;
 
 	    private void EnsureCallbackHandler() {
 			int n = 0;

@@ -537,7 +537,6 @@ namespace EasyConnect
 						{
 							if (_connectionForm != null)
 							{
-								_connectionForm.CloseParentFormOnDisconnect = false;
 								_connectionForm.Close();
 							}
 
