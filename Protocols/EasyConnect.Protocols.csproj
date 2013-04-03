@@ -76,9 +76,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractBaseConnectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="BaseConnection.cs" />
     <Compile Include="BaseConnectionForm.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseConnectionForm.Designer.cs">
+      <DependentUpon>BaseConnectionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="BaseProtocol.cs" />
     <Compile Include="BookmarksFolder.cs" />
@@ -99,6 +105,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BaseConnectionForm.resx">
+      <DependentUpon>BaseConnectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

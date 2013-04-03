@@ -146,6 +146,15 @@ namespace EasyConnect
 				OpenBookmarkManager();
 		}
 
+		/// <summary>
+		/// Forces a complete redraw of the tabs overlay.
+		/// </summary>
+		public void RedrawTabs()
+		{
+			if (_overlay != null)
+				_overlay.Render(true);
+		}
+
         /// <summary>
         /// Constructor; initializes the UI.
         /// </summary>

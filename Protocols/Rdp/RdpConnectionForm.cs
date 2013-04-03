@@ -404,7 +404,8 @@ namespace EasyConnect.Protocols.Rdp
 
             Host = Connection.Host;
 
-            _rdpWindow.ConnectingText = "Connecting...";
+	        _rdpWindow.AdvancedSettings3.EnableAutoReconnect = false;
+	        _rdpWindow.Visible = false;
             _rdpWindow.OnConnected += OnConnected;
             _rdpWindow.Connect();
         }
@@ -418,13 +419,7 @@ namespace EasyConnect.Protocols.Rdp
         private void _rdpWindow_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {
             if (e.discReason > 3)
-                MessageBox.Show("Unable to establish connection.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-            IsConnected = false;
-
-            // Close the parent window if necessary
-            if (CloseParentFormOnDisconnect)
-                ParentForm.Close();
+                OnConnectionLost(sender, null);
         }
 
         /// <summary>

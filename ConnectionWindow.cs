@@ -374,6 +374,8 @@ namespace EasyConnect
 			// Initialize the UI elements
 			_connectionContainerPanelSizeSet = true;
 			_connectionForm = ConnectionFactory.CreateConnectionForm(_connection, _connectionContainerPanel);
+			_connectionForm.ConnectionLost += _connectionForm_ConnectionLost;
+			_connectionForm.Connected += _connectionForm_Connected;
 			Icon = ConnectionFactory.GetProtocol(_connection).ProtocolIcon;
 			Text = _connection.DisplayName;
 
@@ -394,6 +396,18 @@ namespace EasyConnect
 
 			ParentTabs.RegisterConnection(this, _connection);
 			HideToolbar();
+		}
+
+		void _connectionForm_Connected(object sender, EventArgs e)
+		{
+			Icon = ConnectionFactory.GetProtocol(_connection).ProtocolIcon;
+			ParentTabs.RedrawTabs();
+		}
+
+		void _connectionForm_ConnectionLost(object sender, EventArgs e)
+		{
+			Icon = Resources.Disconnected;
+			ParentTabs.RedrawTabs();
 		}
 
 		/// <summary>
