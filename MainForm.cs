@@ -197,6 +197,7 @@ namespace EasyConnect
 
 			//Controls.Add(_automaticUpdater);
 
+			AeroPeekEnabled = false;
 			bool convertingToRsa = false;
 
 			// If the user hasn't formally selected an encryption type (either they're starting the application for the first time or are running a legacy
