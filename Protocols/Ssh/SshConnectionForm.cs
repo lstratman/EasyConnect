@@ -113,15 +113,5 @@ namespace EasyConnect.Protocols.Ssh
             _terminal.SetPaneColors(Connection.TextColor, Connection.BackgroundColor);
             _terminal.TerminalPane.Focus();
         }
-
-        /// <summary>
-        /// Handler method that's called when an established connection is broken.  Closes the parent window if necessary.
-        /// </summary>
-        /// <param name="sender">Object from which this event originated.</param>
-        /// <param name="eventArgs">Arguments associated with this event.</param>
-        private void OnDisconnected(object sender, EventArgs eventArgs)
-        {
-            IsConnected = false;
-        }
     }
 }

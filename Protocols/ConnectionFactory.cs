@@ -100,6 +100,7 @@ namespace EasyConnect.Protocols
         /// <returns>Decrypted data.</returns>
         public static byte[] Decrypt(byte[] data)
         {
+			// ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
             if (_crypto is SymmetricAlgorithm)
             {
                 byte[] decryptedData = new byte[data.Length];
@@ -118,6 +119,7 @@ namespace EasyConnect.Protocols
 
             else
                 throw new NotSupportedException("The crypto object " + _crypto.GetType().Name + " is not supported.");
+			// ReSharper restore CanBeReplacedWithTryCastAndCheckForNull
         }
 
         /// <summary>
@@ -127,6 +129,7 @@ namespace EasyConnect.Protocols
         /// <returns>Encrypted data.</returns>
         public static byte[] Encrypt(byte[] data)
         {
+			// ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
             if (_crypto is SymmetricAlgorithm)
             {
                 MemoryStream memoryStream = new MemoryStream();
@@ -144,6 +147,7 @@ namespace EasyConnect.Protocols
 
             else
                 throw new NotSupportedException("The crypto object " + _crypto.GetType().Name + " is not supported.");
+			// ReSharper restore CanBeReplacedWithTryCastAndCheckForNull
         }
 
         /// <summary>
