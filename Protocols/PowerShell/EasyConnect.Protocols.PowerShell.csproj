@@ -32,6 +32,9 @@
     <DocumentationFile>bin\Release\EasyConnect.Protocols.PowerShell.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SecurePasswordTextBox">
+      <HintPath>..\..\lib\SecurePasswordTextBox.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -79,6 +82,9 @@
     <Content Include="Resources\PowerShell.ico" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="PowerShellOptionsForm.resx">
+      <DependentUpon>PowerShellOptionsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
