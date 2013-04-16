@@ -146,7 +146,6 @@ namespace EasyConnect.Protocols.Ssh
         {
             base.GetObjectData(info, context);
 
-            info.AddValue("Username", Username);
             info.AddValue("IdentityFile", IdentityFile);
             info.AddValue("TextColor", TextColor.ToArgb());
             info.AddValue("BackgroundColor", BackgroundColor.ToArgb());
