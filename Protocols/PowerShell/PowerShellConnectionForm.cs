@@ -23,51 +23,86 @@ using Poderosa.ConnectionParam;
 using Poderosa.LocalShell;
 using Poderosa.Terminal;
 using Shell = System.Management.Automation.PowerShell;
+using ThreadState = System.Threading.ThreadState;
 
 namespace EasyConnect.Protocols.PowerShell
 {
 	public partial class PowerShellConnectionForm : BaseConnectionForm<PowerShellConnection>
 	{
-		protected ConsoleControl _console = null;
+		protected Thread _inputThread = null;
 
 		public PowerShellConnectionForm()
 		{
 			InitializeComponent();
 
-			_console = new ConsoleControl()
-			{
-				Width = 100,
-				Height = 100,
-				Dock = DockStyle.Fill,
-				CanAutoAdjust = true,
-				//RightClickPaste = true
-				//Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
-				Margin = new Padding(4)
-			};
+			GEnv.Options.WarningOption = WarningOption.Ignore;
+			Shown += PowerShellConnectionForm_Shown;
+		}
 
-			Controls.Add(_console);
+		/// <summary>
+		/// Handler method that's called when the connection window is shown, either initially or after the user switches to another tab and then back to this
+		/// one.  It's necessary to call <see cref="Connections.BringToActivationOrderTop"/> so that shortcut keys entered by the user are sent to the correct
+		/// window.
+		/// </summary>
+		/// <param name="sender">Object from which this event originated.</param>
+		/// <param name="e">Arguments associated with this event.</param>
+		private void PowerShellConnectionForm_Shown(object sender, EventArgs e)
+		{
+			if (IsConnected)
+				GEnv.Connections.BringToActivationOrderTop(_terminal.TerminalPane.ConnectionTag);
 		}
 
 		protected override Control ConnectionWindow
 		{
 			get
 			{
-				return _console;
+				return _terminal;
 			}
+		}
+
+		/// <summary>
+		/// Handler method that's called when the connection is established.  Adds this connection to <see cref="Connections"/> and sends it to the top of the
+		/// activation queue via a call to <see cref="Connections.BringToActivationOrderTop"/>.
+		/// </summary>
+		/// <param name="sender">Object from which this event originated.</param>
+		/// <param name="e">Arguments associated with this event.</param>
+		protected override void OnConnected(object sender, EventArgs e)
+		{
+			GEnv.Connections.Add(_terminal.TerminalPane.ConnectionTag);
+			GEnv.Connections.BringToActivationOrderTop(_terminal.TerminalPane.ConnectionTag);
+
+			base.OnConnected(sender, e);
 		}
 
 		public override void Connect()
 		{
-			_console.SetBackColor((uint)ColorTranslator.ToWin32(Connection.BackgroundColor));
-			_console.SetTextColor((uint)ColorTranslator.ToWin32(Connection.TextColor));
-			_console.SetFontFamily(Connection.FontFamily);
-			_console.SetFontSize(Convert.ToInt32(Connection.FontSize));
-			_console.ShiftToSelect = true;
-			_console.Focus();
+			GEnv.Options.Font = Connection.Font;
 
-			new Thread(new ThreadStart(Run)).Start();
+			TerminalParam terminalParam = TCPTerminalParam.Fake;
+			terminalParam.TerminalType = TerminalType.XTerm;
+			terminalParam.RenderProfile = new RenderProfile();
+			terminalParam.Encoding = EncodingType.UTF8;
+
+			ConnectionTag connectionTag = new ConnectionTag(new FakeConnection(terminalParam));
+			connectionTag.Receiver.Listen();
+
+			_terminal.TerminalPane.FakeVisible = true;
+			_terminal.TerminalPane.Attach(connectionTag);
+			_terminal.TerminalPane.Focus();
+			_terminal.SetPaneColors(Connection.TextColor, Connection.BackgroundColor);
+
+			_inputThread = new Thread(new ThreadStart(InputLoop));
+			_inputThread.Start();
 
 			OnConnected(this, null);
+		}
+
+		protected override void OnFormClosing(FormClosingEventArgs e)
+		{
+			base.OnFormClosing(e);
+
+			if (_inputThread != null && _inputThread.ThreadState == ThreadState.Running)
+				_inputThread.Abort();
 		}
 
 		/// <summary>
@@ -304,16 +339,12 @@ namespace EasyConnect.Protocols.PowerShell
 		/// reads a command from the user, executes it and repeats until the ShouldExit
 		/// flag is set.
 		/// </summary>
-		public void Run()
+		public void InputLoop()
 		{
-			// Set up the control-C handler.
-			Console.CancelKeyPress += new ConsoleCancelEventHandler(this.HandleControlC);
-			Console.TreatControlCAsInput = false;
-
 			// Create the host and runspace instances for this interpreter. Note 
 			// that this application doesn't support console files so only the 
 			// default snap-ins will be available.
-			this._powerShellHost = new PowerShellHost(this);
+			this._powerShellHost = new PowerShellHost(this, _terminal);
 			this.myRunSpace = RunspaceFactory.CreateRunspace(this._powerShellHost);
 			this.myRunSpace.Open();
 
@@ -372,7 +403,7 @@ namespace EasyConnect.Protocols.PowerShell
 					}
 
 					this._powerShellHost.UI.Write(prompt);
-					string cmd = Console.ReadLine();
+					string cmd = _powerShellHost.UI.ReadLine();
 					this.Execute(cmd);
 				}
 			}

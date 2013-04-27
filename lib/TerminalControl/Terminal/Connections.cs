@@ -3,6 +3,7 @@
 * $Id: Connections.cs,v 1.2 2005/04/20 08:45:46 okajima Exp $
 */
 using System;
+using Poderosa.ConnectionParam;
 using ThTimer = System.Threading.Timer;
 using System.Windows.Forms;
 using System.Collections;
@@ -271,13 +272,13 @@ namespace Poderosa.Connection
 			_renderProfile = c.Param.RenderProfile;
 
 			//VT100指定でもxtermシーケンスを送ってくるアプリケーションが後をたたないので
-			_terminal = new XTerm(this, new JapaneseCharDecoder(_connection));
-			/*
+			//_terminal = new XTerm(this, new JapaneseCharDecoder(_connection));
+			
 			if(c.Param.TerminalType==TerminalType.XTerm || c.Param.TerminalType==TerminalType.KTerm)
 				_terminal = new XTerm(this, new JapaneseCharDecoder(_connection));
 			else
 				_terminal = new VT100Terminal(this, new JapaneseCharDecoder(_connection));
-			*/
+			
 			GEnv.Connections.KeepAlive.SetTimerToConnectionTag(this);
 		}
 

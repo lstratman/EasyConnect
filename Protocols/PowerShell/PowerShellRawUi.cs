@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Management.Automation.Host;
+using System.Text;
+using Poderosa.Terminal;
+using WalburySoftware;
 
 namespace EasyConnect.Protocols.PowerShell
 {
@@ -11,6 +14,15 @@ namespace EasyConnect.Protocols.PowerShell
 	/// </summary>
 	internal class PowerShellRawUi : PSHostRawUserInterface
 	{
+		protected TerminalControl _terminal;
+		private ConsoleColor _foregroundColor;
+		private ConsoleColor _backgroundColor;
+
+		public PowerShellRawUi(TerminalControl terminal)
+		{
+			_terminal = terminal;
+		}
+
 		/// <summary>
 		/// Gets or sets the background color of text to be written.
 		/// This maps to the corresponding Console.Background property.
@@ -19,11 +31,58 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return Console.BackgroundColor;
+				return _backgroundColor;
 			}
 			set
 			{
-				Console.BackgroundColor = value;
+				_backgroundColor = value;
+				int commandValue = 0;
+
+				switch (value)
+				{
+					case ConsoleColor.Black:
+						commandValue = 40;
+						break;
+
+					case ConsoleColor.DarkBlue:
+					case ConsoleColor.Blue:
+						commandValue = 44;
+						break;
+
+					case ConsoleColor.DarkCyan:
+					case ConsoleColor.Cyan:
+						commandValue = 46;
+						break;
+
+					case ConsoleColor.DarkGray:
+					case ConsoleColor.Gray:
+					case ConsoleColor.White:
+						commandValue = 47;
+						break;
+
+					case ConsoleColor.DarkGreen:
+					case ConsoleColor.Green:
+						commandValue = 42;
+						break;
+
+					case ConsoleColor.DarkMagenta:
+					case ConsoleColor.Magenta:
+						commandValue = 45;
+						break;
+
+					case ConsoleColor.DarkRed:
+					case ConsoleColor.Red:
+						commandValue = 41;
+						break;
+
+					case ConsoleColor.DarkYellow:
+					case ConsoleColor.Yellow:
+						commandValue = 43;
+						break;
+				}
+
+				byte[] data = Encoding.UTF8.GetBytes("\x001B[" + commandValue + "m");
+				_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(data, 0, data.Length);
 			}
 		}
 
@@ -35,11 +94,10 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return new Size(Console.BufferWidth, Console.BufferHeight);
+				return new Size(_terminal.TerminalPane.Connection.TerminalWidth, _terminal.TerminalPane.ConnectionTag.Document.Size);
 			}
 			set
 			{
-				Console.SetBufferSize(value.Width, value.Height);
 			}
 		}
 
@@ -52,11 +110,12 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return new Coordinates(Console.CursorLeft, Console.CursorTop);
+				return new Coordinates(_terminal.TerminalPane.ConnectionTag.Document.CaretColumn, _terminal.TerminalPane.ConnectionTag.Document.CurrentLineNumber);
 			}
 			set
 			{
-				Console.SetCursorPosition(value.X, value.Y);
+				byte[] data = Encoding.UTF8.GetBytes(String.Format("\x001B[{1};{0}f", value.X + 1, value.Y + 1));
+				_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(data, 0, data.Length);
 			}
 		}
 
@@ -68,11 +127,11 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return Console.CursorSize;
+				return 20;
+				//TODO: fix this
 			}
 			set
 			{
-				Console.CursorSize = value;
 			}
 		}
 
@@ -84,11 +143,59 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return Console.ForegroundColor;
+				return _foregroundColor;
 			}
 			set
 			{
-				Console.ForegroundColor = value;
+				_foregroundColor = value;
+
+				int commandValue = 0;
+
+				switch (value)
+				{
+					case ConsoleColor.Black:
+						commandValue = 30;
+						break;
+
+					case ConsoleColor.DarkBlue:
+					case ConsoleColor.Blue:
+						commandValue = 34;
+						break;
+
+					case ConsoleColor.DarkCyan:
+					case ConsoleColor.Cyan:
+						commandValue = 36;
+						break;
+
+					case ConsoleColor.DarkGray:
+					case ConsoleColor.Gray:
+					case ConsoleColor.White:
+						commandValue = 37;
+						break;
+
+					case ConsoleColor.DarkGreen:
+					case ConsoleColor.Green:
+						commandValue = 32;
+						break;
+
+					case ConsoleColor.DarkMagenta:
+					case ConsoleColor.Magenta:
+						commandValue = 35;
+						break;
+
+					case ConsoleColor.DarkRed:
+					case ConsoleColor.Red:
+						commandValue = 31;
+						break;
+
+					case ConsoleColor.DarkYellow:
+					case ConsoleColor.Yellow:
+						commandValue = 33;
+						break;
+				}
+
+				byte[] data = Encoding.UTF8.GetBytes("\x001B[" + commandValue + "m");
+				_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(data, 0, data.Length);
 			}
 		}
 
@@ -100,7 +207,7 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return Console.KeyAvailable;
+				return _terminal.TerminalPane.ConnectionTag.Terminal.TerminalMode == TerminalMode.Normal;
 			}
 		}
 
@@ -113,7 +220,7 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return new Size(Console.LargestWindowWidth, Console.LargestWindowHeight);
+				return WindowSize;
 			}
 		}
 
@@ -126,7 +233,7 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return new Size(Console.LargestWindowWidth, Console.LargestWindowHeight);
+				return WindowSize;
 			}
 		}
 
@@ -138,11 +245,11 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return new Coordinates(Console.WindowLeft, Console.WindowTop);
+				return new Coordinates(0, _terminal.TerminalPane.ConnectionTag.Document.TopLineNumber);
 			}
 			set
 			{
-				Console.SetWindowPosition(value.X, value.Y);
+				_terminal.TerminalPane.ConnectionTag.Document.TopLineNumber = value.Y;
 			}
 		}
 
@@ -154,11 +261,10 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return new Size(Console.WindowWidth, Console.WindowHeight);
+				return new Size(_terminal.TerminalPane.Connection.TerminalWidth, _terminal.TerminalPane.Connection.TerminalHeight);
 			}
 			set
 			{
-				Console.SetWindowSize(value.Width, value.Height);
 			}
 		}
 
@@ -170,11 +276,10 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return Console.Title;
+				return "";
 			}
 			set
 			{
-				Console.Title = value;
 			}
 		}
 
@@ -253,8 +358,15 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <param name="fill">Defines the fill character.</param>
 		public override void SetBufferContents(Rectangle rectangle, BufferCell fill)
 		{
-			throw new NotImplementedException(
-				"The method or operation is not implemented.");
+			BufferCell[,] contents = new BufferCell[rectangle.Right - rectangle.Left, rectangle.Bottom - rectangle.Top];
+
+			for (int i = 0; i < rectangle.Right - rectangle.Left; i++)
+			{
+				for (int j = 0; j < rectangle.Bottom - rectangle.Top; j++)
+					contents[i, j] = fill;
+			}
+
+			SetBufferContents(new Coordinates(rectangle.Left, rectangle.Top), contents);
 		}
 	}
 }

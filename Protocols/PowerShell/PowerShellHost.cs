@@ -19,6 +19,7 @@ namespace EasyConnect.Protocols.PowerShell
 	/// </summary>
 	internal class PowerShellHost : PSHost, IHostSupportsInteractiveSession
 	{
+		private TerminalControl _terminal;
 
 		/// <summary>
 		/// A reference to the PSHost implementation.
@@ -52,16 +53,19 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <param name="program">
 		/// A reference to the host application object.
 		/// </param>
-		public PowerShellHost(PowerShellConnectionForm program)
+		public PowerShellHost(PowerShellConnectionForm program, TerminalControl terminal)
 		{
 			this.program = program;
+
+			_terminal = terminal;
+			_powerShellHostUi = new PowerShellHostUi(terminal);
 		}
 
 		/// <summary>
 		/// A reference to the implementation of the PSHostUserInterface
 		/// class for this application.
 		/// </summary>
-		private PowerShellHostUi _powerShellHostUi = new PowerShellHostUi();
+		private PowerShellHostUi _powerShellHostUi;
 
 		/// <summary>
 		/// A reference to the runspace used to start an interactive session.

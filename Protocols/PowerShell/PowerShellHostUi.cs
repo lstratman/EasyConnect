@@ -6,6 +6,8 @@ using System.Management.Automation;
 using System.Management.Automation.Host;
 using System.Security;
 using System.Text;
+using System.Threading;
+using WalburySoftware;
 
 namespace EasyConnect.Protocols.PowerShell
 {
@@ -21,7 +23,15 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <summary>
 		/// A reference to the PSRawUserInterface implementation.
 		/// </summary>
-		private PowerShellRawUi _powerShellRawUi = new PowerShellRawUi();
+		private PowerShellRawUi _powerShellRawUi;
+
+		protected TerminalControl _terminal;
+
+		public PowerShellHostUi(TerminalControl terminal)
+		{
+			_terminal = terminal;
+			_powerShellRawUi = new PowerShellRawUi(terminal);
+		}
 
 		/// <summary>
 		/// Gets an instance of the PSRawUserInterface object for this host
@@ -58,7 +68,7 @@ namespace EasyConnect.Protocols.PowerShell
 			{
 				string[] label = GetHotkeyAndLabel(fd.Label);
 				WriteLine(label[1]);
-				string userData = Console.ReadLine();
+				string userData = ReadLine();
 				if (userData == null)
 					return null;
 
@@ -120,7 +130,7 @@ namespace EasyConnect.Protocols.PowerShell
 			while (true)
 			{
 				WriteLine(ConsoleColor.Cyan, ConsoleColor.Black, sb.ToString());
-				string data = Console.ReadLine().Trim().ToUpper(CultureInfo.CurrentCulture);
+				string data = ReadLine().Trim().ToUpper(CultureInfo.CurrentCulture);
 
 				// If the choice string was empty, use the default selection.
 				if (data.Length == 0)
@@ -198,7 +208,8 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <returns>The characters that are entered by the user.</returns>
 		public override string ReadLine()
 		{
-			return Console.ReadLine();
+			Thread.Sleep(5000);
+			return "dir";
 		}
 
 		/// <summary>
@@ -225,7 +236,7 @@ namespace EasyConnect.Protocols.PowerShell
 				}
 			} while (key.Key != ConsoleKey.Enter);
 
-			Console.WriteLine();
+			WriteLine();
 			return password;
 		}
 
@@ -235,7 +246,8 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <param name="value">The characters to be written.</param>
 		public override void Write(string value)
 		{
-			Console.Write(value);
+			byte[] buffer = Encoding.UTF8.GetBytes(value.Replace("\n", "\x001BE"));
+			_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(buffer, 0, buffer.Length);
 		}
 
 		/// <summary>
@@ -250,13 +262,13 @@ namespace EasyConnect.Protocols.PowerShell
 			ConsoleColor backgroundColor,
 			string value)
 		{
-			ConsoleColor oldFg = Console.ForegroundColor;
-			ConsoleColor oldBg = Console.BackgroundColor;
-			Console.ForegroundColor = foregroundColor;
-			Console.BackgroundColor = backgroundColor;
-			Console.Write(value);
-			Console.ForegroundColor = oldFg;
-			Console.BackgroundColor = oldBg;
+			ConsoleColor oldFg = RawUI.ForegroundColor;
+			ConsoleColor oldBg = RawUI.BackgroundColor;
+			RawUI.ForegroundColor = foregroundColor;
+			RawUI.BackgroundColor = backgroundColor;
+			Write(value);
+			RawUI.ForegroundColor = oldFg;
+			RawUI.BackgroundColor = oldBg;
 		}
 
 		/// <summary>
@@ -271,13 +283,13 @@ namespace EasyConnect.Protocols.PowerShell
 			ConsoleColor backgroundColor,
 			string value)
 		{
-			ConsoleColor oldFg = Console.ForegroundColor;
-			ConsoleColor oldBg = Console.BackgroundColor;
-			Console.ForegroundColor = foregroundColor;
-			Console.BackgroundColor = backgroundColor;
-			Console.WriteLine(value);
-			Console.ForegroundColor = oldFg;
-			Console.BackgroundColor = oldBg;
+			ConsoleColor oldFg = RawUI.ForegroundColor;
+			ConsoleColor oldBg = RawUI.BackgroundColor;
+			RawUI.ForegroundColor = foregroundColor;
+			RawUI.BackgroundColor = backgroundColor;
+			WriteLine(value);
+			RawUI.ForegroundColor = oldFg;
+			RawUI.BackgroundColor = oldBg;
 		}
 
 		/// <summary>
@@ -310,7 +322,7 @@ namespace EasyConnect.Protocols.PowerShell
 		/// </summary>
 		public override void WriteLine()
 		{
-			Console.WriteLine();
+			WriteLine("");
 		}
 
 		/// <summary>
@@ -320,7 +332,7 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <param name="value">The line to be written.</param>
 		public override void WriteLine(string value)
 		{
-			Console.WriteLine(value);
+			Write(value + "\n");
 		}
 
 		/// <summary>
@@ -501,7 +513,7 @@ namespace EasyConnect.Protocols.PowerShell
 				ReadNext:
 				string prompt = string.Format(CultureInfo.CurrentCulture, "Choice[{0}]:", results.Count);
 				Write(ConsoleColor.Cyan, ConsoleColor.Black, prompt);
-				string data = Console.ReadLine().Trim().ToUpper(CultureInfo.CurrentCulture);
+				string data = ReadLine().Trim().ToUpper(CultureInfo.CurrentCulture);
 
 				// If the choice string was empty, no more choices have been made.
 				// If there were no choices made, return the defaults
