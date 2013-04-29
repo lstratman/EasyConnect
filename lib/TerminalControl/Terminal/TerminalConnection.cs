@@ -393,7 +393,7 @@ namespace Poderosa.Communication
 		public abstract ConnectionTag Reproduce(); //同じところへの接続をもう１本
 
 		//終了処理
-		internal virtual void Close() {
+		public virtual void Close() {
 			if(_loggerT!=null) {
 				_loggerT.Flush();
 				_loggerT.Close();
@@ -407,10 +407,10 @@ namespace Poderosa.Communication
 			_closed = true;
 		}
 		//接続を閉じる前の最後のアクション。こちらから切るときにはこれをよぶべきだが、サーバから切ってきたときは呼ぶ必要なし
-		internal virtual void Disconnect() {
+		public virtual void Disconnect() {
 		}
 
-		internal abstract void RepeatAsyncRead(IDataReceiver cb);
+		public abstract void RepeatAsyncRead(IDataReceiver cb);
 
 
 		public void WriteChars(char[] data) {
@@ -635,11 +635,11 @@ namespace Poderosa.Communication
 			_channel = _connection.OpenShell(this);
 		}
 
-		internal override void Disconnect() {
+		public override void Disconnect() {
 			Close();
 		}
 
-		internal override void Close() {
+		public override void Close() {
 			if(_closed) return; //２度以上クローズしても副作用なし 
 			base.Close();
 			try {
@@ -712,7 +712,7 @@ namespace Poderosa.Communication
 		//非同期に受信する。
 		private IDataReceiver _callback;
 		private MemoryStream _buffer;
-		internal override void RepeatAsyncRead(IDataReceiver cb) {
+		public override void RepeatAsyncRead(IDataReceiver cb) {
 			_callback = cb;
 			if(_buffer!=null) {
 				lock(this) {
@@ -843,7 +843,7 @@ namespace Poderosa.Communication
 			_negotiator = neg;
 		}
 
-		internal override void Close() {
+		public override void Close() {
 			if(_closed) return; //２度以上クローズしても副作用なし 
 			base.Close();
 			try {
@@ -853,7 +853,7 @@ namespace Poderosa.Communication
 				GUtil.Warning(GEnv.Frame, GEnv.Strings.GetString("Message.SSHTerminalConnection.CloseError")+ex.Message);
 			}
 		}
-		internal override void Disconnect() {
+		public override void Disconnect() {
 		}
 		public override ConnectionTag Reproduce() {
 			TerminalParam np = (TerminalParam)_param.Clone();
@@ -883,7 +883,7 @@ namespace Poderosa.Communication
 		}
 
 		private IDataReceiver _callback;
-		internal override void RepeatAsyncRead(IDataReceiver cb) {
+		public override void RepeatAsyncRead(IDataReceiver cb) {
 			if(_callback!=null) throw new InvalidOperationException("duplicated AsyncRead() is attempted");
 			
 			_callback = cb;
@@ -1008,7 +1008,7 @@ namespace Poderosa.Communication
 			_readOL.hEvent  = Win32.CreateEvent(IntPtr.Zero, 0, 0, null);
 			_writeOL.hEvent = Win32.CreateEvent(IntPtr.Zero, 0, 0, null);
 		}
-		internal override void Close() {
+		public override void Close() {
 			if(_closed) return; //２度以上クローズしても副作用なし 
 			base.Close();
 			
@@ -1022,7 +1022,7 @@ namespace Poderosa.Communication
 			throw new NotSupportedException(GEnv.Strings.GetString("Message.SerialTerminalConnection.ReproduceError"));
 		}
 
-		internal override void Disconnect() {
+		public override void Disconnect() {
 		}
 		public override string ProtocolDescription {
 			get {
@@ -1049,7 +1049,7 @@ namespace Poderosa.Communication
 			}
 		}
 		private IDataReceiver _callback;
-		internal override void RepeatAsyncRead(IDataReceiver cb) {
+		public override void RepeatAsyncRead(IDataReceiver cb) {
 			if(_callback!=null) throw new InvalidOperationException("duplicated AsyncRead() is attempted");
 			
 			_callback = cb;
@@ -1265,7 +1265,7 @@ namespace Poderosa.Communication
 		}
 		public override void Write(byte[] data, int offset, int length) {
 		}
-		internal override void RepeatAsyncRead(IDataReceiver r) {
+		public override void RepeatAsyncRead(IDataReceiver r) {
 		}
 		public override string[] ConnectionParameter {
 			get {

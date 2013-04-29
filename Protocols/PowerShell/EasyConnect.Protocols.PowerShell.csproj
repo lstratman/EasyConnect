@@ -78,6 +78,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="StreamConnection.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\EasyConnect.Common.csproj">

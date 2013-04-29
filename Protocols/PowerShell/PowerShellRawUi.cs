@@ -127,8 +127,7 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return 20;
-				//TODO: fix this
+				return Convert.ToInt32(_terminal.TerminalPane.ConnectionTag.RenderProfile.FontSize);
 			}
 			set
 			{

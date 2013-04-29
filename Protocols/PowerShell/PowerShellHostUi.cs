@@ -27,6 +27,11 @@ namespace EasyConnect.Protocols.PowerShell
 
 		protected TerminalControl _terminal;
 
+		protected StringBuilder _currentInputLine = new StringBuilder();
+
+		ManualResetEvent _inputSemaphore = new ManualResetEvent(false);
+		private byte[] _inputBuffer;
+
 		public PowerShellHostUi(TerminalControl terminal)
 		{
 			_terminal = terminal;
@@ -208,8 +213,53 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <returns>The characters that are entered by the user.</returns>
 		public override string ReadLine()
 		{
-			Thread.Sleep(5000);
-			return "dir";
+			StreamConnection connection = _terminal.TerminalPane.ConnectionTag.Connection as StreamConnection;
+			
+			_inputBuffer = new byte[1024];
+			connection.Capture = true;
+			_currentInputLine.Clear();
+			_inputSemaphore.Reset();
+
+			new Thread(ReadInput).Start(connection);
+			_inputSemaphore.WaitOne();
+			connection.Capture = false;
+
+			return _currentInputLine.ToString();
+		}
+
+		private void ReadInput(object state)
+		{
+			StreamConnection connection = state as StreamConnection;
+			int newLineLocation = -1;
+
+			while (newLineLocation == -1)
+			{
+				lock (connection.SynchronizationObject)
+				{
+					if (connection.OutputQueue.Count > 0)
+					{
+						byte[] buffer = new byte[connection.OutputQueue.Count];
+						int i = 0;
+
+						while (connection.OutputQueue.Count > 0)
+							buffer[i++] = connection.OutputQueue.Dequeue();
+
+						string chunk = Encoding.UTF8.GetString(buffer);
+						newLineLocation = chunk.IndexOf('\r');
+
+						if (newLineLocation == -1)
+							_currentInputLine.Append(chunk);
+
+						else
+						{
+							_currentInputLine.Append(chunk.Substring(0, newLineLocation));
+							_inputSemaphore.Set();
+						}
+					}
+
+					Thread.Sleep(50);
+				}
+			}
 		}
 
 		/// <summary>
