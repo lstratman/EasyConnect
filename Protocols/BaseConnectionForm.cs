@@ -35,12 +35,19 @@ namespace EasyConnect.Protocols
 			protected set;
 		}
 
+		/// <summary>
+		/// Flag indicating whether the form is in the process of closing.
+		/// </summary>
 		protected bool IsClosing
 		{
 			get;
 			set;
 		}
 
+		/// <summary>
+		/// Handler method that's called when the form has started closing.  Sets the <see cref="IsClosing"/> property to true.
+		/// </summary>
+		/// <param name="e">Arguments associated with this event.</param>
 		protected override void OnClosing(CancelEventArgs e)
 		{
 			IsClosing = true;
