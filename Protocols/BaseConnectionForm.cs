@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace EasyConnect.Protocols
@@ -57,6 +58,14 @@ namespace EasyConnect.Protocols
 			base.OnLoad(e);
 		}
 
+		protected override void OnSizeChanged(EventArgs e)
+		{
+			base.OnSizeChanged(e);
+
+			disconnectedPanel.Location = new Point(
+				Convert.ToInt32(Math.Round((Width - disconnectedPanel.Width) / (double) 2)), Convert.ToInt32(Math.Round((Height - disconnectedPanel.Height) / (double) 2)));
+		}
+
 		/// <summary>
 		/// Handler method that's called when the UI control for the connection gains focus.
 		/// </summary>
@@ -97,6 +106,7 @@ namespace EasyConnect.Protocols
 
 			IsConnected = false;
 			ConnectionWindow.Visible = false;
+			connectingLabel.Visible = false;
 
 			if (LoggedOff != null)
 				LoggedOff(sender, e);
@@ -116,9 +126,13 @@ namespace EasyConnect.Protocols
 			if (IsClosing)
 				return;
 
-			IsConnected = false;
 			ConnectionWindow.Visible = false;
 			disconnectedPanel.Visible = true;
+			disconnectedLabel.Text = IsConnected
+				                         ? "Disconnected"
+				                         : "Unable to connect";
+			connectingLabel.Visible = false;
+			IsConnected = false;
 
 			if (ConnectionLost != null)
 				ConnectionLost(sender, e);
