@@ -230,36 +230,68 @@ namespace EasyConnect.Protocols.PowerShell
 		private void ReadInput(object state)
 		{
 			StreamConnection connection = state as StreamConnection;
-			int newLineLocation = -1;
+			bool foundCarriageReturn = false;
 
-			while (newLineLocation == -1)
+			while (!foundCarriageReturn)
 			{
 				lock (connection.SynchronizationObject)
 				{
 					if (connection.OutputQueue.Count > 0)
 					{
-						byte[] buffer = new byte[connection.OutputQueue.Count];
-						int i = 0;
+						List<byte> buffer = new List<byte>();
 
 						while (connection.OutputQueue.Count > 0)
-							buffer[i++] = connection.OutputQueue.Dequeue();
-
-						string chunk = Encoding.UTF8.GetString(buffer);
-						newLineLocation = chunk.IndexOf('\r');
-
-						if (newLineLocation == -1)
-							_currentInputLine.Append(chunk);
-
-						else
 						{
-							_currentInputLine.Append(chunk.Substring(0, newLineLocation));
-							_inputSemaphore.Set();
+							byte currentByte = connection.OutputQueue.Dequeue();
+
+							if (currentByte == 8)
+							{
+								if (buffer.Count > 0)
+								{
+									buffer.RemoveAt(buffer.Count - 1);
+									RawUI.CursorPosition = new Coordinates(RawUI.CursorPosition.X - 1, RawUI.CursorPosition.Y);
+									Write(" ");
+									RawUI.CursorPosition = new Coordinates(RawUI.CursorPosition.X - 1, RawUI.CursorPosition.Y);
+								}
+
+								else if (_currentInputLine.Length > 0)
+								{
+									_currentInputLine.Length--;
+									RawUI.CursorPosition = new Coordinates(RawUI.CursorPosition.X - 1, RawUI.CursorPosition.Y);
+									Write(" ");
+									RawUI.CursorPosition = new Coordinates(RawUI.CursorPosition.X - 1, RawUI.CursorPosition.Y);
+								}
+							}
+
+							else if (currentByte == 13)
+							{
+								WriteLine();
+								foundCarriageReturn = true;
+
+								break;
+							}
+
+							else if (currentByte >= 32)
+							{
+								Write(
+									Encoding.UTF8.GetString(
+										new byte[]
+											{
+												currentByte
+											}));
+								buffer.Add(currentByte);
+							}
 						}
+
+						_currentInputLine.Append(Encoding.UTF8.GetString(buffer.ToArray()));
 					}
 
-					Thread.Sleep(50);
+					if (!foundCarriageReturn)
+						Thread.Sleep(50);
 				}
 			}
+
+			_inputSemaphore.Set();
 		}
 
 		/// <summary>

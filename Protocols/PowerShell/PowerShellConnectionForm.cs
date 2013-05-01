@@ -82,7 +82,6 @@ namespace EasyConnect.Protocols.PowerShell
 			terminalParam.TerminalType = TerminalType.XTerm;
 			terminalParam.RenderProfile = new RenderProfile();
 			terminalParam.Encoding = EncodingType.UTF8;
-			terminalParam.LocalEcho = true;
 
 			StreamConnection connection = new StreamConnection(terminalParam);
 			connection.Capture = false;
