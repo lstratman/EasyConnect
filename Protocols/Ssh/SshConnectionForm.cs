@@ -99,10 +99,10 @@ namespace EasyConnect.Protocols.Ssh
                 _terminal.Connect();
             }
 
-            catch (SSHException e)
+            catch (SSHException)
             {
-                MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                throw;
+                OnConnectionLost(this, null);
+	            return;
             }
 
             // Wire up the connection event handlers and set the text and background colors
