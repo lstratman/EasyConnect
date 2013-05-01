@@ -812,7 +812,7 @@ namespace Poderosa.Communication
 			}
 
 			if (_closed && Disconnected != null) {
-				Disconnected(this, null);
+				Disconnected(this, new ErrorEventArgs(new Exception(msg)));
 			}
 		}
 		public void OnError(Exception ex, string msg) {
@@ -822,7 +822,7 @@ namespace Poderosa.Communication
 			}
 
 			if (_closed && Disconnected != null) {
-				Disconnected(this, null);
+				Disconnected(this, new ErrorEventArgs(new Exception(msg)));
 			}
 		}
 

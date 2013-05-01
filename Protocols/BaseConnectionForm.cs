@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace EasyConnect.Protocols
@@ -39,6 +40,15 @@ namespace EasyConnect.Protocols
 		/// Flag indicating whether the form is in the process of closing.
 		/// </summary>
 		protected bool IsClosing
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Error, if any, that was encountered when connecting to the remote server.
+		/// </summary>
+		public string ConnectionErrorMessage
 		{
 			get;
 			set;
@@ -157,6 +167,21 @@ namespace EasyConnect.Protocols
 							disconnectedLabel.Text = IsConnected
 								                         ? "Disconnected"
 								                         : "Unable to connect";
+							
+							Exception exception = e is ErrorEventArgs
+								                      ? (e as ErrorEventArgs).GetException()
+								                      : null;
+
+							_errorMessageLinkLabel.Visible = exception != null && !String.IsNullOrEmpty(exception.Message);
+							ConnectionErrorMessage = exception == null
+								                         ? null
+														 : exception.Message.Replace("\r", "").Replace("\n", "\r\n");
+							_textLayoutPanel.Width = _errorMessageLinkLabel.Visible
+								                         ? _errorMessageLinkLabel.Width + disconnectedLabel.Width
+								                         : disconnectedLabel.Width;
+							_textLayoutPanel.Location = new Point(
+								Convert.ToInt32(Math.Round((disconnectedPanel.Width - _textLayoutPanel.Width) / (double) 2)), _textLayoutPanel.Location.Y);
+
 							connectingLabel.Visible = false;
 							IsConnected = false;
 						}));
@@ -201,6 +226,21 @@ namespace EasyConnect.Protocols
 			connectingLabel.Visible = true;
 
 			Connect();
+		}
+
+		/// <summary>
+		/// Event handler that is called when <see cref="_errorMessageLinkLabel"/> is clicked; displays the contents of <see cref="ConnectionErrorMessage"/> to
+		/// the user.
+		/// </summary>
+		/// <param name="sender">Object from which this event originated.</param>
+		/// <param name="e">Arguments associated with this event.</param>
+		private void _errorMessageLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			ErrorMessageDisplayForm errorMessageWindow = new ErrorMessageDisplayForm
+				                                             {
+					                                             ErrorMessage = ConnectionErrorMessage
+				                                             };
+			errorMessageWindow.ShowDialog(this);
 		}
 	}
 }

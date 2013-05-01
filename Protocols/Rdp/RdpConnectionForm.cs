@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Windows.Forms;
@@ -418,11 +419,12 @@ namespace EasyConnect.Protocols.Rdp
         /// <param name="e">Arguments associated with this event.</param>
         private void _rdpWindow_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {
-            if (e.discReason > 3)
-                OnConnectionLost(sender, null);
+	        if (e.discReason > 3)
+		        OnConnectionLost(
+			        sender, new ErrorEventArgs(new Exception(_rdpWindow.GetErrorDescription((uint) e.discReason, (uint) _rdpWindow.ExtendedDisconnectReason))));
 
-            else
-				OnLoggedOff(sender, null);
+	        else
+		        OnLoggedOff(sender, null);
         }
 
         /// <summary>

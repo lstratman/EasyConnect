@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Windows.Forms;
@@ -99,9 +100,9 @@ namespace EasyConnect.Protocols.Ssh
                 _terminal.Connect();
             }
 
-            catch (SSHException)
+            catch (SSHException e)
             {
-                OnConnectionLost(this, null);
+	            OnConnectionLost(this, new ErrorEventArgs(e));
 	            return;
             }
 

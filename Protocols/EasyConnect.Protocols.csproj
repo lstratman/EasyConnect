@@ -93,6 +93,12 @@
     <Compile Include="IConnectionForm.cs" />
     <Compile Include="IOptionsForm.cs" />
     <Compile Include="IProtocol.cs" />
+    <Compile Include="ErrorMessageDisplayForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ErrorMessageDisplayForm.Designer.cs">
+      <DependentUpon>ErrorMessageDisplayForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConnectionFactory.cs" />
   </ItemGroup>
@@ -108,6 +114,9 @@
   <ItemGroup>
     <EmbeddedResource Include="BaseConnectionForm.resx">
       <DependentUpon>BaseConnectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ErrorMessageDisplayForm.resx">
+      <DependentUpon>ErrorMessageDisplayForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
