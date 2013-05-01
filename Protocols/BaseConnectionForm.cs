@@ -58,6 +58,11 @@ namespace EasyConnect.Protocols
 			base.OnLoad(e);
 		}
 
+		/// <summary>
+		/// Handler method that's called when the form's size is changed.  Updates the location for <see cref="disconnectedPanel"/> to keep it centered in the
+		/// screen.
+		/// </summary>
+		/// <param name="e">Arguments associated with this event.</param>
 		protected override void OnSizeChanged(EventArgs e)
 		{
 			base.OnSizeChanged(e);
