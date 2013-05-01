@@ -269,10 +269,13 @@ namespace Poderosa.Forms {
 		}
 
 		public void SetActiveTab(ConnectionTag active) {
-			TabBarButton b;
-
 			foreach(ConnectionTag ct in GEnv.Connections) {
-				b = ct.Button as TabBarButton;
+				TabBarButton b = ct.Button as TabBarButton;
+
+				if(b == null) {
+					continue;
+				}
+
 				if(active==ct) {
 					b.BackColor = _activeTabColor;
 					b.Font = _activeTabFont;

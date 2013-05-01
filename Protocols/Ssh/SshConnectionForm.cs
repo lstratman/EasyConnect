@@ -110,7 +110,7 @@ namespace EasyConnect.Protocols.Ssh
 	        ((ISSHChannelEventReceiver) _terminal.TerminalPane.Connection).LoggedOff += OnLoggedOff;
 	        ((ISSHConnectionEventReceiver) _terminal.TerminalPane.Connection).Disconnected += OnConnectionLost;
 
-            _terminal.SetPaneColors(Connection.TextColor, Connection.BackgroundColor);
+			_terminal.SetPaneColors(Connection.TextColor, Connection.BackgroundColor);
             _terminal.TerminalPane.Focus();
         }
     }

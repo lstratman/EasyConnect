@@ -131,13 +131,13 @@ namespace Poderosa
 			return filename.Substring(0, n);
 		}
 		public static void Warning(IWin32Window owner, string msg, string caption) {
-			MessageBox.Show(owner, msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			//MessageBox.Show(owner, msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 		}
 		public static void Warning(IWin32Window owner, string msg, MessageBoxIcon icon) {
-			MessageBox.Show(owner, msg, GEnv.Strings.GetString("Common.MessageBoxTitle"), MessageBoxButtons.OK, icon);
+			//MessageBox.Show(owner, msg, GEnv.Strings.GetString("Common.MessageBoxTitle"), MessageBoxButtons.OK, icon);
 		}
 		public static void Warning(IWin32Window owner, string msg) {
-			MessageBox.Show(owner, msg, GEnv.Strings.GetString("Common.MessageBoxTitle"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			//MessageBox.Show(owner, msg, GEnv.Strings.GetString("Common.MessageBoxTitle"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 		}
 		public static DialogResult AskUserYesNo(IWin32Window owner, string msg) {
 			return MessageBox.Show(owner, msg, GEnv.Strings.GetString("Common.MessageBoxTitle"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);

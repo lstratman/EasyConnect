@@ -97,9 +97,14 @@ namespace EasyConnect.Protocols
 		/// <param name="e">Arguments associated with this event.</param>
 		protected virtual void OnConnected(object sender, EventArgs e)
 		{
-			IsConnected = true;
-			connectingLabel.Visible = false;
-			ConnectionWindow.Visible = true;
+			Invoke(
+				new Action(
+					() =>
+						{
+							IsConnected = true;
+							connectingLabel.Visible = false;
+							ConnectionWindow.Visible = true;
+						}));
 
 			if (Connected != null)
 				Connected(sender, e);
@@ -116,9 +121,14 @@ namespace EasyConnect.Protocols
 			if (IsClosing)
 				return;
 
-			IsConnected = false;
-			ConnectionWindow.Visible = false;
-			connectingLabel.Visible = false;
+			Invoke(
+				new Action(
+					() =>
+						{
+							IsConnected = false;
+							ConnectionWindow.Visible = false;
+							connectingLabel.Visible = false;
+						}));
 
 			if (LoggedOff != null)
 				LoggedOff(sender, e);
@@ -138,13 +148,18 @@ namespace EasyConnect.Protocols
 			if (IsClosing)
 				return;
 
-			ConnectionWindow.Visible = false;
-			disconnectedPanel.Visible = true;
-			disconnectedLabel.Text = IsConnected
-				                         ? "Disconnected"
-				                         : "Unable to connect";
-			connectingLabel.Visible = false;
-			IsConnected = false;
+			Invoke(
+				new Action(
+					() =>
+						{
+							ConnectionWindow.Visible = false;
+							disconnectedPanel.Visible = true;
+							disconnectedLabel.Text = IsConnected
+								                         ? "Disconnected"
+								                         : "Unable to connect";
+							connectingLabel.Visible = false;
+							IsConnected = false;
+						}));
 
 			if (ConnectionLost != null)
 				ConnectionLost(sender, e);

@@ -810,11 +810,19 @@ namespace Poderosa.Communication
 				EnsureCallbackHandler();
 				_callback.ErrorOccurred(msg);
 			}
+
+			if (_closed && Disconnected != null) {
+				Disconnected(this, null);
+			}
 		}
 		public void OnError(Exception ex, string msg) {
 			if(!_closed) {
 				EnsureCallbackHandler();
 				_callback.ErrorOccurred(msg);
+			}
+
+			if (_closed && Disconnected != null) {
+				Disconnected(this, null);
 			}
 		}
 
