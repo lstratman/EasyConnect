@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
@@ -93,6 +94,39 @@ namespace EasyConnect.Protocols.PowerShell
 			_terminal.TerminalPane.Attach(connectionTag);
 			_terminal.TerminalPane.Focus();
 			_terminal.SetPaneColors(Connection.TextColor, Connection.BackgroundColor);
+
+			// Create the host and runspace instances for this interpreter. Note 
+			// that this application doesn't support console files so only the 
+			// default snap-ins will be available.
+			this._powerShellHost = new PowerShellHost(this, _terminal);
+
+			if (String.Compare(Connection.Host, "localhost", true) != 0 && Connection.Host != "127.0.0.1" &&
+			    String.Compare(Connection.Host, Environment.MachineName, true) != 0)
+			{
+				WSManConnectionInfo connectionInfo = new WSManConnectionInfo
+					                                     {
+						                                     ComputerName = Connection.Host
+					                                     };
+
+				if (!String.IsNullOrEmpty(Connection.InheritedUsername))
+					connectionInfo.Credential = new PSCredential(Connection.InheritedUsername, Connection.InheritedPassword);
+
+				this.myRunSpace = RunspaceFactory.CreateRunspace(this._powerShellHost, connectionInfo);
+			}
+
+			else
+				this.myRunSpace = RunspaceFactory.CreateRunspace(this._powerShellHost);
+
+			try
+			{
+				this.myRunSpace.Open();
+			}
+
+			catch (Exception e)
+			{
+				OnConnectionLost(this, new ErrorEventArgs(e));
+				return;
+			}
 
 			_inputThread = new Thread(new ThreadStart(InputLoop));
 			_inputThread.Start();
@@ -344,13 +378,6 @@ namespace EasyConnect.Protocols.PowerShell
 		/// </summary>
 		public void InputLoop()
 		{
-			// Create the host and runspace instances for this interpreter. Note 
-			// that this application doesn't support console files so only the 
-			// default snap-ins will be available.
-			this._powerShellHost = new PowerShellHost(this, _terminal);
-			this.myRunSpace = RunspaceFactory.CreateRunspace(this._powerShellHost);
-			this.myRunSpace.Open();
-
 			try
 			{
 				try
