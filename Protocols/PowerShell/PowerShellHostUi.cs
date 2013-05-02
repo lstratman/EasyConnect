@@ -231,64 +231,162 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			StreamConnection connection = state as StreamConnection;
 			bool foundCarriageReturn = false;
+			Coordinates promptStart = RawUI.CursorPosition;
+			Coordinates promptEnd = RawUI.CursorPosition;
+			bool inEscapeSequence = false;
+			int insertPosition = 0;
 
 			while (!foundCarriageReturn)
 			{
-				lock (connection.SynchronizationObject)
+				if (connection.OutputQueue.Count > 0)
 				{
-					if (connection.OutputQueue.Count > 0)
+					while (connection.OutputQueue.Count > 0)
 					{
-						List<byte> buffer = new List<byte>();
+						byte currentByte = connection.OutputQueue.Dequeue();
 
-						while (connection.OutputQueue.Count > 0)
+						if (currentByte == 8)
 						{
-							byte currentByte = connection.OutputQueue.Dequeue();
+							Coordinates currentPosition = RawUI.CursorPosition;
 
-							if (currentByte == 8)
+							if (insertPosition > 0)
 							{
-								if (buffer.Count > 0)
-								{
-									buffer.RemoveAt(buffer.Count - 1);
-									RawUI.CursorPosition = new Coordinates(RawUI.CursorPosition.X - 1, RawUI.CursorPosition.Y);
-									Write(" ");
-									RawUI.CursorPosition = new Coordinates(RawUI.CursorPosition.X - 1, RawUI.CursorPosition.Y);
-								}
+								_currentInputLine.Remove(insertPosition - 1, 1);
+								insertPosition--;
 
-								else if (_currentInputLine.Length > 0)
-								{
-									_currentInputLine.Length--;
-									RawUI.CursorPosition = new Coordinates(RawUI.CursorPosition.X - 1, RawUI.CursorPosition.Y);
-									Write(" ");
-									RawUI.CursorPosition = new Coordinates(RawUI.CursorPosition.X - 1, RawUI.CursorPosition.Y);
-								}
-							}
+								currentPosition = currentPosition.X > 1
+									                  ? new Coordinates(currentPosition.X - 1, currentPosition.Y)
+									                  : new Coordinates(RawUI.BufferSize.Width, currentPosition.Y - 1);
 
-							else if (currentByte == 13)
-							{
-								WriteLine();
-								foundCarriageReturn = true;
+								RawUI.CursorPosition = currentPosition;
+								Write(_currentInputLine.ToString(insertPosition, _currentInputLine.Length - insertPosition));
+								Write(" ");
+								RawUI.CursorPosition = currentPosition;
 
-								break;
-							}
-
-							else if (currentByte >= 32)
-							{
-								Write(
-									Encoding.UTF8.GetString(
-										new byte[]
-											{
-												currentByte
-											}));
-								buffer.Add(currentByte);
+								promptEnd = promptEnd.X > 1
+										? new Coordinates(promptEnd.X - 1, promptEnd.Y)
+										: new Coordinates(RawUI.BufferSize.Width, promptEnd.Y - 1);
 							}
 						}
 
-						_currentInputLine.Append(Encoding.UTF8.GetString(buffer.ToArray()));
-					}
+						else if (currentByte == 27)
+							inEscapeSequence = true;
 
-					if (!foundCarriageReturn)
-						Thread.Sleep(50);
+						else if (currentByte == 91 && inEscapeSequence)
+						{
+						}
+
+						else if (currentByte == 126 && inEscapeSequence)
+						{
+						}
+
+						else if (currentByte == 55 && inEscapeSequence)
+						{
+							RawUI.CursorPosition = promptStart;
+							insertPosition = 0;
+						}
+
+						else if (currentByte == 56 && inEscapeSequence)
+						{
+							RawUI.CursorPosition = promptEnd;
+							insertPosition = _currentInputLine.Length;
+						}
+
+						else if (currentByte == 68 && inEscapeSequence)
+						{
+							Coordinates currentPosition = RawUI.CursorPosition;
+
+							if (RawUI.CursorPosition != promptStart)
+							{
+								RawUI.CursorPosition = currentPosition.X > 1
+															? new Coordinates(currentPosition.X - 1, currentPosition.Y)
+															: new Coordinates(RawUI.BufferSize.Width, currentPosition.Y - 1);
+								insertPosition--;
+							}
+
+							inEscapeSequence = false;
+						}
+
+						else if (currentByte == 67 && inEscapeSequence)
+						{
+							Coordinates currentPosition = RawUI.CursorPosition;
+
+							if (RawUI.CursorPosition != promptEnd)
+							{
+								RawUI.CursorPosition = currentPosition.X < RawUI.BufferSize.Width
+															? new Coordinates(currentPosition.X + 1, currentPosition.Y)
+															: new Coordinates(1, currentPosition.Y + 1);
+								insertPosition++;
+							}
+
+							inEscapeSequence = false;
+						}
+
+						else if (currentByte == 51 && inEscapeSequence)
+						{
+							Coordinates currentPosition = RawUI.CursorPosition;
+
+							if (RawUI.CursorPosition != promptEnd)
+							{
+								_currentInputLine.Remove(insertPosition, 1);
+
+								if (insertPosition < _currentInputLine.Length)
+								{
+									Write(_currentInputLine.ToString(insertPosition, _currentInputLine.Length - insertPosition));
+									Write(" ");
+									RawUI.CursorPosition = currentPosition;
+
+									promptEnd = promptEnd.X > 1
+											? new Coordinates(promptEnd.X - 1, promptEnd.Y)
+											: new Coordinates(RawUI.BufferSize.Width, promptEnd.Y - 1);
+								}
+							}
+						}
+
+						else if (currentByte == 13)
+						{
+							WriteLine();
+							foundCarriageReturn = true;
+
+							break;
+						}
+
+						else if (currentByte >= 32)
+						{
+							inEscapeSequence = false;
+
+							Write(
+								Encoding.UTF8.GetString(
+									new byte[]
+										{
+											currentByte
+										}));
+							_currentInputLine.Insert(
+								insertPosition, Encoding.UTF8.GetString(
+									new byte[]
+										{
+											currentByte
+										}));
+							insertPosition++;
+
+							if (insertPosition < _currentInputLine.Length)
+							{
+								Coordinates currentPosition = RawUI.CursorPosition;
+								Write(_currentInputLine.ToString(insertPosition, _currentInputLine.Length - insertPosition));
+								RawUI.CursorPosition = currentPosition;
+							}
+
+							promptEnd = promptEnd.X < RawUI.BufferSize.Width
+											? new Coordinates(promptEnd.X + 1, promptEnd.Y)
+											: new Coordinates(1, promptEnd.Y + 1);
+						}
+
+						else
+							inEscapeSequence = false;
+					}
 				}
+
+				if (!foundCarriageReturn)
+					Thread.Sleep(50);
 			}
 
 			_inputSemaphore.Set();
@@ -344,13 +442,11 @@ namespace EasyConnect.Protocols.PowerShell
 			ConsoleColor backgroundColor,
 			string value)
 		{
-			ConsoleColor oldFg = RawUI.ForegroundColor;
-			ConsoleColor oldBg = RawUI.BackgroundColor;
 			RawUI.ForegroundColor = foregroundColor;
 			RawUI.BackgroundColor = backgroundColor;
 			Write(value);
-			RawUI.ForegroundColor = oldFg;
-			RawUI.BackgroundColor = oldBg;
+			(RawUI as PowerShellRawUi).RestoreForegroundColor();
+			(RawUI as PowerShellRawUi).RestoreBackgroundColor();
 		}
 
 		/// <summary>
@@ -365,13 +461,7 @@ namespace EasyConnect.Protocols.PowerShell
 			ConsoleColor backgroundColor,
 			string value)
 		{
-			ConsoleColor oldFg = RawUI.ForegroundColor;
-			ConsoleColor oldBg = RawUI.BackgroundColor;
-			RawUI.ForegroundColor = foregroundColor;
-			RawUI.BackgroundColor = backgroundColor;
-			WriteLine(value);
-			RawUI.ForegroundColor = oldFg;
-			RawUI.BackgroundColor = oldBg;
+			Write(foregroundColor, backgroundColor, value + "\n");
 		}
 
 		/// <summary>

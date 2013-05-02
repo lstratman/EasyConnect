@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Drawing;
 using System.Management.Automation.Host;
 using System.Text;
 using Poderosa.Terminal;
 using WalburySoftware;
+using Rectangle = System.Management.Automation.Host.Rectangle;
+using Size = System.Management.Automation.Host.Size;
 
 namespace EasyConnect.Protocols.PowerShell
 {
@@ -21,6 +24,42 @@ namespace EasyConnect.Protocols.PowerShell
 		public PowerShellRawUi(TerminalControl terminal)
 		{
 			_terminal = terminal;
+
+			_backgroundColor = ClosestConsoleColor(_terminal.TerminalPane.ConnectionTag.RenderProfile.BackColor);
+			_backgroundColor = ClosestConsoleColor(_terminal.TerminalPane.ConnectionTag.RenderProfile.ForeColor);
+		}
+
+		protected ConsoleColor ClosestConsoleColor(Color color)
+		{
+			ConsoleColor ret = 0;
+			double rr = color.R, gg = color.G, bb = color.B, delta = double.MaxValue;
+
+			foreach (ConsoleColor cc in Enum.GetValues(typeof(ConsoleColor)))
+			{
+				var n = Enum.GetName(typeof(ConsoleColor), cc);
+				var c = System.Drawing.Color.FromName(n == "DarkYellow" ? "Orange" : n); // bug fix
+				var t = Math.Pow(c.R - rr, 2.0) + Math.Pow(c.G - gg, 2.0) + Math.Pow(c.B - bb, 2.0);
+				if (t == 0.0)
+					return cc;
+				if (t < delta)
+				{
+					delta = t;
+					ret = cc;
+				}
+			}
+			return ret;
+		}
+
+		public void RestoreForegroundColor()
+		{
+			byte[] data = Encoding.UTF8.GetBytes("\x001B[39m");
+			_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(data, 0, data.Length);
+		}
+
+		public void RestoreBackgroundColor()
+		{
+			byte[] data = Encoding.UTF8.GetBytes("\x001B[49m");
+			_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(data, 0, data.Length);
 		}
 
 		/// <summary>
