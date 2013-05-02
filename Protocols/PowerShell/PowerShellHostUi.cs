@@ -29,13 +29,27 @@ namespace EasyConnect.Protocols.PowerShell
 
 		protected StringBuilder _currentInputLine = new StringBuilder();
 
-		ManualResetEvent _inputSemaphore = new ManualResetEvent(false);
-		private byte[] _inputBuffer;
+		protected ManualResetEvent _inputSemaphore = new ManualResetEvent(false);
+
+		protected Thread _inputThread = null;
 
 		public PowerShellHostUi(TerminalControl terminal)
 		{
 			_terminal = terminal;
 			_powerShellRawUi = new PowerShellRawUi(terminal);
+		}
+
+		public void EndInput()
+		{
+			try
+			{
+				if (_inputThread != null)
+					_inputThread.Abort();
+			}
+
+			catch
+			{
+			}
 		}
 
 		/// <summary>
@@ -214,13 +228,14 @@ namespace EasyConnect.Protocols.PowerShell
 		public override string ReadLine()
 		{
 			StreamConnection connection = _terminal.TerminalPane.ConnectionTag.Connection as StreamConnection;
-			
-			_inputBuffer = new byte[1024];
+
 			connection.Capture = true;
 			_currentInputLine.Clear();
 			_inputSemaphore.Reset();
 
-			new Thread(ReadInput).Start(connection);
+			_inputThread = new Thread(ReadInput);
+
+			_inputThread.Start(connection);
 			_inputSemaphore.WaitOne();
 			connection.Capture = false;
 

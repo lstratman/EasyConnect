@@ -131,15 +131,38 @@ namespace EasyConnect.Protocols.PowerShell
 			_inputThread = new Thread(new ThreadStart(InputLoop));
 			_inputThread.Start();
 
+			ParentForm.Closing += ParentForm_Closing;
+
 			OnConnected(this, null);
 		}
 
-		protected override void OnFormClosing(FormClosingEventArgs e)
+		protected void ParentForm_Closing(object sender, CancelEventArgs e)
 		{
-			base.OnFormClosing(e);
+			try
+			{
+				if (_inputThread != null)
+					_inputThread.Abort();
+			}
 
-			if (_inputThread != null && _inputThread.ThreadState == ThreadState.Running)
-				_inputThread.Abort();
+			catch
+			{
+			}
+
+			try
+			{
+				Execute("exit");
+			}
+
+			finally
+			{
+				if (this.currentPowerShell != null)
+				{
+					this.currentPowerShell.Dispose();
+					this.currentPowerShell = null;
+				}
+
+				_powerShellHost.Exit();
+			}
 		}
 
 		/// <summary>

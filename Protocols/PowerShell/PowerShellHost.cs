@@ -19,8 +19,6 @@ namespace EasyConnect.Protocols.PowerShell
 	/// </summary>
 	internal class PowerShellHost : PSHost, IHostSupportsInteractiveSession
 	{
-		private TerminalControl _terminal;
-
 		/// <summary>
 		/// A reference to the PSHost implementation.
 		/// </summary>
@@ -57,8 +55,12 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			this.program = program;
 
-			_terminal = terminal;
 			_powerShellHostUi = new PowerShellHostUi(terminal);
+		}
+
+		public void Exit()
+		{
+			_powerShellHostUi.EndInput();
 		}
 
 		/// <summary>
@@ -197,8 +199,7 @@ namespace EasyConnect.Protocols.PowerShell
 		/// </summary>
 		public override void ExitNestedPrompt()
 		{
-			throw new NotImplementedException(
-				"The method or operation is not implemented.");
+			_powerShellHostUi.EndInput();
 		}
 
 		/// <summary>
