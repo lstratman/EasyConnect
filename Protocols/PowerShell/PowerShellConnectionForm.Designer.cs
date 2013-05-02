@@ -33,15 +33,19 @@
 			// 
 			// _terminal
 			// 
+			this._terminal.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+			| System.Windows.Forms.AnchorStyles.Left)
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this._terminal.AuthType = Poderosa.ConnectionParam.AuthType.Password;
-			this._terminal.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._terminal.BackColor = System.Drawing.Color.Navy;
+			this._terminal.ForeColor = System.Drawing.Color.White;
 			this._terminal.Host = "";
 			this._terminal.IdentifyFile = "";
-			this._terminal.Location = new System.Drawing.Point(0, 0);
+			this._terminal.Location = new System.Drawing.Point(-2, -2);
 			this._terminal.Method = WalburySoftware.ConnectionMethod.Telnet;
 			this._terminal.Name = "_terminal";
 			this._terminal.Password = "";
-			this._terminal.Size = new System.Drawing.Size(713, 518);
+			this._terminal.Size = new System.Drawing.Size(715, 522);
 			this._terminal.TabIndex = 0;
 			this._terminal.UserName = "";
 			// 
