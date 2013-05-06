@@ -2,8 +2,11 @@
 using System.Drawing;
 using System.Management.Automation.Host;
 using System.Text;
+using System.Threading;
+using System.Windows.Forms;
 using Poderosa.Terminal;
 using WalburySoftware;
+using Win32Interop.Methods;
 using Rectangle = System.Management.Automation.Host.Rectangle;
 using Size = System.Management.Automation.Host.Size;
 
@@ -20,11 +23,13 @@ namespace EasyConnect.Protocols.PowerShell
 		protected TerminalControl _terminal;
 		private ConsoleColor _foregroundColor;
 		private ConsoleColor _backgroundColor;
+		protected ManualResetEvent _inputSemaphore = new ManualResetEvent(false);
+		protected Thread _inputThread;
+		protected KeyInfo _readKey;
 
 		public PowerShellRawUi(TerminalControl terminal)
 		{
 			_terminal = terminal;
-
 			_backgroundColor = ClosestConsoleColor(_terminal.TerminalPane.ConnectionTag.RenderProfile.BackColor);
 			_backgroundColor = ClosestConsoleColor(_terminal.TerminalPane.ConnectionTag.RenderProfile.ForeColor);
 		}
@@ -354,8 +359,181 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <returns>Throws a NotImplementedException exception.</returns>
 		public override KeyInfo ReadKey(ReadKeyOptions options)
 		{
-			throw new NotImplementedException(
-				"The method or operation is not implemented.");
+			StreamConnection connection = _terminal.TerminalPane.ConnectionTag.Connection as StreamConnection;
+			connection.Capture = true;
+			_inputSemaphore.Reset();
+
+			_inputThread = new Thread(ReadInput);
+
+			_inputThread.Start(new Tuple<StreamConnection, ReadKeyOptions>(connection, options));
+			_inputSemaphore.WaitOne();
+			connection.Capture = false;
+
+			return _readKey;
+		}
+
+		private void ReadInput(object state)
+		{
+			StreamConnection connection = (state as Tuple<StreamConnection, ReadKeyOptions>).Item1;
+			ReadKeyOptions options = (state as Tuple<StreamConnection, ReadKeyOptions>).Item2;
+			bool inEscapeSequence = false;
+			bool readKey = false;
+
+			while (!readKey)
+			{
+				if (connection.OutputQueue.Count > 0)
+				{
+					while (connection.OutputQueue.Count > 0)
+					{
+						byte currentByte = connection.OutputQueue.Dequeue();
+
+						if (currentByte == 8)
+						{
+							_readKey = new KeyInfo
+								           {
+									           VirtualKeyCode = 8
+								           };
+
+							if ((options & ReadKeyOptions.NoEcho) != ReadKeyOptions.NoEcho && CursorPosition.X > 1)
+								CursorPosition = new Coordinates(CursorPosition.X - 1, CursorPosition.Y);
+
+							readKey = true;
+							break;
+						}
+
+						else if (currentByte == 27)
+							inEscapeSequence = true;
+
+						else if (currentByte == 91 && inEscapeSequence)
+						{
+						}
+
+						else if (currentByte == 126 && inEscapeSequence)
+						{
+						}
+
+						else if (currentByte == 55 && inEscapeSequence)
+						{
+							_readKey = new KeyInfo
+								           {
+									           VirtualKeyCode = 0x24
+								           };
+
+							if ((options & ReadKeyOptions.NoEcho) != ReadKeyOptions.NoEcho)
+								CursorPosition = new Coordinates(1, CursorPosition.Y);
+
+							readKey = true;
+							break;
+						}
+
+						else if (currentByte == 56 && inEscapeSequence)
+						{
+							_readKey = new KeyInfo
+								           {
+									           VirtualKeyCode = 0x23
+								           };
+
+							if ((options & ReadKeyOptions.NoEcho) != ReadKeyOptions.NoEcho)
+								CursorPosition = new Coordinates(BufferSize.Width, CursorPosition.Y);
+
+							readKey = true;
+							break;
+						}
+
+						else if (currentByte == 68 && inEscapeSequence)
+						{
+							_readKey = new KeyInfo
+								           {
+									           VirtualKeyCode = 25
+								           };
+
+							if ((options & ReadKeyOptions.NoEcho) != ReadKeyOptions.NoEcho && CursorPosition.X > 1)
+								CursorPosition = new Coordinates(CursorPosition.X - 1, CursorPosition.Y);
+
+							readKey = true;
+							break;
+						}
+
+						else if (currentByte == 67 && inEscapeSequence)
+						{
+							_readKey = new KeyInfo
+								           {
+									           VirtualKeyCode = 27
+								           };
+
+							if ((options & ReadKeyOptions.NoEcho) != ReadKeyOptions.NoEcho && CursorPosition.X < BufferSize.Width)
+								CursorPosition = new Coordinates(CursorPosition.X + 1, CursorPosition.Y);
+
+							readKey = true;
+							break;
+						}
+
+						else if (currentByte == 51 && inEscapeSequence)
+						{
+							_readKey = new KeyInfo
+								           {
+									           VirtualKeyCode = 0x23
+								           };
+
+							if ((options & ReadKeyOptions.NoEcho) != ReadKeyOptions.NoEcho)
+								CursorPosition = new Coordinates(BufferSize.Width, CursorPosition.Y);
+
+							readKey = true;
+							break;
+						}
+
+						else if (currentByte == 13)
+						{
+							_readKey = new KeyInfo
+								           {
+											   Character = '\r',
+									           VirtualKeyCode = 0x0D
+								           };
+
+							if ((options & ReadKeyOptions.NoEcho) != ReadKeyOptions.NoEcho)
+								CursorPosition = new Coordinates(1, CursorPosition.Y);
+
+							readKey = true;
+							break;
+						}
+
+						else
+						{
+							short virtualKey = User32.VkKeyScan((char) currentByte);
+							int modifiers = virtualKey >> 8;
+							ControlKeyStates controlKeys = 0;
+
+							if ((modifiers & 2) != 0)
+								controlKeys |= ControlKeyStates.LeftCtrlPressed;
+
+							if ((modifiers & 4) != 0)
+								controlKeys |= ControlKeyStates.LeftAltPressed;
+
+							_readKey = new KeyInfo
+								           {
+									           Character = (char) currentByte,
+									           VirtualKeyCode = (virtualKey & 0xFF),
+											   ControlKeyState = controlKeys
+								           };
+
+							if ((options & ReadKeyOptions.NoEcho) != ReadKeyOptions.NoEcho)
+								_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(
+									new byte[]
+										{
+											currentByte
+										}, 0, 1);
+
+							readKey = true;
+							break;
+						}
+					}
+				}
+				
+				if (!readKey)
+					Thread.Sleep(50);
+			}
+
+			_inputSemaphore.Set();
 		}
 
 		/// <summary>
