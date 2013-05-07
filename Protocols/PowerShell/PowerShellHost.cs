@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Management.Automation.Host;
 using System.Management.Automation.Runspaces;
@@ -61,6 +62,11 @@ namespace EasyConnect.Protocols.PowerShell
 		public void Exit()
 		{
 			_powerShellHostUi.EndInput();
+		}
+
+		public void AddIntellisenseCommands(IEnumerable<string> intellisenseCommands)
+		{
+			(UI as PowerShellHostUi).AddIntellisenseCommands(intellisenseCommands);
 		}
 
 		public bool AtCommandPrompt

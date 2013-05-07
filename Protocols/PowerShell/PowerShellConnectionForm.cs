@@ -31,6 +31,7 @@ namespace EasyConnect.Protocols.PowerShell
 	public partial class PowerShellConnectionForm : BaseConnectionForm<PowerShellConnection>
 	{
 		protected Thread _inputThread = null;
+		protected Thread _intellisenseThread = null;
 
 		public PowerShellConnectionForm()
 		{
@@ -128,6 +129,9 @@ namespace EasyConnect.Protocols.PowerShell
 				return;
 			}
 
+			_intellisenseThread = new Thread(GetIntellisenseCommands);
+			_intellisenseThread.Start();
+
 			_inputThread = new Thread(new ThreadStart(InputLoop));
 			_inputThread.Start();
 
@@ -136,12 +140,45 @@ namespace EasyConnect.Protocols.PowerShell
 			OnConnected(this, null);
 		}
 
+		protected void GetIntellisenseCommands()
+		{
+			Shell powerShell = null;
+
+			try
+			{
+				lock (this.instanceLock)
+				{
+					powerShell = Shell.Create();
+					powerShell.Runspace = this.myRunSpace;
+
+					powerShell.AddScript("get-command");
+					Collection<PSObject> commands = powerShell.Invoke();
+
+					_powerShellHost.AddIntellisenseCommands(
+						from command in commands
+						select command.Properties["Name"].Value.ToString());
+				}
+			}
+
+			finally
+			{
+				if (powerShell != null)
+				{
+					powerShell.Dispose();
+					powerShell = null;
+				}
+			}
+		}
+
 		protected void ParentForm_Closing(object sender, CancelEventArgs e)
 		{
 			try
 			{
 				if (_inputThread != null)
 					_inputThread.Abort();
+
+				if (_intellisenseThread != null)
+					_intellisenseThread.Abort();
 			}
 
 			catch
