@@ -158,7 +158,9 @@ namespace EasyConnect.Protocols.PowerShell
 			}
 			set
 			{
-				byte[] data = Encoding.UTF8.GetBytes(String.Format("\x001B[{1};{0}f", value.X + 1, value.Y + 1));
+				Coordinates relativePosition = new Coordinates(value.X + 1, value.Y + 1 - _terminal.TerminalPane.ConnectionTag.Document.TopLineNumber);
+
+				byte[] data = Encoding.UTF8.GetBytes(String.Format("\x001B[{1};{0}f", relativePosition.X, relativePosition.Y));
 				_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(data, 0, data.Length);
 			}
 		}
