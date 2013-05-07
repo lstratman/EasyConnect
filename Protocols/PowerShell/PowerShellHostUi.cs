@@ -8,6 +8,7 @@ using System.Security;
 using System.Text;
 using System.Threading;
 using WalburySoftware;
+using System.Linq;
 
 namespace EasyConnect.Protocols.PowerShell
 {
@@ -33,9 +34,9 @@ namespace EasyConnect.Protocols.PowerShell
 
 		protected Thread _inputThread = null;
 
-		protected List<string> _commandHistory = new List<string>();
-
-		protected int _commandHistoryLocation = -1;
+		protected Stack<string> _upCommandHistory = new Stack<string>();
+		protected Stack<string> _downCommandHistory = new Stack<string>();
+		protected string _currentHistoryCommand;
 
 		public PowerShellHostUi(TerminalControl terminal)
 		{
@@ -45,18 +46,25 @@ namespace EasyConnect.Protocols.PowerShell
 
 		public void AddToCommandHistory(string command)
 		{
-			if (_commandHistoryLocation >= 0 && _commandHistoryLocation < _commandHistory.Count && _commandHistory[_commandHistoryLocation] == command)
+			if(!String.IsNullOrEmpty(_currentHistoryCommand))
+				_upCommandHistory.Push(_currentHistoryCommand);
+
+			if (!String.IsNullOrEmpty(_currentHistoryCommand) && _currentHistoryCommand == command)
 			{
-				_commandHistoryLocation++;
+				_currentHistoryCommand = null;
 				return;
 			}
 
-			_commandHistory.Add(command);
+			_currentHistoryCommand = null;
 
-			if (_commandHistory.Count > 20)
-				_commandHistory.RemoveAt(0);
+			foreach (string historyCommand in _downCommandHistory)
+				_upCommandHistory.Push(historyCommand);
 
-			_commandHistoryLocation = _commandHistory.Count;
+			_downCommandHistory.Clear();
+			_upCommandHistory.Push(command);
+
+			if (_upCommandHistory.Count > 20)
+				_upCommandHistory = new Stack<string>(_upCommandHistory.ToArray().Take(20).Reverse());
 		}
 
 		public bool AtCommandPrompt
@@ -387,15 +395,40 @@ namespace EasyConnect.Protocols.PowerShell
 
 						else if (currentByte == 65 && inEscapeSequence)
 						{
-							if (AtCommandPrompt && _commandHistoryLocation > 0)
+							if (AtCommandPrompt && _upCommandHistory.Count > 0)
 							{
+								if (!String.IsNullOrEmpty(_currentHistoryCommand))
+									_downCommandHistory.Push(_currentHistoryCommand);
+
+								_currentHistoryCommand = _upCommandHistory.Pop();
+
 								RawUI.CursorPosition = promptStart;
 								Write(new string(' ', _currentInputLine.Length));
 								RawUI.CursorPosition = promptStart;
-								Write(_commandHistory[_commandHistoryLocation - 1]);
+								Write(_currentHistoryCommand);
 								promptEnd = RawUI.CursorPosition;
-								_currentInputLine = new StringBuilder(_commandHistory[_commandHistoryLocation - 1]);
-								_commandHistoryLocation--;
+								_currentInputLine = new StringBuilder(_currentHistoryCommand);
+								insertPosition = _currentInputLine.Length;
+							}
+
+							inEscapeSequence = false;
+						}
+
+						else if (currentByte == 66 && inEscapeSequence)
+						{
+							if (AtCommandPrompt && _downCommandHistory.Count > 0)
+							{
+								if (!String.IsNullOrEmpty(_currentHistoryCommand))
+									_upCommandHistory.Push(_currentHistoryCommand);
+
+								_currentHistoryCommand = _downCommandHistory.Pop();
+
+								RawUI.CursorPosition = promptStart;
+								Write(new string(' ', _currentInputLine.Length));
+								RawUI.CursorPosition = promptStart;
+								Write(_currentHistoryCommand);
+								promptEnd = RawUI.CursorPosition;
+								_currentInputLine = new StringBuilder(_currentHistoryCommand);
 								insertPosition = _currentInputLine.Length;
 							}
 
