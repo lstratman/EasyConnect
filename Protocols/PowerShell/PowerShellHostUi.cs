@@ -33,10 +33,36 @@ namespace EasyConnect.Protocols.PowerShell
 
 		protected Thread _inputThread = null;
 
+		protected List<string> _commandHistory = new List<string>();
+
+		protected int _commandHistoryLocation = -1;
+
 		public PowerShellHostUi(TerminalControl terminal)
 		{
 			_terminal = terminal;
 			_powerShellRawUi = new PowerShellRawUi(terminal);
+		}
+
+		public void AddToCommandHistory(string command)
+		{
+			if (_commandHistoryLocation >= 0 && _commandHistoryLocation < _commandHistory.Count && _commandHistory[_commandHistoryLocation] == command)
+			{
+				_commandHistoryLocation++;
+				return;
+			}
+
+			_commandHistory.Add(command);
+
+			if (_commandHistory.Count > 20)
+				_commandHistory.RemoveAt(0);
+
+			_commandHistoryLocation = _commandHistory.Count;
+		}
+
+		public bool AtCommandPrompt
+		{
+			get;
+			set;
 		}
 
 		public void EndInput()
@@ -355,6 +381,25 @@ namespace EasyConnect.Protocols.PowerShell
 											: new Coordinates(RawUI.BufferSize.Width, promptEnd.Y - 1);
 								}
 							}
+
+							inEscapeSequence = false;
+						}
+
+						else if (currentByte == 65 && inEscapeSequence)
+						{
+							if (AtCommandPrompt && _commandHistoryLocation > 0)
+							{
+								RawUI.CursorPosition = promptStart;
+								Write(new string(' ', _currentInputLine.Length));
+								RawUI.CursorPosition = promptStart;
+								Write(_commandHistory[_commandHistoryLocation - 1]);
+								promptEnd = RawUI.CursorPosition;
+								_currentInputLine = new StringBuilder(_commandHistory[_commandHistoryLocation - 1]);
+								_commandHistoryLocation--;
+								insertPosition = _currentInputLine.Length;
+							}
+
+							inEscapeSequence = false;
 						}
 
 						else if (currentByte == 13)

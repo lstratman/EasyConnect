@@ -63,6 +63,19 @@ namespace EasyConnect.Protocols.PowerShell
 			_powerShellHostUi.EndInput();
 		}
 
+		public bool AtCommandPrompt
+		{
+			get
+			{
+				return (UI as PowerShellHostUi).AtCommandPrompt;
+			}
+
+			set
+			{
+				(UI as PowerShellHostUi).AtCommandPrompt = value;
+			}
+		}
+
 		/// <summary>
 		/// A reference to the implementation of the PSHostUserInterface
 		/// class for this application.
@@ -85,6 +98,11 @@ namespace EasyConnect.Protocols.PowerShell
 			{
 				return this.originalCultureInfo;
 			}
+		}
+
+		public void AddToCommandHistory(string command)
+		{
+			(UI as PowerShellHostUi).AddToCommandHistory(command);
 		}
 
 		/// <summary>

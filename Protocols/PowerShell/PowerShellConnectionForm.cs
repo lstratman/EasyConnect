@@ -448,15 +448,20 @@ namespace EasyConnect.Protocols.PowerShell
 
 					if (this._powerShellHost.IsRunspacePushed)
 					{
-						prompt = string.Format("\n[{0}] PS {1}> ", this.myRunSpace.ConnectionInfo.ComputerName, currentDirectory);
+						prompt = string.Format("[{0}] PS {1}> ", this.myRunSpace.ConnectionInfo.ComputerName, currentDirectory);
 					}
 					else
 					{
-						prompt = "\nPS " + currentDirectory + "> ";
+						prompt = "PS " + currentDirectory + "> ";
 					}
 
 					this._powerShellHost.UI.Write(prompt);
+
+					_powerShellHost.AtCommandPrompt = true;
 					string cmd = _powerShellHost.UI.ReadLine();
+					_powerShellHost.AtCommandPrompt = false;
+					_powerShellHost.AddToCommandHistory(cmd);
+
 					this.Execute(cmd);
 				}
 			}
