@@ -18,6 +18,11 @@ namespace EasyConnect.Protocols.Rdp
         /// </summary>
         protected bool _connectClipboard = false;
 
+		/// <summary>
+		/// Flag indicating if the RDP window's size has been set explicitly.
+		/// </summary>
+	    protected bool _rdpWindowSizeSet = false;
+
         /// <summary>
         /// Default constructor.
         /// </summary>
@@ -373,9 +378,13 @@ namespace EasyConnect.Protocols.Rdp
         /// </summary>
         public override void Connect()
         {
-            _rdpWindow.Size = new Size(Size.Width + 2, Size.Height + 2);
+	        if (!_rdpWindowSizeSet)
+	        {
+		        _rdpWindow.Size = new Size(Size.Width + 2, Size.Height + 2);
+		        _rdpWindowSizeSet = true;
+	        }
 
-            DesktopWidth = (Connection.DesktopWidth == 0
+	        DesktopWidth = (Connection.DesktopWidth == 0
                                 ? _rdpWindow.Width
                                 : Connection.DesktopWidth);
             DesktopHeight = (Connection.DesktopHeight == 0
