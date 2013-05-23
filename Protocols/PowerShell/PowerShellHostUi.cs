@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
 using System.Management.Automation;
 using System.Management.Automation.Host;
 using System.Management.Automation.Language;
@@ -321,22 +322,48 @@ namespace EasyConnect.Protocols.PowerShell
 
 								if (currentToken != null && !String.IsNullOrEmpty(currentToken.Text))
 								{
-									if ((currentToken.Kind == TokenKind.Generic && currentToken.TokenFlags == TokenFlags.CommandName) || currentToken.Kind == TokenKind.Parameter || (currentToken.Kind == TokenKind.Generic && (currentToken.TokenFlags & TokenFlags.BinaryPrecedenceAdd) == TokenFlags.BinaryPrecedenceAdd))
+									if (((currentToken.Kind == TokenKind.Generic || currentToken.Kind == TokenKind.Identifier) && currentToken.TokenFlags == TokenFlags.CommandName) || currentToken.Kind == TokenKind.Parameter || (currentToken.Kind == TokenKind.Generic && (currentToken.TokenFlags & TokenFlags.BinaryPrecedenceAdd) == TokenFlags.BinaryPrecedenceAdd) || (currentToken.Kind == TokenKind.Identifier && currentToken.TokenFlags == TokenFlags.None) || (currentToken.Kind == TokenKind.Generic && currentToken.TokenFlags == TokenFlags.None) || currentToken.Kind == TokenKind.StringLiteral)
 									{
 										intellisenseStartLocation = insertPosition - currentToken.Text.Length;
 										intellisenseCandidatesIndex = -1;
 										currentIntellisenseCommand = _currentInputLine.ToString().Substring(intellisenseStartLocation.Value, insertPosition - intellisenseStartLocation.Value);
 
-										if (currentToken.Kind == TokenKind.Generic && currentToken.TokenFlags == TokenFlags.CommandName)
-											intellisenseCandidates = _intellisenseCommands.Where(c => c.ToLower().StartsWith(currentToken.Text.ToLower())).OrderBy(c => c).ToList();
+										if (((currentToken.Kind == TokenKind.Generic || currentToken.Kind == TokenKind.Identifier) && currentToken.TokenFlags == TokenFlags.CommandName) || (currentToken.Kind == TokenKind.Identifier && currentToken.TokenFlags == TokenFlags.None) || (currentToken.Kind == TokenKind.Generic && currentToken.TokenFlags == TokenFlags.None) || currentToken.Kind == TokenKind.StringLiteral)
+										{
+											string match = currentToken.Text.Replace("'", "").Replace("\"", "");
+											string searchPath = null;
 
-										else if (currentToken.Kind == TokenKind.Parameter || (currentToken.Kind == TokenKind.Generic && (currentToken.TokenFlags & TokenFlags.BinaryPrecedenceAdd) == TokenFlags.BinaryPrecedenceAdd))
+											if (match.Contains("\\"))
+											{
+												searchPath = match.Substring(0, match.LastIndexOf("\\") + 1);
+												match = match.Substring(match.LastIndexOf("\\") + 1);
+											}
+
+											IEnumerable<string> childItems = _executeHelper(
+												"get-childitem -Filter '" + match + "*'" + (!String.IsNullOrEmpty(searchPath)
+													                                          ? " -Path '" + searchPath + "'"
+													                                          : "")).Select(
+														                                          i => String.IsNullOrEmpty(searchPath)
+															                                               ? ".\\" + i.ToString()
+															                                               : searchPath + i.ToString());
+
+											intellisenseCandidates =
+												(((currentToken.Kind == TokenKind.Generic || currentToken.Kind == TokenKind.Identifier) && currentToken.TokenFlags == TokenFlags.CommandName)
+													 ? _intellisenseCommands.Where(c => c.ToLower().StartsWith(currentToken.Text.ToLower()))
+													 : new List<string>()).Union(childItems).Select(
+														 c => c.Contains(" ")
+															      ? "'" + c + "'"
+															      : c).OrderBy(c => c).ToList();
+										}
+
+										else if (currentToken.Kind == TokenKind.Parameter ||
+												 (currentToken.Kind == TokenKind.Generic && (currentToken.TokenFlags & TokenFlags.BinaryPrecedenceAdd) == TokenFlags.BinaryPrecedenceAdd))
 										{
 											if (tokens.ToList().IndexOf(currentToken) > 0)
 											{
 												Token commandToken = tokens[tokens.ToList().IndexOf(currentToken) - 1];
 
-												if (commandToken.Kind == TokenKind.Generic && commandToken.TokenFlags == TokenFlags.CommandName)
+												if ((currentToken.Kind == TokenKind.Generic || currentToken.Kind == TokenKind.Identifier) && commandToken.TokenFlags == TokenFlags.CommandName)
 												{
 													if (!_intellisenseParameters.ContainsKey(commandToken.Text.ToLower()))
 													{
@@ -345,11 +372,13 @@ namespace EasyConnect.Protocols.PowerShell
 														Collection<PSObject> command = _executeHelper("get-command " + commandToken.Text);
 
 														if (command != null)
-															_intellisenseParameters[commandToken.Text.ToLower()].AddRange(from parameter in (command[0].Properties["Parameters"].Value as Dictionary<string, ParameterMetadata>).Keys
-																														  select "-" + parameter);
+															_intellisenseParameters[commandToken.Text.ToLower()].AddRange(
+																from parameter in (command[0].Properties["Parameters"].Value as Dictionary<string, ParameterMetadata>).Keys
+																select "-" + parameter);
 													}
 
-													intellisenseCandidates = _intellisenseParameters[commandToken.Text.ToLower()].Where(p => p.ToLower().StartsWith(currentToken.Text.ToLower())).OrderBy(p => p).ToList();
+													intellisenseCandidates =
+														_intellisenseParameters[commandToken.Text.ToLower()].Where(p => p.ToLower().StartsWith(currentToken.Text.ToLower())).OrderBy(p => p).ToList();
 												}
 											}
 
