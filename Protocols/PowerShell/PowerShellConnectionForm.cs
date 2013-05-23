@@ -99,7 +99,7 @@ namespace EasyConnect.Protocols.PowerShell
 			// Create the host and runspace instances for this interpreter. Note 
 			// that this application doesn't support console files so only the 
 			// default snap-ins will be available.
-			this._powerShellHost = new PowerShellHost(this, _terminal);
+			this._powerShellHost = new PowerShellHost(this, _terminal, ExecuteQuiet);
 
 			if (String.Compare(Connection.Host, "localhost", true) != 0 && Connection.Host != "127.0.0.1" &&
 			    String.Compare(Connection.Host, Environment.MachineName, true) != 0)
@@ -142,32 +142,12 @@ namespace EasyConnect.Protocols.PowerShell
 
 		protected void GetIntellisenseCommands()
 		{
-			Shell powerShell = null;
+			Collection<PSObject> commands = ExecuteQuiet("get-command");
 
-			try
-			{
-				lock (this.instanceLock)
-				{
-					powerShell = Shell.Create();
-					powerShell.Runspace = this.myRunSpace;
-
-					powerShell.AddScript("get-command");
-					Collection<PSObject> commands = powerShell.Invoke();
-
-					_powerShellHost.AddIntellisenseCommands(
-						from command in commands
-						select command.Properties["Name"].Value.ToString());
-				}
-			}
-
-			finally
-			{
-				if (powerShell != null)
-				{
-					powerShell.Dispose();
-					powerShell = null;
-				}
-			}
+			if (commands != null)
+				_powerShellHost.AddIntellisenseCommands(
+					from command in commands
+					select command.Properties["Name"].Value.ToString());
 		}
 
 		protected void ParentForm_Closing(object sender, CancelEventArgs e)
@@ -187,7 +167,7 @@ namespace EasyConnect.Protocols.PowerShell
 
 			try
 			{
-				Execute("exit");
+				ExecuteQuiet("exit");
 			}
 
 			finally
@@ -262,12 +242,12 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <param name="cmd">The script to run.</param>
 		/// <param name="input">Any input arguments to pass to the script. 
 		/// If null then nothing is passed in.</param>
-		private void executeHelper(string cmd, object input)
+		private Collection<PSObject> executeHelper(string cmd, object input, bool quiet = false)
 		{
 			// Ignore empty command lines.
 			if (String.IsNullOrEmpty(cmd))
 			{
-				return;
+				return null;
 			}
 
 			// Create the pipeline object and make it available to the
@@ -276,42 +256,46 @@ namespace EasyConnect.Protocols.PowerShell
 			lock (this.instanceLock)
 			{
 				this.currentPowerShell = Shell.Create();
-			}
 
-			// Create a pipeline for this execution, and then place the 
-			// result in the currentPowerShell variable so it is available 
-			// to be stopped.
-			try
-			{
-				this.currentPowerShell.Runspace = this.myRunSpace;
-				this.currentPowerShell.AddScript(cmd);
-
-				// Add the default outputter to the end of the pipe and then 
-				// call the MergeMyResults method to merge the output and 
-				// error streams from the pipeline. This will result in the 
-				// output being written using the PSHost and PSHostUserInterface 
-				// classes instead of returning objects to the host application.
-				this.currentPowerShell.AddCommand("out-default");
-				this.currentPowerShell.Commands.Commands[0].MergeMyResults(PipelineResultTypes.Error, PipelineResultTypes.Output);
-
-				// If there is any input pass it in, otherwise just invoke the
-				// the pipeline.
-				if (input != null)
+				// Create a pipeline for this execution, and then place the 
+				// result in the currentPowerShell variable so it is available 
+				// to be stopped.
+				try
 				{
-					this.currentPowerShell.Invoke(new object[] { input });
+					this.currentPowerShell.Runspace = this.myRunSpace;
+					this.currentPowerShell.AddScript(cmd);
+
+					if (!quiet)
+					{
+						// Add the default outputter to the end of the pipe and then 
+						// call the MergeMyResults method to merge the output and 
+						// error streams from the pipeline. This will result in the 
+						// output being written using the PSHost and PSHostUserInterface 
+						// classes instead of returning objects to the host application.
+						this.currentPowerShell.AddCommand("out-default");
+						this.currentPowerShell.Commands.Commands[0].MergeMyResults(PipelineResultTypes.Error, PipelineResultTypes.Output);
+					}
+
+					// If there is any input pass it in, otherwise just invoke the
+					// the pipeline.
+					if (input != null)
+					{
+						return this.currentPowerShell.Invoke(
+							new object[]
+								{
+									input
+								});
+					}
+					else
+					{
+						return this.currentPowerShell.Invoke();
+					}
 				}
-				else
+				finally
 				{
-					this.currentPowerShell.Invoke();
-				}
-			}
-			finally
-			{
-				// Dispose the PowerShell object and set currentPowerShell to null. 
-				// It is locked because currentPowerShell may be accessed by the 
-				// ctrl-C handler.
-				lock (this.instanceLock)
-				{
+					// Dispose the PowerShell object and set currentPowerShell to null. 
+					// It is locked because currentPowerShell may be accessed by the 
+					// ctrl-C handler.
 					this.currentPowerShell.Dispose();
 					this.currentPowerShell = null;
 				}
@@ -389,16 +373,30 @@ namespace EasyConnect.Protocols.PowerShell
 		/// display.
 		/// </summary>
 		/// <param name="cmd">Script to run.</param>
-		private void Execute(string cmd)
+		private Collection<PSObject> Execute(string cmd)
 		{
 			try
 			{
 				// Execute the command with no input.
-				this.executeHelper(cmd, null);
+				return this.executeHelper(cmd, null);
 			}
 			catch (RuntimeException rte)
 			{
 				this.ReportException(rte);
+				return null;
+			}
+		}
+
+		private Collection<PSObject> ExecuteQuiet(string cmd)
+		{
+			try
+			{
+				// Execute the command with no input.
+				return this.executeHelper(cmd, null, true);
+			}
+			catch (RuntimeException)
+			{
+				return null;
 			}
 		}
 
@@ -440,49 +438,15 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			try
 			{
-				try
-				{
-					lock (this.instanceLock)
-					{
-						this.currentPowerShell = Shell.Create();
-						this.currentPowerShell.Runspace = this.myRunSpace;
-
-						currentPowerShell.AddScript("cd $HOME");
-						currentPowerShell.Invoke();
-					}
-				}
-
-				finally
-				{
-					currentPowerShell.Dispose();
-					currentPowerShell = null;
-				}
+				ExecuteQuiet("cd $HOME");
 
 				// Read commands to execute until ShouldExit is set by
 				// the user calling "exit".
 				while (!this.ShouldExit)
 				{
 					string prompt;
-					string currentDirectory;
-
-					try
-					{
-						lock (this.instanceLock)
-						{
-							this.currentPowerShell = Shell.Create();
-							this.currentPowerShell.Runspace = this.myRunSpace;
-
-							currentPowerShell.AddCommand("pwd");
-							currentDirectory = currentPowerShell.Invoke()[0].ToString();
-						}
-					}
-
-					finally
-					{
-						currentPowerShell.Dispose();
-						currentPowerShell = null;
-					}
-
+					string currentDirectory = ExecuteQuiet("pwd")[0].ToString();
+					
 					if (this._powerShellHost.IsRunspacePushed)
 					{
 						prompt = string.Format("[{0}] PS {1}> ", this.myRunSpace.ConnectionInfo.ComputerName, currentDirectory);

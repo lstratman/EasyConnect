@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Management.Automation;
 using System.Management.Automation.Host;
 using System.Management.Automation.Runspaces;
 using WalburySoftware;
@@ -52,11 +54,11 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <param name="program">
 		/// A reference to the host application object.
 		/// </param>
-		public PowerShellHost(PowerShellConnectionForm program, TerminalControl terminal)
+		public PowerShellHost(PowerShellConnectionForm program, TerminalControl terminal, Func<string, Collection<PSObject>> executeHelper)
 		{
 			this.program = program;
 
-			_powerShellHostUi = new PowerShellHostUi(terminal);
+			_powerShellHostUi = new PowerShellHostUi(terminal, executeHelper);
 		}
 
 		public void Exit()

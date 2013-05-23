@@ -39,11 +39,14 @@ namespace EasyConnect.Protocols.PowerShell
 		protected Stack<string> _downCommandHistory = new Stack<string>();
 		protected string _currentHistoryCommand;
 		protected List<string> _intellisenseCommands = new List<string>();
+		protected Dictionary<string, List<string>> _intellisenseParameters = new Dictionary<string, List<string>>();
+		protected Func<string, Collection<PSObject>> _executeHelper;
 
-		public PowerShellHostUi(TerminalControl terminal)
+		public PowerShellHostUi(TerminalControl terminal, Func<string, Collection<PSObject>> executeHelper)
 		{
 			_terminal = terminal;
 			_powerShellRawUi = new PowerShellRawUi(terminal);
+			_executeHelper = executeHelper;
 		}
 
 		public void AddIntellisenseCommands(IEnumerable<string> intellisenseCommands)
@@ -318,13 +321,41 @@ namespace EasyConnect.Protocols.PowerShell
 
 								if (currentToken != null && !String.IsNullOrEmpty(currentToken.Text))
 								{
-									if (currentToken.Kind == TokenKind.Generic && currentToken.TokenFlags == TokenFlags.CommandName)
+									if ((currentToken.Kind == TokenKind.Generic && currentToken.TokenFlags == TokenFlags.CommandName) || currentToken.Kind == TokenKind.Parameter || (currentToken.Kind == TokenKind.Generic && (currentToken.TokenFlags & TokenFlags.BinaryPrecedenceAdd) == TokenFlags.BinaryPrecedenceAdd))
 									{
 										intellisenseStartLocation = insertPosition - currentToken.Text.Length;
-
-										intellisenseCandidates = _intellisenseCommands.Where(c => c.ToLower().StartsWith(currentToken.Text.ToLower())).ToList();
 										intellisenseCandidatesIndex = -1;
 										currentIntellisenseCommand = _currentInputLine.ToString().Substring(intellisenseStartLocation.Value, insertPosition - intellisenseStartLocation.Value);
+
+										if (currentToken.Kind == TokenKind.Generic && currentToken.TokenFlags == TokenFlags.CommandName)
+											intellisenseCandidates = _intellisenseCommands.Where(c => c.ToLower().StartsWith(currentToken.Text.ToLower())).OrderBy(c => c).ToList();
+
+										else if (currentToken.Kind == TokenKind.Parameter || (currentToken.Kind == TokenKind.Generic && (currentToken.TokenFlags & TokenFlags.BinaryPrecedenceAdd) == TokenFlags.BinaryPrecedenceAdd))
+										{
+											if (tokens.ToList().IndexOf(currentToken) > 0)
+											{
+												Token commandToken = tokens[tokens.ToList().IndexOf(currentToken) - 1];
+
+												if (commandToken.Kind == TokenKind.Generic && commandToken.TokenFlags == TokenFlags.CommandName)
+												{
+													if (!_intellisenseParameters.ContainsKey(commandToken.Text.ToLower()))
+													{
+														_intellisenseParameters[commandToken.Text.ToLower()] = new List<string>();
+
+														Collection<PSObject> command = _executeHelper("get-command " + commandToken.Text);
+
+														if (command != null)
+															_intellisenseParameters[commandToken.Text.ToLower()].AddRange(from parameter in (command[0].Properties["Parameters"].Value as Dictionary<string, ParameterMetadata>).Keys
+																														  select "-" + parameter);
+													}
+
+													intellisenseCandidates = _intellisenseParameters[commandToken.Text.ToLower()].Where(p => p.ToLower().StartsWith(currentToken.Text.ToLower())).OrderBy(p => p).ToList();
+												}
+											}
+
+											if (intellisenseCandidates == null)
+												intellisenseCandidates = new List<string>();
+										}
 									}
 								}
 							}
