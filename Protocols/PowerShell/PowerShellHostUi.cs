@@ -292,6 +292,10 @@ namespace EasyConnect.Protocols.PowerShell
 			Coordinates promptEnd = RawUI.CursorPosition;
 			bool inEscapeSequence = false;
 			int insertPosition = 0;
+			int? intellisenseStartLocation = null;
+			List<string> intellisenseCandidates = new List<string>();
+			int? intellisenseCandidatesIndex = null;
+			string currentIntellisenseCommand = "";
 
 			while (!foundCarriageReturn)
 			{
@@ -300,6 +304,66 @@ namespace EasyConnect.Protocols.PowerShell
 					while (connection.OutputQueue.Count > 0)
 					{
 						byte currentByte = connection.OutputQueue.Dequeue();
+
+						if (currentByte == 9)
+						{
+							if (intellisenseStartLocation == null)
+							{
+								Token[] tokens;
+								ParseError[] parseErrors;
+
+								Parser.ParseInput(_currentInputLine.ToString().Substring(0, insertPosition), out tokens, out parseErrors);
+
+								Token currentToken = tokens.LastOrDefault(t => t.Kind != TokenKind.EndOfInput);
+
+								if (currentToken != null && !String.IsNullOrEmpty(currentToken.Text))
+								{
+									if (currentToken.Kind == TokenKind.Generic && currentToken.TokenFlags == TokenFlags.CommandName)
+									{
+										intellisenseStartLocation = insertPosition - currentToken.Text.Length;
+
+										intellisenseCandidates = _intellisenseCommands.Where(c => c.ToLower().StartsWith(currentToken.Text.ToLower())).ToList();
+										intellisenseCandidatesIndex = -1;
+										currentIntellisenseCommand = _currentInputLine.ToString().Substring(intellisenseStartLocation.Value, insertPosition - intellisenseStartLocation.Value);
+									}
+								}
+							}
+
+							if (intellisenseStartLocation != null && intellisenseCandidates.Count > 0)
+							{
+								intellisenseCandidatesIndex++;
+
+								if (intellisenseCandidatesIndex >= intellisenseCandidates.Count)
+									intellisenseCandidatesIndex = 0;
+
+								string command = intellisenseCandidates[intellisenseCandidatesIndex.Value];
+
+								_currentInputLine.Remove(intellisenseStartLocation.Value, currentIntellisenseCommand.Length);
+								_currentInputLine.Insert(intellisenseStartLocation.Value, command);
+
+								RawUI.CursorPosition = promptStart;
+								Write(
+									_currentInputLine + (currentIntellisenseCommand.Length > command.Length
+										                     ? new string(' ', currentIntellisenseCommand.Length - command.Length)
+										                     : ""));
+								promptEnd = RawUI.CursorPosition;
+
+								RawUI.CursorPosition = new Coordinates(
+									(promptStart.X + intellisenseStartLocation.Value + command.Length) % RawUI.BufferSize.Width,
+									promptStart.Y + Convert.ToInt32(Math.Floor((promptStart.X + intellisenseStartLocation.Value + command.Length) / (double)RawUI.BufferSize.Width)));
+
+								insertPosition = intellisenseStartLocation.Value + command.Length;
+								currentIntellisenseCommand = command;
+							}
+						}
+
+						else if (intellisenseStartLocation != null)
+						{
+							intellisenseStartLocation = null;
+							intellisenseCandidatesIndex = null;
+							currentIntellisenseCommand = null;
+							intellisenseCandidates.Clear();
+						}
 
 						if (currentByte == 8)
 						{
@@ -322,38 +386,6 @@ namespace EasyConnect.Protocols.PowerShell
 								promptEnd = promptEnd.X > 1
 										? new Coordinates(promptEnd.X - 1, promptEnd.Y)
 										: new Coordinates(RawUI.BufferSize.Width, promptEnd.Y - 1);
-							}
-						}
-
-						else if (currentByte == 9)
-						{
-							Token[] tokens;
-							ParseError[] parseErrors;
-
-							Parser.ParseInput(_currentInputLine.ToString().Substring(0, insertPosition), out tokens, out parseErrors);
-
-							Token currentToken = tokens.LastOrDefault(t => t.Kind != TokenKind.EndOfInput);
-
-							if (currentToken != null && !String.IsNullOrEmpty(currentToken.Text))
-							{
-								if (currentToken.Kind == TokenKind.Generic && currentToken.TokenFlags == TokenFlags.CommandName)
-								{
-									string command = _intellisenseCommands.FirstOrDefault(c => c.ToLower().StartsWith(currentToken.Text));
-
-									if (!string.IsNullOrEmpty(command))
-									{
-										_currentInputLine.Remove(insertPosition - currentToken.Text.Length, currentToken.Text.Length);
-										_currentInputLine.Insert(insertPosition - currentToken.Text.Length, command);
-
-										Coordinates currentPosition = RawUI.CursorPosition;
-										RawUI.CursorPosition = promptStart;
-										Write(_currentInputLine.ToString());
-										promptEnd = RawUI.CursorPosition;
-										RawUI.CursorPosition = new Coordinates(((currentPosition.X - 1 + command.Length - currentToken.Text.Length) % RawUI.BufferSize.Width) + 1, currentPosition.Y + Convert.ToInt32(Math.Floor((currentPosition.X - 1 + command.Length - currentToken.Text.Length) / (double)RawUI.BufferSize.Width)));
-
-										insertPosition = insertPosition - currentToken.Text.Length + command.Length;
-									}
-								}
 							}
 						}
 
