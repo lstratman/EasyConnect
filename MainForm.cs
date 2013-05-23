@@ -836,6 +836,9 @@ can be used.";
         {
             if (_bookmarks != null)
                 _bookmarks.Save();
+
+			foreach (TitleBarTab tab in Tabs.ToArray())
+				tab.Content.Close();
         }
 
         /// <summary>
