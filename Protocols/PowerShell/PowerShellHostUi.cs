@@ -42,6 +42,7 @@ namespace EasyConnect.Protocols.PowerShell
 		protected List<string> _intellisenseCommands = new List<string>();
 		protected Dictionary<string, List<string>> _intellisenseParameters = new Dictionary<string, List<string>>();
 		protected Func<string, Collection<PSObject>> _executeHelper;
+		protected Thread _intellisenseThread = null;
 
 		public PowerShellHostUi(TerminalControl terminal, Func<string, Collection<PSObject>> executeHelper)
 		{
@@ -50,10 +51,17 @@ namespace EasyConnect.Protocols.PowerShell
 			_executeHelper = executeHelper;
 		}
 
-		public void AddIntellisenseCommands(IEnumerable<string> intellisenseCommands)
+		protected void GetIntellisenseCommands()
 		{
-			_intellisenseCommands.AddRange(intellisenseCommands);
-			_intellisenseCommands.Sort();
+			Collection<PSObject> commands = _executeHelper("get-command");
+
+			if (commands != null)
+			{
+				_intellisenseCommands.AddRange(
+					from command in commands
+					select command.Properties["Name"].Value.ToString());
+				_intellisenseCommands.Sort();
+			}
 		}
 
 		public void AddToCommandHistory(string command)
@@ -96,6 +104,16 @@ namespace EasyConnect.Protocols.PowerShell
 			catch
 			{
 			}
+
+			try
+			{
+				if (_intellisenseThread != null)
+					_intellisenseThread.Abort();
+			}
+
+			catch
+			{
+			}
 		}
 
 		/// <summary>
@@ -123,16 +141,18 @@ namespace EasyConnect.Protocols.PowerShell
 			string message,
 			Collection<FieldDescription> descriptions)
 		{
-			Write(
+			WriteLine(
 				ConsoleColor.Blue,
 				ConsoleColor.Black,
 				caption + "\n" + message + " ");
 			Dictionary<string, PSObject> results =
 				new Dictionary<string, PSObject>();
-			foreach (FieldDescription fd in descriptions)
+
+			for (int i = 0; i < descriptions.Count; i++)
 			{
+				FieldDescription fd = descriptions[i];
 				string[] label = GetHotkeyAndLabel(fd.Label);
-				WriteLine(label[1]);
+				Write(String.Format("{0}[{1}]: ", label[1], i));
 				string userData = ReadLine();
 				if (userData == null)
 					return null;
@@ -273,6 +293,12 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <returns>The characters that are entered by the user.</returns>
 		public override string ReadLine()
 		{
+			if (_intellisenseThread == null)
+			{
+				_intellisenseThread = new Thread(GetIntellisenseCommands);
+				_intellisenseThread.Start();
+			}
+
 			StreamConnection connection = _terminal.TerminalPane.ConnectionTag.Connection as StreamConnection;
 
 			connection.Capture = true;

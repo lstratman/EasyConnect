@@ -31,7 +31,6 @@ namespace EasyConnect.Protocols.PowerShell
 	public partial class PowerShellConnectionForm : BaseConnectionForm<PowerShellConnection>
 	{
 		protected Thread _inputThread = null;
-		protected Thread _intellisenseThread = null;
 
 		public PowerShellConnectionForm()
 		{
@@ -96,11 +95,11 @@ namespace EasyConnect.Protocols.PowerShell
 			_terminal.TerminalPane.Focus();
 			_terminal.SetPaneColors(Connection.TextColor, Connection.BackgroundColor);
 
+			this._powerShellHost = new PowerShellHost(this, _terminal, ExecuteQuiet);
+
 			// Create the host and runspace instances for this interpreter. Note 
 			// that this application doesn't support console files so only the 
 			// default snap-ins will be available.
-			this._powerShellHost = new PowerShellHost(this, _terminal, ExecuteQuiet);
-
 			if (String.Compare(Connection.Host, "localhost", true) != 0 && Connection.Host != "127.0.0.1" &&
 			    String.Compare(Connection.Host, Environment.MachineName, true) != 0)
 			{
@@ -129,9 +128,6 @@ namespace EasyConnect.Protocols.PowerShell
 				return;
 			}
 
-			_intellisenseThread = new Thread(GetIntellisenseCommands);
-			_intellisenseThread.Start();
-
 			_inputThread = new Thread(new ThreadStart(InputLoop));
 			_inputThread.Start();
 
@@ -140,25 +136,12 @@ namespace EasyConnect.Protocols.PowerShell
 			OnConnected(this, null);
 		}
 
-		protected void GetIntellisenseCommands()
-		{
-			Collection<PSObject> commands = ExecuteQuiet("get-command");
-
-			if (commands != null)
-				_powerShellHost.AddIntellisenseCommands(
-					from command in commands
-					select command.Properties["Name"].Value.ToString());
-		}
-
 		protected void ParentForm_Closing(object sender, CancelEventArgs e)
 		{
 			try
 			{
 				if (_inputThread != null)
 					_inputThread.Abort();
-
-				if (_intellisenseThread != null)
-					_intellisenseThread.Abort();
 			}
 
 			catch
@@ -213,6 +196,8 @@ namespace EasyConnect.Protocols.PowerShell
 		/// </summary>
 		private object instanceLock = new object();
 
+		private object executionLock = new object();
+
 		/// <summary>
 		/// Gets or sets a value indicating whether the host applcation
 		/// should exit.
@@ -233,6 +218,30 @@ namespace EasyConnect.Protocols.PowerShell
 			set { this.exitCode = value; }
 		}
 
+		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+		{
+			if (keyData == (Keys.Control | Keys.C))
+			{
+				try
+				{
+					lock (this.instanceLock)
+					{
+						if (this.currentPowerShell != null && this.currentPowerShell.InvocationStateInfo.State == PSInvocationState.Running)
+						{
+							this.currentPowerShell.Stop();
+							this._powerShellHost.UI.WriteLine("");
+						}
+					}
+				}
+				catch (Exception exception)
+				{
+					this._powerShellHost.UI.WriteErrorLine(exception.ToString());
+				}
+			}
+
+			return base.ProcessCmdKey(ref msg, keyData);
+		}
+
 		/// <summary>
 		/// A helper class that builds and executes a pipeline that writes to the
 		/// default output path. Any exceptions that are thrown are just passed to
@@ -250,12 +259,15 @@ namespace EasyConnect.Protocols.PowerShell
 				return null;
 			}
 
-			// Create the pipeline object and make it available to the
-			// ctrl-C handle through the currentPowerShell instance
-			// variable.
-			lock (this.instanceLock)
+			lock (executionLock)
 			{
-				this.currentPowerShell = Shell.Create();
+				// Create the pipeline object and make it available to the
+				// ctrl-C handle through the currentPowerShell instance
+				// variable.
+				lock (this.instanceLock)
+				{
+					this.currentPowerShell = Shell.Create();
+				}
 
 				// Create a pipeline for this execution, and then place the 
 				// result in the currentPowerShell variable so it is available 
@@ -296,8 +308,11 @@ namespace EasyConnect.Protocols.PowerShell
 					// Dispose the PowerShell object and set currentPowerShell to null. 
 					// It is locked because currentPowerShell may be accessed by the 
 					// ctrl-C handler.
-					this.currentPowerShell.Dispose();
-					this.currentPowerShell = null;
+					lock (this.instanceLock)
+					{
+						this.currentPowerShell.Dispose();
+						this.currentPowerShell = null;
+					}
 				}
 			}
 		}
@@ -342,7 +357,11 @@ namespace EasyConnect.Protocols.PowerShell
 					PSDataCollection<object> inputCollection = new PSDataCollection<object>();
 					inputCollection.Add(error);
 					inputCollection.Complete();
-					result = this.currentPowerShell.Invoke(inputCollection);
+
+					lock (executionLock)
+					{
+						result = this.currentPowerShell.Invoke(inputCollection);
+					}
 
 					if (result.Count > 0)
 					{
@@ -397,35 +416,6 @@ namespace EasyConnect.Protocols.PowerShell
 			catch (RuntimeException)
 			{
 				return null;
-			}
-		}
-
-		/// <summary>
-		/// Method used to handle control-C's from the user. It calls the
-		/// pipeline Stop() method to stop execution. If any exceptions occur
-		/// they are printed to the console but otherwise ignored.
-		/// </summary>
-		/// <param name="sender">See sender property documentation of  
-		/// ConsoleCancelEventHandler.</param>
-		/// <param name="e">See e property documentation of 
-		/// ConsoleCancelEventHandler.</param>
-		private void HandleControlC(object sender, ConsoleCancelEventArgs e)
-		{
-			try
-			{
-				lock (this.instanceLock)
-				{
-					if (this.currentPowerShell != null && this.currentPowerShell.InvocationStateInfo.State == PSInvocationState.Running)
-					{
-						this.currentPowerShell.Stop();
-					}
-				}
-
-				e.Cancel = true;
-			}
-			catch (Exception exception)
-			{
-				this._powerShellHost.UI.WriteErrorLine(exception.ToString());
 			}
 		}
 

@@ -66,11 +66,6 @@ namespace EasyConnect.Protocols.PowerShell
 			_powerShellHostUi.EndInput();
 		}
 
-		public void AddIntellisenseCommands(IEnumerable<string> intellisenseCommands)
-		{
-			(UI as PowerShellHostUi).AddIntellisenseCommands(intellisenseCommands);
-		}
-
 		public bool AtCommandPrompt
 		{
 			get
