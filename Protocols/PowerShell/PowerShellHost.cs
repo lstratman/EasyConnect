@@ -66,6 +66,20 @@ namespace EasyConnect.Protocols.PowerShell
 			_powerShellHostUi.EndInput();
 		}
 
+		public void StopCurrentPipeline()
+		{
+			if (ReadingInput)
+				_powerShellHostUi.StopCurrentPipeline();
+		}
+
+		public bool ReadingInput
+		{
+			get
+			{
+				return _powerShellHostUi.ReadingInput;
+			}
+		}
+
 		public bool AtCommandPrompt
 		{
 			get

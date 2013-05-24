@@ -365,9 +365,12 @@ namespace EasyConnect.Protocols.PowerShell
 			connection.Capture = true;
 			_inputSemaphore.Reset();
 
-			_inputThread = new Thread(ReadInput);
-
+			_inputThread = new Thread(ReadInput)
+				               {
+					               Name = "PowerShellRawUi Input Thread"
+				               };
 			_inputThread.Start(new Tuple<StreamConnection, ReadKeyOptions>(connection, options));
+			
 			_inputSemaphore.WaitOne();
 			connection.Capture = false;
 

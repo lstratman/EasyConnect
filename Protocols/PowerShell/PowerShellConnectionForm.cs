@@ -128,7 +128,10 @@ namespace EasyConnect.Protocols.PowerShell
 				return;
 			}
 
-			_inputThread = new Thread(new ThreadStart(InputLoop));
+			_inputThread = new Thread(new ThreadStart(InputLoop))
+				               {
+					               Name = "PowerShellConnectionForm Input Thread"
+				               };
 			_inputThread.Start();
 
 			ParentForm.Closing += ParentForm_Closing;
@@ -226,11 +229,12 @@ namespace EasyConnect.Protocols.PowerShell
 				{
 					lock (this.instanceLock)
 					{
+						_powerShellHost.StopCurrentPipeline();
+
 						if (this.currentPowerShell != null && this.currentPowerShell.InvocationStateInfo.State == PSInvocationState.Running)
-						{
 							this.currentPowerShell.Stop();
-							this._powerShellHost.UI.WriteLine("");
-						}
+
+						this._powerShellHost.UI.WriteLine("");
 					}
 				}
 				catch (Exception exception)

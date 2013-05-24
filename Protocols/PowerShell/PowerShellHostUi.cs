@@ -43,6 +43,8 @@ namespace EasyConnect.Protocols.PowerShell
 		protected Dictionary<string, List<string>> _intellisenseParameters = new Dictionary<string, List<string>>();
 		protected Func<string, Collection<PSObject>> _executeHelper;
 		protected Thread _intellisenseThread = null;
+		protected bool _readingInput = false;
+		protected Thread _readingInputThread = null;
 
 		public PowerShellHostUi(TerminalControl terminal, Func<string, Collection<PSObject>> executeHelper)
 		{
@@ -128,6 +130,22 @@ namespace EasyConnect.Protocols.PowerShell
 			}
 		}
 
+		public bool ReadingInput
+		{
+			get
+			{
+				return _readingInput;
+			}
+
+			protected set
+			{
+				_readingInput = value;
+				_readingInputThread = value
+					                ? Thread.CurrentThread
+					                : null;
+			}
+		}
+
 		/// <summary>
 		/// Prompts the user for input. 
 		/// <param name="caption">The caption or title of the prompt.</param>
@@ -207,7 +225,7 @@ namespace EasyConnect.Protocols.PowerShell
 			sb.Append(
 				String.Format(
 					CultureInfo.CurrentCulture,
-					"[Default is ({0}]",
+					"[Default is ({0})]",
 					promptData[0, defaultChoice]));
 
 			// Read prompts until a match is made, the default is
@@ -293,25 +311,41 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <returns>The characters that are entered by the user.</returns>
 		public override string ReadLine()
 		{
-			if (_intellisenseThread == null)
+			try
 			{
-				_intellisenseThread = new Thread(GetIntellisenseCommands);
-				_intellisenseThread.Start();
+				ReadingInput = true;
+
+				if (_intellisenseThread == null)
+				{
+					_intellisenseThread = new Thread(GetIntellisenseCommands)
+						                      {
+							                      Name = "PowerShellHostUi Intellisense Thread"
+						                      };
+					_intellisenseThread.Start();
+				}
+
+				StreamConnection connection = _terminal.TerminalPane.ConnectionTag.Connection as StreamConnection;
+
+				connection.Capture = true;
+				_currentInputLine.Clear();
+				_inputSemaphore.Reset();
+
+				_inputThread = new Thread(ReadInput)
+					               {
+						               Name = "PowerShellHostUi Input Thread"
+					               };
+				_inputThread.Start(connection);
+
+				_inputSemaphore.WaitOne();
+				connection.Capture = false;
+
+				return _currentInputLine.ToString();
 			}
 
-			StreamConnection connection = _terminal.TerminalPane.ConnectionTag.Connection as StreamConnection;
-
-			connection.Capture = true;
-			_currentInputLine.Clear();
-			_inputSemaphore.Reset();
-
-			_inputThread = new Thread(ReadInput);
-
-			_inputThread.Start(connection);
-			_inputSemaphore.WaitOne();
-			connection.Capture = false;
-
-			return _currentInputLine.ToString();
+			finally
+			{
+				ReadingInput = false;
+			}
 		}
 
 		private void ReadInput(object state)
@@ -943,8 +977,8 @@ namespace EasyConnect.Protocols.PowerShell
 				if (data.Length == 0)
 				{
 					return (results.Count == 0)
-						       ? defaultResults
-						       : results;
+								? defaultResults
+								: results;
 				}
 
 				// See if the selection matched and return the
@@ -962,5 +996,20 @@ namespace EasyConnect.Protocols.PowerShell
 			}
 		}
 		#endregion
+
+		public void StopCurrentPipeline()
+		{
+			try
+			{
+				_readingInputThread.Abort();
+			}
+
+			catch (Exception)
+			{
+			}
+
+			ReadingInput = false;
+			EndInput();
+		}
 	}
 }
