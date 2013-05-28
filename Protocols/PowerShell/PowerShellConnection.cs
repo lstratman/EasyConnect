@@ -16,8 +16,8 @@ namespace EasyConnect.Protocols.PowerShell
 		/// </summary>
 		public PowerShellConnection()
 		{
-			BackgroundColor = Color.Black;
-			TextColor = Color.LightGray;
+			BackgroundColor = Color.Navy;
+			TextColor = Color.White;
 			Font = new Font("Courier New", 10);
 		}
 
