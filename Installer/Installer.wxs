@@ -19,6 +19,11 @@
 			</Feature>
 			<Feature Id="SshPlugin" Title="Secure Shell Plugin" Description="Plugin to allow secure shell (SSH) connections." Level="1" Absent="allow">
 				<ComponentGroupRef Id="SshPluginComponents"/>
+				<ComponentGroupRef Id="TerminalControlComponents"/>
+			</Feature>
+			<Feature Id="PowerShellPlugin" Title="PowerShell Plugin" Description="Plugin to allow PowerShell connections." Level="1" Absent="allow">
+				<ComponentGroupRef Id="PowerShellPluginComponents"/>
+				<ComponentGroupRef Id="TerminalControlComponents"/>
 			</Feature>
 		</Feature>
 
@@ -102,7 +107,16 @@
 		<ComponentGroup Id="SshPluginComponents" Directory="INSTALLFOLDER">
 			<Component Id="SshPluginAssemblyComponent" Guid="779FA6DA-64F2-4FB5-9BF7-7CA5E0EC6FB6">
 				<File Id="SshPluginAssembly" Name="$(var.EasyConnect.Protocols.Ssh.TargetFileName)" Source="$(var.EasyConnect.Protocols.Ssh.TargetPath)"/>
+			</Component>
+		</ComponentGroup>
+		<ComponentGroup Id="TerminalControlComponents" Directory="INSTALLFOLDER">
+			<Component Id="TerminalControlAssemblyComponent" Guid="551F46DF-CB96-4FFA-865C-307373054014">
 				<File Id="TerminalControlAssembly" Name="$(var.TerminalControl.TargetFileName)" Source="$(var.TerminalControl.TargetPath)"/>
+			</Component>
+		</ComponentGroup>
+		<ComponentGroup Id="PowerShellPluginComponents" Directory="INSTALLFOLDER">
+			<Component Id="PowerShellPluginAssemblyComponent" Guid="92824FC5-431B-46D6-A9D7-211C50253396">
+				<File Id="PowerShellPluginAssembly" Name="$(var.EasyConnect.Protocols.PowerShell.TargetFileName)" Source="$(var.EasyConnect.Protocols.PowerShell.TargetPath)"/>
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="StartMenuComponents" Directory="ApplicationStartMenuFolder">
