@@ -737,7 +737,7 @@ namespace Poderosa.Terminal {
 					ProcessSequenceKey(modifiers, keybody);
 				return true;
 			}
-			else if (modifiers == Keys.Shift && (keybody & (Keys.Back | Keys.LButton)) == (Keys.Back | Keys.LButton) && SendShiftTab)
+			else if (modifiers == Keys.Shift && keybody == (Keys.Back | Keys.LButton) && SendShiftTab)
 			{
 				SendBytes(new byte[] { (byte)'\t' });
 				return true;
