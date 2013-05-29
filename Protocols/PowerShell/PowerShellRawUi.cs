@@ -3,8 +3,9 @@ using System.Drawing;
 using System.Management.Automation.Host;
 using System.Text;
 using System.Threading;
-using System.Windows.Forms;
+using Poderosa.Communication;
 using Poderosa.Terminal;
+using Poderosa.Text;
 using WalburySoftware;
 using Win32Interop.Methods;
 using Rectangle = System.Management.Automation.Host.Rectangle;
@@ -13,63 +14,53 @@ using Size = System.Management.Automation.Host.Size;
 namespace EasyConnect.Protocols.PowerShell
 {
 	/// <summary>
-	/// A sample implementation of the PSHostRawUserInterface for console
-	/// applications. Members of this class that easily map to the .NET 
-	/// console class are implemented. More complex methods are not 
-	/// implemented and throw a NotImplementedException exception.
+	/// Interfaces between <see cref="PowerShellHost"/> and <see cref="PowerShellHostUi"/> and the terminal and provides raw access to the console itself.
 	/// </summary>
-	internal class PowerShellRawUi : PSHostRawUserInterface
+	public class PowerShellRawUi : PSHostRawUserInterface
 	{
-		protected TerminalControl _terminal;
-		private ConsoleColor _foregroundColor;
-		private ConsoleColor _backgroundColor;
+		/// <summary>
+		/// Background color of the console.
+		/// </summary>
+		protected ConsoleColor _backgroundColor;
+
+		/// <summary>
+		/// Text color of the console.
+		/// </summary>
+		protected ConsoleColor _foregroundColor;
+
+		/// <summary>
+		/// Semaphore used to signal when input has been entered by the user.  Used by <see cref="ReadKey"/>.
+		/// </summary>
 		protected ManualResetEvent _inputSemaphore = new ManualResetEvent(false);
+
+		/// <summary>
+		/// Thread used to watch for input from the user in <see cref="ReadKey"/>.
+		/// </summary>
 		protected Thread _inputThread;
+
+		/// <summary>
+		/// Info for the key that was pressed (for <see cref="ReadKey"/>).
+		/// </summary>
 		protected KeyInfo _readKey;
 
+		/// <summary>
+		/// Terminal control used to display the shell.
+		/// </summary>
+		protected TerminalControl _terminal;
+
+		/// <summary>
+		/// Default constructor.
+		/// </summary>
+		/// <param name="terminal">Terminal control that will display the PowerShell console.</param>
 		public PowerShellRawUi(TerminalControl terminal)
 		{
 			_terminal = terminal;
 			_backgroundColor = ClosestConsoleColor(_terminal.TerminalPane.ConnectionTag.RenderProfile.BackColor);
-			_backgroundColor = ClosestConsoleColor(_terminal.TerminalPane.ConnectionTag.RenderProfile.ForeColor);
-		}
-
-		protected ConsoleColor ClosestConsoleColor(Color color)
-		{
-			ConsoleColor ret = 0;
-			double rr = color.R, gg = color.G, bb = color.B, delta = double.MaxValue;
-
-			foreach (ConsoleColor cc in Enum.GetValues(typeof(ConsoleColor)))
-			{
-				var n = Enum.GetName(typeof(ConsoleColor), cc);
-				var c = System.Drawing.Color.FromName(n == "DarkYellow" ? "Orange" : n); // bug fix
-				var t = Math.Pow(c.R - rr, 2.0) + Math.Pow(c.G - gg, 2.0) + Math.Pow(c.B - bb, 2.0);
-				if (t == 0.0)
-					return cc;
-				if (t < delta)
-				{
-					delta = t;
-					ret = cc;
-				}
-			}
-			return ret;
-		}
-
-		public void RestoreForegroundColor()
-		{
-			byte[] data = Encoding.UTF8.GetBytes("\x001B[39m");
-			_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(data, 0, data.Length);
-		}
-
-		public void RestoreBackgroundColor()
-		{
-			byte[] data = Encoding.UTF8.GetBytes("\x001B[49m");
-			_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(data, 0, data.Length);
+			_foregroundColor = ClosestConsoleColor(_terminal.TerminalPane.ConnectionTag.RenderProfile.ForeColor);
 		}
 
 		/// <summary>
 		/// Gets or sets the background color of text to be written.
-		/// This maps to the corresponding Console.Background property.
 		/// </summary>
 		public override ConsoleColor BackgroundColor
 		{
@@ -125,14 +116,14 @@ namespace EasyConnect.Protocols.PowerShell
 						break;
 				}
 
+				// Send the appropriate ANSI sequence to the terminal
 				byte[] data = Encoding.UTF8.GetBytes("\x001B[" + commandValue + "m");
 				_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(data, 0, data.Length);
 			}
 		}
 
 		/// <summary>
-		/// Gets or sets the host buffer size adapted from the Console buffer 
-		/// size members.
+		/// Gets or sets the host buffer size.  Maps to <see cref="TerminalConnection.TerminalWidth"/> and <see cref="TerminalDocument.Size"/>.
 		/// </summary>
 		public override Size BufferSize
 		{
@@ -146,9 +137,7 @@ namespace EasyConnect.Protocols.PowerShell
 		}
 
 		/// <summary>
-		/// Gets or sets the cursor position. In this example this 
-		/// functionality is not needed so the property throws a 
-		/// NotImplementException exception.
+		/// Gets or sets the cursor position in the terminal.
 		/// </summary>
 		public override Coordinates CursorPosition
 		{
@@ -160,14 +149,14 @@ namespace EasyConnect.Protocols.PowerShell
 			{
 				Coordinates relativePosition = new Coordinates(value.X + 1, value.Y + 1 - _terminal.TerminalPane.ConnectionTag.Document.TopLineNumber);
 
+				// Send the appropriate ANSI sequence to the terminal to set the cursor position
 				byte[] data = Encoding.UTF8.GetBytes(String.Format("\x001B[{1};{0}f", relativePosition.X, relativePosition.Y));
 				_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(data, 0, data.Length);
 			}
 		}
 
 		/// <summary>
-		/// Gets or sets the cursor size taken directly from the 
-		/// Console.CursorSize property.
+		/// Gets or sets the cursor size.  This is simply <see cref="RenderProfile.FontSize"/>.
 		/// </summary>
 		public override int CursorSize
 		{
@@ -182,7 +171,6 @@ namespace EasyConnect.Protocols.PowerShell
 
 		/// <summary>
 		/// Gets or sets the foreground color of the text to be written.
-		/// This maps to the corresponding Console.ForgroundColor property.
 		/// </summary>
 		public override ConsoleColor ForegroundColor
 		{
@@ -239,14 +227,15 @@ namespace EasyConnect.Protocols.PowerShell
 						break;
 				}
 
+				// Send the appropriate ANSI sequence to the terminal
 				byte[] data = Encoding.UTF8.GetBytes("\x001B[" + commandValue + "m");
 				_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(data, 0, data.Length);
 			}
 		}
 
 		/// <summary>
-		/// Gets a value indicating whether a key is available. This maps to  
-		/// the corresponding Console.KeyAvailable property.
+		/// Gets a value indicating whether a key is available.  Simply checks to see if <see cref="ITerminal.TerminalMode"/> is equal to
+		/// <see cref="TerminalMode.Normal"/>.
 		/// </summary>
 		public override bool KeyAvailable
 		{
@@ -257,9 +246,7 @@ namespace EasyConnect.Protocols.PowerShell
 		}
 
 		/// <summary>
-		/// Gets the maximum physical size of the window adapted from the  
-		/// Console.LargestWindowWidth and Console.LargestWindowHeight 
-		/// properties.
+		/// Gets the maximum physical size of the window by simply returning <see cref="WindowSize"/>.
 		/// </summary>
 		public override Size MaxPhysicalWindowSize
 		{
@@ -270,9 +257,7 @@ namespace EasyConnect.Protocols.PowerShell
 		}
 
 		/// <summary>
-		/// Gets the maximum window size adapted from the 
-		/// Console.LargestWindowWidth and console.LargestWindowHeight 
-		/// properties.
+		/// Gets the maximum window size by simply returning <see cref="WindowSize"/>.
 		/// </summary>
 		public override Size MaxWindowSize
 		{
@@ -283,8 +268,7 @@ namespace EasyConnect.Protocols.PowerShell
 		}
 
 		/// <summary>
-		/// Gets or sets the window position adapted from the Console window position 
-		/// members.
+		/// Gets or sets the window position, which is the currently visible portion of the buffer.
 		/// </summary>
 		public override Coordinates WindowPosition
 		{
@@ -299,8 +283,7 @@ namespace EasyConnect.Protocols.PowerShell
 		}
 
 		/// <summary>
-		/// Gets or sets the window size adapted from the corresponding Console 
-		/// calls.
+		/// Gets or sets the window size by using <see cref="TerminalConnection.TerminalWidth"/> and <see cref="TerminalConnection.TerminalHeight"/>.
 		/// </summary>
 		public override Size WindowSize
 		{
@@ -314,8 +297,7 @@ namespace EasyConnect.Protocols.PowerShell
 		}
 
 		/// <summary>
-		/// Gets or sets the title of the window mapped to the Console.Title 
-		/// property.
+		/// Gets or sets the title of the window.  Unused, so we simply return an empty string.
 		/// </summary>
 		public override string WindowTitle
 		{
@@ -329,54 +311,105 @@ namespace EasyConnect.Protocols.PowerShell
 		}
 
 		/// <summary>
-		/// This API resets the input buffer. In this example this 
-		/// functionality is not needed so the method returns nothing.
+		/// Finds the closest corresponding <see cref="ConsoleColor"/> value to the given <paramref name="color"/>.
+		/// </summary>
+		/// <param name="color">Color that we are trying to match.</param>
+		/// <returns>The closest corresponding <see cref="ConsoleColor"/> value to the given <paramref name="color"/>.</returns>
+		protected ConsoleColor ClosestConsoleColor(Color color)
+		{
+			ConsoleColor returnColor = 0;
+			double r = color.R, g = color.G, b = color.B, delta = double.MaxValue;
+
+			foreach (ConsoleColor consoleColor in Enum.GetValues(typeof(ConsoleColor)))
+			{
+				Color consoleColorColor = Color.FromName(
+					consoleColor.ToString("G") == "DarkYellow"
+						? "Orange"
+						: consoleColor.ToString("G"));
+				double t = Math.Pow(consoleColorColor.R - r, 2.0) + Math.Pow(consoleColorColor.G - g, 2.0) + Math.Pow(consoleColorColor.B - b, 2.0);
+				
+				// ReSharper disable CompareOfFloatsByEqualityOperator
+				if (t == 0)
+				// ReSharper restore CompareOfFloatsByEqualityOperator
+					return consoleColor;
+
+				if (t < delta)
+				{
+					delta = t;
+					returnColor = consoleColor;
+				}
+			}
+
+			return returnColor;
+		}
+
+		/// <summary>
+		/// Resets the console's text color to its default value.
+		/// </summary>
+		public void RestoreForegroundColor()
+		{
+			byte[] data = Encoding.UTF8.GetBytes("\x001B[39m");
+			_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(data, 0, data.Length);
+		}
+
+		/// <summary>
+		/// Resets the console's background color to its default value.
+		/// </summary>
+		public void RestoreBackgroundColor()
+		{
+			byte[] data = Encoding.UTF8.GetBytes("\x001B[49m");
+			_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(data, 0, data.Length);
+		}
+
+		/// <summary>
+		/// This API resets the input buffer.
 		/// </summary>
 		public override void FlushInputBuffer()
 		{
 		}
 
 		/// <summary>
-		/// This API returns a rectangular region of the screen buffer. In 
-		/// this example this functionality is not needed so the method throws 
-		/// a NotImplementException exception.
+		/// This API returns a rectangular region of the screen buffer. In this case, this functionality is not needed so the method throws a 
+		/// <see cref="NotImplementedException"/> exception.
 		/// </summary>
 		/// <param name="rectangle">Defines the size of the rectangle.</param>
-		/// <returns>Throws a NotImplementedException exception.</returns>
+		/// <returns>Throws a <see cref="NotImplementedException"/> exception.</returns>
 		public override BufferCell[,] GetBufferContents(Rectangle rectangle)
 		{
-			throw new NotImplementedException(
-				"The method or operation is not implemented.");
+			throw new NotImplementedException();
 		}
 
 		/// <summary>
-		/// This API Reads a pressed, released, or pressed and released keystroke 
-		/// from the keyboard device, blocking processing until a keystroke is 
-		/// typed that matches the specified keystroke options. In this example 
-		/// this functionality is not needed so the method throws a
-		/// NotImplementException exception.
+		/// This API Reads a pressed, released, or pressed and released keystroke from the keyboard device, blocking processing until a keystroke is typed that 
+		/// matches the specified keystroke options.
 		/// </summary>
-		/// <param name="options">Options, such as IncludeKeyDown,  used when 
-		/// reading the keyboard.</param>
-		/// <returns>Throws a NotImplementedException exception.</returns>
+		/// <param name="options">Options, such as IncludeKeyDown, used when reading the keyboard.</param>
+		/// <returns>Data for the key that the user pressed.</returns>
 		public override KeyInfo ReadKey(ReadKeyOptions options)
 		{
 			StreamConnection connection = _terminal.TerminalPane.ConnectionTag.Connection as StreamConnection;
 			connection.Capture = true;
 			_inputSemaphore.Reset();
 
+			// Start up a thread to watch the terminal's input bufer
 			_inputThread = new Thread(ReadInput)
 				               {
 					               Name = "PowerShellRawUi Input Thread"
 				               };
 			_inputThread.Start(new Tuple<StreamConnection, ReadKeyOptions>(connection, options));
-			
+
+			// ReadInput will signal through this semaphore when a key has been pressed
 			_inputSemaphore.WaitOne();
 			connection.Capture = false;
 
 			return _readKey;
 		}
 
+		/// <summary>
+		/// Thread method invoked from <see cref="ReadKey"/> that waits for the user to press a key.
+		/// </summary>
+		/// <param name="state"><see cref="Tuple{T1, T2}"/> object containing a <see cref="StreamConnection"/> object and a <see cref="ReadKeyOptions"/>
+		/// object.</param>
 		private void ReadInput(object state)
 		{
 			StreamConnection connection = (state as Tuple<StreamConnection, ReadKeyOptions>).Item1;
@@ -392,6 +425,7 @@ namespace EasyConnect.Protocols.PowerShell
 					{
 						byte currentByte = connection.OutputQueue.Dequeue();
 
+						// Handle the backspace key
 						if (currentByte == 8)
 						{
 							_readKey = new KeyInfo
@@ -399,6 +433,7 @@ namespace EasyConnect.Protocols.PowerShell
 									           VirtualKeyCode = 8
 								           };
 
+							// If we're not already at the beginning of the line and we're echoing the output, move the cursor left
 							if ((options & ReadKeyOptions.NoEcho) != ReadKeyOptions.NoEcho && CursorPosition.X > 1)
 								CursorPosition = new Coordinates(CursorPosition.X - 1, CursorPosition.Y);
 
@@ -406,9 +441,11 @@ namespace EasyConnect.Protocols.PowerShell
 							break;
 						}
 
+						// The ^X character signifies the start of an ANSI escape sequence
 						else if (currentByte == 27)
 							inEscapeSequence = true;
 
+						// If we're in an escape sequence, read past the "[" and "~" characters
 						else if (currentByte == 91 && inEscapeSequence)
 						{
 						}
@@ -417,6 +454,7 @@ namespace EasyConnect.Protocols.PowerShell
 						{
 						}
 
+						// ^X7 is the home key
 						else if (currentByte == 55 && inEscapeSequence)
 						{
 							_readKey = new KeyInfo
@@ -424,6 +462,7 @@ namespace EasyConnect.Protocols.PowerShell
 									           VirtualKeyCode = 0x24
 								           };
 
+							// If we're not already at the beginning of the line and we're echoing the output, move the cursor to the start of the line
 							if ((options & ReadKeyOptions.NoEcho) != ReadKeyOptions.NoEcho)
 								CursorPosition = new Coordinates(1, CursorPosition.Y);
 
@@ -431,13 +470,15 @@ namespace EasyConnect.Protocols.PowerShell
 							break;
 						}
 
-						else if (currentByte == 56 && inEscapeSequence)
+						// ^X8 or ^X3 is the end key
+						else if ((currentByte == 56 || currentByte == 51) && inEscapeSequence)
 						{
 							_readKey = new KeyInfo
 								           {
 									           VirtualKeyCode = 0x23
 								           };
 
+							// If we're not already at the beginning of the line and we're echoing the output, move the cursor to the end of the line
 							if ((options & ReadKeyOptions.NoEcho) != ReadKeyOptions.NoEcho)
 								CursorPosition = new Coordinates(BufferSize.Width, CursorPosition.Y);
 
@@ -445,13 +486,15 @@ namespace EasyConnect.Protocols.PowerShell
 							break;
 						}
 
+						// ^XD is the left arrow
 						else if (currentByte == 68 && inEscapeSequence)
 						{
 							_readKey = new KeyInfo
 								           {
-									           VirtualKeyCode = 25
+									           VirtualKeyCode = 0x25
 								           };
 
+							// If we're not already at the beginning of the line and we're echoing the output, move the cursor left
 							if ((options & ReadKeyOptions.NoEcho) != ReadKeyOptions.NoEcho && CursorPosition.X > 1)
 								CursorPosition = new Coordinates(CursorPosition.X - 1, CursorPosition.Y);
 
@@ -459,13 +502,15 @@ namespace EasyConnect.Protocols.PowerShell
 							break;
 						}
 
+						// ^XC is the right arrow
 						else if (currentByte == 67 && inEscapeSequence)
 						{
 							_readKey = new KeyInfo
 								           {
-									           VirtualKeyCode = 27
+									           VirtualKeyCode = 0x27
 								           };
 
+							// If we're not already at the beginning of the line and we're echoing the output, move the cursor right
 							if ((options & ReadKeyOptions.NoEcho) != ReadKeyOptions.NoEcho && CursorPosition.X < BufferSize.Width)
 								CursorPosition = new Coordinates(CursorPosition.X + 1, CursorPosition.Y);
 
@@ -473,25 +518,12 @@ namespace EasyConnect.Protocols.PowerShell
 							break;
 						}
 
-						else if (currentByte == 51 && inEscapeSequence)
-						{
-							_readKey = new KeyInfo
-								           {
-									           VirtualKeyCode = 0x23
-								           };
-
-							if ((options & ReadKeyOptions.NoEcho) != ReadKeyOptions.NoEcho)
-								CursorPosition = new Coordinates(BufferSize.Width, CursorPosition.Y);
-
-							readKey = true;
-							break;
-						}
-
+						// Handle the carriage return sequence
 						else if (currentByte == 13)
 						{
 							_readKey = new KeyInfo
 								           {
-											   Character = '\r',
+									           Character = '\r',
 									           VirtualKeyCode = 0x0D
 								           };
 
@@ -502,6 +534,7 @@ namespace EasyConnect.Protocols.PowerShell
 							break;
 						}
 
+						// Otherwise, get the virtual key code and character and populate _readKey
 						else
 						{
 							short virtualKey = User32.VkKeyScan((char) currentByte);
@@ -518,68 +551,66 @@ namespace EasyConnect.Protocols.PowerShell
 								           {
 									           Character = (char) currentByte,
 									           VirtualKeyCode = (virtualKey & 0xFF),
-											   ControlKeyState = controlKeys
+									           ControlKeyState = controlKeys
 								           };
 
 							if ((options & ReadKeyOptions.NoEcho) != ReadKeyOptions.NoEcho)
+							{
 								_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(
 									new byte[]
 										{
 											currentByte
 										}, 0, 1);
+							}
 
 							readKey = true;
 							break;
 						}
 					}
 				}
-				
+
+				// If we didn't read a key, sleep for a bit
 				if (!readKey)
 					Thread.Sleep(50);
 			}
 
+			// Signal to ReadKey() that we've read a key
 			_inputSemaphore.Set();
 		}
 
 		/// <summary>
-		/// This API crops a region of the screen buffer. In this example 
-		/// this functionality is not needed so the method throws a
-		/// NotImplementException exception.
+		/// This API crops a region of the screen buffer. In this case, this functionality is not needed so the method throws a 
+		/// <see cref="NotImplementedException"/> exception.
 		/// </summary>
 		/// <param name="source">The region of the screen to be scrolled.</param>
-		/// <param name="destination">The region of the screen to receive the 
-		/// source region contents.</param>
+		/// <param name="destination">The region of the screen to receive the source region contents.</param>
 		/// <param name="clip">The region of the screen to include in the operation.</param>
 		/// <param name="fill">The character and attributes to be used to fill all cell.</param>
 		public override void ScrollBufferContents(Rectangle source, Coordinates destination, Rectangle clip, BufferCell fill)
 		{
-			throw new NotImplementedException(
-				"The method or operation is not implemented.");
+			throw new NotImplementedException("The method or operation is not implemented.");
 		}
 
 		/// <summary>
-		/// This API copies an array of buffer cells into the screen buffer 
-		/// at a specified location. In this example this  functionality is 
-		/// not needed si the method  throws a NotImplementedException exception.
+		/// This API copies an array of buffer cells into the screen buffer at a specified location. In this case, this functionality is not needed so the 
+		/// method throws a <see cref="NotImplementedException"/> exception.
 		/// </summary>
-		/// <param name="origin">The parameter is not used.</param>
-		/// <param name="contents">The parameter is not used.</param>
+		/// <param name="origin">Coordinates on the screen to start writing.</param>
+		/// <param name="contents">Data to write to the screen.</param>
 		public override void SetBufferContents(Coordinates origin, BufferCell[,] contents)
 		{
-			throw new NotImplementedException(
-				"The method or operation is not implemented.");
+			throw new NotImplementedException("The method or operation is not implemented.");
 		}
 
 		/// <summary>
-		/// This API Copies a given character, foreground color, and background 
-		/// color to a region of the screen buffer. In this example this 
-		/// functionality is not needed so the method throws a
-		/// NotImplementException exception./// </summary>
-		/// <param name="rectangle">Defines the area to be filled. </param>
+		/// This API copies a given character, foreground color, and background color to a region of the screen buffer. In this case, this functionality is not 
+		/// needed so the method throws a <see cref="NotImplementedException"/> exception.
+		/// </summary>
+		/// <param name="rectangle">Defines the area to be filled.</param>
 		/// <param name="fill">Defines the fill character.</param>
 		public override void SetBufferContents(Rectangle rectangle, BufferCell fill)
 		{
-			BufferCell[,] contents = new BufferCell[rectangle.Right - rectangle.Left, rectangle.Bottom - rectangle.Top];
+			BufferCell[,] contents = new BufferCell[rectangle.Right - rectangle.Left,rectangle.Bottom - rectangle.Top];
 
 			for (int i = 0; i < rectangle.Right - rectangle.Left; i++)
 			{

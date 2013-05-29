@@ -1,77 +1,65 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Management.Automation;
 using System.Management.Automation.Host;
 using System.Management.Automation.Runspaces;
+using System.Reflection;
+using System.Threading;
 using WalburySoftware;
 
 namespace EasyConnect.Protocols.PowerShell
 {
-	using System;
-	using System.Globalization;
-	using System.Management.Automation.Host;
-	using System.Management.Automation.Runspaces;
-
 	/// <summary>
-	/// This is a sample implementation of the PSHost abstract class for 
-	/// console applications. Not all members are implemented. Those that 
-	/// are not implemented throw a NotImplementedException exception or 
-	/// return nothing.
+	/// Implementation of the PSHost abstract class for wiring up a PowerShell session with a <see cref="TerminalControl"/> instance.
 	/// </summary>
-	internal class PowerShellHost : PSHost, IHostSupportsInteractiveSession
+	public class PowerShellHost : PSHost, IHostSupportsInteractiveSession
 	{
-		/// <summary>
-		/// A reference to the PSHost implementation.
-		/// </summary>
-		private PowerShellConnectionForm program;
-
-		/// <summary>
-		/// The culture information of the thread that created
-		/// this object.
-		/// </summary>
-		private CultureInfo originalCultureInfo =
-			System.Threading.Thread.CurrentThread.CurrentCulture;
-
-		/// <summary>
-		/// The UI culture information of the thread that created
-		/// this object.
-		/// </summary>
-		private CultureInfo originalUICultureInfo =
-			System.Threading.Thread.CurrentThread.CurrentUICulture;
-
 		/// <summary>
 		/// The identifier of this PSHost implementation.
 		/// </summary>
-		private static Guid instanceId = Guid.NewGuid();
+		protected static Guid _instanceId = Guid.NewGuid();
 
 		/// <summary>
-		/// Initializes a new instance of the MyHost class. Keep
-		/// a reference to the host application object so that it 
-		/// can be informed of when to exit.
+		/// A reference to the runspace used to start an interactive session.
 		/// </summary>
-		/// <param name="program">
-		/// A reference to the host application object.
-		/// </param>
-		public PowerShellHost(PowerShellConnectionForm program, TerminalControl terminal, Func<string, Collection<PSObject>> executeHelper)
-		{
-			this.program = program;
+		public Runspace PushedRunspace = null;
 
+		/// <summary>
+		/// The culture information of the thread that created this object.
+		/// </summary>
+		protected CultureInfo _originalCultureInfo = Thread.CurrentThread.CurrentCulture;
+
+		/// <summary>
+		/// The UI culture information of the thread that created this object.
+		/// </summary>
+		protected CultureInfo _originalUiCultureInfo = Thread.CurrentThread.CurrentUICulture;
+
+		/// <summary>
+		/// A reference to the PSHost implementation.
+		/// </summary>
+		protected PowerShellConnectionForm _parentForm;
+
+		/// <summary>
+		/// A reference to the implementation of the PSHostUserInterface class.
+		/// </summary>
+		protected PowerShellHostUi _powerShellHostUi;
+
+		/// <summary>
+		/// Default constructor.
+		/// </summary>
+		/// <param name="parentForm">The connection form that will display the PowerShell console.</param>
+		/// <param name="terminal">Terminal control that will display the PowerShell console.</param>
+		/// <param name="executeHelper">Method used to execute PowerShell commands within the current session.</param>
+		public PowerShellHost(PowerShellConnectionForm parentForm, TerminalControl terminal, Func<string, Collection<PSObject>> executeHelper)
+		{
+			_parentForm = parentForm;
 			_powerShellHostUi = new PowerShellHostUi(terminal, executeHelper);
 		}
 
-		public void Exit()
-		{
-			_powerShellHostUi.EndInput();
-		}
-
-		public void StopCurrentPipeline()
-		{
-			if (ReadingInput)
-				_powerShellHostUi.StopCurrentPipeline();
-		}
-
+		/// <summary>
+		/// Flag indicating whether the console is currently reading input from the user.
+		/// </summary>
 		public bool ReadingInput
 		{
 			get
@@ -80,6 +68,9 @@ namespace EasyConnect.Protocols.PowerShell
 			}
 		}
 
+		/// <summary>
+		/// Flag indicating whether the console is currently at the command prompt reading a command to run from the user.
+		/// </summary>
 		public bool AtCommandPrompt
 		{
 			get
@@ -94,108 +85,80 @@ namespace EasyConnect.Protocols.PowerShell
 		}
 
 		/// <summary>
-		/// A reference to the implementation of the PSHostUserInterface
-		/// class for this application.
-		/// </summary>
-		private PowerShellHostUi _powerShellHostUi;
-
-		/// <summary>
-		/// A reference to the runspace used to start an interactive session.
-		/// </summary>
-		public Runspace pushedRunspace = null;
-
-		/// <summary>
-		/// Gets the culture information to use. This implementation 
-		/// returns a snapshot of the culture information of the thread 
-		/// that created this object.
+		/// Gets the culture information to use. This implementation returns a snapshot of the culture information of the thread that created this object.
 		/// </summary>
 		public override CultureInfo CurrentCulture
 		{
 			get
 			{
-				return this.originalCultureInfo;
+				return _originalCultureInfo;
 			}
 		}
 
-		public void AddToCommandHistory(string command)
-		{
-			(UI as PowerShellHostUi).AddToCommandHistory(command);
-		}
-
 		/// <summary>
-		/// Gets the UI culture information to use. This implementation 
-		/// returns a snapshot of the UI culture information of the thread 
-		/// that created this object.
+		/// Gets the UI culture information to use. This implementation returns a snapshot of the UI culture information of the thread that created this 
+		/// object.
 		/// </summary>
 		public override CultureInfo CurrentUICulture
 		{
 			get
 			{
-				return this.originalUICultureInfo;
+				return _originalUiCultureInfo;
 			}
 		}
 
 		/// <summary>
-		/// Gets an identifier for this host. This implementation always 
-		/// returns the GUID allocated at instantiation time.
+		/// Gets an identifier for this host. This implementation always returns the GUID allocated at instantiation time.
 		/// </summary>
 		public override Guid InstanceId
 		{
 			get
 			{
-				return instanceId;
+				return _instanceId;
 			}
 		}
 
 		/// <summary>
-		/// Gets a string that contains the name of this host implementation. 
-		/// Keep in mind that this string may be used by script writers to
-		/// identify when your host is being used.
+		/// Gets a string that contains the name of this host implementation.
 		/// </summary>
 		public override string Name
 		{
 			get
 			{
-				return "MySampleConsoleHostImplementation";
+				return "EasyConnect";
 			}
 		}
 
 		/// <summary>
-		/// Gets an instance of the implementation of the PSHostUserInterface
-		/// class for this application. This instance is allocated once at startup time
-		/// and returned every time thereafter.
+		/// Gets an instance of the implementation of the <see cref="PSHostUserInterface"/> class for this application.
 		/// </summary>
 		public override PSHostUserInterface UI
 		{
 			get
 			{
-				return this._powerShellHostUi;
+				return _powerShellHostUi;
 			}
 		}
 
 		/// <summary>
-		/// Gets the version object for this application. Typically this 
-		/// should match the version resource in the application.
+		/// Gets the version object for this application. Typically this should match the version resource in the application.
 		/// </summary>
 		public override Version Version
 		{
 			get
 			{
-				return new Version(1, 0, 0, 0);
+				return Assembly.GetExecutingAssembly().GetName().Version;
 			}
 		}
 
-		#region IHostSupportsInteractiveSession Properties
-
 		/// <summary>
-		/// Gets a value indicating whether a request 
-		/// to open a PSSession has been made.
+		/// Gets a value indicating whether a request to open a PSSession has been made.
 		/// </summary>
 		public bool IsRunspacePushed
 		{
 			get
 			{
-				return this.pushedRunspace != null;
+				return PushedRunspace != null;
 			}
 		}
 
@@ -206,31 +169,51 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return this.program.myRunSpace;
+				return _parentForm.Runspace;
 			}
+
 			internal set
 			{
-				this.program.myRunSpace = value;
+				_parentForm.Runspace = value;
 			}
 		}
-		#endregion IHostSupportsInteractiveSession Properties
 
 		/// <summary>
-		/// This API Instructs the host to interrupt the currently running 
-		/// pipeline and start a new nested input loop. In this example this 
-		/// functionality is not needed so the method throws a 
-		/// NotImplementedException exception.
+		/// Exit the currently-running PowerShell session.
+		/// </summary>
+		public void Exit()
+		{
+			_powerShellHostUi.EndInput();
+		}
+
+		/// <summary>
+		/// Stop the currently-running PowerShell pipeline.
+		/// </summary>
+		public void StopCurrentPipeline()
+		{
+			if (ReadingInput)
+				_powerShellHostUi.StopCurrentPipeline();
+		}
+
+		/// <summary>
+		/// Add a command executed by the user to the history list.
+		/// </summary>
+		/// <param name="command">Command to add to the history.</param>
+		public void AddToCommandHistory(string command)
+		{
+			(UI as PowerShellHostUi).AddToCommandHistory(command);
+		}
+
+		/// <summary>
+		/// This API Instructs the host to interrupt the currently running  pipeline and start a new nested input loop.
 		/// </summary>
 		public override void EnterNestedPrompt()
 		{
-			throw new NotImplementedException(
-				"The method or operation is not implemented.");
+			throw new NotImplementedException();
 		}
 
 		/// <summary>
-		/// This API instructs the host to exit the currently running input loop. 
-		/// In this example this functionality is not needed so the method 
-		/// throws a NotImplementedException exception.
+		/// This API instructs the host to exit the currently running input loop.
 		/// </summary>
 		public override void ExitNestedPrompt()
 		{
@@ -238,62 +221,47 @@ namespace EasyConnect.Protocols.PowerShell
 		}
 
 		/// <summary>
-		/// This API is called before an external application process is 
-		/// started. Typically it is used to save state so that the parent  
-		/// can restore state that has been modified by a child process (after 
-		/// the child exits). In this example this functionality is not  
-		/// needed so the method returns nothing.
+		/// This API is called before an external application process is started. Typically it is used to save state so that the parent can restore state that 
+		/// has been modified by a child process (after the child exits).
 		/// </summary>
 		public override void NotifyBeginApplication()
 		{
-			return;
 		}
 
 		/// <summary>
-		/// This API is called after an external application process finishes.
-		/// Typically it is used to restore state that a child process has
-		/// altered. In this example, this functionality is not needed so  
-		/// the method returns nothing.
+		/// This API is called after an external application process finishes. Typically it is used to restore state that a child process has altered.
 		/// </summary>
 		public override void NotifyEndApplication()
 		{
-			return;
 		}
 
 		/// <summary>
-		/// Indicate to the host application that exit has
-		/// been requested. Pass the exit code that the host
-		/// application should use when exiting the process.
+		/// Indicate to the connection window that an exit has been requested. Pass the exit code that the connection window should use when exiting.
 		/// </summary>
-		/// <param name="exitCode">The exit code that the 
-		/// host application should use.</param>
+		/// <param name="exitCode">The exit code that the connection window should use.</param>
 		public override void SetShouldExit(int exitCode)
 		{
-			this.program.ShouldExit = true;
-			this.program.ExitCode = exitCode;
+			_parentForm.ShouldExit = true;
+			_parentForm.ExitCode = exitCode;
 		}
 
-		#region IHostSupportsInteractiveSession Methods
-
 		/// <summary>
-		/// Requests to close a PSSession.
+		/// Requests to close a <see cref="PSSession"/>.
 		/// </summary>
 		public void PopRunspace()
 		{
-			Runspace = this.pushedRunspace;
-			this.pushedRunspace = null;
+			Runspace = PushedRunspace;
+			PushedRunspace = null;
 		}
 
 		/// <summary>
-		/// Requests to open a PSSession.
+		/// Requests to open a <see cref="PSSession"/>.
 		/// </summary>
 		/// <param name="runspace">Runspace to use.</param>
 		public void PushRunspace(Runspace runspace)
 		{
-			this.pushedRunspace = Runspace;
+			PushedRunspace = Runspace;
 			Runspace = runspace;
 		}
-
-		#endregion IHostSupportsInteractiveSession Methods
 	}
 }

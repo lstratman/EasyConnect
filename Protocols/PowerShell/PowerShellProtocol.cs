@@ -3,7 +3,7 @@
 namespace EasyConnect.Protocols.PowerShell
 {
 	/// <summary>
-	/// Protocol class for the Secure Shell (SSH) protocol.
+	/// Protocol class for the PowerShell protocol.
 	/// </summary>
 	public class PowerShellProtocol : BaseProtocol<PowerShellConnection, PowerShellOptionsForm, PowerShellConnectionForm>
 	{

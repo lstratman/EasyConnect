@@ -1,26 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using Poderosa.Communication;
 using Poderosa.Connection;
 using Poderosa.ConnectionParam;
 
 namespace EasyConnect.Protocols.PowerShell
 {
+	/// <summary>
+	/// Non-network based connection class that enables a terminal and a client to interact via a <see cref="Queue{T}"/> instead of over a socket.
+	/// </summary>
 	public class StreamConnection : TerminalConnection
 	{
-		private Queue<byte> _outputQueue = new Queue<byte>();
-		private object _synchronizationObject = new object();
+		/// <summary>
+		/// Flag indicating whether we should capture data (i.e. place it in <see cref="_outputQueue"/>.
+		/// </summary>
 		protected bool _capture = false;
 
-		public StreamConnection(TerminalParam param)
-			: base(param, 80, 25)
+		/// <summary>
+		/// Queue of bytes that we have received from the terminal.
+		/// </summary>
+		protected Queue<byte> _outputQueue = new Queue<byte>();
+
+		/// <summary>
+		/// Locking semaphore for writing to <see cref="_outputQueue"/>
+		/// </summary>
+		protected object _synchronizationObject = new object();
+
+		/// <summary>
+		/// Default constructor.
+		/// </summary>
+		/// <param name="parameters">Parameters describing the terminal.</param>
+		public StreamConnection(TerminalParam parameters)
+			: base(parameters, 80, 25)
 		{
 			Capture = true;
 		}
 
+		/// <summary>
+		/// Flag indicating whether we should capture data (i.e. place it in <see cref="_outputQueue"/>.
+		/// </summary>
 		public bool Capture
 		{
 			get
@@ -42,6 +60,9 @@ namespace EasyConnect.Protocols.PowerShell
 			}
 		}
 
+		/// <summary>
+		/// Description of the protocol for this connection.
+		/// </summary>
 		public override string ProtocolDescription
 		{
 			get
@@ -50,14 +71,23 @@ namespace EasyConnect.Protocols.PowerShell
 			}
 		}
 
+		/// <summary>
+		/// Parameters for this connection.
+		/// </summary>
 		public override string[] ConnectionParameter
 		{
 			get
 			{
-				return new string[] { "Stream connection" };
+				return new string[]
+					       {
+						       "Stream connection"
+					       };
 			}
 		}
 
+		/// <summary>
+		/// Flag indicating whether or not the connection is available.
+		/// </summary>
 		public override bool Available
 		{
 			get
@@ -66,14 +96,9 @@ namespace EasyConnect.Protocols.PowerShell
 			}
 		}
 
-		public object SynchronizationObject
-		{
-			get
-			{
-				return _synchronizationObject;
-			}
-		}
-
+		/// <summary>
+		/// Queue of bytes that we have received from the terminal.
+		/// </summary>
 		public Queue<byte> OutputQueue
 		{
 			get
@@ -82,15 +107,27 @@ namespace EasyConnect.Protocols.PowerShell
 			}
 		}
 
+		/// <summary>
+		/// Clones this connection.
+		/// </summary>
+		/// <returns>Throws a <see cref="NotImplementedException"/>.</returns>
 		public override ConnectionTag Reproduce()
 		{
 			throw new NotImplementedException();
 		}
 
+		/// <summary>
+		/// Sets up an async read listener on this connection.  Doesn't actually do anything.
+		/// </summary>
+		/// <param name="cb">Async receiver for the data.</param>
 		public override void RepeatAsyncRead(IDataReceiver cb)
 		{
 		}
 
+		/// <summary>
+		/// Writes data to <see cref="_outputQueue"/> as long as <see cref="Capture"/> is set to true.
+		/// </summary>
+		/// <param name="data">Data that is to be written.</param>
 		public override void Write(byte[] data)
 		{
 			if (Capture)
@@ -103,6 +140,12 @@ namespace EasyConnect.Protocols.PowerShell
 			}
 		}
 
+		/// <summary>
+		/// Writes data to <see cref="_outputQueue"/> as long as <see cref="Capture"/> is set to true.
+		/// </summary>
+		/// <param name="data">Data that is to be written.</param>
+		/// <param name="offset">Offset within <see cref="data"/> that we should start writing from.</param>
+		/// <param name="length">Number of bytes that should be written.</param>
 		public override void Write(byte[] data, int offset, int length)
 		{
 			if (Capture)

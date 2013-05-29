@@ -32,7 +32,6 @@
     <DocumentationFile>bin\Release\EasyConnect.Protocols.PowerShell.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="SecurePasswordTextBox">
       <HintPath>..\..\lib\SecurePasswordTextBox.dll</HintPath>
     </Reference>
@@ -43,12 +42,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\WindowsPowerShell\3.0\System.Management.Automation.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Win32Interop.User32, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -82,10 +76,6 @@
     <Compile Include="StreamConnection.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\EasyConnect.Common.csproj">
-      <Project>{abf68708-bdc0-4d29-a523-00ec942449b2}</Project>
-      <Name>EasyConnect.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\lib\TerminalControl\TerminalControl.csproj">
       <Project>{60be1158-c079-4603-8bc4-1658133e8ee5}</Project>
       <Name>TerminalControl</Name>
