@@ -125,6 +125,9 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			GEnv.Options.Font = Connection.Font;
 
+			_progressBar.Value = 0;
+			_progressLabel.Text = "";
+
 			// This is not strictly a network connection:  we're relaying information that we receive from the runspace to the terminal over a local stream
 			// (a StreamConnection in this case)
 			TerminalParam terminalParam = TCPTerminalParam.Fake;
@@ -147,7 +150,7 @@ namespace EasyConnect.Protocols.PowerShell
 			_terminal.TerminalPane.SendShiftTab = true;
 			_terminal.SetPaneColors(Connection.TextColor, Connection.BackgroundColor);
 
-			_powerShellHost = new PowerShellHost(this, _terminal, ExecuteQuiet);
+			_powerShellHost = new PowerShellHost(this, _terminal, ExecuteQuiet, _progressBar, _progressLabel);
 
 			// Create the host and runspace instances for this interpreter.  If we're connecting to the local host, don't bother with the connection info.
 			// ReSharper disable StringCompareIsCultureSpecific.3

@@ -6,6 +6,7 @@ using System.Management.Automation.Host;
 using System.Management.Automation.Runspaces;
 using System.Reflection;
 using System.Threading;
+using System.Windows.Forms;
 using WalburySoftware;
 
 namespace EasyConnect.Protocols.PowerShell
@@ -51,10 +52,12 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <param name="parentForm">The connection form that will display the PowerShell console.</param>
 		/// <param name="terminal">Terminal control that will display the PowerShell console.</param>
 		/// <param name="executeHelper">Method used to execute PowerShell commands within the current session.</param>
-		public PowerShellHost(PowerShellConnectionForm parentForm, TerminalControl terminal, Func<string, Collection<PSObject>> executeHelper)
+		/// <param name="progressBar">Progress bar UI element to update when writing progress records.</param>
+		/// <param name="progressLabel">Label UI element to update when writing progress records.</param>
+		public PowerShellHost(PowerShellConnectionForm parentForm, TerminalControl terminal, Func<string, Collection<PSObject>> executeHelper, ToolStripProgressBar progressBar, ToolStripStatusLabel progressLabel)
 		{
 			_parentForm = parentForm;
-			_powerShellHostUi = new PowerShellHostUi(terminal, executeHelper);
+			_powerShellHostUi = new PowerShellHostUi(terminal, executeHelper, progressBar, progressLabel);
 		}
 
 		/// <summary>

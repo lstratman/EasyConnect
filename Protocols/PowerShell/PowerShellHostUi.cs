@@ -9,7 +9,10 @@ using System.Management.Automation.Language;
 using System.Security;
 using System.Text;
 using System.Threading;
+using System.Timers;
+using System.Windows.Forms;
 using WalburySoftware;
+using Timer = System.Timers.Timer;
 
 namespace EasyConnect.Protocols.PowerShell
 {
@@ -59,7 +62,7 @@ namespace EasyConnect.Protocols.PowerShell
 		protected Dictionary<string, List<string>> _intellisenseParameters = new Dictionary<string, List<string>>();
 
 		/// <summary>
-		/// Thread that is retrieving intellisense commands.
+		/// Thread that is retrieving Intellisense commands.
 		/// </summary>
 		protected Thread _intellisenseThread = null;
 
@@ -90,15 +93,34 @@ namespace EasyConnect.Protocols.PowerShell
 		protected Stack<string> _upCommandHistory = new Stack<string>();
 
 		/// <summary>
+		/// Progress bar UI element to update when writing progress records.
+		/// </summary>
+		protected ToolStripProgressBar _progressBar;
+
+		/// <summary>
+		/// Label UI element to update when writing progress records.
+		/// </summary>
+		protected ToolStripStatusLabel _progressLabel;
+
+		/// <summary>
+		/// Timer to use for asynchronous UI events.
+		/// </summary>
+		protected Timer _timer = new Timer();
+
+		/// <summary>
 		/// Default constructor.
 		/// </summary>
 		/// <param name="terminal">Terminal control that will display the PowerShell console.</param>
 		/// <param name="executeHelper">Method used to execute PowerShell commands within the current session.</param>
-		public PowerShellHostUi(TerminalControl terminal, Func<string, Collection<PSObject>> executeHelper)
+		/// <param name="progressBar">Progress bar UI element to update when writing progress records.</param>
+		/// <param name="progressLabel">Label UI element to update when writing progress records.</param>
+		public PowerShellHostUi(TerminalControl terminal, Func<string, Collection<PSObject>> executeHelper, ToolStripProgressBar progressBar, ToolStripStatusLabel progressLabel)
 		{
 			_terminal = terminal;
 			_powerShellRawUi = new PowerShellRawUi(terminal);
 			_executeHelper = executeHelper;
+			_progressBar = progressBar;
+			_progressLabel = progressLabel;
 		}
 
 		/// <summary>
@@ -868,6 +890,35 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <param name="record">A ProgressReport object.</param>
 		public override void WriteProgress(long sourceId, ProgressRecord record)
 		{
+			_progressLabel.Text = String.IsNullOrEmpty(record.Activity)
+				                       ? ""
+				                       : record.Activity + (String.IsNullOrEmpty(record.CurrentOperation)
+					                                            ? ""
+					                                            : ": ") + record.CurrentOperation;
+			_progressBar.Value = record.PercentComplete;
+
+			// If we've completed, leave it in its current state for one second and then clear the progress data
+			if (_progressBar.Value == 100)
+			{
+				_timer.Enabled = true;
+				_timer.Interval = 1000;
+				_timer.Elapsed += _timer_Elapsed;
+				_timer.Start();
+			}
+		}
+
+		/// <summary>
+		/// Handler method that's called when <see cref="_timer"/> ticks.  Clears the progress data from the UI and stops the timer.
+		/// </summary>
+		/// <param name="sender">Object from which this event originated, <see cref="_timer"/> in this case.</param>
+		/// <param name="e">Arguments associated with this event.</param>
+		void _timer_Elapsed(object sender, ElapsedEventArgs e)
+		{
+			_progressLabel.Text = "";
+			_progressBar.Value = 0;
+
+			_timer.Elapsed -= _timer_Elapsed;
+			_timer.Stop();
 		}
 
 		/// <summary>
