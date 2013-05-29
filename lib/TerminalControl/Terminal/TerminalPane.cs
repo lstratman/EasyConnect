@@ -52,6 +52,15 @@ namespace Poderosa.Terminal {
 		private bool _ignoreValueChangeEvent;
 		private bool _criticalErrorRaised;
 
+		public bool ShiftKeyDown {
+			get;
+			protected set;
+		}
+
+		public bool SendShiftTab {
+			get;
+			set;
+		}
 
 		public TerminalConnection Connection {
 			get {
@@ -728,6 +737,11 @@ namespace Poderosa.Terminal {
 					ProcessSequenceKey(modifiers, keybody);
 				return true;
 			}
+			else if (modifiers == Keys.Shift && (keybody & (Keys.Back | Keys.LButton)) == (Keys.Back | Keys.LButton) && SendShiftTab)
+			{
+				SendBytes(new byte[] { (byte)'\t' });
+				return true;
+			}
 			else
 				return base.ProcessDialogKey(key);
 		}
@@ -769,6 +783,9 @@ namespace Poderosa.Terminal {
             //Console.WriteLine(e.KeyData.ToString());
             //if (e.KeyCode == Keys.Insert)
             //    return;
+	        if (e.KeyCode == Keys.Shift || e.KeyCode == Keys.ShiftKey)
+		        ShiftKeyDown = true;
+
             base.OnKeyDown(e);
         }
         protected override void OnKeyPress(KeyPressEventArgs e)
@@ -778,6 +795,8 @@ namespace Poderosa.Terminal {
         }
         protected override void OnKeyUp(KeyEventArgs e)
         {
+			if (e.KeyCode == Keys.Shift || e.KeyCode == Keys.ShiftKey)
+				ShiftKeyDown = false;
 
             //Console.WriteLine(e.KeyCode.ToString());
 

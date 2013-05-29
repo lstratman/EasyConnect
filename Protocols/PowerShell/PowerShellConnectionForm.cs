@@ -144,6 +144,7 @@ namespace EasyConnect.Protocols.PowerShell
 			_terminal.TerminalPane.FakeVisible = true;
 			_terminal.TerminalPane.Attach(connectionTag);
 			_terminal.TerminalPane.Focus();
+			_terminal.TerminalPane.SendShiftTab = true;
 			_terminal.SetPaneColors(Connection.TextColor, Connection.BackgroundColor);
 
 			_powerShellHost = new PowerShellHost(this, _terminal, ExecuteQuiet);

@@ -512,10 +512,15 @@ namespace EasyConnect.Protocols.PowerShell
 							// Cycle to the next Intellisense candidate
 							if (intellisenseStartLocation != null && intellisenseCandidates.Count > 0)
 							{
-								intellisenseCandidatesIndex++;
+								intellisenseCandidatesIndex += _terminal.TerminalPane.ShiftKeyDown
+									                               ? -1
+									                               : 1;
 
 								if (intellisenseCandidatesIndex >= intellisenseCandidates.Count)
 									intellisenseCandidatesIndex = 0;
+
+								else if (intellisenseCandidatesIndex < 0)
+									intellisenseCandidatesIndex = intellisenseCandidates.Count - 1;
 
 								string command = intellisenseCandidates[intellisenseCandidatesIndex.Value];
 
