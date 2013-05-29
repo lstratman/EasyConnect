@@ -472,10 +472,12 @@ namespace EasyConnect.Protocols.PowerShell
 										else if (currentToken.Kind == TokenKind.Parameter ||
 										         (currentToken.Kind == TokenKind.Generic && (currentToken.TokenFlags & TokenFlags.BinaryPrecedenceAdd) == TokenFlags.BinaryPrecedenceAdd))
 										{
-											if (tokens.ToList().IndexOf(currentToken) > 0)
+											List<Token> tokenList = tokens.ToList();
+
+											if (tokenList.IndexOf(currentToken) > 0)
 											{
 												// Get the token representing the name of the command for this parameter
-												int commandTokenIndex = tokens.ToList().FindLastIndex(0, tokens.ToList().IndexOf(currentToken), t => t.TokenFlags == TokenFlags.CommandName);
+												int commandTokenIndex = tokenList.FindLastIndex(tokenList.IndexOf(currentToken) - 1, tokenList.IndexOf(currentToken), t => t.TokenFlags == TokenFlags.CommandName);
 
 												if (commandTokenIndex != -1)
 												{
