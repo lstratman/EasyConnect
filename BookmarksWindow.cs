@@ -1027,7 +1027,8 @@ namespace EasyConnect
 						_listViewConnections[_bookmarksListView.SelectedItems[0]]
 					});
 			
-			EasyConnect.OpenWindow(mainForm);
+			ParentTabs.ApplicationContext.OpenWindow(mainForm);
+			mainForm.Show();
 		}
 
 		/// <summary>
@@ -1082,7 +1083,9 @@ namespace EasyConnect
 			if (bookmarks.Count > 0)
 			{
 				MainForm mainForm = new MainForm(bookmarks);
-				EasyConnect.OpenWindow(mainForm);
+				ParentTabs.ApplicationContext.OpenWindow(mainForm);
+
+				mainForm.Show();
 			}
 		}
 

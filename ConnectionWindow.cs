@@ -931,7 +931,10 @@ namespace EasyConnect
 		/// <param name="e">Arguments associated with this event.</param>
 		private void _newWindowMenuItem_Click(object sender, EventArgs e)
 		{
-			EasyConnect.OpenWindow(new MainForm(new List<Guid>()));
+			MainForm newWindow = new MainForm(new List<Guid>());
+			ParentTabs.ApplicationContext.OpenWindow(newWindow);
+
+			newWindow.Show();
 		}
 
 		/// <summary>

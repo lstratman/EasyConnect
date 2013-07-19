@@ -122,16 +122,21 @@ namespace EasyConnect
         /// </summary>
         protected EncryptionType _previousEncryptionType;
 
+	    protected TitleBarTab _previouslyClickedTab;
+
+		public MainForm()
+		{
+			InitializeComponent();
+			Init();
+		}
+
 		/// <summary>
 		/// Constructor; initializes the UI.
 		/// </summary>
 		/// <param name="openToBookmarks">Bookmarks, if any, that we should open when initially creating the UI.</param>
-		public MainForm(IEnumerable<Guid> openToBookmarks)
+		public MainForm(IEnumerable<Guid> openToBookmarks) 
+			: this()
 		{
-			InitializeComponent();
-
-			Init();
-
 			if (openToBookmarks != null)
 			{
 				IEnumerable<Guid> toBookmarks = openToBookmarks.ToList();
@@ -160,11 +165,9 @@ namespace EasyConnect
         /// </summary>
         /// <param name="openToBookmarks">Bookmarks, if any, that we should open when initially creating the UI.</param>
 		public MainForm(List<IConnection> openToBookmarks)
+			: this()
         {
-            InitializeComponent();
-
-			OpenToBookmarks = openToBookmarks;
-			Init();
+            OpenToBookmarks = openToBookmarks;
 
 			// Show the bookmarks manager window initially if we're not opening bookmarks or history entries
 			if (OpenToBookmarks == null && OpenToHistory == Guid.Empty)
@@ -288,7 +291,7 @@ can be used.";
 
 					if (result != DialogResult.OK)
 					{
-						Closing = true;
+						IsClosing = true;
 						return;
 					}
 				}
@@ -401,15 +404,6 @@ can be used.";
 
                 return _history;
             }
-        }
-
-        /// <summary>
-        /// Flag indicating whether we are in the process of closing the window.
-        /// </summary>
-        public new bool Closing
-        {
-            get;
-            set;
         }
 
         /// <summary>
@@ -544,8 +538,10 @@ can be used.";
         private void MainForm_TabClicked(object sender, TitleBarTabEventArgs e)
         {
             // Only show the toolbar if the user clicked on an already-selected tab
-            if (e.Tab.Content is ConnectionWindow && e.Tab == SelectedTab)
+            if (e.Tab.Content is ConnectionWindow && e.Tab == _previouslyClickedTab && !e.WasDragging)
                 (e.Tab.Content as ConnectionWindow).ShowToolbar();
+
+	        _previouslyClickedTab = e.Tab;
         }
 
         ///// <summary>
@@ -790,10 +786,13 @@ can be used.";
             ResizeTabContents(newTab);
             _addingWindow = false;
 
-            if (focusNewTab)
-                SelectedTab = newTab;
+	        if (focusNewTab)
+	        {
+		        SelectedTab = newTab;
+		        _previouslyClickedTab = newTab;
+	        }
 
-            connectionWindow.Connect();
+	        connectionWindow.Connect();
 
             return newTab;
         }
@@ -889,10 +888,12 @@ can be used.";
         /// <returns>Tab for a new <see cref="ConnectionWindow"/> instance.</returns>
         public override TitleBarTab CreateTab()
         {
-            return new TitleBarTab(this)
-                {
-                    Content = new ConnectionWindow()
-                };
+	        _previouslyClickedTab = new TitleBarTab(this)
+		                                {
+			                                Content = new ConnectionWindow()
+		                                };
+
+	        return _previouslyClickedTab;
         }
 
         /// <summary>
