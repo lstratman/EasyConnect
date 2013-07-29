@@ -1,4 +1,4 @@
-### Get the installer for the latest version (1.2) <a href="https://www.dropbox.com/s/zutjwq8h9rxwok4/EasyConnect-1.2.msi">here</a>.
+### Get the installer for the latest version (1.3) <a href="https://www.dropbox.com/s/woodmh0xozrm0x4/EasyConnect-1.3.msi">here</a>.
 
 This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP), Secure Shell (SSH), PowerShell, and VNC but has a plugin architecture designed to enable third-party support for other protocols such as Citrix, etc.
 
