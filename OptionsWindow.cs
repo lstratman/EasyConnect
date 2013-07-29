@@ -68,13 +68,14 @@ namespace EasyConnect
                     Label formLabel = new Label
                         {
                             BackColor = Color.Transparent,
-                            TextAlign = ContentAlignment.MiddleRight,
-                            Padding = new Padding(0, 0, 17, 0),
-                            Size = new Size(233, 33),
-                            Text = form.Text + "    ",
-                            Font = new Font("Arial", 9.75f),
+                            TextAlign = ContentAlignment.MiddleLeft,
+                            Padding = new Padding(0, 0, 0, 0),
+                            Size = new Size(233, 29),
+                            Text = "       " + form.Text,
+                            Font = new Font("Segoe UI", 8.0f),
                             Margin = new Padding(0),
-                            Location = new Point(0, 0)
+                            Location = new Point(0, 0),
+							ForeColor = Color.FromArgb(153, 153, 153)
                         };
 
                     formLabel.Click += (o, args) => ShowOptionsForm(formLabel);
@@ -110,11 +111,15 @@ namespace EasyConnect
             optionsForm.Show();
 
             // Set the background image for the label to the "focused" image
-            foreach (Label label in _sidebarFlowLayoutPanel.Controls.Cast<Label>())
-                label.Image = null;
+	        foreach (Label label in _sidebarFlowLayoutPanel.Controls.Cast<Label>())
+	        {
+		        label.Image = null;
+		        label.ForeColor = Color.FromArgb(153, 153, 153);
+	        }
 
-            navigationLabel.Image = Resources.SelectedOptionCategoryBackground;
+	        navigationLabel.Image = Resources.SelectedOptionCategoryBackground;
             navigationLabel.ImageAlign = ContentAlignment.MiddleCenter;
+	        navigationLabel.ForeColor = Color.FromArgb(92, 97, 102);
         }
 
         /// <summary>
@@ -127,6 +132,6 @@ namespace EasyConnect
         {
             foreach (Form form in OptionsForms)
                 form.Close();
-        }
+		}
     }
 }

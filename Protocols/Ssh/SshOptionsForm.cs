@@ -106,7 +106,6 @@ namespace EasyConnect.Protocols.Ssh
             if (DefaultsMode)
             {
                 _hostPanel.Visible = false;
-                _hostDividerPanel.Visible = false;
             }
 
             if (String.IsNullOrEmpty(Connection.Username) && !String.IsNullOrEmpty(Connection.InheritedUsername))

@@ -102,10 +102,7 @@ namespace EasyConnect.Protocols.PowerShell
 
             // Hide the host panel if we're in defaults mode
             if (DefaultsMode)
-            {
                 _hostPanel.Visible = false;
-                _hostDividerPanel.Visible = false;
-            }
 
             if (String.IsNullOrEmpty(Connection.Username) && !String.IsNullOrEmpty(Connection.InheritedUsername))
                 _inheritedUsernameLabel.Text = "Inheriting " + Connection.InheritedUsername + " from parent folders";

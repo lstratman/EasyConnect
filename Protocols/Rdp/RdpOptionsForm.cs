@@ -151,10 +151,7 @@ namespace EasyConnect.Protocols.Rdp
 
             // Hide the host panel if we're in defaults mode
             if (DefaultsMode)
-            {
                 _hostPanel.Visible = false;
-                _hostDividerPanel.Visible = false;
-            }
         }
 
         /// <summary>
@@ -270,6 +267,6 @@ namespace EasyConnect.Protocols.Rdp
                                                    ? "Inheriting a password from parent folders"
                                                    : "";
             }
-        }
+		}
     }
 }

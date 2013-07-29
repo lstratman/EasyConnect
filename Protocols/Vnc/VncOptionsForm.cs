@@ -355,7 +355,7 @@ namespace EasyConnect.Protocols.Vnc
 		{
 			if (_encryptionTypeDropdown.SelectedIndex == 0)
 			{
-				_hostPanel.Height = 93;
+				_hostPanel.Height = 123;
 				_keyFileLabel.Visible = false;
 				_keyFileTextBox.Visible = false;
 				_keyFileBrowseButton.Visible = false;
@@ -363,7 +363,7 @@ namespace EasyConnect.Protocols.Vnc
 
 			else
 			{
-				_hostPanel.Height = 119;
+				_hostPanel.Height = 149;
 				_keyFileLabel.Visible = true;
 				_keyFileTextBox.Visible = true;
 				_keyFileBrowseButton.Visible = true;

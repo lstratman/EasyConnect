@@ -705,7 +705,8 @@ namespace EasyConnect
 							                                   OptionsForms = new List<Form>
 								                                                  {
 									                                                  ConnectionFactory.CreateOptionsForm(_listViewConnections[selectedItem])
-								                                                  }
+								                                                  },
+															   Text = "Options for " + _listViewConnections[selectedItem].DisplayName
 						                                   }
 				                         };
 

@@ -138,6 +138,6 @@ namespace EasyConnect
                 get;
                 set;
             }
-        }
+		}
     }
 }
