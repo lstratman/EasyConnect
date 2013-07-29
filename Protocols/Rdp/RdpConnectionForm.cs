@@ -434,6 +434,8 @@ namespace EasyConnect.Protocols.Rdp
 
 	        else
 		        OnLoggedOff(sender, null);
+
+	        _rdpWindowSizeSet = false;
         }
 
         /// <summary>
