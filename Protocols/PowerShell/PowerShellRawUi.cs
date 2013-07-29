@@ -320,17 +320,17 @@ namespace EasyConnect.Protocols.PowerShell
 			ConsoleColor returnColor = 0;
 			double r = color.R, g = color.G, b = color.B, delta = double.MaxValue;
 
-			foreach (ConsoleColor consoleColor in Enum.GetValues(typeof(ConsoleColor)))
+			foreach (ConsoleColor consoleColor in Enum.GetValues(typeof (ConsoleColor)))
 			{
 				Color consoleColorColor = Color.FromName(
 					consoleColor.ToString("G") == "DarkYellow"
 						? "Orange"
 						: consoleColor.ToString("G"));
 				double t = Math.Pow(consoleColorColor.R - r, 2.0) + Math.Pow(consoleColorColor.G - g, 2.0) + Math.Pow(consoleColorColor.B - b, 2.0);
-				
+
 				// ReSharper disable CompareOfFloatsByEqualityOperator
 				if (t == 0)
-				// ReSharper restore CompareOfFloatsByEqualityOperator
+					// ReSharper restore CompareOfFloatsByEqualityOperator
 					return consoleColor;
 
 				if (t < delta)
@@ -441,11 +441,11 @@ namespace EasyConnect.Protocols.PowerShell
 							break;
 						}
 
-						// The ^X character signifies the start of an ANSI escape sequence
+							// The ^X character signifies the start of an ANSI escape sequence
 						else if (currentByte == 27)
 							inEscapeSequence = true;
 
-						// If we're in an escape sequence, read past the "[" and "~" characters
+							// If we're in an escape sequence, read past the "[" and "~" characters
 						else if (currentByte == 91 && inEscapeSequence)
 						{
 						}
@@ -454,7 +454,7 @@ namespace EasyConnect.Protocols.PowerShell
 						{
 						}
 
-						// ^X7 is the home key
+							// ^X7 is the home key
 						else if (currentByte == 55 && inEscapeSequence)
 						{
 							_readKey = new KeyInfo
@@ -470,7 +470,7 @@ namespace EasyConnect.Protocols.PowerShell
 							break;
 						}
 
-						// ^X8 or ^X3 is the end key
+							// ^X8 or ^X3 is the end key
 						else if ((currentByte == 56 || currentByte == 51) && inEscapeSequence)
 						{
 							_readKey = new KeyInfo
@@ -486,7 +486,7 @@ namespace EasyConnect.Protocols.PowerShell
 							break;
 						}
 
-						// ^XD is the left arrow
+							// ^XD is the left arrow
 						else if (currentByte == 68 && inEscapeSequence)
 						{
 							_readKey = new KeyInfo
@@ -502,7 +502,7 @@ namespace EasyConnect.Protocols.PowerShell
 							break;
 						}
 
-						// ^XC is the right arrow
+							// ^XC is the right arrow
 						else if (currentByte == 67 && inEscapeSequence)
 						{
 							_readKey = new KeyInfo
@@ -518,7 +518,7 @@ namespace EasyConnect.Protocols.PowerShell
 							break;
 						}
 
-						// Handle the carriage return sequence
+							// Handle the carriage return sequence
 						else if (currentByte == 13)
 						{
 							_readKey = new KeyInfo
@@ -534,7 +534,7 @@ namespace EasyConnect.Protocols.PowerShell
 							break;
 						}
 
-						// Otherwise, get the virtual key code and character and populate _readKey
+							// Otherwise, get the virtual key code and character and populate _readKey
 						else
 						{
 							short virtualKey = User32.VkKeyScan((char) currentByte);

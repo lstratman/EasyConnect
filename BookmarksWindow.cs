@@ -706,7 +706,7 @@ namespace EasyConnect
 								                                                  {
 									                                                  ConnectionFactory.CreateOptionsForm(_listViewConnections[selectedItem])
 								                                                  },
-															   Text = "Options for " + _listViewConnections[selectedItem].DisplayName
+							                                   Text = "Options for " + _listViewConnections[selectedItem].DisplayName
 						                                   }
 				                         };
 
@@ -1027,7 +1027,7 @@ namespace EasyConnect
 					{
 						_listViewConnections[_bookmarksListView.SelectedItems[0]]
 					});
-			
+
 			ParentTabs.ApplicationContext.OpenWindow(mainForm);
 			mainForm.Show();
 		}

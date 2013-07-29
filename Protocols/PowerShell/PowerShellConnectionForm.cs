@@ -22,14 +22,9 @@ namespace EasyConnect.Protocols.PowerShell
 	public partial class PowerShellConnectionForm : BaseConnectionForm<PowerShellConnection>
 	{
 		/// <summary>
-		/// Thread reading PowerShell command prompt input from the user.
+		/// Holds a reference to the runspace for this interpreter.
 		/// </summary>
-		protected Thread _inputThread = null;
-
-		/// <summary>
-		/// Holds a reference to  the PSHost object for this interpreter.
-		/// </summary>
-		protected PowerShellHost _powerShellHost;
+		internal Runspace Runspace;
 
 		/// <summary>
 		/// Holds a reference to the currently executing pipeline so that it can be stopped by the Ctrl-C handler.
@@ -42,14 +37,19 @@ namespace EasyConnect.Protocols.PowerShell
 		protected object _executionLock = new object();
 
 		/// <summary>
+		/// Thread reading PowerShell command prompt input from the user.
+		/// </summary>
+		protected Thread _inputThread = null;
+
+		/// <summary>
 		/// Semaphore controlling access to <see cref="_currentPowerShell"/>.
 		/// </summary>
 		protected object _instanceLock = new object();
 
 		/// <summary>
-		/// Holds a reference to the runspace for this interpreter.
+		/// Holds a reference to  the PSHost object for this interpreter.
 		/// </summary>
-		internal Runspace Runspace;
+		protected PowerShellHost _powerShellHost;
 
 		/// <summary>
 		/// Default constructor.  Turns off the warning that the terminal displays when it encounters an unknown terminal control code.
@@ -156,7 +156,7 @@ namespace EasyConnect.Protocols.PowerShell
 			// ReSharper disable StringCompareIsCultureSpecific.3
 			if (String.Compare(Connection.Host, "localhost", true) != 0 && Connection.Host != "127.0.0.1" &&
 			    String.Compare(Connection.Host, Environment.MachineName, true) != 0)
-			// ReSharper restore StringCompareIsCultureSpecific.3
+				// ReSharper restore StringCompareIsCultureSpecific.3
 			{
 				WSManConnectionInfo connectionInfo = new WSManConnectionInfo
 					                                     {
@@ -369,9 +369,9 @@ namespace EasyConnect.Protocols.PowerShell
 					if (result.Count > 0)
 					{
 						string output = result[0].BaseObject as string;
-						
+
 						// Remove \r\n, which is added by the Out-String cmdlet.
-						if (!string.IsNullOrEmpty(output))    
+						if (!string.IsNullOrEmpty(output))
 							_powerShellHost.UI.WriteErrorLine(output.Substring(0, output.Length - 2));
 					}
 				}

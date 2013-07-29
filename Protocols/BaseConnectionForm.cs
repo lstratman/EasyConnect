@@ -167,7 +167,7 @@ namespace EasyConnect.Protocols
 							disconnectedLabel.Text = IsConnected
 								                         ? "Disconnected"
 								                         : "Unable to connect";
-							
+
 							Exception exception = e is ErrorEventArgs
 								                      ? (e as ErrorEventArgs).GetException()
 								                      : null;
@@ -175,7 +175,7 @@ namespace EasyConnect.Protocols
 							_errorMessageLinkLabel.Visible = exception != null && !String.IsNullOrEmpty(exception.Message);
 							ConnectionErrorMessage = exception == null
 								                         ? null
-														 : exception.Message.Replace("\r", "").Replace("\n", "\r\n");
+								                         : exception.Message.Replace("\r", "").Replace("\n", "\r\n");
 							_textLayoutPanel.Width = _errorMessageLinkLabel.Visible
 								                         ? _errorMessageLinkLabel.Width + disconnectedLabel.Width
 								                         : disconnectedLabel.Width;

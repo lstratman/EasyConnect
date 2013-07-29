@@ -54,7 +54,9 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <param name="executeHelper">Method used to execute PowerShell commands within the current session.</param>
 		/// <param name="progressBar">Progress bar UI element to update when writing progress records.</param>
 		/// <param name="progressLabel">Label UI element to update when writing progress records.</param>
-		public PowerShellHost(PowerShellConnectionForm parentForm, TerminalControl terminal, Func<string, Collection<PSObject>> executeHelper, ToolStripProgressBar progressBar, ToolStripStatusLabel progressLabel)
+		public PowerShellHost(
+			PowerShellConnectionForm parentForm, TerminalControl terminal, Func<string, Collection<PSObject>> executeHelper, ToolStripProgressBar progressBar,
+			ToolStripStatusLabel progressLabel)
 		{
 			_parentForm = parentForm;
 			_powerShellHostUi = new PowerShellHostUi(terminal, executeHelper, progressBar, progressLabel);

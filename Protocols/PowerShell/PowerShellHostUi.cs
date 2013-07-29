@@ -72,6 +72,16 @@ namespace EasyConnect.Protocols.PowerShell
 		protected PowerShellRawUi _powerShellRawUi;
 
 		/// <summary>
+		/// Progress bar UI element to update when writing progress records.
+		/// </summary>
+		protected ToolStripProgressBar _progressBar;
+
+		/// <summary>
+		/// Label UI element to update when writing progress records.
+		/// </summary>
+		protected ToolStripStatusLabel _progressLabel;
+
+		/// <summary>
 		/// Flag indicating whether or not we are currently reading input from the user.
 		/// </summary>
 		protected bool _readingInput = false;
@@ -88,24 +98,14 @@ namespace EasyConnect.Protocols.PowerShell
 		protected TerminalControl _terminal;
 
 		/// <summary>
-		/// List of commands that were executed before the current history entry.
-		/// </summary>
-		protected Stack<string> _upCommandHistory = new Stack<string>();
-
-		/// <summary>
-		/// Progress bar UI element to update when writing progress records.
-		/// </summary>
-		protected ToolStripProgressBar _progressBar;
-
-		/// <summary>
-		/// Label UI element to update when writing progress records.
-		/// </summary>
-		protected ToolStripStatusLabel _progressLabel;
-
-		/// <summary>
 		/// Timer to use for asynchronous UI events.
 		/// </summary>
 		protected Timer _timer = new Timer();
+
+		/// <summary>
+		/// List of commands that were executed before the current history entry.
+		/// </summary>
+		protected Stack<string> _upCommandHistory = new Stack<string>();
 
 		/// <summary>
 		/// Default constructor.
@@ -114,7 +114,8 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <param name="executeHelper">Method used to execute PowerShell commands within the current session.</param>
 		/// <param name="progressBar">Progress bar UI element to update when writing progress records.</param>
 		/// <param name="progressLabel">Label UI element to update when writing progress records.</param>
-		public PowerShellHostUi(TerminalControl terminal, Func<string, Collection<PSObject>> executeHelper, ToolStripProgressBar progressBar, ToolStripStatusLabel progressLabel)
+		public PowerShellHostUi(
+			TerminalControl terminal, Func<string, Collection<PSObject>> executeHelper, ToolStripProgressBar progressBar, ToolStripStatusLabel progressLabel)
 		{
 			_terminal = terminal;
 			_powerShellRawUi = new PowerShellRawUi(terminal);
@@ -249,7 +250,7 @@ namespace EasyConnect.Protocols.PowerShell
 		public override Dictionary<string, PSObject> Prompt(string caption, string message, Collection<FieldDescription> descriptions)
 		{
 			WriteLine(ConsoleColor.Blue, ConsoleColor.Black, caption + "\n" + message + " ");
-			
+
 			Dictionary<string, PSObject> results = new Dictionary<string, PSObject>();
 
 			// Get the input for each prompted value
@@ -257,10 +258,10 @@ namespace EasyConnect.Protocols.PowerShell
 			{
 				FieldDescription fd = descriptions[i];
 				string[] label = GetHotkeyAndLabel(fd.Label);
-				
+
 				Write(String.Format("{0}[{1}]: ", label[1], i));
 				string userData = ReadLine();
-				
+
 				if (userData == null)
 					return null;
 
@@ -340,7 +341,8 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <param name="allowedCredentialTypes">A constant that identifies the type of credentials that can be returned.</param>
 		/// <param name="options">A constant that identifies the UI behavior when it gathers the credentials.</param>
 		/// <returns>The populated credentials that the user entered.</returns>
-		public override PSCredential PromptForCredential(string caption, string message, string userName, string targetName, 
+		public override PSCredential PromptForCredential(
+			string caption, string message, string userName, string targetName,
 			PSCredentialTypes allowedCredentialTypes, PSCredentialUIOptions options)
 		{
 			throw new NotImplementedException("The method or operation is not implemented.");
@@ -490,7 +492,7 @@ namespace EasyConnect.Protocols.PowerShell
 															      : c).OrderBy(c => c).ToList();
 										}
 
-										// If the grammar token is a command parameter
+											// If the grammar token is a command parameter
 										else if (currentToken.Kind == TokenKind.Parameter ||
 										         (currentToken.Kind == TokenKind.Generic && (currentToken.TokenFlags & TokenFlags.BinaryPrecedenceAdd) == TokenFlags.BinaryPrecedenceAdd))
 										{
@@ -499,7 +501,8 @@ namespace EasyConnect.Protocols.PowerShell
 											if (tokenList.IndexOf(currentToken) > 0)
 											{
 												// Get the token representing the name of the command for this parameter
-												int commandTokenIndex = tokenList.FindLastIndex(tokenList.IndexOf(currentToken) - 1, tokenList.IndexOf(currentToken), t => t.TokenFlags == TokenFlags.CommandName);
+												int commandTokenIndex = tokenList.FindLastIndex(
+													tokenList.IndexOf(currentToken) - 1, tokenList.IndexOf(currentToken), t => t.TokenFlags == TokenFlags.CommandName);
 
 												if (commandTokenIndex != -1)
 												{
@@ -514,9 +517,11 @@ namespace EasyConnect.Protocols.PowerShell
 														Collection<PSObject> command = _executeHelper("get-command " + commandToken.Text);
 
 														if (command != null)
+														{
 															_intellisenseParameters[commandToken.Text.ToLower()].AddRange(
 																from parameter in (command[0].Properties["Parameters"].Value as Dictionary<string, ParameterMetadata>).Keys
 																select "-" + parameter);
+														}
 													}
 
 													intellisenseCandidates =
@@ -606,11 +611,11 @@ namespace EasyConnect.Protocols.PowerShell
 							}
 						}
 
-						// In ANSI, the ESCAPE character means we're starting a special processing sequence
+							// In ANSI, the ESCAPE character means we're starting a special processing sequence
 						else if (currentByte == 27)
 							inEscapeSequence = true;
 
-						// If we're in an escape sequence and we see a "[" or a "~", simply continue on to the next character in the stream
+							// If we're in an escape sequence and we see a "[" or a "~", simply continue on to the next character in the stream
 						else if (currentByte == 91 && inEscapeSequence)
 						{
 						}
@@ -619,21 +624,21 @@ namespace EasyConnect.Protocols.PowerShell
 						{
 						}
 
-						// ^7 translates to the HOME key
+							// ^7 translates to the HOME key
 						else if (currentByte == 55 && inEscapeSequence)
 						{
 							RawUI.CursorPosition = promptStart;
 							insertPosition = 0;
 						}
 
-						// ^8 translates to the END key
+							// ^8 translates to the END key
 						else if (currentByte == 56 && inEscapeSequence)
 						{
 							RawUI.CursorPosition = promptEnd;
 							insertPosition = _currentInputLine.Length;
 						}
 
-						// ^D translates to the left arrow, so we move the cursor backwards
+							// ^D translates to the left arrow, so we move the cursor backwards
 						else if (currentByte == 68 && inEscapeSequence)
 						{
 							Coordinates currentPosition = RawUI.CursorPosition;
@@ -649,7 +654,7 @@ namespace EasyConnect.Protocols.PowerShell
 							inEscapeSequence = false;
 						}
 
-						// ^D translates to the right arrow, so we move the cursor forwards
+							// ^D translates to the right arrow, so we move the cursor forwards
 						else if (currentByte == 67 && inEscapeSequence)
 						{
 							Coordinates currentPosition = RawUI.CursorPosition;
@@ -665,7 +670,7 @@ namespace EasyConnect.Protocols.PowerShell
 							inEscapeSequence = false;
 						}
 
-						// ^D translates to the DELETE key, so we remove the current character
+							// ^D translates to the DELETE key, so we remove the current character
 						else if (currentByte == 51 && inEscapeSequence)
 						{
 							Coordinates currentPosition = RawUI.CursorPosition;
@@ -693,7 +698,7 @@ namespace EasyConnect.Protocols.PowerShell
 							inEscapeSequence = false;
 						}
 
-						// ^A translates to the up arrow, so we move to the previous (if any) entry in the history buffer
+							// ^A translates to the up arrow, so we move to the previous (if any) entry in the history buffer
 						else if (currentByte == 65 && inEscapeSequence)
 						{
 							// If there are any preceding items in the history buffer
@@ -720,7 +725,7 @@ namespace EasyConnect.Protocols.PowerShell
 							inEscapeSequence = false;
 						}
 
-						// ^A translates to the down arrow, so we move to the previous (if any) entry in the history buffer
+							// ^A translates to the down arrow, so we move to the previous (if any) entry in the history buffer
 						else if (currentByte == 66 && inEscapeSequence)
 						{
 							// If there are any following items in the history buffer
@@ -747,7 +752,7 @@ namespace EasyConnect.Protocols.PowerShell
 							inEscapeSequence = false;
 						}
 
-						// Handle the carriage return character; write a new line and exit the loop
+							// Handle the carriage return character; write a new line and exit the loop
 						else if (currentByte == 13)
 						{
 							WriteLine();
@@ -756,7 +761,7 @@ namespace EasyConnect.Protocols.PowerShell
 							break;
 						}
 
-						// Otherwise, if it's an ASCII character, write it to the console and add it to _currentInputLine
+							// Otherwise, if it's an ASCII character, write it to the console and add it to _currentInputLine
 						else if (currentByte >= 32)
 						{
 							inEscapeSequence = false;
@@ -891,10 +896,10 @@ namespace EasyConnect.Protocols.PowerShell
 		public override void WriteProgress(long sourceId, ProgressRecord record)
 		{
 			_progressLabel.Text = String.IsNullOrEmpty(record.Activity)
-				                       ? ""
-				                       : record.Activity + (String.IsNullOrEmpty(record.CurrentOperation)
-					                                            ? ""
-					                                            : ": ") + record.CurrentOperation;
+				                      ? ""
+				                      : record.Activity + (String.IsNullOrEmpty(record.CurrentOperation)
+					                                           ? ""
+					                                           : ": ") + record.CurrentOperation;
 			_progressBar.Value = record.PercentComplete;
 
 			// If we've completed, leave it in its current state for one second and then clear the progress data
@@ -912,7 +917,7 @@ namespace EasyConnect.Protocols.PowerShell
 		/// </summary>
 		/// <param name="sender">Object from which this event originated, <see cref="_timer"/> in this case.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		void _timer_Elapsed(object sender, ElapsedEventArgs e)
+		private void _timer_Elapsed(object sender, ElapsedEventArgs e)
 		{
 			_progressLabel.Text = "";
 			_progressBar.Value = 0;
@@ -976,7 +981,7 @@ namespace EasyConnect.Protocols.PowerShell
 		protected static string[,] BuildHotkeysAndPlainLabels(Collection<ChoiceDescription> choices)
 		{
 			// Allocate the result array
-			string[,] hotkeysAndPlainLabels = new string[2, choices.Count];
+			string[,] hotkeysAndPlainLabels = new string[2,choices.Count];
 
 			for (int i = 0; i < choices.Count; ++i)
 			{
@@ -1027,7 +1032,7 @@ namespace EasyConnect.Protocols.PowerShell
 
 			// Format the overall choice prompt string to display.
 			StringBuilder promptText = new StringBuilder();
-			
+
 			for (int i = 0; i < choices.Count; i++)
 				promptText.Append(String.Format(CultureInfo.CurrentCulture, "|{0}> {1} ", promptData[0, i], promptData[1, i]));
 
@@ -1072,9 +1077,11 @@ namespace EasyConnect.Protocols.PowerShell
 
 				// If the choice string was empty, no more choices have been made.  If there were no choices made, return the defaults
 				if (data.Length == 0)
+				{
 					return (results.Count == 0)
 						       ? defaultResults
 						       : results;
+				}
 
 				bool showError = true;
 

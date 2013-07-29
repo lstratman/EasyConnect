@@ -62,9 +62,9 @@ namespace EasyConnect
 			Application.SetCompatibleTextRenderingDefault(false);
 
 			MainForm mainForm = new MainForm(bookmarkGuids)
-			                    {
-				                    OpenToHistory = historyGuid
-			                    };
+				                    {
+					                    OpenToHistory = historyGuid
+				                    };
 
 			TitleBarTabsApplicationContext applicationContext = new TitleBarTabsApplicationContext();
 			applicationContext.Start(mainForm);

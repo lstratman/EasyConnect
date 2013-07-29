@@ -398,13 +398,13 @@ namespace EasyConnect
 			HideToolbar();
 		}
 
-		void _connectionForm_Connected(object sender, EventArgs e)
+		private void _connectionForm_Connected(object sender, EventArgs e)
 		{
 			Icon = ConnectionFactory.GetProtocol(_connection).ProtocolIcon;
 			ParentTabs.RedrawTabs();
 		}
 
-		void _connectionForm_ConnectionLost(object sender, EventArgs e)
+		private void _connectionForm_ConnectionLost(object sender, EventArgs e)
 		{
 			Icon = Resources.Disconnected;
 			ParentTabs.RedrawTabs();
@@ -536,9 +536,7 @@ namespace EasyConnect
 					(object sender, EventArgs e) =>
 						{
 							if (_connectionForm != null)
-							{
 								_connectionForm.Close();
-							}
 
 							_connection = _menuItemConnections[(ToolStripMenuItem) sender];
 							Connect();

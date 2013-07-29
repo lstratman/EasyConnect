@@ -328,12 +328,12 @@ namespace EasyConnect.Protocols.Vnc
 
 			switch (_encryptionTypeDropdown.SelectedIndex)
 			{
-				// Set the extension filter to *.key for MSRC4 encryption
+					// Set the extension filter to *.key for MSRC4 encryption
 				case 1:
 					_openFileDialog.Filter = "MSRC4 key files (*.key)|*.key|All files (*.*)|*.*";
 					break;
-				
-				// Set the extension filter to *.pkey for SecureVNC encryption
+
+					// Set the extension filter to *.pkey for SecureVNC encryption
 				case 2:
 					_openFileDialog.Filter = "SecureVNC key files (*.pkey)|*.pkey|All files (*.*)|*.*";
 					break;
