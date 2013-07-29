@@ -92,9 +92,9 @@ namespace EasyConnect.Protocols.Rdp
 
             // Enumerate the desktop display modes and add them to the resolutions slider
             DEVMODE devMode = new DEVMODE();
-            uint modeNumber = 0;
+            int modeNumber = 0;
 
-            while (User32.EnumDisplaySettings(null, modeNumber, out devMode))
+            while (User32.EnumDisplaySettings(null, modeNumber, ref devMode))
             {
                 if (!_resolutions.Exists((DEVMODE d) => d.dmPelsWidth == devMode.dmPelsWidth && d.dmPelsHeight == devMode.dmPelsHeight))
                     _resolutions.Add(devMode);
