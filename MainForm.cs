@@ -322,7 +322,7 @@ can be used.";
 			using (ProcessModule curModule = curProcess.MainModule)
 			{
 				_hookproc = KeyboardHookCallback;
-				_hookId = User32.SetWindowsHookEx(WH.WH_KEYBOARD_LL, _hookproc, Kernel32.GetModuleHandleW(curModule.ModuleName), 0);
+				_hookId = User32.SetWindowsHookEx(WH.WH_KEYBOARD_LL, _hookproc, Kernel32.GetModuleHandle(curModule.ModuleName), 0);
 			}
 		}
 

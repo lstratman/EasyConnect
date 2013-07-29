@@ -84,19 +84,19 @@
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\TitleBarTabs.1.1.1\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+      <HintPath>packages\TitleBarTabs.1.1.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\TitleBarTabs.1.1.1\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+      <HintPath>packages\TitleBarTabs.1.1.2\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="SecurePasswordTextBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Stratman.Windows.Forms.TitleBarTabs, Version=1.1.0.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="Stratman.Windows.Forms.TitleBarTabs, Version=1.1.2.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\TitleBarTabs.1.1.1\lib\Stratman.Windows.Forms.TitleBarTabs.dll</HintPath>
+      <HintPath>packages\TitleBarTabs.1.1.2\lib\Stratman.Windows.Forms.TitleBarTabs.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -114,25 +114,25 @@
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="Win32Interop.Dwmapi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Win32Interop.Dwmapi, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\Win32Interop.Dwmapi.1.0.0\lib\Win32Interop.Dwmapi.dll</HintPath>
+      <HintPath>packages\Win32Interop.Dwmapi.1.0.1\lib\Win32Interop.Dwmapi.dll</HintPath>
     </Reference>
-    <Reference Include="Win32Interop.Gdi32, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Win32Interop.Gdi32, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\Win32Interop.Gdi32.1.0.0\lib\Win32Interop.Gdi32.dll</HintPath>
+      <HintPath>packages\Win32Interop.Gdi32.1.0.1\lib\Win32Interop.Gdi32.dll</HintPath>
     </Reference>
-    <Reference Include="Win32Interop.Kernel32, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Win32Interop.Kernel32, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\Win32Interop.Kernel32.1.0.0\lib\Win32Interop.Kernel32.dll</HintPath>
+      <HintPath>packages\Win32Interop.Kernel32.1.0.1\lib\Win32Interop.Kernel32.dll</HintPath>
     </Reference>
-    <Reference Include="Win32Interop.User32, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Win32Interop.User32, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\Win32Interop.User32.1.0.0\lib\Win32Interop.User32.dll</HintPath>
+      <HintPath>packages\Win32Interop.User32.1.0.1\lib\Win32Interop.User32.dll</HintPath>
     </Reference>
-    <Reference Include="Win32Interop.Uxtheme, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Win32Interop.Uxtheme, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\Win32Interop.Uxtheme.1.0.0\lib\Win32Interop.Uxtheme.dll</HintPath>
+      <HintPath>packages\Win32Interop.Uxtheme.1.0.1\lib\Win32Interop.Uxtheme.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
