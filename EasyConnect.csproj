@@ -139,6 +139,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="BookmarksWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -197,6 +203,9 @@
     <Compile Include="UsernamePasswordWindow.Designer.cs">
       <DependentUpon>UsernamePasswordWindow.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="BookmarksWindow.resx">
       <DependentUpon>BookmarksWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -261,6 +270,7 @@
   <ItemGroup>
     <Content Include="lib\AutomaticUpdater.dll" />
     <Content Include="lib\System.Drawing.Html.dll" />
+    <None Include="Resources\About.png" />
     <Content Include="Resources\ButtonPressedBackground.png" />
     <Content Include="Resources\Disconnected.ico" />
     <Content Include="Resources\ToolsActiveUpdate.png" />

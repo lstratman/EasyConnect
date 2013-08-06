@@ -997,5 +997,11 @@ namespace EasyConnect
 			if (!_toolsMenu.Visible)
 				_toolsButton.BackgroundImage = null;
 		}
+
+		private void _aboutMenuItem_Click(object sender, EventArgs e)
+		{
+			AboutBox aboutBox = new AboutBox();
+			aboutBox.ShowDialog(ParentTabs);
+		}
 	}
 }

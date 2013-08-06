@@ -53,6 +53,7 @@
 			this._connectionContainerPanel = new System.Windows.Forms.Panel();
 			this._omniBarPanel = new System.Windows.Forms.Panel();
 			this._omniBarBorder = new System.Windows.Forms.Panel();
+			this._aboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this._toolsMenu.SuspendLayout();
 			this._bookmarksMenu.SuspendLayout();
 			this.toolbarBackground.SuspendLayout();
@@ -73,10 +74,11 @@
             this.toolStripSeparator2,
             this._updatesMenuItem,
             this._toolsMenuSeparator2,
+            this._aboutMenuItem,
             this._exitMenuItem});
 			this._toolsMenu.Name = "_toolsMenu";
 			this._toolsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-			this._toolsMenu.Size = new System.Drawing.Size(187, 182);
+			this._toolsMenu.Size = new System.Drawing.Size(187, 204);
 			this._toolsMenu.VisibleChanged += new System.EventHandler(this._toolsMenu_VisibleChanged);
 			// 
 			// _newTabMenuItem
@@ -294,6 +296,13 @@
 			this._omniBarBorder.TabIndex = 8;
 			this._omniBarBorder.Visible = false;
 			// 
+			// _aboutMenuItem
+			// 
+			this._aboutMenuItem.Name = "_aboutMenuItem";
+			this._aboutMenuItem.Size = new System.Drawing.Size(186, 22);
+			this._aboutMenuItem.Text = "About...";
+			this._aboutMenuItem.Click += new System.EventHandler(this._aboutMenuItem_Click);
+			// 
 			// ConnectionWindow
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -344,5 +353,6 @@
         private System.Windows.Forms.ToolStripMenuItem _updatesMenuItem;
         private System.Windows.Forms.Panel _omniBarPanel;
         private System.Windows.Forms.Panel _omniBarBorder;
+		private System.Windows.Forms.ToolStripMenuItem _aboutMenuItem;
     }
 }
