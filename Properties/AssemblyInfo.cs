@@ -8,11 +8,11 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("EasyConnect")]
 [assembly:
     AssemblyDescription(
-        "Tabbed interface and connection management and organization functionality for remote desktop connections")]
+		"Tabbed remote desktop application with a Chrome-like UI.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Luke Stratman")]
 [assembly: AssemblyProduct("EasyConnect")]
-[assembly: AssemblyCopyright("Copyright © 2012")]
+[assembly: AssemblyCopyright("Copyright © 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -37,5 +37,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.2.0.0")]
-[assembly: AssemblyFileVersion("1.2.0.0")]
+[assembly: AssemblyVersion("1.4.0.0")]
+[assembly: AssemblyFileVersion("1.4.0.0")]
