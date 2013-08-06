@@ -75,7 +75,9 @@
             this._toolsMenuSeparator2,
             this._exitMenuItem});
 			this._toolsMenu.Name = "_toolsMenu";
+			this._toolsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
 			this._toolsMenu.Size = new System.Drawing.Size(187, 182);
+			this._toolsMenu.VisibleChanged += new System.EventHandler(this._toolsMenu_VisibleChanged);
 			// 
 			// _newTabMenuItem
 			// 
@@ -150,7 +152,9 @@
             this._bookmarksManagerMenuItem2,
             this.bookmarkThisSiteToolStripMenuItem});
 			this._bookmarksMenu.Name = "_bookmarksMenu";
+			this._bookmarksMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
 			this._bookmarksMenu.Size = new System.Drawing.Size(259, 48);
+			this._bookmarksMenu.VisibleChanged += new System.EventHandler(this._bookmarksMenu_VisibleChanged);
 			// 
 			// _bookmarksManagerMenuItem2
 			// 

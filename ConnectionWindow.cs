@@ -428,7 +428,8 @@ namespace EasyConnect
 		/// <param name="e">Arguments associated with this event.</param>
 		private void _bookmarksButton_MouseLeave(object sender, EventArgs e)
 		{
-			_bookmarksButton.BackgroundImage = null;
+			if (!_bookmarksMenu.Visible)
+				_bookmarksButton.BackgroundImage = null;
 		}
 
 		/// <summary>
@@ -449,7 +450,8 @@ namespace EasyConnect
 		/// <param name="e">Arguments associated with this event.</param>
 		private void _toolsButton_MouseLeave(object sender, EventArgs e)
 		{
-			_toolsButton.BackgroundImage = null;
+			if (!_toolsMenu.Visible)
+				_toolsButton.BackgroundImage = null;
 		}
 
 		/// <summary>
@@ -469,6 +471,7 @@ namespace EasyConnect
 		/// <param name="e">Arguments associated with this event.</param>
 		private void _toolsButton_Click(object sender, EventArgs e)
 		{
+			_toolsButton.BackgroundImage = Resources.ButtonPressedBackground;
 			_toolsMenu.DefaultDropDownDirection = ToolStripDropDownDirection.Left;
 			_toolsMenu.Show(_toolsButton, -187 + _toolsButton.Width, _toolsButton.Height);
 		}
@@ -480,6 +483,8 @@ namespace EasyConnect
 		/// <param name="e">Arguments associated with this event.</param>
 		private void _bookmarksButton_Click(object sender, EventArgs e)
 		{
+			_bookmarksButton.BackgroundImage = Resources.ButtonPressedBackground;
+
 			// Clear out the bookmarks menu beyond the first two entries, "Bookmarks manager" and "Bookmark this server"
 			while (_bookmarksMenu.Items.Count > 2)
 				_bookmarksMenu.Items.RemoveAt(2);
@@ -979,6 +984,18 @@ namespace EasyConnect
 			{
 				return obj.GetHashCode();
 			}
+		}
+
+		private void _bookmarksMenu_VisibleChanged(object sender, EventArgs e)
+		{
+			if (!_bookmarksMenu.Visible)
+				_bookmarksButton.BackgroundImage = null;
+		}
+
+		private void _toolsMenu_VisibleChanged(object sender, EventArgs e)
+		{
+			if (!_toolsMenu.Visible)
+				_toolsButton.BackgroundImage = null;
 		}
 	}
 }

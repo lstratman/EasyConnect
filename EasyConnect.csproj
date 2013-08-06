@@ -261,6 +261,7 @@
   <ItemGroup>
     <Content Include="lib\AutomaticUpdater.dll" />
     <Content Include="lib\System.Drawing.Html.dll" />
+    <Content Include="Resources\ButtonPressedBackground.png" />
     <Content Include="Resources\Disconnected.ico" />
     <Content Include="Resources\ToolsActiveUpdate.png" />
     <None Include="lib\wyUpdate.exe" />
