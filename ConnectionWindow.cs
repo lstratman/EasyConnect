@@ -88,6 +88,8 @@ namespace EasyConnect
 		/// </summary>
 		protected List<IConnection> _validAutoCompleteEntries;
 
+		protected HtmlPanel _urlPanel;
+
 		/// <summary>
 		/// Default constructor; initializes the UI for the OmniBar.
 		/// </summary>
@@ -117,6 +119,30 @@ namespace EasyConnect
 			}
 
 			urlTextBox.LostFocus += urlTextBox_LostFocus;
+			_iconPictureBox.Image = new Icon(Resources.EasyConnect, 16, 16).ToBitmap();
+
+			_urlPanel = new HtmlPanel
+				            {
+					            AutoScroll = false,
+								Width = _urlPanelContainer.Width,
+								Height = _urlPanelContainer.Height,
+					            Left = 0,
+								Top = 0,
+					            Font = urlTextBox.Font,
+								Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
+				            };
+			_urlPanel.Click += _urlPanel_Click;
+			_urlPanelContainer.Controls.Add(_urlPanel);
+			urlTextBox.Visible = false;
+		}
+
+		void _urlPanel_Click(object sender, EventArgs e)
+		{
+			_urlPanelContainer.Visible = false;
+			
+			urlTextBox.Visible = true;
+			urlTextBox.Focus();
+			urlTextBox.SelectAll();
 		}
 
 		/// <summary>
@@ -131,7 +157,7 @@ namespace EasyConnect
 			Icon = ConnectionFactory.GetProtocol(connection).ProtocolIcon;
 			Text = connection.DisplayName;
 			_suppressOmniBar = true;
-			urlTextBox.Text = connection.Host;
+			urlTextBox.Text = ConnectionFactory.GetProtocol(connection).ProtocolPrefix + "://" + connection.Host;
 			_suppressOmniBar = false;
 		}
 
@@ -212,6 +238,30 @@ namespace EasyConnect
 		/// <param name="e">Arguments associated with this event.</param>
 		private void urlTextBox_LostFocus(object sender, EventArgs e)
 		{
+			urlTextBox.Visible = false;
+			_urlPanelContainer.Visible = true;
+
+			if (!String.IsNullOrEmpty(urlTextBox.Text))
+			{
+				Match urlMatch = Regex.Match(urlTextBox.Text, "^((?<protocol>.*)://){0,1}(?<hostName>.*)$");
+
+				_urlPanel.Text = String.Format(
+					@"<div style=""background-color: #FFFFFF; font-family: {2}; font-size: {3}pt; height: {4}px; color: #9999BF;"">{0}://<font color=""black"">{1}</font></div>",
+					urlMatch.Groups["protocol"].Success
+						? urlMatch.Groups["protocol"].Value
+						: ConnectionFactory.GetDefaultProtocol().ProtocolPrefix, urlMatch.Groups["hostName"].Value, urlTextBox.Font.FontFamily.GetName(0),
+					urlTextBox.Font.SizeInPoints, _urlPanel.Height);
+
+				urlTextBox.Text = (urlMatch.Groups["protocol"].Success
+					                   ? urlMatch.Groups["protocol"].Value
+					                   : ConnectionFactory.GetDefaultProtocol().ProtocolPrefix) + "://" + urlMatch.Groups["hostName"];
+			}
+
+			else
+			{
+				_urlPanel.Text = "";
+			}
+
 			if (AutoHideToolbar && PointToClient(Cursor.Position).Y > toolbarBackground.Height)
 			{
 				_bookmarksMenu.Hide();
@@ -371,16 +421,27 @@ namespace EasyConnect
 				_connectionContainerPanel.Height += 31;
 			}
 
+			_urlPanel.Text = String.Format(
+				@"<div style=""background-color: #FFFFFF; font-family: {2}; font-size: {3}pt; height: {4}px; color: #9999BF;"">{0}://<font color=""black"">{1}</font></div>",
+				ConnectionFactory.GetProtocol(_connection).ProtocolPrefix, _connection.Host, urlTextBox.Font.FontFamily.GetName(0), urlTextBox.Font.SizeInPoints,
+				_urlPanel.Height);
+
+			_urlPanelContainer.Visible = true;
+			urlTextBox.Visible = false;
+
+			_urlPanel.PerformLayout();
+
 			// Initialize the UI elements
 			_connectionContainerPanelSizeSet = true;
 			_connectionForm = ConnectionFactory.CreateConnectionForm(_connection, _connectionContainerPanel);
 			_connectionForm.ConnectionLost += _connectionForm_ConnectionLost;
 			_connectionForm.Connected += _connectionForm_Connected;
 			Icon = ConnectionFactory.GetProtocol(_connection).ProtocolIcon;
+			_iconPictureBox.Image = new Icon(Icon, 16, 16).ToBitmap();
 			Text = _connection.DisplayName;
 
 			_suppressOmniBar = true;
-			urlTextBox.Text = _connection.Host;
+			urlTextBox.Text = ConnectionFactory.GetProtocol(_connection).ProtocolPrefix + "://" + _connection.Host;
 			_suppressOmniBar = false;
 
 			try
@@ -401,11 +462,15 @@ namespace EasyConnect
 		private void _connectionForm_Connected(object sender, EventArgs e)
 		{
 			Icon = ConnectionFactory.GetProtocol(_connection).ProtocolIcon;
+			_iconPictureBox.Image = new Icon(Icon, 16, 16).ToBitmap();
+
 			ParentTabs.RedrawTabs();
 		}
 
 		private void _connectionForm_ConnectionLost(object sender, EventArgs e)
 		{
+			_iconPictureBox.Image = new Icon(Resources.EasyConnect, 16, 16).ToBitmap();
+
 			Icon = Resources.Disconnected;
 			ParentTabs.RedrawTabs();
 		}
@@ -776,6 +841,8 @@ namespace EasyConnect
 		private void urlTextBox_Enter(object sender, EventArgs e)
 		{
 			_autoCompleteEntries.Clear();
+			_urlPanelContainer.Visible = false;
+			urlTextBox.Visible = true;
 		}
 
 		/// <summary>

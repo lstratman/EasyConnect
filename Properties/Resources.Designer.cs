@@ -140,6 +140,16 @@ namespace EasyConnect.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon EasyConnect {
+            get {
+                object obj = ResourceManager.GetObject("EasyConnect", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter a name for this connection..
         /// </summary>
         internal static string EnterNameForThisConnection {
