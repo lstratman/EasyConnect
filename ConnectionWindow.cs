@@ -115,6 +115,15 @@ namespace EasyConnect
 				autoCompletePanel.Click += autoCompletePanel_Click;
 				autoCompletePanel.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
 
+				PictureBox autoCompletePictureBox = new PictureBox
+					                                    {
+						                                    Width = 16,
+						                                    Height = 16,
+						                                    Left = 5,
+						                                    Top = autoCompletePanel.Top + 7
+					                                    };
+
+				_omniBarPanel.Controls.Add(autoCompletePictureBox);
 				_omniBarPanel.Controls.Add(autoCompletePanel);
 			}
 
@@ -298,7 +307,7 @@ namespace EasyConnect
 			_omniBarPanel.Visible = false;
 			_omniBarBorder.Visible = false;
 
-			_connection = _validAutoCompleteEntries[_omniBarPanel.Controls.IndexOf((HtmlPanel) sender)];
+			_connection = _validAutoCompleteEntries[_omniBarPanel.Controls.IndexOf((HtmlPanel) sender) / 2];
 			Connect();
 		}
 
@@ -363,8 +372,10 @@ namespace EasyConnect
 			{
 				if (_omniBarFocusIndex > 0)
 				{
-					UnfocusOmniBarItem((HtmlPanel) _omniBarPanel.Controls[_omniBarFocusIndex]);
-					FocusOmniBarItem((HtmlPanel) _omniBarPanel.Controls[--_omniBarFocusIndex]);
+					UnfocusOmniBarItem((HtmlPanel) _omniBarPanel.Controls[_omniBarFocusIndex * 2 + 1]);
+
+					_omniBarFocusIndex--;
+					FocusOmniBarItem((HtmlPanel) _omniBarPanel.Controls[_omniBarFocusIndex * 2 + 1]);
 				}
 
 				e.Handled = true;
@@ -372,12 +383,13 @@ namespace EasyConnect
 
 			else if (e.KeyCode == Keys.Down && _omniBarPanel.Visible)
 			{
-				if (_omniBarFocusIndex < _omniBarPanel.Controls.Count - 1)
+				if (_omniBarFocusIndex / 2 < _omniBarPanel.Controls.Count - 1)
 				{
 					if (_omniBarFocusIndex > -1)
-						UnfocusOmniBarItem((HtmlPanel) _omniBarPanel.Controls[_omniBarFocusIndex]);
+						UnfocusOmniBarItem((HtmlPanel) _omniBarPanel.Controls[_omniBarFocusIndex * 2 + 1]);
 
-					FocusOmniBarItem((HtmlPanel) _omniBarPanel.Controls[++_omniBarFocusIndex]);
+					_omniBarFocusIndex++;
+					FocusOmniBarItem((HtmlPanel) _omniBarPanel.Controls[_omniBarFocusIndex * 2 + 1]);
 				}
 
 				e.Handled = true;
@@ -398,6 +410,7 @@ namespace EasyConnect
 		protected void FocusOmniBarItem(HtmlPanel omniBarItem)
 		{
 			omniBarItem.Text = _fontColorRegex.Replace(_backgroundColorRegex.Replace(omniBarItem.Text, "background-color: #3D9DFD;"), "; color: #9DCDFD;");
+			(omniBarItem.Parent.Controls[omniBarItem.Parent.Controls.IndexOf(omniBarItem) - 1] as PictureBox).BackColor = Color.FromArgb(61, 157, 253);
 		}
 
 		/// <summary>
@@ -407,6 +420,7 @@ namespace EasyConnect
 		protected void UnfocusOmniBarItem(HtmlPanel omniBarItem)
 		{
 			omniBarItem.Text = _fontColorRegex.Replace(_backgroundColorRegex.Replace(omniBarItem.Text, "background-color: #FFFFFF;"), "; color: #9999BF;");
+			(omniBarItem.Parent.Controls[omniBarItem.Parent.Controls.IndexOf(omniBarItem) - 1] as PictureBox).BackColor = Color.White;
 		}
 
 		/// <summary>
@@ -902,12 +916,13 @@ namespace EasyConnect
 				for (int i = 0; i < _validAutoCompleteEntries.Count; i++)
 				{
 					IConnection connection = _validAutoCompleteEntries[i];
-					HtmlPanel autoCompletePanel = _omniBarPanel.Controls[i] as HtmlPanel;
+					HtmlPanel autoCompletePanel = _omniBarPanel.Controls[i * 2 + 1] as HtmlPanel;
+					PictureBox autoCompletePictureBox = _omniBarPanel.Controls[i * 2] as PictureBox;
 
 					// Set the text of the auto-complete item to "{Protocol}://{URI} - {DisplayName}" and bold the matching portions of the text
 					autoCompletePanel.Text =
 						String.Format(
-							@"<div style=""background-color: #FFFFFF; padding: 5px; font-family: {3}; font-size: {4}pt; height: 30px; color: #9999BF;""><font color=""green"">{0}://{1}</font>{2}</div>",
+							@"<div style=""background-color: #FFFFFF; padding-left: 29px; padding-top: 5px; padding-bottom: 5px; padding-right: 5px; font-family: {3}; font-size: {4}pt; height: 30px; color: #9999BF;""><font color=""green"">{0}://{1}</font>{2}</div>",
 							ConnectionFactory.GetProtocol(connection).ProtocolPrefix,
 							Regex.Replace(connection.Host, urlTextBox.Text, "<b>$0</b>", RegexOptions.IgnoreCase), connection.DisplayName == connection.Host
 								                                                                                       ? ""
@@ -917,6 +932,9 @@ namespace EasyConnect
 									                                                                                         urlTextBox.Text, "<b>$0</b>",
 									                                                                                         RegexOptions.IgnoreCase),
 							urlTextBox.Font.FontFamily.GetName(0), urlTextBox.Font.SizeInPoints);
+
+					autoCompletePictureBox.Image = new Icon(ConnectionFactory.GetProtocol(connection).ProtocolIcon, 16, 16).ToBitmap();
+					autoCompletePictureBox.BackColor = Color.White;
 
 					// If the user was focused on this item, highlight it
 					if (connection == currentlyFocusedItem)
@@ -948,7 +966,7 @@ namespace EasyConnect
 		/// <param name="e">Arguments associated with this event.</param>
 		private void autoCompletePanel_MouseLeave(object sender, EventArgs e)
 		{
-			if (_omniBarFocusIndex != -1 && (sender as HtmlPanel) == (_omniBarPanel.Controls[_omniBarFocusIndex] as HtmlPanel))
+			if (_omniBarFocusIndex != -1 && (sender as HtmlPanel) == (_omniBarPanel.Controls[_omniBarFocusIndex * 2 + 1] as HtmlPanel))
 				return;
 
 			(sender as HtmlPanel).Text = _backgroundColorRegex.Replace((sender as HtmlPanel).Text, "background-color: #FFFFFF;");
@@ -961,7 +979,7 @@ namespace EasyConnect
 		/// <param name="e">Arguments associated with this event.</param>
 		private void autoCompletePanel_MouseEnter(object sender, EventArgs e)
 		{
-			if (_omniBarFocusIndex != -1 && (sender as HtmlPanel) == (_omniBarPanel.Controls[_omniBarFocusIndex] as HtmlPanel))
+			if (_omniBarFocusIndex != -1 && (sender as HtmlPanel) == (_omniBarPanel.Controls[_omniBarFocusIndex * 2 + 1] as HtmlPanel))
 				return;
 
 			(sender as HtmlPanel).Text = _backgroundColorRegex.Replace((sender as HtmlPanel).Text, "background-color: #CDE5FE;");
