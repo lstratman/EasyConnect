@@ -46,6 +46,7 @@
 			this._bookmarksManagerMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
 			this.bookmarkThisSiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolbarBackground = new System.Windows.Forms.Panel();
+			this._urlPanelContainer = new System.Windows.Forms.Panel();
 			this._toolsButton = new System.Windows.Forms.PictureBox();
 			this._bookmarksButton = new System.Windows.Forms.PictureBox();
 			this.urlTextBox = new System.Windows.Forms.TextBox();
@@ -55,7 +56,6 @@
 			this._connectionContainerPanel = new System.Windows.Forms.Panel();
 			this._omniBarPanel = new System.Windows.Forms.Panel();
 			this._omniBarBorder = new System.Windows.Forms.Panel();
-			this._urlPanelContainer = new System.Windows.Forms.Panel();
 			this._toolsMenu.SuspendLayout();
 			this._bookmarksMenu.SuspendLayout();
 			this.toolbarBackground.SuspendLayout();
@@ -201,6 +201,16 @@
 			this.toolbarBackground.TabIndex = 5;
 			this.toolbarBackground.Click += new System.EventHandler(this.toolbarBackground_Click);
 			// 
+			// _urlPanelContainer
+			// 
+			this._urlPanelContainer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this._urlPanelContainer.BackColor = System.Drawing.Color.White;
+			this._urlPanelContainer.Location = new System.Drawing.Point(34, 8);
+			this._urlPanelContainer.Name = "_urlPanelContainer";
+			this._urlPanelContainer.Size = new System.Drawing.Size(509, 19);
+			this._urlPanelContainer.TabIndex = 0;
+			// 
 			// _toolsButton
 			// 
 			this._toolsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -287,7 +297,7 @@
 			this._connectionContainerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this._connectionContainerPanel.BackColor = System.Drawing.Color.White;
+			this._connectionContainerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
 			this._connectionContainerPanel.Location = new System.Drawing.Point(0, 36);
 			this._connectionContainerPanel.Name = "_connectionContainerPanel";
 			this._connectionContainerPanel.Size = new System.Drawing.Size(622, 399);
@@ -316,16 +326,6 @@
 			this._omniBarBorder.Size = new System.Drawing.Size(548, 74);
 			this._omniBarBorder.TabIndex = 8;
 			this._omniBarBorder.Visible = false;
-			// 
-			// _urlPanelContainer
-			// 
-			this._urlPanelContainer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this._urlPanelContainer.BackColor = System.Drawing.Color.White;
-			this._urlPanelContainer.Location = new System.Drawing.Point(34, 8);
-			this._urlPanelContainer.Name = "_urlPanelContainer";
-			this._urlPanelContainer.Size = new System.Drawing.Size(509, 19);
-			this._urlPanelContainer.TabIndex = 0;
 			// 
 			// ConnectionWindow
 			// 

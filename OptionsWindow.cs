@@ -67,7 +67,7 @@ namespace EasyConnect
 				{
 					Label formLabel = new Label
 						                  {
-							                  BackColor = Color.Transparent,
+											  BackColor = Color.FromArgb(249, 249, 249),
 							                  TextAlign = ContentAlignment.MiddleLeft,
 							                  Padding = new Padding(0, 0, 0, 0),
 							                  Size = new Size(233, 29),
