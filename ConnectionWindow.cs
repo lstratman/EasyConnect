@@ -769,7 +769,7 @@ namespace EasyConnect
 			if (_toolbarShown || !AutoHideToolbar || !IsHandleCreated || (_animationTimer != null && _animationTimer.Enabled))
 				return;
 
-			urlTextBox.Focus();
+			_urlPanel_Click(null, null);
 
 			_animationTicks = 0;
 			_animationTimer = new Timer(20);
