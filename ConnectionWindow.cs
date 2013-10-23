@@ -733,7 +733,7 @@ namespace EasyConnect
 				_connectionForm.Focus();
 
 			if (string.IsNullOrEmpty(urlTextBox.Text))
-				urlTextBox.Focus();
+				_urlPanel_Click(null, null);
 		}
 
 		/// <summary>
