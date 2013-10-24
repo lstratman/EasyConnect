@@ -555,6 +555,14 @@ namespace EasyConnect
 			_toolsMenu.Show(_toolsButton, -187 + _toolsButton.Width, _toolsButton.Height);
 		}
 
+		protected override void OnVisibleChanged(EventArgs e)
+		{
+			base.OnVisibleChanged(e);
+
+			if (Visible)
+				ConnectionWindow_Shown(null, null);
+		}
+
 		/// <summary>
 		/// Handler method that's called when the user clicks the "Bookmarks" icon in the toolbar.  Populates <see cref="_bookmarksMenu"/> and opens it.
 		/// </summary>
@@ -732,7 +740,7 @@ namespace EasyConnect
 			if (_connectionForm != null && _connectionForm.IsConnected && !_connectionForm.ContainsFocus)
 				_connectionForm.Focus();
 
-			if (string.IsNullOrEmpty(urlTextBox.Text))
+			if (string.IsNullOrEmpty(urlTextBox.Text) || _toolbarShown)
 				_urlPanel_Click(null, null);
 		}
 
