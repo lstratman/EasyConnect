@@ -53,11 +53,6 @@ namespace EasyConnect
 		protected static IpcServerChannel _ipcChannel = null;
 
 		/// <summary>
-		/// Flag that indicates if we're in the process of creating a new tab.
-		/// </summary>
-		protected bool _addingWindow = false;
-
-		/// <summary>
 		/// Controls the automatic updating process.
 		/// </summary>
 		protected AutomaticUpdater _automaticUpdater;
@@ -792,14 +787,12 @@ can be used.";
 		{
 			ConnectionWindow connectionWindow = new ConnectionWindow(connection);
 
-			_addingWindow = true;
 			TitleBarTab newTab = new TitleBarTab(this)
 				                     {
 					                     Content = connectionWindow
 				                     };
 			Tabs.Insert(SelectedTabIndex + 1, newTab);
 			ResizeTabContents(newTab);
-			_addingWindow = false;
 
 			if (focusNewTab)
 			{
