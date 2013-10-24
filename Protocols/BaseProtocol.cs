@@ -95,7 +95,9 @@ namespace EasyConnect.Protocols
 					                                 Dock = DockStyle.Fill,
 					                                 FormBorderStyle = FormBorderStyle.None,
 					                                 TopLevel = false,
-					                                 Connection = (TConnection) connection
+					                                 Connection = (TConnection) connection,
+													 Width = containerPanel.Width,
+													 Height = containerPanel.Height
 				                                 };
 
 			containerPanel.Controls.Add(connectionForm);
