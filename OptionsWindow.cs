@@ -112,7 +112,7 @@ namespace EasyConnect
 			optionsForm.Show();
 
 			// Set the background image for the label to the "focused" image
-			foreach (Label label in _sidebarFlowLayoutPanel.Controls.Cast<Label>().Where(c => c.Font.Size == 8.0f))
+			foreach (Label label in _sidebarFlowLayoutPanel.Controls.Cast<Label>().Where(c => c.Name != "_optionsLabel"))
 			{
 				label.Image = null;
 				label.ForeColor = Color.FromArgb(153, 153, 153);

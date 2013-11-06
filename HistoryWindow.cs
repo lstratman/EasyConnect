@@ -139,7 +139,7 @@ namespace EasyConnect
 
 				for (insertIndex = 0; insertIndex < _historyListView.Groups.Count; insertIndex++)
 				{
-					if (_historyListView.Groups[insertIndex].Name.CompareTo(groupName) > 0)
+					if (String.Compare(_historyListView.Groups[insertIndex].Name, groupName, StringComparison.Ordinal) > 0)
 						break;
 				}
 

@@ -91,7 +91,7 @@
 			// 
 			// _descriptionTextBox
 			// 
-			this._descriptionTextBox.BackColor = System.Drawing.Color.White;
+			this._descriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
 			this._descriptionTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._descriptionTextBox.Location = new System.Drawing.Point(143, 107);
 			this._descriptionTextBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
@@ -158,7 +158,7 @@
 			this.AcceptButton = this._okButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackColor = System.Drawing.Color.White;
+			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
 			this.ClientSize = new System.Drawing.Size(435, 283);
 			this.Controls.Add(this.tableLayoutPanel);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
