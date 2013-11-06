@@ -75,7 +75,8 @@ namespace EasyConnect
 							                  Font = new Font("Segoe UI", 8.0f),
 							                  Margin = new Padding(0),
 							                  Location = new Point(0, 0),
-							                  ForeColor = Color.FromArgb(153, 153, 153)
+							                  ForeColor = Color.FromArgb(153, 153, 153),
+											  Cursor = Cursors.Hand
 						                  };
 
 					formLabel.Click += (o, args) => ShowOptionsForm(formLabel);
@@ -115,11 +116,13 @@ namespace EasyConnect
 			{
 				label.Image = null;
 				label.ForeColor = Color.FromArgb(153, 153, 153);
+				label.Cursor = Cursors.Hand;
 			}
 
 			navigationLabel.Image = Resources.SelectedOptionCategoryBackground;
 			navigationLabel.ImageAlign = ContentAlignment.MiddleCenter;
 			navigationLabel.ForeColor = Color.FromArgb(92, 97, 102);
+			navigationLabel.Cursor = Cursors.Default;
 		}
 
 		/// <summary>
