@@ -134,8 +134,16 @@ namespace EasyConnect
 		{
 			if (_historyListView.Groups[historyEntry.LastConnection.ToString("yyyy-MM-dd")] == null)
 			{
-				_historyListView.Groups.Add(
-					new ListViewGroup(historyEntry.LastConnection.ToString("yyyy-MM-dd"), historyEntry.LastConnection.ToLongDateString()));
+				int insertIndex = 0;
+				string groupName = historyEntry.LastConnection.ToString("yyyy-MM-dd");
+
+				for (insertIndex = 0; insertIndex < _historyListView.Groups.Count; insertIndex++)
+				{
+					if (_historyListView.Groups[insertIndex].Name.CompareTo(groupName) > 0)
+						break;
+				}
+
+				_historyListView.Groups.Insert(insertIndex, new ListViewGroup(groupName, historyEntry.LastConnection.ToLongDateString()));
 			}
 
 			// To account for legacy versions of the application where everything was an RDP connection, if a history entry was LegacyHistoricalConnection,
