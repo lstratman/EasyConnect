@@ -1,4 +1,6 @@
-﻿namespace EasyConnect.Protocols.Ssh
+﻿using System.Windows.Forms;
+
+namespace EasyConnect.Protocols.Ssh
 {
     partial class SshConnectionForm
     {
@@ -28,27 +30,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this._terminal = new WalburySoftware.TerminalControl();
+			this._terminal = new Poderosa.TerminalControl.SshTerminalControl();
             this.SuspendLayout();
             // 
             // _terminal
             // 
-            this._terminal.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this._terminal.AuthType = Poderosa.ConnectionParam.AuthType.Password;
+            this._terminal.Dock = DockStyle.Fill;
             this._terminal.BackColor = System.Drawing.Color.Black;
             this._terminal.ForeColor = System.Drawing.Color.Silver;
-            this._terminal.Host = "";
-            this._terminal.IdentifyFile = "";
-            this._terminal.Location = new System.Drawing.Point(-2, -2);
-            this._terminal.Method = WalburySoftware.ConnectionMethod.SSH2;
+            this._terminal.HostName = "";
+            this._terminal.IdentityFile = "";
+            this._terminal.Location = new System.Drawing.Point(0, 0);
+	        this._terminal.SshProtocol = Poderosa.TerminalControl.SshProtocol.SSH2;
             this._terminal.Name = "_terminal";
-            this._terminal.Password = "";
             this._terminal.Size = new System.Drawing.Size(286, 266);
             this._terminal.TabIndex = 0;
             this._terminal.Text = "terminalControl1";
-            this._terminal.UserName = "";
+            this._terminal.Username = "";
+	        this._terminal.TerminalType = Poderosa.TerminalControl.TerminalType.VT100;
             // 
             // SshConnectionForm
             // 
@@ -64,6 +63,6 @@
 
         #endregion
 
-        private WalburySoftware.TerminalControl _terminal;
+        private Poderosa.TerminalControl.SshTerminalControl _terminal;
     }
 }

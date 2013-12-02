@@ -19,7 +19,7 @@
 			</Feature>
 			<Feature Id="SshPlugin" Title="Secure Shell Plugin" Description="Plugin to allow secure shell (SSH) connections." Level="1" Absent="allow">
 				<ComponentGroupRef Id="SshPluginComponents"/>
-				<ComponentGroupRef Id="TerminalControlComponents"/>
+				<ComponentGroupRef Id="PoderosaComponents"/>
 			</Feature>
 			<Feature Id="PowerShellPlugin" Title="PowerShell Plugin" Description="Plugin to allow PowerShell connections." Level="1" Absent="allow">
 				<ComponentGroupRef Id="PowerShellPluginComponents"/>
@@ -112,6 +112,19 @@
 		<ComponentGroup Id="TerminalControlComponents" Directory="INSTALLFOLDER">
 			<Component Id="TerminalControlAssemblyComponent" Guid="551F46DF-CB96-4FFA-865C-307373054014">
 				<File Id="TerminalControlAssembly" Name="$(var.TerminalControl.TargetFileName)" Source="$(var.TerminalControl.TargetPath)"/>
+			</Component>
+		</ComponentGroup>
+		<ComponentGroup Id="PoderosaComponents" Directory="INSTALLFOLDER">
+			<Component Id="PoderosaAssemblyComponent" Guid="81FD4C1D-C53D-49D5-BF25-9D35FD01D975">
+				<File Id="GranadosAssembly" Name="Granados.dll" Source="$(var.EasyConnect.Protocols.Ssh.TargetDir)Granados.dll"/>
+				<File Id="PoderosaCoreAssembly" Name="Poderosa.Core.dll" Source="$(var.EasyConnect.Protocols.Ssh.TargetDir)Poderosa.Core.dll"/>
+				<File Id="PoderosaPluginAssembly" Name="Poderosa.Plugin.dll" Source="$(var.EasyConnect.Protocols.Ssh.TargetDir)Poderosa.Plugin.dll"/>
+				<File Id="PoderosaPortForwardingAssembly" Name="Poderosa.PortForwardingCommand.dll" Source="$(var.EasyConnect.Protocols.Ssh.TargetDir)Poderosa.PortForwardingCommand.dll"/>
+				<File Id="PoderosaProtocolsAssembly" Name="Poderosa.Protocols.dll" Source="$(var.EasyConnect.Protocols.Ssh.TargetDir)Poderosa.Protocols.dll"/>
+				<File Id="PoderosaTerminalControlAssembly" Name="Poderosa.TerminalControl.dll" Source="$(var.EasyConnect.Protocols.Ssh.TargetDir)Poderosa.TerminalControl.dll"/>
+				<File Id="PoderosaTerminalEmulatorAssembly" Name="Poderosa.TerminalEmulator.dll" Source="$(var.EasyConnect.Protocols.Ssh.TargetDir)Poderosa.TerminalEmulator.dll"/>
+				<File Id="PoderosaTerminalSessionAssembly" Name="Poderosa.TerminalSession.dll" Source="$(var.EasyConnect.Protocols.Ssh.TargetDir)Poderosa.TerminalSession.dll"/>
+				<File Id="PoderosaUIAssembly" Name="Poderosa.UI.dll" Source="$(var.EasyConnect.Protocols.Ssh.TargetDir)Poderosa.UI.dll"/>
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="PowerShellPluginComponents" Directory="INSTALLFOLDER">
