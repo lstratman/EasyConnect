@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -11,6 +12,7 @@ using System.Security;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Windows.Input;
+using AppLimit.NetSparkle;
 using EasyConnect.Properties;
 using EasyConnect.Protocols;
 using Microsoft.WindowsAPICodePack.Shell;
@@ -18,7 +20,6 @@ using Microsoft.WindowsAPICodePack.Taskbar;
 using Stratman.Windows.Forms.TitleBarTabs;
 using Win32Interop.Enums;
 using Win32Interop.Methods;
-using wyDay.Controls;
 
 namespace EasyConnect
 {
@@ -51,11 +52,6 @@ namespace EasyConnect
 		/// process (if it exists) to tell it to open the given historical connection.
 		/// </summary>
 		protected static IpcServerChannel _ipcChannel = null;
-
-		/// <summary>
-		/// Controls the automatic updating process.
-		/// </summary>
-		protected AutomaticUpdater _automaticUpdater;
 
 		/// <summary>
 		/// Contains the UI for using bookmarks but also the data concerning all of the bookmarks and folders that the user has.
@@ -117,10 +113,7 @@ namespace EasyConnect
 		/// </summary>
 		protected bool _shiftDown = false;
 
-		/// <summary>
-		/// Flag indicating whether <see cref="_automaticUpdater"/> has told us that there's an update available for the application.
-		/// </summary>
-		private bool _updateAvailable;
+		protected Sparkle _sparkle;
 
 		/// <summary>
 		/// Default constructor.
@@ -129,6 +122,13 @@ namespace EasyConnect
 		{
 			InitializeComponent();
 			Init();
+
+			_sparkle = new Sparkle(
+				String.IsNullOrEmpty(ConfigurationManager.AppSettings["appCastUrl"])
+					? "http://lstratman.github.io/EasyConnect/updates/EasyConnect.xml"
+					: ConfigurationManager.AppSettings["appCastUrl"]);
+
+			_sparkle.StartLoop(true, true);
 		}
 
 		/// <summary>
@@ -169,17 +169,6 @@ namespace EasyConnect
 		}
 
 		/// <summary>
-		/// Controls the automatic updating process.
-		/// </summary>
-		public AutomaticUpdater AutomaticUpdater
-		{
-			get
-			{
-				return _automaticUpdater;
-			}
-		}
-
-		/// <summary>
 		/// Application-level (not connection protocol defaults) that the user has set.
 		/// </summary>
 		public Options Options
@@ -187,27 +176,6 @@ namespace EasyConnect
 			get
 			{
 				return _options ?? (_options = Options.Load());
-			}
-		}
-
-		/// <summary>
-		/// Flag indicating whether <see cref="_automaticUpdater"/> has told us that there's an update available for the application.
-		/// </summary>
-		public bool UpdateAvailable
-		{
-			get
-			{
-				return _updateAvailable;
-			}
-
-			set
-			{
-				_updateAvailable = value;
-
-				// Go through each ConnectionWindow that's open and set the update available state, which controls whether the "update available" icon shows
-				// up on the tools toolbar icon
-				foreach (TitleBarTab tab in Tabs.Where(tab => tab.Content is ConnectionWindow))
-					(tab.Content as ConnectionWindow).SetUpdateAvailableState(_updateAvailable);
 			}
 		}
 
@@ -267,31 +235,10 @@ namespace EasyConnect
 		}
 
 		/// <summary>
-		/// Initializes the UI, creates the <see cref="_automaticUpdater"/>, loads the bookmark and history data, and sets up the IPC remoting channel and 
-		/// low-level keyboard hook.
+		/// Initializes the UI, loads the bookmark and history data, and sets up the IPC remoting channel and low-level keyboard hook.
 		/// </summary>
 		protected void Init()
 		{
-			// Create the automatic updater control
-			//_automaticUpdater = new AutomaticUpdater();
-
-			//(_automaticUpdater as ISupportInitialize).BeginInit();
-			//_automaticUpdater.ContainerForm = this;
-			//_automaticUpdater.Name = "_automaticUpdater";
-			//_automaticUpdater.TabIndex = 0;
-			//_automaticUpdater.wyUpdateCommandline = null;
-			//_automaticUpdater.Visible = false;
-			//_automaticUpdater.KeepHidden = true;
-			//_automaticUpdater.GUID = "752f8ae7-47f3-4299-adcc-8be32d63ec7a";
-			//_automaticUpdater.DaysBetweenChecks = 2;
-			//_automaticUpdater.UpdateType = UpdateType.Automatic;
-			//_automaticUpdater.ReadyToBeInstalled += _automaticUpdater_ReadyToBeInstalled;
-			//_automaticUpdater.UpToDate += _automaticUpdater_UpToDate;
-			//_automaticUpdater.CheckingFailed += _automaticUpdater_CheckingFailed;
-			//(_automaticUpdater as ISupportInitialize).EndInit();
-
-			//Controls.Add(_automaticUpdater);
-
 			AeroPeekEnabled = false;
 			bool convertingToRsa = false;
 
@@ -553,48 +500,6 @@ can be used.";
 
 			_previouslyClickedTab = e.Tab;
 		}
-
-		///// <summary>
-		///// Handler method that's called when <see cref="_automaticUpdater"/> fails during update checking.  Sets <see cref="UpdateAvailable"/> to false.
-		///// </summary>
-		///// <param name="sender">Object from which this event originated, <see cref="_automaticUpdater"/> in this case.</param>
-		///// <param name="e">Details about the failure that occurred.</param>
-		//private void _automaticUpdater_CheckingFailed(object sender, FailArgs e)
-		//{
-		//    UpdateAvailable = false;
-		//}
-
-		///// <summary>
-		///// Handler method that's called when <see cref="_automaticUpdater"/> finds that the application is already up-to-date.  Sets 
-		///// <see cref="UpdateAvailable"/> to false.
-		///// </summary>
-		///// <param name="sender">Object from which this event originated, <see cref="_automaticUpdater"/> in this case.</param>
-		///// <param name="e">Arguments associated with this event.</param>
-		//private void _automaticUpdater_UpToDate(object sender, SuccessArgs e)
-		//{
-		//    UpdateAvailable = false;
-		//}
-
-		/// <summary>
-		/// Called from <see cref="ConnectionWindow"/> instances when the user chooses to install an available update either from the update checking window
-		/// or from the tools menu.
-		/// </summary>
-		public void InstallUpdate()
-		{
-			if (UpdateAvailable)
-				_automaticUpdater.InstallNow();
-		}
-
-		///// <summary>
-		///// Handler method that's called when <see cref="_automaticUpdater"/> finds an update available for the application.  Sets 
-		///// <see cref="UpdateAvailable"/> to true.
-		///// </summary>
-		///// <param name="sender">Object from which this event originated, <see cref="_automaticUpdater"/> in this case.</param>
-		///// <param name="e">Arguments associated with this event.</param>
-		//private void _automaticUpdater_ReadyToBeInstalled(object sender, EventArgs e)
-		//{
-		//    UpdateAvailable = true;
-		//}
 
 		/// <summary>
 		/// Handler method that's called when the user closes the <see cref="BookmarksWindow"/> tab.  Sets <see cref="_bookmarks"/> to null so that we know we
@@ -933,9 +838,20 @@ can be used.";
 		/// Initiates an update check for the application.
 		/// </summary>
 		/// <returns>True if the update process was started successfully, false otherwise.</returns>
-		public bool CheckForUpdate()
+		public void CheckForUpdate()
 		{
-			return _automaticUpdater.ForceCheckForUpdate(true);
+			_sparkle.StopLoop();
+
+			_sparkle.checkLoopFinished += _sparkle_checkLoopFinished;
+			_sparkle.StartLoop(true, true);
+		}
+
+		void _sparkle_checkLoopFinished(object sender, bool updateRequired)
+		{
+			_sparkle.checkLoopFinished -= _sparkle_checkLoopFinished;
+
+			if (!updateRequired)
+				MessageBox.Show(this, "No updates available.", "No updates", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 	}
 }

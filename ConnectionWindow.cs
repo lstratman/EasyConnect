@@ -312,21 +312,6 @@ namespace EasyConnect
 		}
 
 		/// <summary>
-		/// Called from <see cref="MainForm.UpdateAvailable"/> to set the icon for the tools button and the text for the updates menu item appropriately when
-		/// an automatic update is available for the application or not.
-		/// </summary>
-		/// <param name="updateAvailable">Whether or not an update is available.</param>
-		public void SetUpdateAvailableState(bool updateAvailable)
-		{
-			_updatesMenuItem.Text = updateAvailable
-				                        ? "Install update"
-				                        : "Check for update";
-			_toolsButton.Image = updateAvailable
-				                     ? Resources.ToolsActiveUpdate
-				                     : Resources.ToolsActive;
-		}
-
-		/// <summary>
 		/// Focuses on <see cref="_connectionForm"/>.
 		/// </summary>
 		public void FocusContent()
@@ -745,25 +730,14 @@ namespace EasyConnect
 		}
 
 		/// <summary>
-		/// Handler method that's called when the user clicks on the "Check for updates" menu item under the tools menu.  Starts the installation process if
-		/// updates are already available, otherwise opens a <see cref="CheckForUpdatesWindow"/>.
+		/// Handler method that's called when the user clicks on the "Check for updates" menu item under the tools menu.  Starts the update check process by
+		/// calling <see cref="MainForm.CheckForUpdate"/> on <see cref="ParentTabs"/>.
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
 		private void _updatesMenuItem_Click(object sender, EventArgs e)
 		{
-			if (ParentTabs.UpdateAvailable)
-				ParentTabs.InstallUpdate();
-
-			else
-			{
-				CheckForUpdatesWindow checkForUpdatesWindow = new CheckForUpdatesWindow();
-				DialogResult result = checkForUpdatesWindow.ShowDialog(ParentTabs);
-
-				// Start the installation process if the user clicked OK from the updates window
-				if (result == DialogResult.OK)
-					ParentTabs.InstallUpdate();
-			}
+			ParentTabs.CheckForUpdate();
 		}
 
 		/// <summary>

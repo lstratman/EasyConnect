@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="3482B927-3320-42D9-A2C1-680DD95D3F32" Name="$(var.EasyConnect.ProjectName)" Language="1033" Version="1.2" Manufacturer="Luke Stratman" UpgradeCode="E6714FA7-F732-4879-A25E-08E0F2DF2D57">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Keywords="Installer" Description="$(var.EasyConnect.ProjectName) Installer" Manufacturer="Luke Stratman" Languages="1033"/>
+	<?define ProductVersion="1.5.0" ?>
+	<?define UpgradeCode="D49D0936-12DD-4DCE-BB1C-413823B2D6D0" ?>
 
-		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+	<Product Id="*" Name="$(var.EasyConnect.ProjectName)" Language="1033" Version="$(var.ProductVersion)" Manufacturer="Luke Stratman" UpgradeCode="$(var.UpgradeCode)">
+		<Package Id="*" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Keywords="Installer" Description="$(var.EasyConnect.ProjectName) Installer" Manufacturer="Luke Stratman" Languages="1033"/>
+
 		<MediaTemplate EmbedCab="yes" />
+
+		<Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
+
+		<Upgrade Id="$(var.UpgradeCode)">
+			<UpgradeVersion Minimum="1.0.0.0" Maximum="99.0.0.0" Property="PREVIOUSVERSIONSINSTALLED" IncludeMinimum="yes" IncludeMaximum="no" />
+		</Upgrade>
 
 		<Feature Id="ProductFeature" Title="$(var.EasyConnect.ProjectName)" Level="1" Description="$(var.EasyConnect.ProjectName) is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's, supporting the Remote Desktop Protocol (RDP), Secure Shell (SSH), and VNC protocols." Display="expand" ConfigurableDirectory="INSTALLFOLDER">
 			<Feature Id="MainExecutable" Title="Main Executable" Description="Main executable and common libraries." Level="1" Absent="disallow">
@@ -28,16 +36,22 @@
 		</Feature>
 
 		<Icon Id="EasyConnect.ico" SourceFile="$(var.EasyConnect.ProjectDir)Resources\EasyConnect.ico"/>
-	
+
 		<UIRef Id="WixUI_FeatureTree" />
 		<UIRef Id="WixUI_ErrorProgressText" />
-	
+
 		<Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER"/>
 		<Property Id="ARPPRODUCTICON" Value="EasyConnect.ico"/>
-		
+
 		<WixVariable Id="WixUIBannerBmp" Value="Resources\Banner.bmp"/>
 		<WixVariable Id="WixUIDialogBmp" Value="Resources\Dialog.bmp"/>
 		<WixVariable Id="WixUILicenseRtf" Value="Resources\License.rtf"/>
+
+		<CustomAction Id="PreventDowngrading" Error="Newer version already installed." />
+
+		<InstallExecuteSequence>
+			<RemoveExistingProducts Before="InstallInitialize" />
+		</InstallExecuteSequence>
 	</Product>
 
 	<Fragment>
@@ -87,6 +101,10 @@
 			</Component>
 			<Component Id="UxthemeInteropAssemblyComponent" Guid="45859B10-E9BD-4439-B393-607A8AC523C4">
 				<File Id="UxthemeInteropAssembly" Name="Win32Interop.Uxtheme.dll" Source="$(var.EasyConnect.TargetDir)Win32Interop.Uxtheme.dll"/>
+			</Component>
+			<Component Id="AutoUpdateComponent" Guid="0D3C0544-EB17-4E32-A8F4-766BC41ACE82">
+				<File Id="AutoUpdateAssembly" Name="AppLimit.NetSparkle.Net40.dll" Source="$(var.EasyConnect.TargetDir)AppLimit.NetSparkle.Net40.dll"/>
+				<File Id="AutoUpdateExecutable" Name="NetSparkleChecker.Net40.exe" Source="$(var.EasyConnect.TargetDir)NetSparkleChecker.Net40.exe"/>
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="RdpPluginComponents" Directory="INSTALLFOLDER">

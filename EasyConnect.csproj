@@ -78,9 +78,9 @@
     <StartupObject>EasyConnect.EasyConnect</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutomaticUpdater, Version=2.6.16.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="AppLimit.NetSparkle.Net40, Version=1.0.83.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\AutomaticUpdater.dll</HintPath>
+      <HintPath>lib\AppLimit.NetSparkle.Net40.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -151,12 +151,6 @@
     <Compile Include="BookmarksWindow.designer.cs">
       <DependentUpon>BookmarksWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="CheckForUpdatesWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CheckForUpdatesWindow.Designer.cs">
-      <DependentUpon>CheckForUpdatesWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="ConnectionWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -209,9 +203,6 @@
     <EmbeddedResource Include="BookmarksWindow.resx">
       <DependentUpon>BookmarksWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CheckForUpdatesWindow.resx">
-      <DependentUpon>CheckForUpdatesWindow.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ConnectionWindow.resx">
       <DependentUpon>ConnectionWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -248,8 +239,6 @@
       <DependentUpon>UsernamePasswordWindow.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="lib\client.wyc" />
-    <None Include="lib\wyUpdate.vshost.exe.manifest" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -268,13 +257,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="lib\AppLimit.NetSparkle.Net40.dll" />
     <Content Include="lib\AutomaticUpdater.dll" />
+    <Content Include="lib\NetSparkleChecker.Net40.exe" />
     <Content Include="lib\System.Drawing.Html.dll" />
     <None Include="Resources\About.png" />
     <Content Include="Resources\ButtonPressedBackground.png" />
     <Content Include="Resources\Disconnected.ico" />
     <Content Include="Resources\ToolsActiveUpdate.png" />
-    <None Include="lib\wyUpdate.exe" />
     <Content Include="Resources\EasyConnect.ico" />
     <Content Include="Resources\FolderOpen.png" />
     <Content Include="Resources\OptionsSidebarBackground.png" />
@@ -339,8 +329,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /y "$(ProjectDir)lib\wyUpdate.*" "$(TargetDir)"
-copy /y "$(ProjectDir)lib\client.wyc" "$(TargetDir)"
+    <PostBuildEvent>copy /y "$(ProjectDir)lib\NetSparkleChecker.Net40.exe" "$(TargetDir)"
 copy /y "$(SolutionDir)Win32Interop\SystemHookCore\$(ConfigurationName)\SystemHookCore.dll" "$(TargetDir)"
 copy /y "$(SolutionDir)Protocols\Vnc\bin\$(ConfigurationName)\scvncctrl.dll" "$(TargetDir)"
 Exit /b 0</PostBuildEvent>

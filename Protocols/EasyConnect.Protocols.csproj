@@ -114,9 +114,6 @@
     <EmbeddedResource Include="BaseConnectionForm.resx">
       <DependentUpon>BaseConnectionForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ErrorMessageDisplayForm.resx">
-      <DependentUpon>ErrorMessageDisplayForm.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
