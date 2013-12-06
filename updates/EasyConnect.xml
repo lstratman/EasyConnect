@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
    <channel>
       <title>EasyConnect Change Log</title>
-      <link>http://localhost/Encompass/updates/EasyConnect.xml</link>
+      <link>http://lstratman.github.io/EasyConnect/updates/EasyConnect.xml</link>
       <description>Most recent changes with links to updates.</description>
       <language>en</language>
       <item>
          <title>Version 1.2.0.0</title>
-         <sparkle:releaseNotesLink>http://localhost/Encompass/updates/1.2.html</sparkle:releaseNotesLink>
+         <sparkle:releaseNotesLink>http://lstratman.github.io/EasyConnect/updates/1.2.html</sparkle:releaseNotesLink>
          <pubDate>Wed, 29 May 2013 17:37:00 -05</pubDate>
-         <enclosure url="http://localhost/Encompass/updates/EasyConnect-1.2.msi" sparkle:version="1.2.0.0" length="3211264" type="application/octet-stream" />
+         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-1.2.msi" sparkle:version="1.2.0.0" length="3211264" type="application/octet-stream" />
       </item>
       <item>
          <title>Version 1.3.0.0</title>
-         <sparkle:releaseNotesLink>http://localhost/Encompass/updates/1.3.html</sparkle:releaseNotesLink>
+         <sparkle:releaseNotesLink>http://lstratman.github.io/EasyConnect/updates/1.3.html</sparkle:releaseNotesLink>
          <pubDate>Mon, 29 Jul 2013 16:29:00 -05</pubDate>
-         <enclosure url="http://localhost/Encompass/updates/EasyConnect-1.3.msi" sparkle:version="1.3.0.0" length="3219456" type="application/octet-stream" />
+         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-1.3.msi" sparkle:version="1.3.0.0" length="3219456" type="application/octet-stream" />
       </item>
       <item>
          <title>Version 1.4.0.0</title>
-         <sparkle:releaseNotesLink>http://localhost/Encompass/updates/1.4.html</sparkle:releaseNotesLink>
+         <sparkle:releaseNotesLink>http://lstratman.github.io/EasyConnect/updates/1.4.html</sparkle:releaseNotesLink>
          <pubDate>Wed, 06 Nov 2013 15:47:00 -05</pubDate>
-         <enclosure url="http://localhost/Encompass/updates/EasyConnect-1.4.msi" sparkle:version="1.4.0.0" length="3317760" type="application/octet-stream" />
+         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-1.4.msi" sparkle:version="1.4.0.0" length="3317760" type="application/octet-stream" />
       </item>
    </channel>
 </rss>
