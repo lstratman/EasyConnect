@@ -27,12 +27,12 @@
         <p class="view"><a href="https://github.com/lstratman/EasyConnect">View the Project on GitHub <small>lstratman/EasyConnect</small></a></p>
         <ul>
           <li><a href="https://github.com/lstratman/EasyConnect/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://www.dropbox.com/s/6kkhdc21vx8mso6/EasyConnect-1.4.msi" target="_new">Download <strong>Installer</strong></a></li>
+          <li><a href="updates/EasyConnect.msi">Download <strong>Installer</strong></a></li>
           <li><a href="https://github.com/lstratman/EasyConnect">View On <strong>GitHub</strong></a></li>
         </ul>
       </header>
       <section>
-        <strong>Current version: 1.4</strong>
+        <strong>Current version: 1.5</strong>
 
         <br/><br/>
 
@@ -49,7 +49,14 @@
 
         <strong>Change Log</strong>
 
-        <br/><br/>v1.4
+        <br/><br/>v1.5
+
+        <ul>
+			<li>Converted the terminal control used by the SSH plugin over to a NuGet package based on a <a href="https://github.com/lstratman/poderosa" target="_blank">more recent version</a> of the <a href="https://github.com/poderosaproject/poderosa" target="_blank">Poderosa project</a>, which fixes some minor rendering glitches and moves this over to an maintained codebase.</li>
+			<li>Brought back the automatic update functionality using <a href="http://netsparkle.codeplex.com/" target="_blank">NetSparkle</a>.</li>
+        </ul>
+
+        v1.4
 
         <ul>
         	<li>Improved the performance of the title bar tabs library through multithreading to ensure that the tab tearing functionality and mouse-over tab effects remain active.</li>
@@ -68,7 +75,7 @@
 
         <ul>
         	<li>Added support for PowerShell.</li>
-			<li>Updated the installer to use <a href="http://wix.sourceforge.net/" target="_new">WiX</a> instead of the outdated Visual Studio Installer project.</li>
+			<li>Updated the installer to use <a href="http://wix.sourceforge.net/" target="_blank">WiX</a> instead of the outdated Visual Studio Installer project.</li>
 			<li>Improved the handling of disconnected sessions.  Now, instead of being presented with a modal dialog box, the icon for the tab will change and you will be able to click a button in the tab to reconnect or view any error messages associated with the disconnect.</li>
 			<li>The Aero Peek functionality has been disabled.</li>
         </ul>
@@ -88,7 +95,7 @@
 
         <ul>
           <li>Added support for SSH.</li>
-		  <li>Refactored the Win32 interop code and separated it into <a href="https://github.com/lstratman/Win32Interop" target="_new">another library</a>.</li>
+		  <li>Refactored the Win32 interop code and separated it into <a href="https://github.com/lstratman/Win32Interop" target="_blank">another library</a>.</li>
           <li>Added shortcut keys to create new tabs (Ctrl+T) and cycle through them (Ctrl+Tab and Ctrl+Shift+Tab).</li>
           <li>Disabled automatic update functionality until issues can be worked out.</li>
           <li>Cleaned up and commented the codebase.</li>
@@ -109,7 +116,7 @@
         <ul>
           <li>Cleaned up and fixed Aero peek functionality.</li>
           <li>Fixed issue opening up incorrect bookmark from the bookmarks menu in the connection window.</li>
-          <li>Added support for automatic updating going forward using <a href="http://wyday.com/wyupdate/" target="_new">wyUpdate</a>.</li>
+          <li>Added support for automatic updating going forward using <a href="http://wyday.com/wyupdate/" target="_blank">wyUpdate</a>.</li>
         </ul>
 
         v0.2
