@@ -1,13 +1,13 @@
-### Get the installer for the latest version (1.4) <a href="https://www.dropbox.com/s/6kkhdc21vx8mso6/EasyConnect-1.4.msi" target="_new">here</a>.
+### Get the installer for the latest version <a href="http://lstratman.github.io/EasyConnect/updates/EasyConnect.msi" target="_blank">here</a>.
 
 This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP), Secure Shell (SSH), PowerShell, and VNC but has a plugin architecture designed to enable third-party support for other protocols such as Citrix, etc.
 
-<a href="http://lstratman.github.com/EasyConnect/images/screenshots/bookmarks.png" target="_new"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/bookmarks.jpg"/></a>
-<a href="http://lstratman.github.com/EasyConnect/images/screenshots/rdp.png" target="_new"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/rdp.jpg"/></a>
-<a href="http://lstratman.github.com/EasyConnect/images/screenshots/ssh.png" target="_new"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/ssh.jpg"/></a>
-<a href="http://lstratman.github.com/EasyConnect/images/screenshots/powershell.png" target="_new"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/powershell.jpg"/></a>
-<a href="http://lstratman.github.com/EasyConnect/images/screenshots/options.png" target="_new"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/options.jpg"/></a>
-<a href="http://lstratman.github.com/EasyConnect/images/screenshots/history.png" target="_new"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/history.jpg"/></a>
+<a href="http://lstratman.github.com/EasyConnect/images/screenshots/bookmarks.png" target="_blank"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/bookmarks.jpg"/></a>
+<a href="http://lstratman.github.com/EasyConnect/images/screenshots/rdp.png" target="_blank"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/rdp.jpg"/></a>
+<a href="http://lstratman.github.com/EasyConnect/images/screenshots/ssh.png" target="_blank"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/ssh.jpg"/></a>
+<a href="http://lstratman.github.com/EasyConnect/images/screenshots/powershell.png" target="_blank"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/powershell.jpg"/></a>
+<a href="http://lstratman.github.com/EasyConnect/images/screenshots/options.png" target="_blank"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/options.jpg"/></a>
+<a href="http://lstratman.github.com/EasyConnect/images/screenshots/history.png" target="_blank"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/history.jpg"/></a>
 
 ## Implementing Protocol Plugins
 
