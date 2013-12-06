@@ -78,10 +78,6 @@
     <StartupObject>EasyConnect.EasyConnect</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AppLimit.NetSparkle.Net40, Version=1.0.83.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\AppLimit.NetSparkle.Net40.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\TitleBarTabs.1.1.3\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
@@ -89,6 +85,9 @@
     <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\TitleBarTabs.1.1.3\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="NetSparkle.Net40">
+      <HintPath>packages\NetSparkle.1.1.0\lib\net40-full\NetSparkle.Net40.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
@@ -257,9 +256,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="lib\AppLimit.NetSparkle.Net40.dll" />
-    <Content Include="lib\AutomaticUpdater.dll" />
-    <Content Include="lib\NetSparkleChecker.Net40.exe" />
     <Content Include="lib\System.Drawing.Html.dll" />
     <None Include="Resources\About.png" />
     <Content Include="Resources\ButtonPressedBackground.png" />
@@ -329,8 +325,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /y "$(ProjectDir)lib\NetSparkleChecker.Net40.exe" "$(TargetDir)"
-copy /y "$(SolutionDir)Win32Interop\SystemHookCore\$(ConfigurationName)\SystemHookCore.dll" "$(TargetDir)"
+    <PostBuildEvent>copy /y "$(SolutionDir)Win32Interop\SystemHookCore\$(ConfigurationName)\SystemHookCore.dll" "$(TargetDir)"
 copy /y "$(SolutionDir)Protocols\Vnc\bin\$(ConfigurationName)\scvncctrl.dll" "$(TargetDir)"
 Exit /b 0</PostBuildEvent>
   </PropertyGroup>

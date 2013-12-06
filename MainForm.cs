@@ -12,11 +12,11 @@ using System.Security;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Windows.Input;
-using AppLimit.NetSparkle;
 using EasyConnect.Properties;
 using EasyConnect.Protocols;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
+using NetSparkle;
 using Stratman.Windows.Forms.TitleBarTabs;
 using Win32Interop.Enums;
 using Win32Interop.Methods;
@@ -126,7 +126,7 @@ namespace EasyConnect
 			_sparkle = new Sparkle(
 				String.IsNullOrEmpty(ConfigurationManager.AppSettings["appCastUrl"])
 					? "http://lstratman.github.io/EasyConnect/updates/EasyConnect.xml"
-					: ConfigurationManager.AppSettings["appCastUrl"]);
+					: ConfigurationManager.AppSettings["appCastUrl"], Icon);
 
 			_sparkle.StartLoop(true, true);
 		}
@@ -840,18 +840,7 @@ can be used.";
 		/// <returns>True if the update process was started successfully, false otherwise.</returns>
 		public void CheckForUpdate()
 		{
-			_sparkle.StopLoop();
-
-			_sparkle.checkLoopFinished += _sparkle_checkLoopFinished;
-			_sparkle.StartLoop(true, true);
-		}
-
-		void _sparkle_checkLoopFinished(object sender, bool updateRequired)
-		{
-			_sparkle.checkLoopFinished -= _sparkle_checkLoopFinished;
-
-			if (!updateRequired)
-				MessageBox.Show(this, "No updates available.", "No updates", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			_sparkle.CheckForUpdatesAtUserRequest();
 		}
 	}
 }

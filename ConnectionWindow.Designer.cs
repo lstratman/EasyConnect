@@ -136,7 +136,6 @@
 			this._updatesMenuItem.Name = "_updatesMenuItem";
 			this._updatesMenuItem.Size = new System.Drawing.Size(186, 22);
 			this._updatesMenuItem.Text = "Check for update";
-			this._updatesMenuItem.Visible = false;
 			this._updatesMenuItem.Click += new System.EventHandler(this._updatesMenuItem_Click);
 			// 
 			// _toolsMenuSeparator2
