@@ -103,7 +103,7 @@
 				<File Id="UxthemeInteropAssembly" Name="Win32Interop.Uxtheme.dll" Source="$(var.EasyConnect.TargetDir)Win32Interop.Uxtheme.dll"/>
 			</Component>
 			<Component Id="AutoUpdateComponent" Guid="0D3C0544-EB17-4E32-A8F4-766BC41ACE82">
-				<File Id="AutoUpdateAssembly" Name="NetSparkle.Net40.dll" Source="$(var.EasyConnect.TargetDir)NetSparkle.Net40.dll"/>
+				<File Id="AutoUpdateAssembly" Name="AppLimit.NetSparkle.Net40.dll" Source="$(var.EasyConnect.TargetDir)AppLimit.NetSparkle.Net40.dll"/>
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="RdpPluginComponents" Directory="INSTALLFOLDER">

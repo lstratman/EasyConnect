@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
@@ -12,11 +13,11 @@ using System.Security;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Windows.Input;
+using AppLimit.NetSparkle;
 using EasyConnect.Properties;
 using EasyConnect.Protocols;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
-using NetSparkle;
 using Stratman.Windows.Forms.TitleBarTabs;
 using Win32Interop.Enums;
 using Win32Interop.Methods;
@@ -126,7 +127,9 @@ namespace EasyConnect
 			_sparkle = new Sparkle(
 				String.IsNullOrEmpty(ConfigurationManager.AppSettings["appCastUrl"])
 					? "http://lstratman.github.io/EasyConnect/updates/EasyConnect.xml"
-					: ConfigurationManager.AppSettings["appCastUrl"], Icon);
+					: ConfigurationManager.AppSettings["appCastUrl"]);
+			_sparkle.ApplicationWindowIcon = Icon;
+			_sparkle.ApplicationIcon = Icon.ToBitmap();
 
 			_sparkle.StartLoop(true, true);
 		}
@@ -840,7 +843,25 @@ can be used.";
 		/// <returns>True if the update process was started successfully, false otherwise.</returns>
 		public void CheckForUpdate()
 		{
-			_sparkle.CheckForUpdatesAtUserRequest();
+			_sparkle.StopLoop();
+
+			_sparkle = new Sparkle(
+				String.IsNullOrEmpty(ConfigurationManager.AppSettings["appCastUrl"])
+					? "http://lstratman.github.io/EasyConnect/updates/EasyConnect.xml"
+					: ConfigurationManager.AppSettings["appCastUrl"]);
+			_sparkle.ApplicationWindowIcon = Icon;
+			_sparkle.ApplicationIcon = Icon.ToBitmap();
+			_sparkle.checkLoopFinished += _sparkle_checkLoopFinished;
+
+			_sparkle.StartLoop(true, true);
+		}
+
+		void _sparkle_checkLoopFinished(object sender, bool UpdateRequired)
+		{
+			_sparkle.checkLoopFinished -= _sparkle_checkLoopFinished;
+
+			if (!UpdateRequired)
+				MessageBox.Show(this, "No updates are available.", "Software Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 	}
 }
