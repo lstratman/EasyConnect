@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<?define ProductVersion="1.5.0" ?>
+	<?define ProductVersion="1.5.1" ?>
 	<?define UpgradeCode="D49D0936-12DD-4DCE-BB1C-413823B2D6D0" ?>
 
 	<Product Id="*" Name="$(var.EasyConnect.ProjectName)" Language="1033" Version="$(var.ProductVersion)" Manufacturer="Luke Stratman" UpgradeCode="$(var.UpgradeCode)">
