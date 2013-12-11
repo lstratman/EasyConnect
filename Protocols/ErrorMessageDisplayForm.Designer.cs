@@ -30,9 +30,13 @@ namespace EasyConnect.Protocols
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this._okButton = new Button();
-			this._errorMessageTextBox = new TextBox();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ErrorMessageDisplayForm));
+			this._okButton = new System.Windows.Forms.Button();
+			this._errorMessageTextBox = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
+			// 
+			// _okButton
+			// 
 			this._okButton.Location = new System.Drawing.Point(285, 196);
 			this._okButton.Name = "_okButton";
 			this._okButton.Size = new System.Drawing.Size(75, 23);
@@ -40,22 +44,29 @@ namespace EasyConnect.Protocols
 			this._okButton.Text = "OK";
 			this._okButton.UseVisualStyleBackColor = true;
 			this._okButton.Click += new System.EventHandler(this._okButton_Click);
+			// 
+			// _errorMessageTextBox
+			// 
 			this._errorMessageTextBox.Location = new System.Drawing.Point(13, 13);
 			this._errorMessageTextBox.Multiline = true;
 			this._errorMessageTextBox.Name = "_errorMessageTextBox";
 			this._errorMessageTextBox.ReadOnly = true;
 			this._errorMessageTextBox.Size = new System.Drawing.Size(347, 173);
 			this._errorMessageTextBox.TabIndex = 1;
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6f, 13f);
-			this.AutoScaleMode = AutoScaleMode.Font;
+			// 
+			// ErrorMessageDisplayForm
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(372, 231);
-			this.Controls.Add((Control)this._errorMessageTextBox);
-			this.Controls.Add((Control)this._okButton);
-			this.FormBorderStyle = FormBorderStyle.FixedSingle;
+			this.Controls.Add(this._errorMessageTextBox);
+			this.Controls.Add(this._okButton);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "ErrorMessageDisplayForm";
-			this.StartPosition = FormStartPosition.CenterParent;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Error message";
 			this.ResumeLayout(false);
 			this.PerformLayout();
