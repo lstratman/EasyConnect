@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.Security;
+using System.Xml.Serialization;
 using EasyConnect.Common;
 
 namespace EasyConnect.Protocols.Rdp
@@ -49,6 +51,16 @@ namespace EasyConnect.Protocols.Rdp
 			VisualStyles = info.GetBoolean("VisualStyles");
 			WindowContentsWhileDragging = info.GetBoolean("WindowContentsWhileDragging");
 			ConnectToAdminChannel = info.GetBoolean("ConnectToAdminChannel");
+
+            UseTSProxy = info.GetBoolean("UseTSProxy");
+            ProxyName = info.GetString("ProxyName");
+            ProxyUserName = info.GetString("ProxyUserName");
+
+            string encryptedProxyPassword = info.GetString("ProxyPassword");
+            if (!String.IsNullOrEmpty(encryptedProxyPassword))
+            {
+                EncryptedPassword = encryptedProxyPassword;
+            }
 		}
 
 		/// <summary>
@@ -204,7 +216,83 @@ namespace EasyConnect.Protocols.Rdp
 			set;
 		}
 
-		/// <summary>
+        /// <summary>
+        /// Flag indicating whether we should connect via a TS proxy.
+        /// </summary>
+        public bool UseTSProxy
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The name for the proxy server.
+        /// </summary>
+        public string ProxyName
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The user name for the proxy server.
+        /// </summary>
+        public string ProxyUserName
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Encrypted and Base64-encoded password for the proxy server.
+        /// </summary>
+        [XmlElement("ProxyPassword")]
+        public string EncryptedProxyPassword
+        {
+            get
+            {
+                if (ProxyPassword == null || ProxyPassword.Length == 0)
+                    return null;
+
+                return Convert.ToBase64String(ConnectionFactory.Encrypt(ProxyPassword));
+            }
+
+            set
+            {
+                if (String.IsNullOrEmpty(value))
+                {
+                    ProxyPassword = null;
+                    return;
+                }
+
+                // Decrypt the password and put it into a secure string
+                SecureString password = new SecureString();
+                byte[] decryptedPassword = ConnectionFactory.Decrypt(Convert.FromBase64String(value));
+
+                for (int i = 0; i < decryptedPassword.Length; i++)
+                {
+                    if (decryptedPassword[i] == 0)
+                        break;
+
+                    password.AppendChar((char)decryptedPassword[i]);
+                    decryptedPassword[i] = 0;
+                }
+
+                ProxyPassword = password;
+            }
+        }
+
+        /// <summary>
+        /// The raw text of the password for the proxy server.
+        /// </summary>
+        [XmlIgnore]
+        public SecureString ProxyPassword
+        {
+            get;
+            set;
+        }
+        
+        /// <summary>
 		/// Method required for <see cref="ISerializable"/>; serializes the connection data to <paramref name="info"/>.
 		/// </summary>
 		/// <param name="info">Serialization store that the connection's data will be written to.</param>
@@ -230,6 +318,14 @@ namespace EasyConnect.Protocols.Rdp
 			info.AddValue("VisualStyles", VisualStyles);
 			info.AddValue("WindowContentsWhileDragging", WindowContentsWhileDragging);
 			info.AddValue("ConnectToAdminChannel", ConnectToAdminChannel);
+
+            info.AddValue("UseTSProxy", UseTSProxy);
+            info.AddValue("ProxyName", ProxyName);
+            info.AddValue("ProxyUserName", ProxyUserName);
+            info.AddValue(
+                "ProxyPassword", ProxyPassword == null
+                                     ? null
+                                     : EncryptedProxyPassword);
 		}
 	}
 }

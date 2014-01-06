@@ -1,34 +1,35 @@
 ﻿namespace EasyConnect.Protocols.Rdp
 {
-    partial class RdpOptionsForm
-    {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
+	partial class RdpOptionsForm
+	{
+		/// <summary>
+		/// Required designer variable.
+		/// </summary>
+		private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+		/// <summary>
+		/// Clean up any resources being used.
+		/// </summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && (components != null))
+			{
+				components.Dispose();
+			}
+			base.Dispose(disposing);
+		}
 
-        #region Windows Form Designer generated code
+		#region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
+		private void InitializeComponent()
+		{
 			System.Security.SecureString secureString1 = new System.Security.SecureString();
+			System.Security.SecureString secureString2 = new System.Security.SecureString();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RdpOptionsForm));
 			this._resolutionSliderLabel = new System.Windows.Forms.Label();
 			this._bitmapCachingCheckbox = new System.Windows.Forms.CheckBox();
@@ -76,6 +77,15 @@
 			this._experiencePanel = new System.Windows.Forms.Panel();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this._titleLabel = new System.Windows.Forms.Label();
+			this.panel2 = new System.Windows.Forms.Panel();
+			this.label4 = new System.Windows.Forms.Label();
+			this._useProxyCheckBox = new System.Windows.Forms.CheckBox();
+			this.label1 = new System.Windows.Forms.Label();
+			this._proxyUserNameTextBox = new System.Windows.Forms.TextBox();
+			this._proxyPasswordTextBox = new SecurePasswordTextBox.SecureTextBox();
+			this.label3 = new System.Windows.Forms.Label();
+			this._proxyHostNameTextBox = new System.Windows.Forms.TextBox();
+			this.label5 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this._resolutionSlider)).BeginInit();
 			this._flowLayoutPanel.SuspendLayout();
 			this._hostPanel.SuspendLayout();
@@ -83,6 +93,7 @@
 			this._displayPanel.SuspendLayout();
 			this._resourcesPanel.SuspendLayout();
 			this._experiencePanel.SuspendLayout();
+			this.panel2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// _resolutionSliderLabel
@@ -239,8 +250,8 @@
 			this._windowsKeyDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this._windowsKeyDropdown.FormattingEnabled = true;
 			this._windowsKeyDropdown.Items.AddRange(new object[] {
-            "On this computer",
-            "On the remote computer"});
+			"On this computer",
+			"On the remote computer"});
 			this._windowsKeyDropdown.Location = new System.Drawing.Point(189, 88);
 			this._windowsKeyDropdown.Name = "_windowsKeyDropdown";
 			this._windowsKeyDropdown.Size = new System.Drawing.Size(182, 21);
@@ -261,8 +272,8 @@
 			this._audioRecordingDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this._audioRecordingDropdown.FormattingEnabled = true;
 			this._audioRecordingDropdown.Items.AddRange(new object[] {
-            "Record from this computer",
-            "Do not record"});
+			"Record from this computer",
+			"Do not record"});
 			this._audioRecordingDropdown.Location = new System.Drawing.Point(189, 64);
 			this._audioRecordingDropdown.Name = "_audioRecordingDropdown";
 			this._audioRecordingDropdown.Size = new System.Drawing.Size(182, 21);
@@ -273,9 +284,9 @@
 			this._audioPlaybackDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this._audioPlaybackDropdown.FormattingEnabled = true;
 			this._audioPlaybackDropdown.Items.AddRange(new object[] {
-            "Play on this computer",
-            "Do not play",
-            "Play on remote computer"});
+			"Play on this computer",
+			"Do not play",
+			"Play on remote computer"});
 			this._audioPlaybackDropdown.Location = new System.Drawing.Point(189, 40);
 			this._audioPlaybackDropdown.Name = "_audioPlaybackDropdown";
 			this._audioPlaybackDropdown.Size = new System.Drawing.Size(182, 21);
@@ -316,10 +327,10 @@
 			this._colorDepthDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this._colorDepthDropdown.FormattingEnabled = true;
 			this._colorDepthDropdown.Items.AddRange(new object[] {
-            "High Color (15 bit)",
-            "High Color (16 bit)",
-            "True Color (24 bit)",
-            "Highest Quality (32 bit)"});
+			"High Color (15 bit)",
+			"High Color (16 bit)",
+			"True Color (24 bit)",
+			"Highest Quality (32 bit)"});
 			this._colorDepthDropdown.Location = new System.Drawing.Point(130, 102);
 			this._colorDepthDropdown.Name = "_colorDepthDropdown";
 			this._colorDepthDropdown.Size = new System.Drawing.Size(152, 21);
@@ -414,19 +425,20 @@
 			// _flowLayoutPanel
 			// 
 			this._flowLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Left) 
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this._flowLayoutPanel.Controls.Add(this._hostPanel);
 			this._flowLayoutPanel.Controls.Add(this._generalPanel);
 			this._flowLayoutPanel.Controls.Add(this._displayPanel);
 			this._flowLayoutPanel.Controls.Add(this._resourcesPanel);
 			this._flowLayoutPanel.Controls.Add(this._experiencePanel);
+			this._flowLayoutPanel.Controls.Add(this.panel2);
 			this._flowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
 			this._flowLayoutPanel.Location = new System.Drawing.Point(0, 61);
 			this._flowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
 			this._flowLayoutPanel.Name = "_flowLayoutPanel";
 			this._flowLayoutPanel.Padding = new System.Windows.Forms.Padding(15, 0, 15, 15);
-			this._flowLayoutPanel.Size = new System.Drawing.Size(721, 768);
+			this._flowLayoutPanel.Size = new System.Drawing.Size(721, 911);
 			this._flowLayoutPanel.TabIndex = 82;
 			this._flowLayoutPanel.WrapContents = false;
 			this._flowLayoutPanel.Resize += new System.EventHandler(this._flowLayoutPanel_Resize);
@@ -492,7 +504,7 @@
 			// _generalPanel
 			// 
 			this._generalPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this._generalPanel.Controls.Add(this._inheritedPasswordLabel);
 			this._generalPanel.Controls.Add(this._inheritedUsernameLabel);
 			this._generalPanel.Controls.Add(this._userNameLabel);
@@ -508,7 +520,7 @@
 			// _inheritedPasswordLabel
 			// 
 			this._inheritedPasswordLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this._inheritedPasswordLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F);
 			this._inheritedPasswordLabel.Location = new System.Drawing.Point(274, 69);
 			this._inheritedPasswordLabel.Name = "_inheritedPasswordLabel";
@@ -518,7 +530,7 @@
 			// _inheritedUsernameLabel
 			// 
 			this._inheritedUsernameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this._inheritedUsernameLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F);
 			this._inheritedUsernameLabel.Location = new System.Drawing.Point(274, 43);
 			this._inheritedUsernameLabel.Name = "_inheritedUsernameLabel";
@@ -575,7 +587,7 @@
 			// panel1
 			// 
 			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.panel1.BackColor = System.Drawing.Color.Silver;
 			this.panel1.Location = new System.Drawing.Point(29, 62);
 			this.panel1.Name = "panel1";
@@ -593,13 +605,102 @@
 			this._titleLabel.TabIndex = 83;
 			this._titleLabel.Text = "Remote Desktop Options";
 			// 
+			// panel2
+			// 
+			this.panel2.Controls.Add(this.label5);
+			this.panel2.Controls.Add(this.label1);
+			this.panel2.Controls.Add(this._proxyHostNameTextBox);
+			this.panel2.Controls.Add(this._proxyUserNameTextBox);
+			this.panel2.Controls.Add(this._proxyPasswordTextBox);
+			this.panel2.Controls.Add(this.label3);
+			this.panel2.Controls.Add(this.label4);
+			this.panel2.Controls.Add(this._useProxyCheckBox);
+			this.panel2.Location = new System.Drawing.Point(18, 756);
+			this.panel2.Name = "panel2";
+			this.panel2.Size = new System.Drawing.Size(684, 150);
+			this.panel2.TabIndex = 85;
+			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
+			this.label4.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+			this.label4.Location = new System.Drawing.Point(8, 11);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(75, 17);
+			this.label4.TabIndex = 61;
+			this.label4.Text = "TS Gateway";
+			// 
+			// _useProxyCheckBox
+			// 
+			this._useProxyCheckBox.AutoSize = true;
+			this._useProxyCheckBox.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+			this._useProxyCheckBox.Location = new System.Drawing.Point(32, 41);
+			this._useProxyCheckBox.Name = "_useProxyCheckBox";
+			this._useProxyCheckBox.Size = new System.Drawing.Size(106, 17);
+			this._useProxyCheckBox.TabIndex = 68;
+			this._useProxyCheckBox.Text = "Use TS Gateway";
+			this._useProxyCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// label1
+			// 
+			this.label1.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+			this.label1.Location = new System.Drawing.Point(29, 91);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(77, 20);
+			this.label1.TabIndex = 83;
+			this.label1.Text = "User name:";
+			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// _proxyUserNameTextBox
+			// 
+			this._proxyUserNameTextBox.Location = new System.Drawing.Point(123, 92);
+			this._proxyUserNameTextBox.Name = "_proxyUserNameTextBox";
+			this._proxyUserNameTextBox.Size = new System.Drawing.Size(154, 20);
+			this._proxyUserNameTextBox.TabIndex = 82;
+			// 
+			// _proxyPasswordTextBox
+			// 
+			this._proxyPasswordTextBox.Location = new System.Drawing.Point(123, 118);
+			this._proxyPasswordTextBox.Name = "_proxyPasswordTextBox";
+			this._proxyPasswordTextBox.PasswordChar = '*';
+			this._proxyPasswordTextBox.SecureText = secureString2;
+			this._proxyPasswordTextBox.Size = new System.Drawing.Size(154, 20);
+			this._proxyPasswordTextBox.TabIndex = 85;
+			// 
+			// label3
+			// 
+			this.label3.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+			this.label3.Location = new System.Drawing.Point(29, 117);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(77, 20);
+			this.label3.TabIndex = 84;
+			this.label3.Text = "Password:";
+			this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// _proxyHostNameTextBox
+			// 
+			this._proxyHostNameTextBox.Location = new System.Drawing.Point(123, 66);
+			this._proxyHostNameTextBox.Name = "_proxyHostNameTextBox";
+			this._proxyHostNameTextBox.Size = new System.Drawing.Size(154, 20);
+			this._proxyHostNameTextBox.TabIndex = 82;
+			// 
+			// label5
+			// 
+			this.label5.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+			this.label5.Location = new System.Drawing.Point(29, 65);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(77, 20);
+			this.label5.TabIndex = 83;
+			this.label5.Text = "Host name:";
+			this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
 			// RdpOptionsForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoScroll = true;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
-			this.ClientSize = new System.Drawing.Size(721, 829);
+			this.ClientSize = new System.Drawing.Size(721, 981);
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this._titleLabel);
 			this.Controls.Add(this._flowLayoutPanel);
@@ -620,58 +721,69 @@
 			this._resourcesPanel.PerformLayout();
 			this._experiencePanel.ResumeLayout(false);
 			this._experiencePanel.PerformLayout();
+			this.panel2.ResumeLayout(false);
+			this.panel2.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
-        }
+		}
 
-        #endregion
+		#endregion
 
-        private System.Windows.Forms.Label _resolutionSliderLabel;
-        private System.Windows.Forms.CheckBox _bitmapCachingCheckbox;
-        private System.Windows.Forms.CheckBox _visualStylesCheckbox;
-        private System.Windows.Forms.CheckBox _menuAnimationCheckbox;
-        private System.Windows.Forms.CheckBox _windowContentsWhileDraggingCheckbox;
-        private System.Windows.Forms.CheckBox _desktopCompositionCheckbox;
-        private System.Windows.Forms.CheckBox _fontSmoothingCheckbox;
-        private System.Windows.Forms.CheckBox _desktopBackgroundCheckbox;
-        private System.Windows.Forms.Label _allowTheFollowingLabel;
-        private System.Windows.Forms.Label _experienceLabel;
-        private System.Windows.Forms.CheckBox _drivesCheckbox;
-        private System.Windows.Forms.CheckBox _clipboardCheckbox;
-        private System.Windows.Forms.CheckBox _printersCheckbox;
-        private System.Windows.Forms.Label _localDevicesLabel;
-        private System.Windows.Forms.ComboBox _windowsKeyDropdown;
-        private System.Windows.Forms.Label _windowsKeysLabel;
-        private System.Windows.Forms.ComboBox _audioRecordingDropdown;
+		private System.Windows.Forms.Label _resolutionSliderLabel;
+		private System.Windows.Forms.CheckBox _bitmapCachingCheckbox;
+		private System.Windows.Forms.CheckBox _visualStylesCheckbox;
+		private System.Windows.Forms.CheckBox _menuAnimationCheckbox;
+		private System.Windows.Forms.CheckBox _windowContentsWhileDraggingCheckbox;
+		private System.Windows.Forms.CheckBox _desktopCompositionCheckbox;
+		private System.Windows.Forms.CheckBox _fontSmoothingCheckbox;
+		private System.Windows.Forms.CheckBox _desktopBackgroundCheckbox;
+		private System.Windows.Forms.Label _allowTheFollowingLabel;
+		private System.Windows.Forms.Label _experienceLabel;
+		private System.Windows.Forms.CheckBox _drivesCheckbox;
+		private System.Windows.Forms.CheckBox _clipboardCheckbox;
+		private System.Windows.Forms.CheckBox _printersCheckbox;
+		private System.Windows.Forms.Label _localDevicesLabel;
+		private System.Windows.Forms.ComboBox _windowsKeyDropdown;
+		private System.Windows.Forms.Label _windowsKeysLabel;
+		private System.Windows.Forms.ComboBox _audioRecordingDropdown;
 		private System.Windows.Forms.ComboBox _audioPlaybackDropdown;
-        private System.Windows.Forms.Label _localResourcesLabel;
-        private System.Windows.Forms.Label _remoteAudioRecordingLabel;
-        private System.Windows.Forms.Label _remoteAudioPlaybackLabel;
-        private System.Windows.Forms.ComboBox _colorDepthDropdown;
+		private System.Windows.Forms.Label _localResourcesLabel;
+		private System.Windows.Forms.Label _remoteAudioRecordingLabel;
+		private System.Windows.Forms.Label _remoteAudioPlaybackLabel;
+		private System.Windows.Forms.ComboBox _colorDepthDropdown;
 		private System.Windows.Forms.TrackBar _resolutionSlider;
-        private System.Windows.Forms.Label _displayLabel;
-        private System.Windows.Forms.Label _generalLabel;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label _passwordLabel;
-        private System.Windows.Forms.Label _resolutionLabel;
-        private System.Windows.Forms.Label _userNameLabel;
-        private System.Windows.Forms.TextBox _userNameTextBox;
-        private SecurePasswordTextBox.SecureTextBox _passwordTextBox;
-        private System.Windows.Forms.FlowLayoutPanel _flowLayoutPanel;
-        private System.Windows.Forms.Panel _generalPanel;
-        private System.Windows.Forms.Panel _displayPanel;
-        private System.Windows.Forms.Panel _resourcesPanel;
-        private System.Windows.Forms.Panel _experiencePanel;
-        private System.Windows.Forms.Panel _hostPanel;
-        private System.Windows.Forms.Label _hostNameLabel;
-        private System.Windows.Forms.TextBox _hostNameTextBox;
+		private System.Windows.Forms.Label _displayLabel;
+		private System.Windows.Forms.Label _generalLabel;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label _passwordLabel;
+		private System.Windows.Forms.Label _resolutionLabel;
+		private System.Windows.Forms.Label _userNameLabel;
+		private System.Windows.Forms.TextBox _userNameTextBox;
+		private SecurePasswordTextBox.SecureTextBox _passwordTextBox;
+		private System.Windows.Forms.FlowLayoutPanel _flowLayoutPanel;
+		private System.Windows.Forms.Panel _generalPanel;
+		private System.Windows.Forms.Panel _displayPanel;
+		private System.Windows.Forms.Panel _resourcesPanel;
+		private System.Windows.Forms.Panel _experiencePanel;
+		private System.Windows.Forms.Panel _hostPanel;
+		private System.Windows.Forms.Label _hostNameLabel;
+		private System.Windows.Forms.TextBox _hostNameTextBox;
 		private System.Windows.Forms.Label _hostLabel;
-        private System.Windows.Forms.CheckBox _adminChannelCheckBox;
-        private System.Windows.Forms.Label _adminChannelLabel;
-        private System.Windows.Forms.Label _inheritedPasswordLabel;
-        private System.Windows.Forms.Label _inheritedUsernameLabel;
+		private System.Windows.Forms.CheckBox _adminChannelCheckBox;
+		private System.Windows.Forms.Label _adminChannelLabel;
+		private System.Windows.Forms.Label _inheritedPasswordLabel;
+		private System.Windows.Forms.Label _inheritedUsernameLabel;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Label _titleLabel;
-    }
+		private System.Windows.Forms.Panel panel2;
+		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.TextBox _proxyHostNameTextBox;
+		private System.Windows.Forms.TextBox _proxyUserNameTextBox;
+		private SecurePasswordTextBox.SecureTextBox _proxyPasswordTextBox;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.CheckBox _useProxyCheckBox;
+	}
 }
