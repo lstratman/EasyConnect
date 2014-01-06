@@ -361,7 +361,114 @@ namespace EasyConnect.Protocols.Rdp
 			}
 		}
 
+        /// <summary>
+        /// Flag indicating whether we should connect with a TS proxy.
+        /// </summary>
+        public bool UseTSProxy
+        {
+            get
+            {
+                return _rdpWindow.TransportSettings.GatewayUsageMethod == 1;
+            }
+
+            set
+            {
+                if (value)
+                {
+                    _rdpWindow.TransportSettings.GatewayUsageMethod = 1; //TSC_PROXY_MODE_DIRECT
+                }
+                else
+                {
+                    _rdpWindow.TransportSettings.GatewayUsageMethod = 0; //TSC_PROXY_MODE_NONE_DIRECT
+                }
+            }
+        }
+
+        /// <summary>
+        /// The host name for the proxy server.
+        /// </summary>
+        public string ProxyName
+        {
+            get
+            {
+                return _rdpWindow.TransportSettings.GatewayHostname;
+            }
+
+            set
+            {
+                if (value == null || String.IsNullOrWhiteSpace(value))
+                {
+                    _rdpWindow.TransportSettings.GatewayHostname = "";
+                }
+                else
+                {
+                    _rdpWindow.TransportSettings.GatewayHostname = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// The user name for the proxy server.
+        /// </summary>
+        public string ProxyUserName
+        {
+            get
+            {
+                if (String.IsNullOrWhiteSpace(_rdpWindow.TransportSettings2.GatewayDomain))
+                {
+                    return _rdpWindow.TransportSettings2.GatewayUsername;
+                }
+                else
+                {
+                    return _rdpWindow.TransportSettings2.GatewayDomain + '\\' + _rdpWindow.TransportSettings2.GatewayUsername;
+                }
+            }
+
+            set
+            {
+                if (String.IsNullOrWhiteSpace(value))
+                {
+                    _rdpWindow.TransportSettings2.GatewayDomain = "";
+                    _rdpWindow.TransportSettings2.GatewayUsername = "";
+                }
+                else if (value.Contains("\\"))
+                {
+                    string[] str = value.Split(
+                        new char[]
+                        {
+                            '\\'
+                        });
+                    _rdpWindow.TransportSettings2.GatewayDomain = str[0];
+                    _rdpWindow.TransportSettings2.GatewayUsername = str[1];
+                }
+                else
+                {
+                    _rdpWindow.TransportSettings2.GatewayDomain = "";
+                    _rdpWindow.TransportSettings2.GatewayUsername = value;
+                }
+            }
+        }
+
 		/// <summary>
+		/// The password for the proxy server.
+		/// </summary>
+		public SecureString ProxyPassword
+		{
+			set
+			{
+                if (value == null || value.Length == 0)
+                {
+                    _rdpWindow.TransportSettings2.GatewayPassword = "";
+                }
+                else
+                {
+                    IntPtr password = Marshal.SecureStringToGlobalAllocAnsi(value);
+                    _rdpWindow.TransportSettings2.GatewayPassword = Marshal.PtrToStringAnsi(password);
+                }
+			}
+		}
+        
+        /// <summary>
 		/// Control instance that hosts the actual remote desktop UI.
 		/// </summary>
 		protected override Control ConnectionWindow
@@ -417,7 +524,22 @@ namespace EasyConnect.Protocols.Rdp
 			_rdpWindow.AdvancedSettings3.EnableAutoReconnect = false;
 			_rdpWindow.Visible = false;
 			_rdpWindow.OnConnected += OnConnected;
-			_rdpWindow.Connect();
+
+            //_rdpWindow.AdvancedSettings5.AuthenticationLevel = 2;
+            
+            //UseTSProxy = true;
+            //ProxyName = "co1tsgw.phx.gbl";
+            //ProxyUserName = "phx/bozeng";
+            //ProxyPassword = password;
+            _rdpWindow.TransportSettings.GatewayProfileUsageMethod = 1; // TSC_PROXY_PROFILE_MODE_EXPLICIT
+            _rdpWindow.TransportSettings.GatewayCredsSource = 0; // TSC_PROXY_CREDS_MODE_USERPASS
+            _rdpWindow.TransportSettings2.GatewayCredSharing = 0;
+            UseTSProxy = Connection.UseTSProxy;
+            ProxyName = Connection.ProxyName;
+            ProxyUserName = Connection.ProxyUserName;
+            ProxyPassword = Connection.ProxyPassword;
+
+            _rdpWindow.Connect();
 		}
 
 		/// <summary>

@@ -149,7 +149,14 @@ namespace EasyConnect.Protocols.Rdp
 			_bitmapCachingCheckbox.Checked = Connection.PersistentBitmapCaching;
 			_adminChannelCheckBox.Checked = Connection.ConnectToAdminChannel;
 
-			// Hide the host panel if we're in defaults mode
+            _useProxyCheckBox.Checked = Connection.UseTSProxy;
+		    _proxyHostNameTextBox.Text = Connection.ProxyName;
+            _proxyUserNameTextBox.Text = Connection.ProxyUserName;
+            _proxyPasswordTextBox.SecureText = (Connection.ProxyPassword == null
+                                               ? new SecureString()
+                                               : Connection.ProxyPassword.Copy());
+
+            // Hide the host panel if we're in defaults mode
 			if (DefaultsMode)
 				_hostPanel.Visible = false;
 		}
@@ -204,6 +211,11 @@ namespace EasyConnect.Protocols.Rdp
 			Connection.VisualStyles = _visualStylesCheckbox.Checked;
 			Connection.PersistentBitmapCaching = _bitmapCachingCheckbox.Checked;
 			Connection.ConnectToAdminChannel = _adminChannelCheckBox.Checked;
+
+            Connection.UseTSProxy = _useProxyCheckBox.Checked;
+            Connection.ProxyName = _proxyHostNameTextBox.Text;
+            Connection.ProxyUserName = _proxyUserNameTextBox.Text;
+            Connection.ProxyPassword = _proxyPasswordTextBox.SecureText;
 		}
 
 		/// <summary>
