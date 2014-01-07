@@ -525,21 +525,19 @@ namespace EasyConnect.Protocols.Rdp
 			_rdpWindow.Visible = false;
 			_rdpWindow.OnConnected += OnConnected;
 
-            //_rdpWindow.AdvancedSettings5.AuthenticationLevel = 2;
-            
-            //UseTSProxy = true;
-            //ProxyName = "co1tsgw.phx.gbl";
-            //ProxyUserName = "phx/bozeng";
-            //ProxyPassword = password;
-            _rdpWindow.TransportSettings.GatewayProfileUsageMethod = 1; // TSC_PROXY_PROFILE_MODE_EXPLICIT
-            _rdpWindow.TransportSettings.GatewayCredsSource = 0; // TSC_PROXY_CREDS_MODE_USERPASS
-            _rdpWindow.TransportSettings2.GatewayCredSharing = 0;
-            UseTSProxy = Connection.UseTSProxy;
-            ProxyName = Connection.ProxyName;
-            ProxyUserName = Connection.ProxyUserName;
-            ProxyPassword = Connection.ProxyPassword;
+			// support NLA
+			_rdpWindow.AdvancedSettings5.AuthenticationLevel = 2;
+			_rdpWindow.AdvancedSettings7.EnableCredSspSupport = true;
 
-            _rdpWindow.Connect();
+			_rdpWindow.TransportSettings.GatewayProfileUsageMethod = 1; // TSC_PROXY_PROFILE_MODE_EXPLICIT
+			_rdpWindow.TransportSettings.GatewayCredsSource = 0; // TSC_PROXY_CREDS_MODE_USERPASS
+			_rdpWindow.TransportSettings2.GatewayCredSharing = 0;
+			UseTSProxy = Connection.UseTSProxy;
+			ProxyName = Connection.ProxyName;
+			ProxyUserName = Connection.ProxyUserName;
+			ProxyPassword = Connection.ProxyPassword;
+
+			_rdpWindow.Connect();
 		}
 
 		/// <summary>
