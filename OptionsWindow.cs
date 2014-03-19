@@ -108,6 +108,7 @@ namespace EasyConnect
 
 			_containerPanel.Controls.Clear();
 			_containerPanel.Controls.Add(optionsForm);
+			_containerPanel.AutoScrollMinSize = optionsForm.Size;
 
 			optionsForm.Show();
 

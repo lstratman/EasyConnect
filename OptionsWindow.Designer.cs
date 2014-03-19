@@ -1,4 +1,5 @@
-﻿using SecurePasswordTextBox;
+﻿using System.Drawing;
+using SecurePasswordTextBox;
 
 namespace EasyConnect
 {
