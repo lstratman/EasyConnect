@@ -3,7 +3,7 @@
   <metadata>
     <id>easyconnect</id>
     <title>EasyConnect</title>
-    <version>1.5.1.0</version>
+    <version>1.6.0.0</version>
     <authors>Luke Stratman</authors>
     <owners>Luke Stratman</owners>
     <description>Tabbed remote desktop application with a Chrome-like UI.</description>

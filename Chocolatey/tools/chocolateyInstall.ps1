@@ -1,4 +1,4 @@
-$version = "1.5.1"
+$version = "1.6.0.0"
 $packageName = "EasyConnect"
 $installerType = "msi"
 $url = "http://lstratman.github.io/EasyConnect/updates/EasyConnect-$version.msi"
