@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>easyconnect</id>
+    <title>EasyConnect</title>
+    <version>1.5.1.0</version>
+    <authors>Luke Stratman</authors>
+    <owners>Luke Stratman</owners>
+    <description>Tabbed remote desktop application with a Chrome-like UI.</description>
+    <summary/>
+    <projectUrl>https://github.com/lstratman/EasyConnect</projectUrl>
+    <copyright>(c) 2013, Luke Stratman</copyright>
+    <licenseUrl>https://github.com/lstratman/EasyConnect/blob/master/GPL.txt</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <releaseNotes>- Fixed a runtime error that occurs when clicking on the "view error message" link that is displayed when a connection cannot be established.</releaseNotes>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
