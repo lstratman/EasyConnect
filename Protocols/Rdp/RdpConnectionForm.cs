@@ -380,7 +380,7 @@ namespace EasyConnect.Protocols.Rdp
 		{
 			if (!_rdpWindowSizeSet)
 			{
-				_rdpWindow.Size = new Size(Size.Width + 2, Size.Height + 2);
+				_rdpWindow.Size = new Size(Size.Width, Size.Height);
 				_rdpWindowSizeSet = true;
 			}
 
