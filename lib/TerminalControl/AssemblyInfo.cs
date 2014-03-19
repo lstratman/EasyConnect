@@ -11,15 +11,15 @@ using System.Runtime.CompilerServices;
 // 情報を変更するには、これらの属性値を変更してください。
 //
 [assembly: AssemblyTitle("Terminal Emulator <Poderosa>")]
-[assembly: AssemblyDescription("3.0.0")]
+[assembly: AssemblyDescription("1.6.0.0")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Poderosa Project")]
 [assembly: AssemblyProduct("Poderosa")]
 [assembly: AssemblyCopyright("Poderosa Project")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
-[assembly: AssemblyFileVersion("1.0")]
-[assembly: AssemblyInformationalVersion("1.0")]		
+[assembly: AssemblyFileVersion("1.6.0.0")]
+[assembly: AssemblyInformationalVersion("1.6.0.0")]		
 
 //
 // アセンブリのバージョン情報は、以下の 4 つの属性で構成されます :
@@ -32,7 +32,7 @@ using System.Runtime.CompilerServices;
 // 下にあるように、'*' を使って、すべての値を指定するか、
 // ビルドおよびリビジョン番号を既定値にすることができます。
 
-[assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.6.0.0")]
 
 //
 // アセンブリに署名するには、使用するキーを指定しなければなりません。 
