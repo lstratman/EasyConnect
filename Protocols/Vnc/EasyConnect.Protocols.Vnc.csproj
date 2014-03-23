@@ -32,6 +32,15 @@
     <DocumentationFile>bin\Release\EasyConnect.Protocols.Vnc.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AxInterop.ViewerX, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\AxInterop.ViewerX.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.ViewerX, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>lib\Interop.ViewerX.dll</HintPath>
+    </Reference>
     <Reference Include="SecurePasswordTextBox">
       <HintPath>..\..\lib\SecurePasswordTextBox.dll</HintPath>
     </Reference>
@@ -44,10 +53,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VncSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=61974755c7bfea7c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\VncSharp.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources.Designer.cs">
@@ -96,32 +101,14 @@
   <ItemGroup>
     <None Include="Resources\Vnc.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="AxViewerX">
-      <Guid>{2864468C-765F-4EF3-B8CF-42666C92B545}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>aximp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
-    <COMReference Include="ViewerX">
-      <Guid>{2864468C-765F-4EF3-B8CF-42666C92B545}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <Content Include="lib\scvncctrl.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /y "$(ProjectDir)lib\scvncctrl.dll" "$(TargetDir)"</PostBuildEvent>
+    <PostBuildEvent>copy /y "$(ProjectDir)lib\scvncctrl.dll" "$(TargetDir)"
+copy /y "$(ProjectDir)lib\Interop.ViewerX.dll" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
