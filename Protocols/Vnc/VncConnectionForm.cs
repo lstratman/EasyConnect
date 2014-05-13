@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using System.Security;
+using System.Threading;
 using System.Windows.Forms;
 using VncSharp;
 
@@ -31,7 +32,8 @@ namespace EasyConnect.Protocols.Vnc
 
 		/// <summary>
 		/// Establishes the connection to the remote server; initializes this <see cref="_vncConnection"/>'s properties from 
-		/// <see cref="BaseConnectionForm{T}.Connection"/> and then calls <see cref="VncDesktop.Connect(string, int, bool, bool)"/> on <see cref="_vncConnection"/>.
+		/// <see cref="BaseConnectionForm{T}.Connection"/> and then calls <see cref="VncDesktop.Connect(string, int, bool, bool)"/> on 
+		/// <see cref="_vncConnection"/>.
 		/// </summary>
 		public override void Connect()
 		{
@@ -43,7 +45,8 @@ namespace EasyConnect.Protocols.Vnc
 			_vncConnection.ConnectionLost += OnConnectionLost;
 			_vncConnection.GetPassword = GetPassword;
 
-			_vncConnection.Connect(Connection.Host, Connection.Display, Connection.ViewOnly, Connection.Scale);
+			Thread connectionThread = new Thread(() => _vncConnection.Connect(Connection.Host, Connection.Display, Connection.ViewOnly, Connection.Scale));
+			connectionThread.Start();
 		}
 
 		void _vncConnection_VncUpdated(object sender, VncEventArgs e)
