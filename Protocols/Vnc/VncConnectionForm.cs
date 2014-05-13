@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.IO;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Threading;
 using System.Windows.Forms;
@@ -45,7 +47,20 @@ namespace EasyConnect.Protocols.Vnc
 			_vncConnection.ConnectionLost += OnConnectionLost;
 			_vncConnection.GetPassword = GetPassword;
 
-			Thread connectionThread = new Thread(() => _vncConnection.Connect(Connection.Host, Connection.Display, Connection.ViewOnly, Connection.Scale));
+			Thread connectionThread = new Thread(
+				() =>
+				{
+					try
+					{
+						_vncConnection.Connect(Connection.Host, Connection.Display, Connection.ViewOnly, Connection.Scale);
+					}
+
+					catch (Exception e)
+					{
+						OnConnectionLost(this, new ErrorEventArgs(e));
+					}
+				});
+
 			connectionThread.Start();
 		}
 
