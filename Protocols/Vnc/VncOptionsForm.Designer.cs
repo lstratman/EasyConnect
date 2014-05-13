@@ -28,43 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-			System.Security.SecureString secureString1 = new System.Security.SecureString();
+			System.Security.SecureString secureString2 = new System.Security.SecureString();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VncOptionsForm));
 			this._displayLabel = new System.Windows.Forms.Label();
 			this._displayNumberLabel = new System.Windows.Forms.Label();
 			this._flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
 			this._generalPanel = new System.Windows.Forms.Panel();
-			this._authenticationTypeLabel = new System.Windows.Forms.Label();
-			this._authenticationTypeDropdown = new System.Windows.Forms.ComboBox();
 			this._inheritedPasswordLabel = new System.Windows.Forms.Label();
-			this._inheritedUsernameLabel = new System.Windows.Forms.Label();
 			this._passwordTextBox = new SecurePasswordTextBox.SecureTextBox();
-			this._userNameLabel = new System.Windows.Forms.Label();
-			this._userNameTextBox = new System.Windows.Forms.TextBox();
 			this._passwordLabel = new System.Windows.Forms.Label();
 			this._generalLabel = new System.Windows.Forms.Label();
 			this._hostPanel = new System.Windows.Forms.Panel();
-			this._keyFileBrowseButton = new System.Windows.Forms.Button();
-			this._keyFileLabel = new System.Windows.Forms.Label();
-			this._keyFileTextBox = new System.Windows.Forms.TextBox();
-			this._encryptionTypeLabel = new System.Windows.Forms.Label();
-			this._encryptionTypeDropdown = new System.Windows.Forms.ComboBox();
 			this._portUpDown = new System.Windows.Forms.NumericUpDown();
 			this._portLabel = new System.Windows.Forms.Label();
 			this._hostNameLabel = new System.Windows.Forms.Label();
 			this._hostNameTextBox = new System.Windows.Forms.TextBox();
 			this._hostLabel = new System.Windows.Forms.Label();
 			this._displayPanel = new System.Windows.Forms.Panel();
-			this._colorDepthLabel = new System.Windows.Forms.Label();
-			this._colorDepthDropdown = new System.Windows.Forms.ComboBox();
-			this._encodingTypeLabel = new System.Windows.Forms.Label();
-			this._encodingTypeDropdown = new System.Windows.Forms.ComboBox();
 			this._viewOnlyCheckbox = new System.Windows.Forms.CheckBox();
 			this._viewOnlyLabel = new System.Windows.Forms.Label();
 			this._scaleCheckbox = new System.Windows.Forms.CheckBox();
 			this._displayUpDown = new System.Windows.Forms.NumericUpDown();
 			this._scaleLabel = new System.Windows.Forms.Label();
-			this._openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this._titleLabel = new System.Windows.Forms.Label();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this._flowLayoutPanel.SuspendLayout();
@@ -116,94 +101,39 @@
 			// 
 			this._generalPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this._generalPanel.Controls.Add(this._authenticationTypeLabel);
-			this._generalPanel.Controls.Add(this._authenticationTypeDropdown);
 			this._generalPanel.Controls.Add(this._inheritedPasswordLabel);
-			this._generalPanel.Controls.Add(this._inheritedUsernameLabel);
 			this._generalPanel.Controls.Add(this._passwordTextBox);
-			this._generalPanel.Controls.Add(this._userNameLabel);
-			this._generalPanel.Controls.Add(this._userNameTextBox);
 			this._generalPanel.Controls.Add(this._passwordLabel);
 			this._generalPanel.Controls.Add(this._generalLabel);
 			this._generalPanel.Location = new System.Drawing.Point(18, 3);
 			this._generalPanel.Name = "_generalPanel";
-			this._generalPanel.Size = new System.Drawing.Size(684, 122);
+			this._generalPanel.Size = new System.Drawing.Size(684, 76);
 			this._generalPanel.TabIndex = 86;
-			// 
-			// _authenticationTypeLabel
-			// 
-			this._authenticationTypeLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-			this._authenticationTypeLabel.Location = new System.Drawing.Point(31, 38);
-			this._authenticationTypeLabel.Name = "_authenticationTypeLabel";
-			this._authenticationTypeLabel.Size = new System.Drawing.Size(122, 18);
-			this._authenticationTypeLabel.TabIndex = 96;
-			this._authenticationTypeLabel.Text = "Authentication type:";
-			this._authenticationTypeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// _authenticationTypeDropdown
-			// 
-			this._authenticationTypeDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this._authenticationTypeDropdown.FormattingEnabled = true;
-			this._authenticationTypeDropdown.Items.AddRange(new object[] {
-            "Basic",
-            "NTLM"});
-			this._authenticationTypeDropdown.Location = new System.Drawing.Point(159, 38);
-			this._authenticationTypeDropdown.Name = "_authenticationTypeDropdown";
-			this._authenticationTypeDropdown.Size = new System.Drawing.Size(121, 21);
-			this._authenticationTypeDropdown.TabIndex = 95;
 			// 
 			// _inheritedPasswordLabel
 			// 
 			this._inheritedPasswordLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this._inheritedPasswordLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-			this._inheritedPasswordLabel.Location = new System.Drawing.Point(319, 89);
+			this._inheritedPasswordLabel.Location = new System.Drawing.Point(319, 42);
 			this._inheritedPasswordLabel.Name = "_inheritedPasswordLabel";
 			this._inheritedPasswordLabel.Size = new System.Drawing.Size(263, 16);
 			this._inheritedPasswordLabel.TabIndex = 94;
 			// 
-			// _inheritedUsernameLabel
-			// 
-			this._inheritedUsernameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this._inheritedUsernameLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-			this._inheritedUsernameLabel.Location = new System.Drawing.Point(319, 66);
-			this._inheritedUsernameLabel.Name = "_inheritedUsernameLabel";
-			this._inheritedUsernameLabel.Size = new System.Drawing.Size(263, 16);
-			this._inheritedUsernameLabel.TabIndex = 93;
-			// 
 			// _passwordTextBox
 			// 
-			this._passwordTextBox.Location = new System.Drawing.Point(159, 86);
+			this._passwordTextBox.Location = new System.Drawing.Point(159, 39);
 			this._passwordTextBox.Name = "_passwordTextBox";
 			this._passwordTextBox.PasswordChar = '*';
-			this._passwordTextBox.SecureText = secureString1;
+			this._passwordTextBox.SecureText = secureString2;
 			this._passwordTextBox.Size = new System.Drawing.Size(154, 20);
 			this._passwordTextBox.TabIndex = 82;
 			this._passwordTextBox.TextChanged += new System.EventHandler(this._passwordTextBox_TextChanged);
 			// 
-			// _userNameLabel
-			// 
-			this._userNameLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-			this._userNameLabel.Location = new System.Drawing.Point(31, 62);
-			this._userNameLabel.Name = "_userNameLabel";
-			this._userNameLabel.Size = new System.Drawing.Size(122, 20);
-			this._userNameLabel.TabIndex = 49;
-			this._userNameLabel.Text = "User name:";
-			this._userNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// _userNameTextBox
-			// 
-			this._userNameTextBox.Location = new System.Drawing.Point(159, 63);
-			this._userNameTextBox.Name = "_userNameTextBox";
-			this._userNameTextBox.Size = new System.Drawing.Size(154, 20);
-			this._userNameTextBox.TabIndex = 48;
-			this._userNameTextBox.TextChanged += new System.EventHandler(this._userNameTextBox_TextChanged);
-			// 
 			// _passwordLabel
 			// 
 			this._passwordLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-			this._passwordLabel.Location = new System.Drawing.Point(31, 86);
+			this._passwordLabel.Location = new System.Drawing.Point(31, 39);
 			this._passwordLabel.Name = "_passwordLabel";
 			this._passwordLabel.Size = new System.Drawing.Size(125, 20);
 			this._passwordLabel.TabIndex = 50;
@@ -222,71 +152,15 @@
 			// 
 			// _hostPanel
 			// 
-			this._hostPanel.Controls.Add(this._keyFileBrowseButton);
-			this._hostPanel.Controls.Add(this._keyFileLabel);
-			this._hostPanel.Controls.Add(this._keyFileTextBox);
-			this._hostPanel.Controls.Add(this._encryptionTypeLabel);
-			this._hostPanel.Controls.Add(this._encryptionTypeDropdown);
 			this._hostPanel.Controls.Add(this._portUpDown);
 			this._hostPanel.Controls.Add(this._portLabel);
 			this._hostPanel.Controls.Add(this._hostNameLabel);
 			this._hostPanel.Controls.Add(this._hostNameTextBox);
 			this._hostPanel.Controls.Add(this._hostLabel);
-			this._hostPanel.Location = new System.Drawing.Point(18, 131);
+			this._hostPanel.Location = new System.Drawing.Point(18, 85);
 			this._hostPanel.Name = "_hostPanel";
-			this._hostPanel.Size = new System.Drawing.Size(684, 149);
+			this._hostPanel.Size = new System.Drawing.Size(684, 99);
 			this._hostPanel.TabIndex = 84;
-			// 
-			// _keyFileBrowseButton
-			// 
-			this._keyFileBrowseButton.Location = new System.Drawing.Point(319, 112);
-			this._keyFileBrowseButton.Name = "_keyFileBrowseButton";
-			this._keyFileBrowseButton.Size = new System.Drawing.Size(25, 23);
-			this._keyFileBrowseButton.TabIndex = 88;
-			this._keyFileBrowseButton.Text = "...";
-			this._keyFileBrowseButton.UseVisualStyleBackColor = true;
-			this._keyFileBrowseButton.Click += new System.EventHandler(this._keyFileBrowseButton_Click);
-			// 
-			// _keyFileLabel
-			// 
-			this._keyFileLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-			this._keyFileLabel.Location = new System.Drawing.Point(31, 112);
-			this._keyFileLabel.Name = "_keyFileLabel";
-			this._keyFileLabel.Size = new System.Drawing.Size(122, 20);
-			this._keyFileLabel.TabIndex = 60;
-			this._keyFileLabel.Text = "Key file:";
-			this._keyFileLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// _keyFileTextBox
-			// 
-			this._keyFileTextBox.Location = new System.Drawing.Point(159, 114);
-			this._keyFileTextBox.Name = "_keyFileTextBox";
-			this._keyFileTextBox.Size = new System.Drawing.Size(154, 20);
-			this._keyFileTextBox.TabIndex = 59;
-			// 
-			// _encryptionTypeLabel
-			// 
-			this._encryptionTypeLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-			this._encryptionTypeLabel.Location = new System.Drawing.Point(31, 87);
-			this._encryptionTypeLabel.Name = "_encryptionTypeLabel";
-			this._encryptionTypeLabel.Size = new System.Drawing.Size(122, 18);
-			this._encryptionTypeLabel.TabIndex = 58;
-			this._encryptionTypeLabel.Text = "Encryption type:";
-			this._encryptionTypeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// _encryptionTypeDropdown
-			// 
-			this._encryptionTypeDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this._encryptionTypeDropdown.FormattingEnabled = true;
-			this._encryptionTypeDropdown.Items.AddRange(new object[] {
-            "None",
-            "MSRC4",
-            "SecureVNC"});
-			this._encryptionTypeDropdown.Location = new System.Drawing.Point(159, 87);
-			this._encryptionTypeDropdown.Name = "_encryptionTypeDropdown";
-			this._encryptionTypeDropdown.Size = new System.Drawing.Size(121, 21);
-			this._encryptionTypeDropdown.TabIndex = 57;
-			this._encryptionTypeDropdown.SelectedIndexChanged += new System.EventHandler(this._encryptionTypeDropdown_SelectedIndexChanged);
 			// 
 			// _portUpDown
 			// 
@@ -344,10 +218,6 @@
 			// 
 			// _displayPanel
 			// 
-			this._displayPanel.Controls.Add(this._colorDepthLabel);
-			this._displayPanel.Controls.Add(this._colorDepthDropdown);
-			this._displayPanel.Controls.Add(this._encodingTypeLabel);
-			this._displayPanel.Controls.Add(this._encodingTypeDropdown);
 			this._displayPanel.Controls.Add(this._viewOnlyCheckbox);
 			this._displayPanel.Controls.Add(this._viewOnlyLabel);
 			this._displayPanel.Controls.Add(this._scaleCheckbox);
@@ -355,64 +225,10 @@
 			this._displayPanel.Controls.Add(this._displayLabel);
 			this._displayPanel.Controls.Add(this._displayNumberLabel);
 			this._displayPanel.Controls.Add(this._scaleLabel);
-			this._displayPanel.Location = new System.Drawing.Point(18, 286);
+			this._displayPanel.Location = new System.Drawing.Point(18, 190);
 			this._displayPanel.Name = "_displayPanel";
-			this._displayPanel.Size = new System.Drawing.Size(684, 166);
+			this._displayPanel.Size = new System.Drawing.Size(684, 118);
 			this._displayPanel.TabIndex = 83;
-			// 
-			// _colorDepthLabel
-			// 
-			this._colorDepthLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-			this._colorDepthLabel.Location = new System.Drawing.Point(31, 131);
-			this._colorDepthLabel.Name = "_colorDepthLabel";
-			this._colorDepthLabel.Size = new System.Drawing.Size(100, 18);
-			this._colorDepthLabel.TabIndex = 88;
-			this._colorDepthLabel.Text = "Color depth:";
-			this._colorDepthLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// _colorDepthDropdown
-			// 
-			this._colorDepthDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this._colorDepthDropdown.FormattingEnabled = true;
-			this._colorDepthDropdown.Items.AddRange(new object[] {
-            "Full",
-            "256 colors",
-            "64 colors",
-            "8 colors"});
-			this._colorDepthDropdown.Location = new System.Drawing.Point(159, 131);
-			this._colorDepthDropdown.Name = "_colorDepthDropdown";
-			this._colorDepthDropdown.Size = new System.Drawing.Size(121, 21);
-			this._colorDepthDropdown.TabIndex = 87;
-			// 
-			// _encodingTypeLabel
-			// 
-			this._encodingTypeLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-			this._encodingTypeLabel.Location = new System.Drawing.Point(31, 107);
-			this._encodingTypeLabel.Name = "_encodingTypeLabel";
-			this._encodingTypeLabel.Size = new System.Drawing.Size(100, 18);
-			this._encodingTypeLabel.TabIndex = 86;
-			this._encodingTypeLabel.Text = "Encoding type:";
-			this._encodingTypeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// _encodingTypeDropdown
-			// 
-			this._encodingTypeDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this._encodingTypeDropdown.FormattingEnabled = true;
-			this._encodingTypeDropdown.Items.AddRange(new object[] {
-            "RAW",
-            "RRE",
-            "CORRE",
-            "HEXTILE",
-            "ZLIB",
-            "TIGHT",
-            "ZLIBHEX",
-            "ULTRA",
-            "ZRLE",
-            "ZYWRLE"});
-			this._encodingTypeDropdown.Location = new System.Drawing.Point(159, 104);
-			this._encodingTypeDropdown.Name = "_encodingTypeDropdown";
-			this._encodingTypeDropdown.Size = new System.Drawing.Size(121, 21);
-			this._encodingTypeDropdown.TabIndex = 85;
 			// 
 			// _viewOnlyCheckbox
 			// 
@@ -525,26 +341,11 @@
         private System.Windows.Forms.CheckBox _scaleCheckbox;
         private System.Windows.Forms.CheckBox _viewOnlyCheckbox;
         private System.Windows.Forms.Label _viewOnlyLabel;
-        private System.Windows.Forms.Panel _generalPanel;
-        private System.Windows.Forms.Label _userNameLabel;
-        private System.Windows.Forms.TextBox _userNameTextBox;
+		private System.Windows.Forms.Panel _generalPanel;
         private System.Windows.Forms.Label _passwordLabel;
 		private System.Windows.Forms.Label _generalLabel;
         private SecurePasswordTextBox.SecureTextBox _passwordTextBox;
-        private System.Windows.Forms.Label _inheritedPasswordLabel;
-        private System.Windows.Forms.Label _inheritedUsernameLabel;
-        private System.Windows.Forms.Label _authenticationTypeLabel;
-        private System.Windows.Forms.ComboBox _authenticationTypeDropdown;
-        private System.Windows.Forms.Label _encryptionTypeLabel;
-        private System.Windows.Forms.ComboBox _encryptionTypeDropdown;
-		private System.Windows.Forms.Label _keyFileLabel;
-		private System.Windows.Forms.TextBox _keyFileTextBox;
-		private System.Windows.Forms.Button _keyFileBrowseButton;
-		private System.Windows.Forms.OpenFileDialog _openFileDialog;
-		private System.Windows.Forms.Label _colorDepthLabel;
-		private System.Windows.Forms.ComboBox _colorDepthDropdown;
-		private System.Windows.Forms.Label _encodingTypeLabel;
-		private System.Windows.Forms.ComboBox _encodingTypeDropdown;
+		private System.Windows.Forms.Label _inheritedPasswordLabel;
 		private System.Windows.Forms.Label _titleLabel;
 		private System.Windows.Forms.Panel panel1;
     }

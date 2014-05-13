@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using ViewerX;
 
 namespace EasyConnect.Protocols.Vnc
 {
@@ -16,10 +15,6 @@ namespace EasyConnect.Protocols.Vnc
 		public VncConnection()
 		{
 			Port = 5900;
-			AuthenticationType = ViewerLoginType.VLT_VNC;
-			EncryptionType = EncryptionPluginType.EPT_NONE;
-			EncodingType = VNCEncoding.RFB_ZRLE;
-			ColorDepth = ColorDepth.COLOR_FULL;
 		}
 
 		/// <summary>
@@ -48,26 +43,6 @@ namespace EasyConnect.Protocols.Vnc
 
 					case "Scale":
 						Scale = (bool) entry.Value;
-						break;
-
-					case "AuthenticationType":
-						AuthenticationType = (ViewerLoginType) Enum.Parse(typeof (ViewerLoginType), (string) entry.Value);
-						break;
-
-					case "EncryptionType":
-						EncryptionType = (EncryptionPluginType) Enum.Parse(typeof (EncryptionPluginType), (string) entry.Value);
-						break;
-
-					case "KeyFile":
-						KeyFile = (string) entry.Value;
-						break;
-
-					case "EncodingType":
-						EncodingType = (VNCEncoding) Enum.Parse(typeof (VNCEncoding), (string) entry.Value);
-						break;
-
-					case "ColorDepth":
-						ColorDepth = (ColorDepth) Enum.Parse(typeof (ColorDepth), (string) entry.Value);
 						break;
 				}
 			}
@@ -110,45 +85,9 @@ namespace EasyConnect.Protocols.Vnc
 		}
 
 		/// <summary>
-		/// Authentication type to use when establishing the connection.
-		/// </summary>
-		public ViewerLoginType AuthenticationType
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
-		/// Encryption type to use when establishing the connection.
-		/// </summary>
-		public EncryptionPluginType EncryptionType
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
 		/// If <see cref="EncryptionType"/> is specified, this is the file path to the key that should be used during the encryption/decryption process.
 		/// </summary>
 		public string KeyFile
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
-		/// How the data should be encoded when sending display data from the server to the client.
-		/// </summary>
-		public VNCEncoding EncodingType
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
-		/// Color depth to use when sending display data from the server to the client.
-		/// </summary>
-		public ColorDepth ColorDepth
 		{
 			get;
 			set;
@@ -167,11 +106,6 @@ namespace EasyConnect.Protocols.Vnc
 			info.AddValue("Display", Display);
 			info.AddValue("ViewOnly", ViewOnly);
 			info.AddValue("Scale", Scale);
-			info.AddValue("AuthenticationType", AuthenticationType.ToString("G"));
-			info.AddValue("EncryptionType", EncryptionType.ToString("G"));
-			info.AddValue("KeyFile", KeyFile);
-			info.AddValue("EncodingType", EncodingType.ToString("G"));
-			info.AddValue("ColorDepth", ColorDepth.ToString("G"));
 		}
 	}
 }
