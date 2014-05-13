@@ -47,6 +47,7 @@ namespace EasyConnect.Protocols.Vnc
 			_vncConnection.ConnectionLost += OnConnectionLost;
 			_vncConnection.GetPassword = GetPassword;
 
+			// Spin the connection process up on a different thread to avoid blocking the UI.
 			Thread connectionThread = new Thread(
 				() =>
 				{
@@ -64,12 +65,24 @@ namespace EasyConnect.Protocols.Vnc
 			connectionThread.Start();
 		}
 
+		/// <summary>
+		/// Callback that's invoked whenever the client (<see cref="_vncConnection"/>) receives screen data from the server.  We use this method to determine
+		/// when we are *really* connected:  we have successfully established a network connection to the server *and* we have started receiving screen data.
+		/// It's only at that point that we actually display the VNC UI.
+		/// </summary>
+		/// <param name="sender">Object from which this event originated, in this case, <see cref="_vncConnection"/>.</param>
+		/// <param name="e">Arguments associated with this event.</param>
 		void _vncConnection_VncUpdated(object sender, VncEventArgs e)
 		{
 			if (!IsConnected)
 				OnConnected(sender, e);
 		}
 
+		/// <summary>
+		/// Decrypts the password (if any) associated with the connection (<see cref="BaseConnection.InheritedPassword"/> and provides it to 
+		/// <see cref="_vncConnection"/> for use in the connection process.
+		/// </summary>
+		/// <returns>The decrypted contents, if any, of <see cref="BaseConnection.InheritedPassword"/>.</returns>
 		private string GetPassword()
 		{
 			string password = null;
