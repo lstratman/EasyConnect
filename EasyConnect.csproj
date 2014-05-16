@@ -332,6 +332,7 @@
   <PropertyGroup>
     <PostBuildEvent>copy /y "$(SolutionDir)Win32Interop\SystemHookCore\$(ConfigurationName)\SystemHookCore.dll" "$(TargetDir)"
 copy /y "$(SolutionDir)Protocols\Vnc\bin\$(ConfigurationName)\scvncctrl.dll" "$(TargetDir)"
+copy /y "$(SolutionDir)Protocols\Vnc\bin\$(ConfigurationName)\scvncctrl64.dll" "$(TargetDir)"
 Exit /b 0</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -38,8 +38,8 @@
     </Reference>
     <Reference Include="Interop.ViewerX, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>lib\Interop.ViewerX.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="SecurePasswordTextBox">
       <HintPath>..\..\lib\SecurePasswordTextBox.dll</HintPath>
@@ -104,6 +104,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="lib\scvncctrl.dll" />
+    <Content Include="lib\scvncctrl64.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
