@@ -330,8 +330,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /y "$(SolutionDir)Win32Interop\SystemHookCore\$(ConfigurationName)\SystemHookCore.dll" "$(TargetDir)"
-copy /y "$(SolutionDir)Protocols\Vnc\bin\$(ConfigurationName)\scvncctrl.dll" "$(TargetDir)"
+    <PostBuildEvent>copy /y "$(SolutionDir)Protocols\Vnc\bin\$(ConfigurationName)\scvncctrl.dll" "$(TargetDir)"
 copy /y "$(SolutionDir)Protocols\Vnc\bin\$(ConfigurationName)\scvncctrl64.dll" "$(TargetDir)"
 Exit /b 0</PostBuildEvent>
   </PropertyGroup>

@@ -119,7 +119,8 @@
 				<File Id="ViewerXAxInteropAssembly" Name="AxInterop.ViewerX.dll" Source="$(var.EasyConnect.Protocols.Vnc.TargetDir)AxInterop.ViewerX.dll"/>
 				<File Id="ViewerXInteropAssembly" Name="Interop.ViewerX.dll" Source="$(var.EasyConnect.Protocols.Vnc.TargetDir)Interop.ViewerX.dll"/>
 				<File Id="ScvncctrlAssembly" Name="scvncctrl.dll" Source="$(var.EasyConnect.Protocols.Vnc.TargetDir)scvncctrl.dll"/>
-			</Component>
+        <File Id="ScvncctrlAssembly64" Name="scvncctrl64.dll" Source="$(var.EasyConnect.Protocols.Vnc.TargetDir)scvncctrl64.dll"/>
+      </Component>
 		</ComponentGroup>
 		<ComponentGroup Id="SshPluginComponents" Directory="INSTALLFOLDER">
 			<Component Id="SshPluginAssemblyComponent" Guid="779FA6DA-64F2-4FB5-9BF7-7CA5E0EC6FB6">

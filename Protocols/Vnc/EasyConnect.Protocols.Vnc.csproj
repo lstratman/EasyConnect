@@ -109,7 +109,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /y "$(ProjectDir)lib\scvncctrl.dll" "$(TargetDir)"
-copy /y "$(ProjectDir)lib\Interop.ViewerX.dll" "$(TargetDir)"</PostBuildEvent>
+copy /y "$(ProjectDir)lib\scvncctrl64.dll" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
