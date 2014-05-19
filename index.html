@@ -2,145 +2,175 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>EasyConnect by Luke Stratman</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>EasyConnect</title>
 
-    <link rel="stylesheet" href="css/styles.css"/>
-    <link rel="stylesheet" href="css/pygment_trac.css"/>
-    <link rel="stylesheet" href="css/lightbox.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script src="js/scale.fix.js"></script>
-    <script src="js/jquery-1.7.2.min.js"></script>
-    <script src="js/lightbox.js"></script>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/styles.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>EasyConnect</h1>
-        <p>Tabbed remote desktop application with a Chrome-like UI.</p>
-        <p class="view"><a href="https://github.com/lstratman/EasyConnect">View the Project on GitHub <small>lstratman/EasyConnect</small></a></p>
-        <ul>
-          <li><a href="https://github.com/lstratman/EasyConnect/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="updates/EasyConnect.msi">Download <strong>Installer</strong></a></li>
-          <li><a href="https://github.com/lstratman/EasyConnect">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <strong>Current version: 1.5.1</strong>
+  	<nav class="navbar navbar-fixed-top" role="navigation">
+	  <div class="container">
+		<div class="navbar-header">
+		  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		  </button>
+		  <a class="navbar-brand" href="/">
+			<img src="images/EasyConnect.png"/>
+			EasyConnect
+		  </a>
+		</div>
+		<div class="collapse navbar-collapse">
+		  <ul class="nav navbar-nav navbar-right">
+			<li><a href="http://chocolatey.org/packages/easyconnect">Chocolatey Package</a></li>
+			<li><a href="https://github.com/lstratman/EasyConnect/zipball/master">Download Source</a></li>
+			<li><a href="https://github.com/lstratman/EasyConnect">View on GitHub</a></li>
+		  </ul>
+		</div>
+	  </div>
+	</nav>
+  	<div class="jumbotron">
+  		<div class="container">
+  			<div class="row">
+  				<div class="col-md-7">
+				    <h1>EasyConnect</h1>
+					<p>A tabbed remote desktop application with a Chrome-like UI and support for RDP, VNC, SSH, and remote PowerShell connections.</p>
+					<p>
+						<a class="btn btn-primary" href="updates/EasyConnect.msi">Download Installer</a>
+						<a class="btn btn-default" href="https://github.com/lstratman/EasyConnect"><img style="vertical-align: text-top;" width="16" src="images/GitHub.png"> Fork me on GitHub</a>
+					</p>
+					<br/>
+					<p>Current version: 1.5.1</p>
+	            </div>
+	            <div class="col-md-5 visible-md visible-lg">
+					<div id="screenshots" class="carousel slide pull-right" data-ride="carousel">
+						<ol class="carousel-indicators">
+							<li data-target="#screenshots" data-slide-to="0" class="active"></li>
+							<li data-target="#screenshots" data-slide-to="1"></li>
+							<li data-target="#screenshots" data-slide-to="2"></li>
+							<li data-target="#screenshots" data-slide-to="3"></li>
+							<li data-target="#screenshots" data-slide-to="4"></li>
+							<li data-target="#screenshots" data-slide-to="5"></li>
+						</ol>
 
-        <br/><br/>
+						<div class="carousel-inner">
+							<div class="item active">
+								<a href="images/screenshots/bookmarks.png">
+									<img src="images/screenshots/thumbnails/bookmarks.png" alt="Bookmarks"/>
+								</a>
+							</div>
+							<div class="item">
+								<a href="images/screenshots/rdp.png">
+									<img src="images/screenshots/thumbnails/rdp.png" alt="Remote desktop session"/>
+								</a>
+					        </div>
+							<div class="item">
+								<a href="images/screenshots/ssh.png">
+									<img src="images/screenshots/thumbnails/ssh.png" alt="SSH session"/>
+								</a>
+					        </div>
+							<div class="item">
+								<a href="images/screenshots/powershell.png">
+									<img src="images/screenshots/thumbnails/powershell.png" alt="PowerShell session"/>
+								</a>
+					        </div>
+							<div class="item">
+								<a href="images/screenshots/options.png">
+									<img src="images/screenshots/thumbnails/options.png" alt="Connection options"/>
+								</a>
+					        </div>
+							<div class="item">
+								<a href="images/screenshots/history.png">
+									<img src="images/screenshots/thumbnails/history.png" alt="History"/>
+								</a>
+        					</div>
+						</div>
 
-        <p>This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP), Secure Shell (SSH), PowerShell, and VNC, but has a plugin architecture designed to enable third-party support for other protocols such as Citrix, etc.</p>
+						<a class="left carousel-control" href="#screenshots" data-slide="prev">
+							<span class="glyphicon glyphicon-chevron-left"></span>
+						</a>
+						<a class="right carousel-control" href="#screenshots" data-slide="next">
+							<span class="glyphicon glyphicon-chevron-right"></span>
+						</a>
+					</div>
+            	</div>
+  			</div>
+  		</div>
+  	</div>
+  	<div class="container">
+	    <div class="row">
+	        <div class="col-md-4 feature">
+				<div class="feature-icon">
+					<span class="glyphicon glyphicon-flash"></span>
+				</div>
+				<div class="feature-body">
+					<h3>Efficient</h3>
+					<p>Manage all of your remote connections from within a single tabbed interface with support for tab tearing to new windows and tab reorganization.</p>
+				</div>
+	        </div>
+	        <div class="col-md-4 feature">
+	            <div class="feature-icon">
+	                <span class="glyphicon glyphicon-th-large"></span>
+	            </div>
+	            <div class="feature-body">
+	                <h3>Extensible</h3>
+	                <p>You can extend EasyConnect by writing plugins for other remote desktop protocol.  Plugins for RDP, VNC, SSH, and PowerShell are included out of the box.</p>
+	            </div>
+	        </div>
+	        <div class="col-md-4 feature">
+	            <div class="feature-icon">
+	                <span class="glyphicon glyphicon-lock"></span>
+	            </div>
+	            <div class="feature-body">
+	                <h3>Secure</h3>
+	                <p>Your saved passwords are encrypted with an RSA key stored in your machine's key store.</p>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="row">
+	    	<div class="col-md-4 feature">
+				<div class="feature-icon">
+					<span class="glyphicon glyphicon-download"></span>
+				</div>
+				<div class="feature-body">
+					<h3>Automatic updates</h3>
+					<p>Automatic updating with <a href="http://netsparkle.codeplex.com/" target="_blank">NetSparkle</a> keeps you running on the latest version.</p>
+				</div>
+	        </div>
+	        <div class="col-md-4 feature">
+	            <div class="feature-icon">
+	                <span class="glyphicon glyphicon-user"></span>
+	            </div>
+	            <div class="feature-body">
+	                <h3>Open source</h3>
+	                <p>EasyConnect is open source software and is completely free for commercial use. It is licensed under <a href="https://github.com/lstratman/EasyConnect/blob/master/GPL.txt">the GPL</a>.</p>
+	            </div>
+	        </div>
+	    </div>
+	</div>
 
-        <a href="images/screenshots/bookmarks.png" title="Bookmarks" rel="lightbox[screenshots]" class="thumbnail"><img src="images/screenshots/thumbnails/bookmarks.jpg"/></a>
-        <a href="images/screenshots/rdp.png" title="Remote desktop session" rel="lightbox[screenshots]" class="thumbnail"><img src="images/screenshots/thumbnails/rdp.jpg"/></a>
-        <a href="images/screenshots/ssh.png" title="SSH session" rel="lightbox[screenshots]" class="thumbnail"><img src="images/screenshots/thumbnails/ssh.jpg"/></a>
-        <a href="images/screenshots/powershell.png" title="PowerShell session" rel="lightbox[screenshots]" class="thumbnail"><img src="images/screenshots/thumbnails/powershell.jpg"/></a>
-        <a href="images/screenshots/options.png" title="Connection options" rel="lightbox[screenshots]" class="thumbnail"><img src="images/screenshots/thumbnails/options.jpg"/></a>
-        <a href="images/screenshots/history.png" title="History" rel="lightbox[screenshots]" class="thumbnail"><img src="images/screenshots/thumbnails/history.jpg"/></a>
+	<div class="container">
+		  <hr>
 
-        <br/><br/>
+		  <footer>
+			<p>&copy; 2012-2014 <a href="https://github.com/lstratman">Luke Stratman</a></p>
+		  </footer>
+	</div>
 
-        <strong>Change Log</strong>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
-        <br/><br/>v1.5.1
-
-        <ul>
-			<li>Fixed a runtime error that occurs when clicking on the "view error message" link that is displayed when a connection cannot be established.</li>
-        </ul>
-
-        v1.5
-
-        <ul>
-			<li>Converted the terminal control used by the SSH plugin over to a NuGet package based on a <a href="https://github.com/lstratman/poderosa" target="_blank">more recent version</a> of the <a href="https://github.com/poderosaproject/poderosa" target="_blank">Poderosa project</a>, which fixes some minor rendering glitches and moves this over to an maintained codebase.</li>
-			<li>Brought back the automatic update functionality using <a href="http://netsparkle.codeplex.com/" target="_blank">NetSparkle</a>.</li>
-        </ul>
-
-        v1.4
-
-        <ul>
-        	<li>Improved the performance of the title bar tabs library through multithreading to ensure that the tab tearing functionality and mouse-over tab effects remain active.</li>
-        	<li>Minor UI fixes in the options windows and in the Omnibar.</li>
-        	<li>Date groups in the history window are now sorted correctly.</li>
-        </ul>
-
-        v1.3
-
-        <ul>
-        	<li>Added the ability to tear tabs out of windows and combine them with other windows.</li>
-        	<li>Updated the application look and feel to be consistent with the latest version of Chrome.</li>
-        </ul>
-
-        v1.2
-
-        <ul>
-        	<li>Added support for PowerShell.</li>
-			<li>Updated the installer to use <a href="http://wix.sourceforge.net/" target="_blank">WiX</a> instead of the outdated Visual Studio Installer project.</li>
-			<li>Improved the handling of disconnected sessions.  Now, instead of being presented with a modal dialog box, the icon for the tab will change and you will be able to click a button in the tab to reconnect or view any error messages associated with the disconnect.</li>
-			<li>The Aero Peek functionality has been disabled.</li>
-        </ul>
-
-        v1.1
-
-        <ul>
-        	<li>Added support for VNC.</li>
-        	<li>Added support for using an RSA key container to encrypt passwords in settings files instead of using a symmetric key that forced the user to enter an explicit password every time.</li>
-        	<li>Added the ability to associate usernames and passwords with bookmark folders, meaning that connections within those folders will inherit those credentials instead of forcing the user to specify the credentials for each individual connection.</li>
-        	<li>Improved the reliability of the Aero Peek functionality in the taskbar.</li>
-        	<li>Improved the reliability of opening bookmarks in new windows.</li>
-        	<li>Made the context menu that appears when right-clicking on a bookmarks folder in the treeview and the one that appears when right-clicking on a folder in the list view consistent.</li>
-        </ul>
-
-        v1.0
-
-        <ul>
-          <li>Added support for SSH.</li>
-		  <li>Refactored the Win32 interop code and separated it into <a href="https://github.com/lstratman/Win32Interop" target="_blank">another library</a>.</li>
-          <li>Added shortcut keys to create new tabs (Ctrl+T) and cycle through them (Ctrl+Tab and Ctrl+Shift+Tab).</li>
-          <li>Disabled automatic update functionality until issues can be worked out.</li>
-          <li>Cleaned up and commented the codebase.</li>
-        </ul>
-
-        v0.4
-
-        <ul>
-          <li>Added OmniBar-like functionality to auto-complete entries in the connection bar.</li>
-		  <li>Drag-and-drop support added to the bookmarks manager.</li>
-          <li>Added an option to auto-hide the connection bar.</li>
-          <li>Context menu item added to the bookmarks manager that allows you to set the password for all connections in a folder and its descendants.</li>
-          <li>Fixed auto-update functionality so that it actually works going forward.</li>
-        </ul>
-
-        v0.3
-
-        <ul>
-          <li>Cleaned up and fixed Aero peek functionality.</li>
-          <li>Fixed issue opening up incorrect bookmark from the bookmarks menu in the connection window.</li>
-          <li>Added support for automatic updating going forward using <a href="http://wyday.com/wyupdate/" target="_blank">wyUpdate</a>.</li>
-        </ul>
-
-        v0.2
-
-        <ul>
-          <li>Plugin architecture added to support other remote connection protocols.</li>
-          <li>Tabs can be dragged to re-order them within the window.</li>
-          <li>Options window now fully integrated within the UI.</li>
-          <li>RDP connections can now be specified to connect to the server's admin channel.</li>
-          <li>Opening a new tab from the bookmarks manager in the midst of other tabs no longer causes the last tab in the list to become inaccessible.</li>
-        </ul>
-      </section>
-    </div>
-    <footer>
-      <p>Project maintained by <a href="https://github.com/lstratman">Luke Stratman</a></p>
-      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
-    </footer>
-    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
-
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>
