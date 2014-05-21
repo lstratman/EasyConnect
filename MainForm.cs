@@ -114,7 +114,7 @@ namespace EasyConnect
 		/// </summary>
 		protected bool _shiftDown = false;
 
-		protected Sparkle _sparkle;
+		protected static Sparkle _sparkle;
 
 		/// <summary>
 		/// Default constructor.
@@ -124,7 +124,9 @@ namespace EasyConnect
 			InitializeComponent();
 			Init();
 
-			_sparkle = new Sparkle(
+		if (_sparkle == null)
+		{
+		_sparkle = new Sparkle(
 				String.IsNullOrEmpty(ConfigurationManager.AppSettings["appCastUrl"])
 					? "http://lstratman.github.io/EasyConnect/updates/EasyConnect.xml"
 					: ConfigurationManager.AppSettings["appCastUrl"]);
@@ -132,6 +134,7 @@ namespace EasyConnect
 			_sparkle.ApplicationIcon = Icon.ToBitmap();
 
 			_sparkle.StartLoop(true, true);
+		}
 		}
 
 		/// <summary>
@@ -242,7 +245,7 @@ namespace EasyConnect
 		/// </summary>
 		protected void Init()
 		{
-			AeroPeekEnabled = false;
+			AeroPeekEnabled = true;
 			bool convertingToRsa = false;
 
 			// If the user hasn't formally selected an encryption type (either they're starting the application for the first time or are running a legacy
