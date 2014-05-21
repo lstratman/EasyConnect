@@ -150,30 +150,30 @@ namespace EasyConnect.Protocols.PowerShell
 			_terminal.TerminalPane.SendShiftTab = true;
 			_terminal.SetPaneColors(Connection.TextColor, Connection.BackgroundColor);
 
-			_powerShellHost = new PowerShellHost(this, _terminal, ExecuteQuiet, _progressBar, _progressLabel);
-
-			// Create the host and runspace instances for this interpreter.  If we're connecting to the local host, don't bother with the connection info.
-			// ReSharper disable StringCompareIsCultureSpecific.3
-			if (String.Compare(Connection.Host, "localhost", true) != 0 && Connection.Host != "127.0.0.1" &&
-			    String.Compare(Connection.Host, Environment.MachineName, true) != 0)
-				// ReSharper restore StringCompareIsCultureSpecific.3
-			{
-				WSManConnectionInfo connectionInfo = new WSManConnectionInfo
-					                                     {
-						                                     ComputerName = Connection.Host
-					                                     };
-
-				if (!String.IsNullOrEmpty(Connection.InheritedUsername))
-					connectionInfo.Credential = new PSCredential(Connection.InheritedUsername, Connection.InheritedPassword);
-
-				Runspace = RunspaceFactory.CreateRunspace(_powerShellHost, connectionInfo);
-			}
-
-			else
-				Runspace = RunspaceFactory.CreateRunspace(_powerShellHost);
-
 			try
 			{
+				_powerShellHost = new PowerShellHost(this, _terminal, ExecuteQuiet, _progressBar, _progressLabel);
+
+				// Create the host and runspace instances for this interpreter.  If we're connecting to the local host, don't bother with the connection info.
+				// ReSharper disable StringCompareIsCultureSpecific.3
+				if (String.Compare(Connection.Host, "localhost", true) != 0 && Connection.Host != "127.0.0.1" &&
+					String.Compare(Connection.Host, Environment.MachineName, true) != 0)
+				// ReSharper restore StringCompareIsCultureSpecific.3
+				{
+					WSManConnectionInfo connectionInfo = new WSManConnectionInfo
+					{
+						ComputerName = Connection.Host
+					};
+
+					if (!String.IsNullOrEmpty(Connection.InheritedUsername))
+						connectionInfo.Credential = new PSCredential(Connection.InheritedUsername, Connection.InheritedPassword);
+
+					Runspace = RunspaceFactory.CreateRunspace(_powerShellHost, connectionInfo);
+				}
+
+				else
+					Runspace = RunspaceFactory.CreateRunspace(_powerShellHost);
+
 				Runspace.Open();
 			}
 

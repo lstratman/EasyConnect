@@ -128,7 +128,7 @@ namespace EasyConnect.Protocols
 		/// <param name="e">Arguments associated with this event.</param>
 		protected virtual void OnLoggedOff(object sender, EventArgs e)
 		{
-			if (IsClosing)
+			if (IsClosing || Parent == null)
 				return;
 
 			Invoke(
@@ -155,7 +155,7 @@ namespace EasyConnect.Protocols
 		/// <param name="e">Arguments associated with this event.</param>
 		protected virtual void OnConnectionLost(object sender, EventArgs e)
 		{
-			if (IsClosing)
+			if (IsClosing || Parent == null)
 				return;
 
 			Invoke(
