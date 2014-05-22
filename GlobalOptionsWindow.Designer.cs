@@ -37,6 +37,8 @@
 			this._encryptionTypeLabel = new System.Windows.Forms.Label();
 			this._titleLabel = new System.Windows.Forms.Label();
 			this.panel1 = new System.Windows.Forms.Panel();
+			this._enableAeroPeekLabel = new System.Windows.Forms.Label();
+			this._enableAeroPeekCheckbox = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// _defaultProtocolLabel
@@ -109,7 +111,7 @@
 			// _encryptionTypeLabel
 			// 
 			this._encryptionTypeLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-			this._encryptionTypeLabel.Location = new System.Drawing.Point(48, 149);
+			this._encryptionTypeLabel.Location = new System.Drawing.Point(47, 148);
 			this._encryptionTypeLabel.Name = "_encryptionTypeLabel";
 			this._encryptionTypeLabel.Size = new System.Drawing.Size(173, 20);
 			this._encryptionTypeLabel.TabIndex = 72;
@@ -137,6 +139,26 @@
 			this.panel1.Size = new System.Drawing.Size(544, 1);
 			this.panel1.TabIndex = 74;
 			// 
+			// _enableAeroPeekLabel
+			// 
+			this._enableAeroPeekLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+			this._enableAeroPeekLabel.Location = new System.Drawing.Point(47, 173);
+			this._enableAeroPeekLabel.Name = "_enableAeroPeekLabel";
+			this._enableAeroPeekLabel.Size = new System.Drawing.Size(174, 20);
+			this._enableAeroPeekLabel.TabIndex = 76;
+			this._enableAeroPeekLabel.Text = "Enable AeroPeek?:";
+			this._enableAeroPeekLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// _enableAeroPeekCheckbox
+			// 
+			this._enableAeroPeekCheckbox.AutoSize = true;
+			this._enableAeroPeekCheckbox.ForeColor = System.Drawing.SystemColors.ControlText;
+			this._enableAeroPeekCheckbox.Location = new System.Drawing.Point(228, 178);
+			this._enableAeroPeekCheckbox.Name = "_enableAeroPeekCheckbox";
+			this._enableAeroPeekCheckbox.Size = new System.Drawing.Size(15, 14);
+			this._enableAeroPeekCheckbox.TabIndex = 75;
+			this._enableAeroPeekCheckbox.UseVisualStyleBackColor = true;
+			// 
 			// GlobalOptionsWindow
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -144,6 +166,8 @@
 			this.AutoScroll = true;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
 			this.ClientSize = new System.Drawing.Size(597, 384);
+			this.Controls.Add(this._enableAeroPeekLabel);
+			this.Controls.Add(this._enableAeroPeekCheckbox);
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this._titleLabel);
 			this.Controls.Add(this._encryptionTypeLabel);
@@ -173,5 +197,7 @@
         private System.Windows.Forms.Label _encryptionTypeLabel;
 		private System.Windows.Forms.Label _titleLabel;
 		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Label _enableAeroPeekLabel;
+		private System.Windows.Forms.CheckBox _enableAeroPeekCheckbox;
     }
 }
