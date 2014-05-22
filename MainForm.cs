@@ -113,7 +113,7 @@ namespace EasyConnect
 		/// </summary>
 		protected bool _shiftDown = false;
 
-		protected Sparkle _sparkle;
+		protected static Sparkle _sparkle;
 
 		/// <summary>
 		/// Default constructor.
@@ -123,14 +123,17 @@ namespace EasyConnect
 			InitializeComponent();
 			Init();
 
-			_sparkle = new Sparkle(
-				String.IsNullOrEmpty(ConfigurationManager.AppSettings["appCastUrl"])
-					? "http://lstratman.github.io/EasyConnect/updates/EasyConnect.xml"
-					: ConfigurationManager.AppSettings["appCastUrl"]);
-			_sparkle.ApplicationWindowIcon = Icon;
-			_sparkle.ApplicationIcon = Icon.ToBitmap();
+			if (_sparkle == null)
+			{
+				_sparkle = new Sparkle(
+					String.IsNullOrEmpty(ConfigurationManager.AppSettings["appCastUrl"])
+						? "http://lstratman.github.io/EasyConnect/updates/EasyConnect.xml"
+						: ConfigurationManager.AppSettings["appCastUrl"]);
+				_sparkle.ApplicationWindowIcon = Icon;
+				_sparkle.ApplicationIcon = Icon.ToBitmap();
 
-			_sparkle.StartLoop(true, true);
+				_sparkle.StartLoop(true, true);
+			}
 		}
 
 		/// <summary>
