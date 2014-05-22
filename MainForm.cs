@@ -4,7 +4,6 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
@@ -16,9 +15,9 @@ using System.Windows.Input;
 using AppLimit.NetSparkle;
 using EasyConnect.Properties;
 using EasyConnect.Protocols;
+using EasyTabs;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
-using Stratman.Windows.Forms.TitleBarTabs;
 using Win32Interop.Enums;
 using Win32Interop.Methods;
 

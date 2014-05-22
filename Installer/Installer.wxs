@@ -11,7 +11,7 @@
 		<Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
 
 		<Upgrade Id="$(var.UpgradeCode)">
-			<UpgradeVersion Minimum="1.0.0.0" Maximum="99.0.0.0" Property="PREVIOUSVERSIONSINSTALLED" IncludeMinimum="yes" IncludeMaximum="no" />
+			<UpgradeVersion Minimum="1.0.0.0" Maximum="$(var.ProductVersion)" Property="PREVIOUSVERSIONSINSTALLED" IncludeMinimum="yes" IncludeMaximum="no" />
 		</Upgrade>
 
 		<Feature Id="ProductFeature" Title="$(var.EasyConnect.ProjectName)" Level="1" Description="$(var.EasyConnect.ProjectName) is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's, supporting the Remote Desktop Protocol (RDP), Secure Shell (SSH), and VNC protocols." Display="expand" ConfigurableDirectory="INSTALLFOLDER">
@@ -82,8 +82,8 @@
 			<Component Id="SystemDrawingHtmlAssemblyComponent" Guid="D84D05BB-2EA8-4999-8B7E-D0AD2E57441E">
 				<File Id="SystemDrawingHtmlAssembly" Name="System.Drawing.Html.dll" Source="$(var.EasyConnect.TargetDir)System.Drawing.Html.dll"/>
 			</Component>
-			<Component Id="TitleBarTabsComponent" Guid="99CFCC2A-BBC5-47A5-BFBA-E7164413A52D">
-				<File Id="TitleBarTabsAssembly" Name="Stratman.Windows.Forms.TitleBarTabs.dll" Source="$(var.EasyConnect.TargetDir)Stratman.Windows.Forms.TitleBarTabs.dll"/>
+			<Component Id="EasyTabsComponent" Guid="99CFCC2A-BBC5-47A5-BFBA-E7164413A52D">
+				<File Id="EasyTabsAssembly" Name="EasyTabs.dll" Source="$(var.EasyConnect.TargetDir)EasyTabs.dll"/>
 				<File Id="WindowsAPICodePackAssembly" Name="Microsoft.WindowsAPICodePack.dll" Source="$(var.EasyConnect.TargetDir)Microsoft.WindowsAPICodePack.dll"/>
 				<File Id="WindowsAPICodePackShellAssembly" Name="Microsoft.WindowsAPICodePack.Shell.dll" Source="$(var.EasyConnect.TargetDir)Microsoft.WindowsAPICodePack.Shell.dll"/>
 			</Component>

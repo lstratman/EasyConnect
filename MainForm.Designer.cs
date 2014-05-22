@@ -1,5 +1,4 @@
 ﻿using System.Windows.Forms;
-using Stratman.Windows.Forms.TitleBarTabs;
 using Win32Interop.Methods;
 
 namespace EasyConnect
