@@ -18,7 +18,7 @@ using EasyConnect.Properties;
 using EasyConnect.Protocols;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
-using Stratman.Windows.Forms.TitleBarTabs;
+using EasyTabs;
 using Win32Interop.Enums;
 using Win32Interop.Methods;
 
