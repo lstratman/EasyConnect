@@ -319,8 +319,11 @@ namespace EasyConnect.Protocols.PowerShell
 					// handler.
 					lock (_instanceLock)
 					{
-						_currentPowerShell.Dispose();
-						_currentPowerShell = null;
+					    if (_currentPowerShell != null)
+					    {
+                            _currentPowerShell.Dispose();
+                            _currentPowerShell = null;
+					    }
 					}
 				}
 			}
@@ -381,8 +384,11 @@ namespace EasyConnect.Protocols.PowerShell
 					// Dispose of the pipeline and set it to null, locking it because _currentPowerShell may be accessed by the Ctrl-C handler.
 					lock (_instanceLock)
 					{
-						_currentPowerShell.Dispose();
-						_currentPowerShell = null;
+					    if (_currentPowerShell != null)
+					    {
+					        _currentPowerShell.Dispose();
+					        _currentPowerShell = null;
+					    }
 					}
 				}
 			}

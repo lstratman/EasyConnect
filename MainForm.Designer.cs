@@ -1,5 +1,5 @@
 ﻿using System.Windows.Forms;
-using Stratman.Windows.Forms.TitleBarTabs;
+using EasyTabs;
 using Win32Interop.Methods;
 
 namespace EasyConnect

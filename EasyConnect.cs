@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Windows.Forms;
-using Stratman.Windows.Forms.TitleBarTabs;
+using EasyTabs;
 
 namespace EasyConnect
 {

@@ -12,7 +12,7 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using EasyConnect.Protocols;
 using EasyConnect.Protocols.Rdp;
-using Stratman.Windows.Forms.TitleBarTabs;
+using EasyTabs;
 
 namespace EasyConnect
 {
