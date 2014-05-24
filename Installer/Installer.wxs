@@ -83,7 +83,7 @@
 				<File Id="SystemDrawingHtmlAssembly" Name="System.Drawing.Html.dll" Source="$(var.EasyConnect.TargetDir)System.Drawing.Html.dll"/>
 			</Component>
 			<Component Id="TitleBarTabsComponent" Guid="99CFCC2A-BBC5-47A5-BFBA-E7164413A52D">
-				<File Id="TitleBarTabsAssembly" Name="Stratman.Windows.Forms.TitleBarTabs.dll" Source="$(var.EasyConnect.TargetDir)Stratman.Windows.Forms.TitleBarTabs.dll"/>
+				<File Id="TitleBarTabsAssembly" Name="EasyTabs.dll" Source="$(var.EasyConnect.TargetDir)EasyTabs.dll"/>
 				<File Id="WindowsAPICodePackAssembly" Name="Microsoft.WindowsAPICodePack.dll" Source="$(var.EasyConnect.TargetDir)Microsoft.WindowsAPICodePack.dll"/>
 				<File Id="WindowsAPICodePackShellAssembly" Name="Microsoft.WindowsAPICodePack.Shell.dll" Source="$(var.EasyConnect.TargetDir)Microsoft.WindowsAPICodePack.Shell.dll"/>
 			</Component>

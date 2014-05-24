@@ -4,7 +4,7 @@ using System.Security;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Stratman.Windows.Forms.TitleBarTabs;
+using EasyTabs;
 
 namespace EasyConnect.Protocols
 {

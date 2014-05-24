@@ -35,17 +35,17 @@
     <DocumentationFile>bin\Release\EasyConnect.Protocols.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EasyTabs, Version=1.2.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EasyTabs.1.2.0.0\lib\EasyTabs.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\TitleBarTabs.1.1.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+      <HintPath>..\packages\EasyTabs.1.2.0.0\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\TitleBarTabs.1.1.2\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
-    </Reference>
-    <Reference Include="Stratman.Windows.Forms.TitleBarTabs, Version=1.1.2.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\TitleBarTabs.1.1.2\lib\Stratman.Windows.Forms.TitleBarTabs.dll</HintPath>
+      <HintPath>..\packages\EasyTabs.1.2.0.0\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

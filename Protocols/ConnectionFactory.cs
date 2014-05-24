@@ -437,7 +437,9 @@ namespace EasyConnect.Protocols
 				                        : GetDefaultProtocol().ProtocolPrefix;
 
 			// Get the default connection data for the protocol
-			IProtocol protocol = _protocols.First(pair => pair.Value.ProtocolPrefix.ToLower() == protocolPrefix.ToLower()).Value;
+			IProtocol protocol = _protocols.FirstOrDefault(pair => pair.Value.ProtocolPrefix.ToLower() == protocolPrefix.ToLower()).Value;
+			if (protocol == null)
+				protocol = GetDefaultProtocol();
 			IConnection connection = (IConnection) GetDefaults(protocol).Clone();
 
 			connection.Host = match.Groups["host"].Value;

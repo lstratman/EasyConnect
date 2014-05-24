@@ -18,7 +18,7 @@ using EasyConnect.Properties;
 using EasyConnect.Protocols;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
-using Stratman.Windows.Forms.TitleBarTabs;
+using EasyTabs;
 using Win32Interop.Enums;
 using Win32Interop.Methods;
 
@@ -114,7 +114,7 @@ namespace EasyConnect
 		/// </summary>
 		protected bool _shiftDown = false;
 
-		protected Sparkle _sparkle;
+		protected static Sparkle _sparkle;
 
 		/// <summary>
 		/// Default constructor.
@@ -124,7 +124,9 @@ namespace EasyConnect
 			InitializeComponent();
 			Init();
 
-			_sparkle = new Sparkle(
+		if (_sparkle == null)
+		{
+		_sparkle = new Sparkle(
 				String.IsNullOrEmpty(ConfigurationManager.AppSettings["appCastUrl"])
 					? "http://lstratman.github.io/EasyConnect/updates/EasyConnect.xml"
 					: ConfigurationManager.AppSettings["appCastUrl"]);
@@ -132,6 +134,7 @@ namespace EasyConnect
 			_sparkle.ApplicationIcon = Icon.ToBitmap();
 
 			_sparkle.StartLoop(true, true);
+		}
 		}
 
 		/// <summary>

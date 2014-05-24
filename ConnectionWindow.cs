@@ -470,8 +470,13 @@ namespace EasyConnect
 		{
 			_iconPictureBox.Image = new Icon(Resources.EasyConnect, 16, 16).ToBitmap();
 
+			Invoke(new Action(
+			() =>
+			{
 			Icon = Resources.Disconnected;
 			ParentTabs.RedrawTabs();
+			}));
+			
 		}
 
 		/// <summary>
@@ -887,8 +892,8 @@ namespace EasyConnect
 			_validAutoCompleteEntries =
 				_autoCompleteEntries.Where(
 					c =>
-					c.DisplayName.IndexOf(urlTextBox.Text, StringComparison.InvariantCultureIgnoreCase) != -1 ||
-					c.Host.IndexOf(urlTextBox.Text, StringComparison.InvariantCultureIgnoreCase) != -1).OrderBy(c => c.DisplayName).Take(6).ToList();
+					c.Host != null && (c.DisplayName.IndexOf(urlTextBox.Text, StringComparison.InvariantCultureIgnoreCase) != -1 ||
+					                   c.Host.IndexOf(urlTextBox.Text, StringComparison.InvariantCultureIgnoreCase) != -1)).OrderBy(c => c.DisplayName).Take(6).ToList();
 
 			if (_validAutoCompleteEntries.Count > 0)
 			{
