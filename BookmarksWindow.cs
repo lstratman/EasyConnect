@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
 using EasyConnect.Protocols;
-using Stratman.Windows.Forms.TitleBarTabs;
+using EasyTabs;
 
 namespace EasyConnect
 {
