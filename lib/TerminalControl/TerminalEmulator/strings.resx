@@ -1,0 +1,376 @@
+﻿<root>
+  <resheader name="ResMimeType">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="Version">
+    <value>1.0.0.0</value>
+  </resheader>
+  <resheader name="Reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="Writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Common.OK">
+    <value>OK</value>
+  </data>
+  <data name="Common.Cancel">
+    <value>Cancel</value>
+  </data>
+  <data name="Common.MessageBoxTitle">
+    <value>Poderosa</value>
+  </data>
+  <data name="Message.GUtil.InternalError">
+    <value>An internal error occurred. Please check {0} file. 
+{1}</value>
+  </data>
+  <data name="Message.CheckLogFileName.EmptyPath">
+    <value>The path is not specified.</value>
+  </data>
+  <data name="Message.CheckLogFileName.NotWritable">
+    <value>{0} is not writable.</value>
+  </data>
+  <data name="Message.CheckLogFileName.BadPathName">
+    <value>{0} is a incorrect path name.</value>
+  </data>
+  <data name="Message.CheckLogFileName.AlreadyExist">
+    <value>The file {0} already exists.</value>
+  </data>
+  <data name="Util.CheckLogFileName.Caption">
+    <value>Log file</value>
+  </data>
+  <data name="Util.CheckLogFileName.OverWrite">
+    <value>&amp;Overwrite</value>
+  </data>
+  <data name="Util.CheckLogFileName.Append">
+    <value>&amp;Append</value>
+  </data>
+  <data name="Util.CheckLogFileName.Cancel">
+    <value>&amp;Cancel</value>
+  </data>
+  <data name="Message.AbstractTerminal.UnsupportedCharSet">
+    <value>An unsupported character set {0} is detected. The screen may not be displayed correctly.</value>
+  </data>
+  <data name="Message.AbstractTerminal.UnexpectedChar">
+    <value>Failed to decode characters by the current encoding {0}. Please check the encode setting.</value>
+  </data>
+  <data name="Message.EscapesequenceTerminal.UnsupportedSequence">
+    <value>An unsupported escape sequence is detected.
+</value>
+  </data>
+  <data name="Message.ConnectionCommandTarget.CloseError">
+    <value>An error occurred when closing the connection.</value>
+  </data>
+  <data name="Message.ConnectionCommandTarget.AreYouThereCondition">
+    <value>"Are You There" can be executed on Telnet connections only.</value>
+  </data>
+  <data name="Message.ConnectionCommandTarget.BreakCondition">
+    <value>"Send Break" can be executed to serial, Telnet, and SSH2 connections only.</value>
+  </data>
+  <data name="Message.ConnectionCommandTarget.SendError">
+    <value>Failed to transmit.</value>
+  </data>
+  <data name="Caption.ConnectionCommandTarget.DuringPaste">
+    <value>Pasting</value>
+  </data>
+  <data name="Message.TerminalControl.FailedToSend">
+    <value>Failed to transmit.</value>
+  </data>
+  <data name="Enum.WarningOption.Ignore">
+    <value>Ignore</value>
+  </data>
+  <data name="Enum.WarningOption.StatusBar">
+    <value>Display in status bar</value>
+  </data>
+  <data name="Enum.WarningOption.MessageBox">
+    <value>Display a message box</value>
+  </data>
+  <data name="Enum.DisconnectNotification.MessageBox">
+    <value>Display a message box</value>
+  </data>
+  <data name="Enum.DisconnectNotification.StatusBar">
+    <value>Display in status bar</value>
+  </data>
+  <data name="Enum.AltKeyAction.Menu">
+    <value>Menus and shortcuts</value>
+  </data>
+  <data name="Enum.AltKeyAction.ESC">
+    <value>ESC &lt;x&gt;</value>
+  </data>
+  <data name="Enum.AltKeyAction.Meta">
+    <value>Meta Key</value>
+  </data>
+  <data name="Enum.MouseButtonAction.None">
+    <value>Do Nothing</value>
+  </data>
+  <data name="Enum.MouseButtonAction.ContextMenu">
+    <value>Context menu</value>
+  </data>
+  <data name="Enum.MouseButtonAction.Paste">
+    <value>Paste</value>
+  </data>
+  <data name="Enum.KeyboardStyle.None">
+    <value>None</value>
+  </data>
+  <data name="Enum.KeyboardStyle.Default">
+    <value>Standard keyboard</value>
+  </data>
+  <data name="Enum.KeyboardStyle.Japanese">
+    <value>Japanese keyboard</value>
+  </data>
+  <data name="Enum.KeyboardStyle.Chinese">
+    <value>Chinese keyboard</value>
+  </data>
+  <data name="CommandCategory.Terminal">
+    <value>Terminal</value>
+  </data>
+  <data name="CommandCategory.TerminalEdit">
+    <value>Edit-Terminal</value>
+  </data>
+  <data name="CommandCategory.Encoding">
+    <value>Encoding</value>
+  </data>
+  <data name="Command.CopyAsLook">
+    <value>Copy As You Look</value>
+  </data>
+  <data name="Command.CopyToFile">
+    <value>Copy to file</value>
+  </data>
+  <data name="Command.PasteFromFile">
+    <value>Paste from file</value>
+  </data>
+  <data name="Command.ClearScreen">
+    <value>Clear screen</value>
+  </data>
+  <data name="Command.ClearBuffer">
+    <value>Clear buffer</value>
+  </data>
+  <data name="Command.SelectAll">
+    <value>Select All</value>
+  </data>
+  <data name="Command.ToggleLocalEcho">
+    <value>Toggle local echo</value>
+  </data>
+  <data name="Command.ToggleCharTriggerIntelliSense">
+    <value>Toggle shell complement by character input</value>
+  </data>
+  <data name="Command.ResetTerminal">
+    <value>Reset terminal</value>
+  </data>
+  <data name="Command.SendBreak">
+    <value>Send Break</value>
+  </data>
+  <data name="Command.AreYouThere">
+    <value>Send "Are You There"</value>
+  </data>
+  <data name="Command.ReceiveLineBreak">
+    <value>Line feed rule when recieving</value>
+  </data>
+  <data name="Command.IntelliSense">
+    <value>Shell complement</value>
+  </data>
+  <data name="Command.Encoding.ISO8859_1">
+    <value>iso-8859-1</value>
+  </data>
+  <data name="Command.Encoding.UTF8">
+    <value>utf-8 (cjk)</value>
+  </data>
+  <data name="Command.Encoding.UTF8_Latin">
+    <value>utf-8 (latin)</value>
+  </data>
+  <data name="Command.Encoding.EUC_JP">
+    <value>euc-jp</value>
+  </data>
+  <data name="Command.Encoding.SHIFT_JIS">
+    <value>shift-jis</value>
+  </data>
+  <data name="Command.Encoding.GB2312">
+    <value>gb2312</value>
+  </data>
+  <data name="Command.Encoding.BIG5">
+    <value>big5</value>
+  </data>
+  <data name="Command.Encoding.EUC_CN">
+    <value>euc-cn</value>
+  </data>
+  <data name="Command.Encoding.EUC_KR">
+    <value>euc-kr</value>
+  </data>
+  <data name="Command.Encoding.OEM850">
+    <value>oem850</value>
+  </data>
+  <data name="Caption.SelectPasteFile">
+    <value>File to paste</value>
+  </data>
+  <data name="Menu.PopupCommandResult">
+    <value>&amp;Pop up command result</value>
+  </data>
+  <data name="Menu.CopyCommandResult">
+    <value>&amp;Copy command result</value>
+  </data>
+  <data name="Menu.Copy">
+    <value>&amp;Copy</value>
+  </data>
+  <data name="Menu.CopyAsLook">
+    <value>Copy As You &amp;Look</value>
+  </data>
+  <data name="Menu.CopyToFile">
+    <value>Copy &amp;to File...</value>
+  </data>
+  <data name="Menu.Paste">
+    <value>&amp;Paste</value>
+  </data>
+  <data name="Menu.PasteFromFile">
+    <value>Paste &amp;from file...</value>
+  </data>
+  <data name="Menu.ClearScreen">
+    <value>&amp;Clear screen</value>
+  </data>
+  <data name="Menu.ClearBuffer">
+    <value>Clear &amp;buffer</value>
+  </data>
+  <data name="Menu.SelectAll">
+    <value>Select &amp;All</value>
+  </data>
+  <data name="Menu.NewLine">
+    <value>&amp;Line feed transmission</value>
+  </data>
+  <data name="Menu.Encoding">
+    <value>&amp;Encoding</value>
+  </data>
+  <data name="Menu.LineFeedRule">
+    <value>Line &amp;feed rule while recieving...</value>
+  </data>
+  <data name="Menu.LocalEcho">
+    <value>Local ech&amp;o</value>
+  </data>
+  <data name="Menu.SendSpecial">
+    <value>&amp;Special</value>
+  </data>
+  <data name="Menu.SendBreak">
+    <value>Send &amp;Break</value>
+  </data>
+  <data name="Menu.AreYouThere">
+    <value>Send &amp;Are You There</value>
+  </data>
+  <data name="Menu.SerialConfig">
+    <value>Reconfigure &amp;serial port</value>
+  </data>
+  <data name="Menu.ResetTerminal">
+    <value>&amp;Reset terminal</value>
+  </data>
+  <data name="Menu.SuspendLog">
+    <value>S&amp;uspend log</value>
+  </data>
+  <data name="Menu.CommentLog">
+    <value>Comment to lo&amp;g...</value>
+  </data>
+  <data name="Menu.ChangeLog">
+    <value>Change &amp;log...</value>
+  </data>
+  <data name="Menu.ServerInfo">
+    <value>&amp;Host information...</value>
+  </data>
+  <data name="Menu.ToggleCharTriggerIntelliSense">
+    <value>S&amp;hell Complement by character input</value>
+  </data>
+  <data name="Menu.SelectIntelliSenseScheme">
+    <value>&amp;Shell scheme</value>
+  </data>
+  <data name="Menu.DocumentClose">
+    <value>&amp;Close</value>
+  </data>
+  <data name="Form.ToolBar._encodingLabel">
+    <value>Encoding</value>
+  </data>
+  <data name="Form.ToolBar._newLineLabel">
+    <value>Line feed</value>
+  </data>
+  <data name="Caption.CurrentShellScheme">
+    <value>Current shell scheme</value>
+  </data>
+  <data name="Enum.AuthType.Password">
+    <value>Password</value>
+  </data>
+  <data name="Enum.AuthType.PublicKey">
+    <value>Public Key</value>
+  </data>
+  <data name="Enum.AuthType.KeyboardInteractive">
+    <value>Keyboard interactive</value>
+  </data>
+  <data name="Enum.EncodingType.ISO8859_1">
+    <value>iso-8859-1</value>
+  </data>
+  <data name="Enum.EncodingType.UTF8">
+    <value>utf-8 (cjk)</value>
+  </data>
+  <data name="Enum.EncodingType.UTF8_Latin">
+    <value>utf-8 (latin)</value>
+  </data>
+  <data name="Enum.EncodingType.EUC_JP">
+    <value>euc-jp</value>
+  </data>
+  <data name="Enum.EncodingType.SHIFT_JIS">
+    <value>shift-jis</value>
+  </data>
+  <data name="Enum.EncodingType.BIG5">
+    <value>big5</value>
+  </data>
+  <data name="Enum.EncodingType.EUC_CN">
+    <value>euc-cn</value>
+  </data>
+  <data name="Enum.EncodingType.EUC_KR">
+    <value>euc-kr</value>
+  </data>
+  <data name="Enum.EncodingType.GB2312">
+    <value>gb2312</value>
+  </data>
+  <data name="Enum.EncodingType.OEM850">
+    <value>oem850</value>
+  </data>
+  <data name="Enum.LogType.None">
+    <value>None</value>
+  </data>
+  <data name="Enum.LogType.Default">
+    <value>Standard</value>
+  </data>
+  <data name="Enum.LogType.PlainTextWithTimestamp">
+    <value>Standard (with timestamp)</value>
+  </data>
+  <data name="Enum.LogType.Binary">
+    <value>Binary</value>
+  </data>
+  <data name="Enum.LogType.Xml">
+    <value>Debug</value>
+  </data>
+  <data name="Enum.NewLine.CR">
+    <value>CR</value>
+  </data>
+  <data name="Enum.NewLine.LF">
+    <value>LF</value>
+  </data>
+  <data name="Enum.NewLine.CRLF">
+    <value>CR+LF</value>
+  </data>
+  <data name="Enum.TerminalType.KTerm">
+    <value>kterm</value>
+  </data>
+  <data name="Enum.TerminalType.XTerm">
+    <value>xterm</value>
+  </data>
+  <data name="Enum.TerminalType.VT100">
+    <value>vt100</value>
+  </data>
+  <data name="Message.TCPTerminalParam.PropCannotBeSet">
+    <value>This property can not be changed.</value>
+  </data>
+  <data name="Mesage.SSHTerminalParam.MethodSetError">
+    <value>The method must be SSH1 or SSH2.</value>
+  </data>
+  <data name="Form.WarningWithDisableOption.Text">
+    <value>Warning</value>
+  </data>
+  <data name="Form.WarningWithDisableOption._disableCheckBox">
+    <value>Do &amp;not display this message from next time</value>
+  </data>
+</root>

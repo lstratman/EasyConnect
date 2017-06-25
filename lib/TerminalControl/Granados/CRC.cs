@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (c) 2005 Poderosa Project, All Rights Reserved.
  This file is a part of the Granados SSH Client Library that is subject to
  the license included in the distributed package.
@@ -7,14 +7,16 @@
   I implemented this algorithm with reference to following products though the algorithm is known publicly.
     * MindTerm ( AppGate Network Security )
  
- $Id: CRC.cs,v 1.2 2005/04/20 08:58:56 okajima Exp $
+ $Id: CRC.cs,v 1.4 2011/10/27 23:21:56 kzmi Exp $
 */
 
-namespace Granados.SSHCV1
-{
-public class CRC
-{
-    private static readonly uint[] table = new uint[] {
+namespace Granados.SSH1 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <exclude/>
+    public class CRC {
+        private static readonly uint[] table = new uint[] {
     0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419,
     0x706af48f, 0xe963a535, 0x9e6495a3, 0x0edb8832, 0x79dcb8a4,
     0xe0d5e91e, 0x97d2d988, 0x09b64c2b, 0x7eb17cbd, 0xe7b82d07,
@@ -69,15 +71,14 @@ public class CRC
     0x2d02ef8d
   };
 
-	public static uint Calc(byte[] buf, int off, int len)
-	{
-		uint val = 0;
-	    for (int i = 0;i < len; i ++)
-			val = table[(int)((val ^ buf[off + i]) & 0xff)] ^ (val >> 8);
+        public static uint Calc(byte[] buf, int off, int len) {
+            uint val = 0;
+            for (int i = 0; i < len; i++)
+                val = table[(int)((val ^ buf[off + i]) & 0xff)] ^ (val >> 8);
 
-		return val;
-	}
+            return val;
+        }
 
-}
+    }
 
 }

@@ -1,0 +1,339 @@
+﻿<root>
+  <resheader name="ResMimeType">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="Version">
+    <value>1.0.0.0</value>
+  </resheader>
+  <resheader name="Reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="Writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Common.OK">
+    <value>OK</value>
+  </data>
+  <data name="Common.Cancel">
+    <value>Cancel</value>
+  </data>
+  <data name="Common.DoNot">
+    <value>Don't</value>
+  </data>
+  <data name="Common.Do">
+    <value>Do</value>
+  </data>
+  <data name="Caption.Disconnected">
+    <value>(Disconnected)</value>
+  </data>
+  <data name="Caption.HowToCancel">
+    <value>ESC to stop</value>
+  </data>
+  <data name="CommandCategory.Connection">
+    <value>Connection</value>
+  </data>
+  <data name="Command.TelnetSSH">
+    <value>Connect by Telnet/SSH</value>
+  </data>
+  <data name="Command.Cygwin">
+    <value>Connect Cygwin</value>
+  </data>
+  <data name="Command.TerminalReproduce">
+    <value>Reproduce / Revive Connection</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._homeDirectoryLabel">
+    <value>&amp;Home directory</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._lMessage">
+    <value>If you cannot start the shell, please re-compile CygTerm.</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._advancedOptionCheck">
+    <value>&amp;Advanced configuration</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._shellLabel">
+    <value>&amp;Shell</value>
+  </data>
+  <data name="Form.CygwinLoginDialog.TextCygwin">
+    <value>Connection to Cygwin</value>
+  </data>
+  <data name="Form.CygwinLoginDialog.TextSFU">
+    <value>Connection to SFU</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._logTypeLabel">
+    <value>Log &amp;type</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._logFileLabel">
+    <value>&amp;Log file</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._encodingLabel">
+    <value>&amp;Encoding</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._terminalTypeLabel">
+    <value>Terminal T&amp;ype</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._cygwinDirLabel">
+    <value>Cygwin &amp;Directory (optional)</value>
+  </data>
+  <data name="Form.CygwinLoginDialog.SelectCygwinDir">
+    <value>Select Cygwin Directory</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._autoExecMacroPathLabel">
+    <value>Auto Exec Macro</value>
+  </data>
+  <data name="Message.CygwinLoginDialog.EmptyHomeDirectory">
+    <value>The home directory is empty.</value>
+  </data>
+  <data name="Message.CygwinLoginDialog.EmptyShell">
+    <value>The shell is empty.</value>
+  </data>
+  <data name="Caption.CygwinLoginDialog.ConnectingCygwin">
+    <value>Connection to Cygwin - Connecting... (Ctrl+C to Stop)</value>
+  </data>
+  <data name="Caption.CygwinLoginDialog.ConnectingSFU">
+    <value>Connection to SFU - Connecting... (Ctrl+C to Stop)</value>
+  </data>
+  <data name="Message.CygwinLoginDialog.ConnectionError">
+    <value>Connection Error</value>
+  </data>
+  <data name="Form.LoginDialog._hostLabel">
+    <value>&amp;Host</value>
+  </data>
+  <data name="Form.LoginDialog._portLabel">
+    <value>Por&amp;t</value>
+  </data>
+  <data name="Form.LoginDialog._methodLabel">
+    <value>P&amp;rotocol</value>
+  </data>
+  <data name="Form.LoginDialog._sshGroup">
+    <value>SSH Parameters</value>
+  </data>
+  <data name="Form.LoginDialog._privateKeyLabel">
+    <value>&amp;Key File</value>
+  </data>
+  <data name="Form.LoginDialog._authenticationLabel">
+    <value>A&amp;uthentication</value>
+  </data>
+  <data name="Form.LoginDialog._passphraseLabel">
+    <value>&amp;Passphrase</value>
+  </data>
+  <data name="Form.LoginDialog._usernameLabel">
+    <value>&amp;Account</value>
+  </data>
+  <data name="Form.LoginDialog._terminalGroup">
+    <value>Terminal settings</value>
+  </data>
+  <data name="Form.LoginDialog._localEchoLabel">
+    <value>Local ech&amp;o</value>
+  </data>
+  <data name="Form.LoginDialog._newLineLabel">
+    <value>&amp;New Line</value>
+  </data>
+  <data name="Form.LoginDialog._logFileLabel">
+    <value>Log &amp;File</value>
+  </data>
+  <data name="Form.LoginDialog._encodingLabel">
+    <value>&amp;Encoding</value>
+  </data>
+  <data name="Form.LoginDialog._logTypeLabel">
+    <value>&amp;Log type</value>
+  </data>
+  <data name="Form.LoginDialog._terminalTypeLabel">
+    <value>Terminal T&amp;ype</value>
+  </data>
+  <data name="Form.LoginDialog._autoExecMacroPathLabel">
+    <value>Auto Exec Macro</value>
+  </data>
+  <data name="Form.LoginDialog._telnetNewLine">
+    <value>Telnet
+New Line</value>
+  </data>
+  <data name="Form.LoginDialog.Text">
+    <value>New Connection</value>
+  </data>
+  <data name="Form.LoginDialog.Title">
+    <value>New Session</value>
+  </data>
+  <data name="Form.LoginDialog._useX11ForwardingCheckBox">
+    <value>Use X11 forwarding</value>
+  </data>
+  <data name="Form.LoginDialog._x11DisplayLabel">
+    <value>Display number</value>
+  </data>
+  <data name="Form.LoginDialog._x11DisplayNote">
+    <value>(local X server)</value>
+  </data>
+  <data name="Form.LoginDialog._x11DisplayText_ToolTip">
+    <value>Display number of the local X server.</value>
+  </data>
+  <data name="Form.LoginDialog._x11ScreenLabel">
+    <value>Screen number</value>
+  </data>
+  <data name="Form.LoginDialog._x11ScreenText_ToolTip">
+    <value>Screen number to be used in the X11 forwarding.</value>
+  </data>
+  <data name="Form.LoginDialog._x11NeedAuthCheckBox">
+    <value>X server requires authorization</value>
+  </data>
+  <data name="Form.LoginDialog._x11XauthorityLabel">
+    <value>.Xauthority file</value>
+  </data>
+  <data name="Form.LoginDialog._x11UseCygwinDomainSocketCheckBox">
+    <value>Use Cygwin's unix domain socket</value>
+  </data>
+  <data name="Form.LoginDialog._x11CygwinX11UnixFolderLabel">
+    <value>.X11-unix folder</value>
+  </data>
+  <data name="Form.LoginDialog._x11CygwinX11UnixFolderExampleLabel">
+    <value>e.g. C:\Cygwin\tmp\.X11-unix</value>
+  </data>
+  <data name="Form.LoginDialog._useAgentForwardingCheckBox">
+    <value>Use agent forwarding (only SSH2)</value>
+  </data>
+  <data name="Form.LoginDialog._agentForwardingConfigButton">
+    <value>Private keys...</value>
+  </data>
+  <data name="Message.LoginDialog.InvalidPort">
+    <value>{0} is not valid as a port.</value>
+  </data>
+  <data name="Caption.LoginDialog.SelectXauthorityFile">
+    <value>Select .Xauthority file</value>
+  </data>
+  <data name="Caption.LoginDialog.Connecting">
+    <value>New Connection - Connecting... (Ctrl+C to Stop)</value>
+  </data>
+  <data name="Message.LoginDialog.HostIsEmpty">
+    <value>The host name is empty.</value>
+  </data>
+  <data name="Message.LoginDialog.KeyFileNotExist">
+    <value>The private key file does not exist.</value>
+  </data>
+  <data name="Message.LoginDialog.ProtocolVersionIsNotSpecified">
+    <value>Protocol version is not specified.</value>
+  </data>
+  <data name="Message.LoginDialog.PrivateKeyFileIsNotSpecified">
+    <value>Key file is not specified.</value>
+  </data>
+  <data name="Message.LoginDialog.X11DisplayIsNotEntered">
+    <value>X11 display number is not entered.</value>
+  </data>
+  <data name="Message.LoginDialog.InvalidX11Display">
+    <value>Invalid X11 display number.</value>
+  </data>
+  <data name="Message.LoginDialog.X11ScreenIsNotEntered">
+    <value>X11 screen number is not entered.</value>
+  </data>
+  <data name="Message.LoginDialog.InvalidX11Screen">
+    <value>Invalid X11 screen number.</value>
+  </data>
+  <data name="Message.LoginDialog.XauthorityFileIsNotSpecified">
+    <value>.Xauthority file is not specified.</value>
+  </data>
+  <data name="Message.LoginDialog.X11UnixFolderIsNotSpecified">
+    <value>.X11-unix folder is not specified.</value>
+  </data>
+  <data name="Caption.LoginDialog.ConnectionError">
+    <value>Connection error</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._privateKeyLabel">
+    <value>Private &amp;key</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._passphraseLabel">
+    <value>&amp;Passphrase</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._logFileLabel">
+    <value>Log &amp;file</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._hostLabel">
+    <value>Host</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._methodLabel">
+    <value>Connection</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._accountLabel">
+    <value>Account</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._authenticationTypeLabel">
+    <value>Authentication</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._encodingLabel">
+    <value>Encoding</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._logTypeLabel">
+    <value>&amp;Log type</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._autoExecMacroPathLabel">
+    <value>Auto Exec Macro</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog.Text">
+    <value>SSH Login</value>
+  </data>
+  <data name="Caption.SSHShortcutLoginDialog.NotStandardPort">
+    <value>(Port {0})</value>
+  </data>
+  <data name="Caption.SSHShortcutLoginDialog.Connecting">
+    <value>SSH Login - Connecting... (Ctrl+C to Stop)</value>
+  </data>
+  <data name="Message.SSHShortcutLoginDialog.ConnectionError">
+    <value>Connection error</value>
+  </data>
+  <data name="Message.SSHShortcutLoginDialog.KeyFileNotExist">
+    <value>The private key file does not exist.</value>
+  </data>
+  <data name="Menu.NewConnection">
+    <value>New Telnet/SSH &amp;Connection...</value>
+  </data>
+  <data name="Menu.SerialNewConnection">
+    <value>New S&amp;erial Connection...</value>
+  </data>
+  <data name="Menu.CygwinNewConnection">
+    <value>New &amp;Cygwin Connection...</value>
+  </data>
+  <data name="Menu.SFUNewConnection">
+    <value>New Services for &amp;Unix Connection...</value>
+  </data>
+  <data name="Menu.ReproduceTerminal">
+    <value>&amp;Reproduce</value>
+  </data>
+  <data name="Menu.ReviveTerminal">
+    <value>&amp;Revive</value>
+  </data>
+  <data name="Util.SelectLogFileByDialog.Caption">
+    <value>Save log file</value>
+  </data>
+  <data name="Util.SelectPrivateKey.Caption">
+    <value>Select private key file</value>
+  </data>
+  <data name="Util.SelectPicture.Caption">
+    <value>Select picture file</value>
+  </data>
+  <data name="Menu.OpenShortcutFile">
+    <value>&amp;Open shortcut file...</value>
+  </data>
+  <data name="Menu.SaveShortcutFile">
+    <value>&amp;Save shortcut file...</value>
+  </data>
+  <data name="Message.AskCloseTerminalSession">
+    <value>A connection to {0} is active. Do you disconnect?</value>
+  </data>
+  <data name="Caption.OpenShortcutFile">
+    <value>Open shortcut to connection</value>
+  </data>
+  <data name="Caption.SaveShortcutFile">
+    <value>Save shortcut to connection</value>
+  </data>
+  <data name="Menu.OpenShortcutFile">
+    <value>&amp;Open Shortcut File...</value>
+  </data>
+  <data name="Menu.SaveShortcutFile">
+    <value>&amp;Save Shortcut File...</value>
+  </data>
+  <data name="Command.OpenShortcutFile">
+    <value>Open Shortcut File</value>
+  </data>
+  <data name="Command.SaveShortcutFile">
+    <value>Save Shortcut File</value>
+  </data>
+  <data name="Message.AskPasteNewLineChar">
+    <value>Clipboard data contains a new-line character. Do you want to paste it ?</value>
+  </data>
+</root>

@@ -1,0 +1,339 @@
+﻿<root>
+  <resheader name="ResMimeType">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="Version">
+    <value>1.0.0.0</value>
+  </resheader>
+  <resheader name="Reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="Writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Common.OK">
+    <value>OK</value>
+  </data>
+  <data name="Common.Cancel">
+    <value>キャンセル</value>
+  </data>
+  <data name="Common.DoNot">
+    <value>しない</value>
+  </data>
+  <data name="Common.Do">
+    <value>する</value>
+  </data>
+  <data name="Caption.Disconnected">
+    <value>(切断)</value>
+  </data>
+  <data name="Caption.HowToCancel">
+    <value>ESCで中止</value>
+  </data>
+  <data name="CommandCategory.Connection">
+    <value>接続</value>
+  </data>
+  <data name="Command.TelnetSSH">
+    <value>Telnet/SSH接続</value>
+  </data>
+  <data name="Command.Cygwin">
+    <value>Cygwin接続</value>
+  </data>
+  <data name="Command.TerminalReproduce">
+    <value>接続の複製/再接続</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._homeDirectoryLabel">
+    <value>ホームディレクトリ(&amp;H)</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._lMessage">
+    <value>シェルがうまく起動できないときはCygTermをコンパイルしなおしてください。</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._advancedOptionCheck">
+    <value>高度な設定(&amp;A)</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._shellLabel">
+    <value>シェル(&amp;S)</value>
+  </data>
+  <data name="Form.CygwinLoginDialog.TextCygwin">
+    <value>cygwinへの接続</value>
+  </data>
+  <data name="Form.CygwinLoginDialog.TextSFU">
+    <value>SFUへの接続</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._logTypeLabel">
+    <value>ログの種別(&amp;T)</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._logFileLabel">
+    <value>ログの保存先(&amp;L)</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._encodingLabel">
+    <value>エンコーディング(&amp;E)</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._terminalTypeLabel">
+    <value>ターミナル種別(&amp;Y)</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._cygwinDirLabel">
+    <value>Cygwinディレクトリ(&amp;D) (オプション)</value>
+  </data>
+  <data name="Form.CygwinLoginDialog.SelectCygwinDir">
+    <value>Cygwinディレクトリ選択</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._autoExecMacroPathLabel">
+    <value>自動開始マクロ</value>
+  </data>
+  <data name="Message.CygwinLoginDialog.EmptyHomeDirectory">
+    <value>ホームディレクトリが入力されていません。</value>
+  </data>
+  <data name="Message.CygwinLoginDialog.EmptyShell">
+    <value>シェルが入力されていません。</value>
+  </data>
+  <data name="Caption.CygwinLoginDialog.ConnectingCygwin">
+    <value>cygwinへの接続 - 接続中 (Ctrl+Cで中止します)</value>
+  </data>
+  <data name="Caption.CygwinLoginDialog.ConnectingSFU">
+    <value>SFUへの接続 - 接続中 (Ctrl+Cで中止します)</value>
+  </data>
+  <data name="Message.CygwinLoginDialog.ConnectionError">
+    <value>接続エラー</value>
+  </data>
+  <data name="Form.LoginDialog._hostLabel">
+    <value>ホスト(&amp;H)</value>
+  </data>
+  <data name="Form.LoginDialog._portLabel">
+    <value>ポート(&amp;T)</value>
+  </data>
+  <data name="Form.LoginDialog._methodLabel">
+    <value>プロトコル(&amp;R)</value>
+  </data>
+  <data name="Form.LoginDialog._sshGroup">
+    <value>SSHパラメータ</value>
+  </data>
+  <data name="Form.LoginDialog._privateKeyLabel">
+    <value>鍵ファイル(&amp;K)</value>
+  </data>
+  <data name="Form.LoginDialog._authenticationLabel">
+    <value>認証方法(&amp;U)</value>
+  </data>
+  <data name="Form.LoginDialog._passphraseLabel">
+    <value>パスフレーズ(&amp;P)</value>
+  </data>
+  <data name="Form.LoginDialog._usernameLabel">
+    <value>アカウント(&amp;A)</value>
+  </data>
+  <data name="Form.LoginDialog._terminalGroup">
+    <value>ターミナル</value>
+  </data>
+  <data name="Form.LoginDialog._localEchoLabel">
+    <value>ローカルエコー(&amp;O)</value>
+  </data>
+  <data name="Form.LoginDialog._newLineLabel">
+    <value>改行の送信(&amp;N)</value>
+  </data>
+  <data name="Form.LoginDialog._logFileLabel">
+    <value>ログの保存先(&amp;F)</value>
+  </data>
+  <data name="Form.LoginDialog._encodingLabel">
+    <value>エンコーディング(&amp;E)</value>
+  </data>
+  <data name="Form.LoginDialog._logTypeLabel">
+    <value>ログの種別(&amp;L)</value>
+  </data>
+  <data name="Form.LoginDialog._terminalTypeLabel">
+    <value>種類(&amp;Y)</value>
+  </data>
+  <data name="Form.LoginDialog._autoExecMacroPathLabel">
+    <value>自動開始マクロ</value>
+  </data>
+  <data name="Form.LoginDialog._telnetNewLine">
+    <value>Telnet
+New Line</value>
+  </data>
+  <data name="Form.LoginDialog.Text">
+    <value>新規接続</value>
+  </data>
+  <data name="Form.LoginDialog.Title">
+    <value>新規セッション</value>
+  </data>
+  <data name="Form.LoginDialog._useX11ForwardingCheckBox">
+    <value>X11フォワーディングを使用</value>
+  </data>
+  <data name="Form.LoginDialog._x11DisplayLabel">
+    <value>ディスプレイ番号</value>
+  </data>
+  <data name="Form.LoginDialog._x11DisplayNote">
+    <value>(ローカルXサーバ)</value>
+  </data>
+  <data name="Form.LoginDialog._x11DisplayText_ToolTip">
+    <value>ローカルのXサーバのディスプレイ番号です。</value>
+  </data>
+  <data name="Form.LoginDialog._x11ScreenLabel">
+    <value>スクリーン番号</value>
+  </data>
+  <data name="Form.LoginDialog._x11ScreenText_ToolTip">
+    <value>X11フォワーディングで使用するスクリーン番号です。</value>
+  </data>
+  <data name="Form.LoginDialog._x11NeedAuthCheckBox">
+    <value>Xサーバは認証が必要</value>
+  </data>
+  <data name="Form.LoginDialog._x11XauthorityLabel">
+    <value>.Xauthorityファイル</value>
+  </data>
+  <data name="Form.LoginDialog._x11UseCygwinDomainSocketCheckBox">
+    <value>CygwinのUnixドメインソケットを使用</value>
+  </data>
+  <data name="Form.LoginDialog._x11CygwinX11UnixFolderLabel">
+    <value>.X11-unixフォルダ</value>
+  </data>
+  <data name="Form.LoginDialog._x11CygwinX11UnixFolderExampleLabel">
+    <value>例 C:\Cygwin\tmp\.X11-unix</value>
+  </data>
+  <data name="Form.LoginDialog._useAgentForwardingCheckBox">
+    <value>エージェントフォワーディングを使用 (SSH2のみ)</value>
+  </data>
+  <data name="Form.LoginDialog._agentForwardingConfigButton">
+    <value>秘密鍵の設定...</value>
+  </data>
+  <data name="Message.LoginDialog.InvalidPort">
+    <value>ポートの指定 {0} は正しくありません。</value>
+  </data>
+  <data name="Caption.LoginDialog.SelectXauthorityFile">
+    <value>.Xauthorityファイルの選択</value>
+  </data>
+  <data name="Caption.LoginDialog.Connecting">
+    <value>新規接続 - 接続中 (Ctrl+Cで中止します)</value>
+  </data>
+  <data name="Message.LoginDialog.HostIsEmpty">
+    <value>ホスト名が入力されていません。</value>
+  </data>
+  <data name="Message.LoginDialog.KeyFileNotExist">
+    <value>秘密鍵ファイルが存在しません。</value>
+  </data>
+  <data name="Message.LoginDialog.ProtocolVersionIsNotSpecified">
+    <value>プロトコルバージョンが指定されていません。</value>
+  </data>
+  <data name="Message.LoginDialog.PrivateKeyFileIsNotSpecified">
+    <value>鍵ファイルが指定されていません。</value>
+  </data>
+  <data name="Message.LoginDialog.X11DisplayIsNotEntered">
+    <value>X11ディスプレイ番号が入力されていません。</value>
+  </data>
+  <data name="Message.LoginDialog.InvalidX11Display">
+    <value>X11ディスプレイ番号が正しくありません。</value>
+  </data>
+  <data name="Message.LoginDialog.X11ScreenIsNotEntered">
+    <value>X11スクリーン番号が入力されていません。</value>
+  </data>
+  <data name="Message.LoginDialog.InvalidX11Screen">
+    <value>X11スクリーン番号が正しくありません。</value>
+  </data>
+  <data name="Message.LoginDialog.XauthorityFileIsNotSpecified">
+    <value>.Xauthorityファイルが指定されていません。</value>
+  </data>
+  <data name="Message.LoginDialog.X11UnixFolderIsNotSpecified">
+    <value>.X11-unixフォルダが指定されていません。</value>
+  </data>
+  <data name="Caption.LoginDialog.ConnectionError">
+    <value>接続エラー</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._privateKeyLabel">
+    <value>秘密鍵(&amp;K)</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._passphraseLabel">
+    <value>パスフレーズ(&amp;P)</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._logFileLabel">
+    <value>ログの保存先(&amp;F)</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._hostLabel">
+    <value>ホスト</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._methodLabel">
+    <value>接続</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._accountLabel">
+    <value>アカウント</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._authenticationTypeLabel">
+    <value>認証方法</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._encodingLabel">
+    <value>エンコーディング</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._logTypeLabel">
+    <value>ログの種別(&amp;L)</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog._autoExecMacroPathLabel">
+    <value>自動開始マクロ</value>
+  </data>
+  <data name="Form.SSHShortcutLoginDialog.Text">
+    <value>SSH ログイン</value>
+  </data>
+  <data name="Caption.SSHShortcutLoginDialog.NotStandardPort">
+    <value>(ポート{0})</value>
+  </data>
+  <data name="Caption.SSHShortcutLoginDialog.Connecting">
+    <value>SSH ログイン - 接続中 (Ctrl+Cで中止します)</value>
+  </data>
+  <data name="Message.SSHShortcutLoginDialog.ConnectionError">
+    <value>接続エラー</value>
+  </data>
+  <data name="Message.SSHShortcutLoginDialog.KeyFileNotExist">
+    <value>秘密鍵ファイルが存在しません。</value>
+  </data>
+  <data name="Menu.NewConnection">
+    <value>新規Telnet/SSH接続(&amp;N)...</value>
+  </data>
+  <data name="Menu.SerialNewConnection">
+    <value>新規シリアル接続(&amp;E)...</value>
+  </data>
+  <data name="Menu.CygwinNewConnection">
+    <value>新規cygwin接続(&amp;C)...</value>
+  </data>
+  <data name="Menu.SFUNewConnection">
+    <value>新規Services for Unix接続(&amp;U)...</value>
+  </data>
+  <data name="Menu.ReproduceTerminal">
+    <value>複製(&amp;R)</value>
+  </data>
+  <data name="Menu.ReviveTerminal">
+    <value>再接続(&amp;R)</value>
+  </data>
+  <data name="Util.SelectLogFileByDialog.Caption">
+    <value>ログの保存</value>
+  </data>
+  <data name="Util.SelectPrivateKey.Caption">
+    <value>秘密鍵の選択</value>
+  </data>
+  <data name="Util.SelectPicture.Caption">
+    <value>画像の選択</value>
+  </data>
+  <data name="Menu.OpenShortcutFile">
+    <value>接続へのショートカットを開く(&amp;O)...</value>
+  </data>
+  <data name="Menu.SaveShortcutFile">
+    <value>接続へのショートカットを保存(&amp;S)...</value>
+  </data>
+  <data name="Message.AskCloseTerminalSession">
+    <value>{0} への接続があります。切断しますか？</value>
+  </data>
+  <data name="Caption.OpenShortcutFile">
+    <value>接続へのショートカットを開く</value>
+  </data>
+  <data name="Caption.SaveShortcutFile">
+    <value>接続へのショートカットを保存</value>
+  </data>
+  <data name="Menu.OpenShortcutFile">
+    <value>接続へのショートカットを開く(&amp;O)...</value>
+  </data>
+  <data name="Menu.SaveShortcutFile">
+    <value>接続へのショートカットを保存(&amp;S)...</value>
+  </data>
+  <data name="Command.OpenShortcutFile">
+    <value>接続へのショートカットを開く</value>
+  </data>
+  <data name="Command.SaveShortcutFile">
+    <value>接続へのショートカットを保存</value>
+  </data>
+  <data name="Message.AskPasteNewLineChar">
+    <value>クリップボードのデータに改行が含まれています。貼り付けますか？</value>
+  </data>
+</root>

@@ -1,12 +1,12 @@
-/* ---------------------------------------------------------------------------
+ï»¿/* ---------------------------------------------------------------------------
  *
- * Copyright (c) Granados Networks, Inc.    All Rights Reserved..
+ * Copyright (c) Poderosa Project.    All Rights Reserved..
  * 
  * This file is a part of the Granados SSH Client Library that is subject to
  * the license included in the distributed package.
  * You may not use this file except in compliance with the license.
  * 
- * $Id: StringResource.cs,v 1.2 2005/04/20 09:00:56 okajima Exp $
+ * $Id: StringResource.cs,v 1.4 2011/10/27 23:21:56 kzmi Exp $
  */
 using System;
 using System.Globalization;
@@ -14,31 +14,31 @@ using System.Resources;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace Granados.SSHC {
+namespace Granados.Util {
 
-	/// <summary>
-	/// StringResource ‚ÌŠT—v‚Ìà–¾‚Å‚·B
-	/// </summary>
-	internal class StringResources {
-		private string _resourceName;
-		private ResourceManager _resMan;
+    /// <summary>
+    /// StringResource ã®æ¦‚è¦ã®èª¬æ˜ã§ã™ã€‚
+    /// </summary>
+    internal class StringResources {
+        private string _resourceName;
+        private ResourceManager _resMan;
 
-		public StringResources(string name, Assembly asm) {
-			_resourceName = name;
-			LoadResourceManager(name, asm);
-		}
+        public StringResources(string name, Assembly asm) {
+            _resourceName = name;
+            LoadResourceManager(name, asm);
+        }
 
-		public string GetString(string id) {
-			return _resMan.GetString(id); //‚à‚µ‚±‚ê‚ª’x‚¢‚æ‚¤‚È‚ç‚±‚ÌƒNƒ‰ƒX‚ÅƒLƒƒƒbƒVƒ…‚Å‚à‚Â‚­‚ê‚Î‚¢‚¢‚¾‚ë‚¤
-		}
+        public string GetString(string id) {
+            return _resMan.GetString(id); //ã‚‚ã—ã“ã‚ŒãŒé…ã„ã‚ˆã†ãªã‚‰ã“ã®ã‚¯ãƒ©ã‚¹ã§ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã§ã‚‚ã¤ãã‚Œã°ã„ã„ã ã‚ã†
+        }
 
-		private void LoadResourceManager(string name, Assembly asm) {
-			//“––Ê‚Í‰pŒêE“ú–{Œê‚µ‚©‚µ‚È‚¢
-			CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentUICulture;
-			if(ci.Name.StartsWith("ja"))
-				_resMan = new ResourceManager(name+"_ja", asm);
-			else
-				_resMan = new ResourceManager(name, asm);
-		}
-	}
+        private void LoadResourceManager(string name, Assembly asm) {
+            //å½“é¢ã¯è‹±èªãƒ»æ—¥æœ¬èªã—ã‹ã—ãªã„
+            CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentUICulture;
+            if (ci.Name.StartsWith("ja"))
+                _resMan = new ResourceManager(name + "_ja", asm);
+            else
+                _resMan = new ResourceManager(name, asm);
+        }
+    }
 }

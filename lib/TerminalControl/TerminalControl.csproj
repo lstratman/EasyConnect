@@ -7,7 +7,6 @@
     <ProjectGuid>{60BE1158-C079-4603-8BC4-1658133E8EE5}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>poderosa.ico</ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>TerminalControl</AssemblyName>
@@ -26,8 +25,9 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -36,7 +36,7 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;PODEROSA_KEYFORMAT</DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
@@ -51,6 +51,7 @@
     <WarningLevel>4</WarningLevel>
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -59,7 +60,7 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;PODEROSA_KEYFORMAT</DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
@@ -74,6 +75,7 @@
     <WarningLevel>4</WarningLevel>
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.JScript">
@@ -96,447 +98,402 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutBox.cs">
+    <Compile Include="Core\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ChangeLogDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ChangePassphrase.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Command.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CommandOptionPanel.cs">
+    <Compile Include="Core\AboutBoxEx.cs" />
+    <Compile Include="Core\BasicCommands.cs" />
+    <Compile Include="Core\BasicMenus.cs" />
+    <Compile Include="Core\Caret.cs" />
+    <Compile Include="Core\CharacterDocument.cs" />
+    <Compile Include="Core\CharacterDocumentViewer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Common\ColorButton.cs">
+    <Compile Include="Core\CommandEx.cs" />
+    <Compile Include="Core\CommandManager.cs" />
+    <Compile Include="Core\CommandPositionEx.cs" />
+    <Compile Include="Core\CommandPositionT.cs" />
+    <Compile Include="Core\CoreServicesEx.cs" />
+    <Compile Include="Core\Credits.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\DocActivationCommands.cs" />
+    <Compile Include="Core\DocumentAndViewEx.cs" />
+    <Compile Include="Core\ExtensionPointList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\ExtensionPointList.Designer.cs">
+      <DependentUpon>ExtensionPointList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\GenericsUtil.cs" />
+    <Compile Include="Core\GLine.cs" />
+    <Compile Include="Core\ListenerList.cs" />
+    <Compile Include="Core\MacroEngineEx.cs" />
+    <Compile Include="Core\MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\MainWindowMenu.cs" />
+    <Compile Include="Core\MainWindowMenuT.cs" />
+    <Compile Include="Core\MenuUtil.cs" />
+    <Compile Include="Core\PluginList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\PluginList.Designer.cs">
+      <DependentUpon>PluginList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\PoderosaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\PopupViewContainer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\Preferences.cs" />
+    <Compile Include="Core\PreferencesEx.cs" />
+    <Compile Include="Core\PreferencesT.cs" />
+    <Compile Include="Core\RenderProfile.cs" />
+    <Compile Include="Core\RenderProfileSerialize.cs" />
+    <Compile Include="Core\Selection.cs" />
+    <Compile Include="Core\SelectionEx.cs" />
+    <Compile Include="Core\Serialize.cs" />
+    <Compile Include="Core\SerializeEx.cs" />
+    <Compile Include="Core\Session.cs" />
+    <Compile Include="Core\SessionEx.cs" />
+    <Compile Include="Core\SplittableView.cs" />
+    <Compile Include="Core\StatusBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Common\ColorDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Common\ColorUtil.cs" />
-    <Compile Include="Common\ConfigAttr.cs" />
-    <Compile Include="Common\ConfigParser.cs" />
-    <Compile Include="Common\ConfigXML.cs" />
-    <Compile Include="Common\DrawUtil.cs" />
-    <Compile Include="Common\EnumDescription.cs" />
-    <Compile Include="Common\GButton.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Common\GMenuItem.cs">
+    <Compile Include="Core\TextDecoration.cs" />
+    <Compile Include="Core\TextSelection.cs" />
+    <Compile Include="Core\ToolBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Common\SocketWithTimeout.cs" />
-    <Compile Include="Common\socks.cs" />
-    <Compile Include="Common\StringResource.cs" />
-    <Compile Include="Common\ThemeUtil.cs" />
-    <Compile Include="Common\Util.cs" />
-    <Compile Include="ConnectionHistory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ConnectionOptionPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ContainerCommandTarget.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ContainerInterThread.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ContainerOptions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ContainerUtil.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Credits.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CygwinLoginDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DisplayOptionPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="EditDisplayDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditDisplayDialog.Designer.cs">
-      <DependentUpon>EditDisplayDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EditEnvVariable.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditEscapeSequenceColor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditRenderProfile.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EnvVariable.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GApp.cs">
-    </Compile>
-    <Compile Include="GDialogBar.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GenericOptionPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="GFontDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GFrame.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GIcons.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Core\ToolBarEx.cs" />
+    <Compile Include="Core\UIEventHandler.cs" />
+    <Compile Include="Core\Unicode.cs" />
+    <Compile Include="Core\WindowManager.cs" />
+    <Compile Include="Core\WindowManagerEx.cs" />
+    <Compile Include="Core\WindowPreference.cs" />
+    <Compile Include="Granados\AgentForwarding.cs" />
     <Compile Include="Granados\AlgorithmSupport.cs" />
+    <Compile Include="Granados\AssemblyInfo.cs" />
     <Compile Include="Granados\Base64.cs" />
-    <Compile Include="Granados\BigInteger.cs" />
     <Compile Include="Granados\Blowfish.cs" />
     <Compile Include="Granados\CipherUtil.cs" />
-    <Compile Include="Granados\ConnectionInfo.cs" />
     <Compile Include="Granados\ConnectionParameter.cs" />
-    <Compile Include="Granados\ConnectionRoot.cs" />
     <Compile Include="Granados\CRC.cs" />
+    <Compile Include="Granados\DataFragment.cs" />
+    <Compile Include="Granados\DataHandler.cs" />
     <Compile Include="Granados\DES.cs" />
     <Compile Include="Granados\DSA.cs" />
-    <Compile Include="Granados\LibraryClient.cs" />
+    <Compile Include="Granados\EC.cs" />
+    <Compile Include="Granados\ED.cs" />
+    <Compile Include="Granados\KeyboardInteractive.cs" />
+    <Compile Include="Granados\KnownHosts.cs" />
+    <Compile Include="Granados\Mono\BigInteger.cs" />
+    <Compile Include="Granados\Mono\ConfidenceFactor.cs" />
+    <Compile Include="Granados\Mono\NextPrimeFinder.cs" />
+    <Compile Include="Granados\Mono\PrimalityTests.cs" />
+    <Compile Include="Granados\Mono\PrimeGeneratorBase.cs" />
+    <Compile Include="Granados\Mono\SequentialSearchPrimeGeneratorBase.cs" />
     <Compile Include="Granados\PKIBase.cs" />
+    <Compile Include="Granados\Poderosa\FileTransfer\Cancellation.cs" />
+    <Compile Include="Granados\Poderosa\KeyFormat\BERReader.cs" />
+    <Compile Include="Granados\Poderosa\KeyFormat\ByteArrayUtil.cs" />
+    <Compile Include="Granados\Poderosa\KeyFormat\ISSH1PrivateKeyLoader.cs" />
+    <Compile Include="Granados\Poderosa\KeyFormat\ISSH2PrivateKeyLoader.cs" />
+    <Compile Include="Granados\Poderosa\KeyFormat\OpenSSHPrivateKeyLoader.cs" />
+    <Compile Include="Granados\Poderosa\KeyFormat\PrivateKeyFileFormat.cs" />
+    <Compile Include="Granados\Poderosa\KeyFormat\PrivateKeyFileHeader.cs" />
+    <Compile Include="Granados\Poderosa\KeyFormat\PrivateKeyLoader.cs" />
+    <Compile Include="Granados\Poderosa\KeyFormat\PuTTYPrivateKeyLoader.cs" />
+    <Compile Include="Granados\Poderosa\KeyFormat\SSH1PrivateKeyLoader.cs" />
+    <Compile Include="Granados\Poderosa\KeyFormat\SSHComPrivateKeyLoader.cs" />
+    <Compile Include="Granados\Poderosa\SCP\SCPChannelStream.cs" />
+    <Compile Include="Granados\Poderosa\SCP\SCPChannelStreamTest.cs" />
+    <Compile Include="Granados\Poderosa\SCP\SCPClient.cs" />
+    <Compile Include="Granados\Poderosa\SCP\SCPClientException.cs" />
+    <Compile Include="Granados\Poderosa\SFTP\SFTPClient.cs" />
+    <Compile Include="Granados\Poderosa\SFTP\SFTPClientException.cs" />
+    <Compile Include="Granados\Poderosa\SFTP\SFTPFileAttributes.cs" />
+    <Compile Include="Granados\Poderosa\SFTP\SFTPFileInfo.cs" />
+    <Compile Include="Granados\Poderosa\SFTP\SFTPPacket.cs" />
+    <Compile Include="Granados\Poderosa\SFTP\SFTPPacketType.cs" />
+    <Compile Include="Granados\Poderosa\SFTP\SFTPStatusCodes.cs" />
+    <Compile Include="Granados\PortForwarding.cs" />
     <Compile Include="Granados\PrimeSieve.cs" />
     <Compile Include="Granados\ReaderWriter.cs" />
     <Compile Include="Granados\Rijndael.cs" />
+    <Compile Include="Granados\Rng.cs" />
     <Compile Include="Granados\RSA.cs" />
     <Compile Include="Granados\Socket.cs" />
+    <Compile Include="Granados\SSH1Channel.cs" />
     <Compile Include="Granados\SSH1Connection.cs" />
+    <Compile Include="Granados\SSH1ConnectionInfo.cs" />
     <Compile Include="Granados\SSH1Packet.cs" />
     <Compile Include="Granados\SSH1UserAuthKey.cs" />
-    <Compile Include="Granados\SSH1Util.cs" />
+    <Compile Include="Granados\SSH2Channel.cs" />
     <Compile Include="Granados\SSH2Connection.cs" />
+    <Compile Include="Granados\SSH2ConnectionInfo.cs" />
     <Compile Include="Granados\SSH2Packet.cs" />
     <Compile Include="Granados\SSH2UserAuthKey.cs" />
     <Compile Include="Granados\SSH2Util.cs" />
+    <Compile Include="Granados\SSHChannel.cs" />
+    <Compile Include="Granados\SSHConnection.cs" />
+    <Compile Include="Granados\SSHPacketInterceptor.cs" />
     <Compile Include="Granados\SSHUtil.cs" />
     <Compile Include="Granados\StringResource.cs" />
-    <Compile Include="Granados\Test.cs" />
-    <Compile Include="GStatusBar.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="HotKey.cs">
+    <Compile Include="Granados\Tutorial.cs" />
+    <Compile Include="Granados\X11ConnectionManager.cs" />
+    <Compile Include="Granados\X11Forwarding.cs" />
+    <Compile Include="Granados\X11Socket.cs" />
+    <Compile Include="Granados\X11Utils.cs" />
+    <Compile Include="Plugin\AdapterEx.cs" />
+    <Compile Include="Plugin\AdpaterManager.cs" />
+    <Compile Include="Plugin\CollectionUtil.cs" />
+    <Compile Include="Plugin\ConfigAttr.cs" />
+    <Compile Include="Plugin\ConfigColorAttr.cs" />
+    <Compile Include="Plugin\EnumDescription.cs" />
+    <Compile Include="Plugin\ExtensionPoint.cs" />
+    <Compile Include="Plugin\Plugin.cs" />
+    <Compile Include="Plugin\PluginEx.cs" />
+    <Compile Include="Plugin\PluginT.cs" />
+    <Compile Include="Plugin\PoderosaLog.cs" />
+    <Compile Include="Plugin\PoderosaLogEx.cs" />
+    <Compile Include="Plugin\PoderosaStartup.cs" />
+    <Compile Include="Plugin\PoderosaWorld.cs" />
+    <Compile Include="Plugin\PoderosaWorldEx.cs" />
+    <Compile Include="Plugin\StringResource.cs" />
+    <Compile Include="Plugin\StructuredText.cs" />
+    <Compile Include="Plugin\StructuredTextT.cs" />
+    <Compile Include="Plugin\StructuredTextXML.cs" />
+    <Compile Include="Plugin\Tracer.cs" />
+    <Compile Include="Plugin\Util.cs" />
+    <Compile Include="Plugin\VersionInfo.cs" />
+    <Compile Include="Plugin\Win32.cs" />
+    <Compile Include="Protocols\CommunicationUtil.cs" />
+    <Compile Include="Protocols\Connector.cs" />
+    <Compile Include="Protocols\HostKeyCheckerEx.cs" />
+    <Compile Include="Protocols\InterruptableConnector.cs" />
+    <Compile Include="Protocols\InterruptableConnectorT.cs" />
+    <Compile Include="Protocols\LocalShell.cs" />
+    <Compile Include="Protocols\NetUtil.cs" />
+    <Compile Include="Protocols\ProtocolComponent.cs" />
+    <Compile Include="Protocols\ProtocolComponentEx.cs" />
+    <Compile Include="Protocols\ProtocolOptions.cs" />
+    <Compile Include="Protocols\ProtocolServiceT.cs" />
+    <Compile Include="Protocols\ProtocolsEx.cs" />
+    <Compile Include="Protocols\ProtocolsPlugin.cs" />
+    <Compile Include="Protocols\SimpleStringEncrypt.cs" />
+    <Compile Include="Protocols\socks.cs" />
+    <Compile Include="Protocols\SSH.cs" />
+    <Compile Include="Protocols\SSHSocket.cs" />
+    <Compile Include="Protocols\Telnet.cs" />
+    <Compile Include="Protocols\TerminalConnection.cs" />
+    <Compile Include="Protocols\TerminalConnectionEx.cs" />
+    <Compile Include="Protocols\TerminalConnectionT.cs" />
+    <Compile Include="Protocols\TerminalParameter.cs" />
+    <Compile Include="Protocols\TerminalParameterEx.cs" />
+    <Compile Include="Protocols\TerminalParameterSerialize.cs" />
+    <Compile Include="TerminalEmulator\CharDecoder.cs" />
+    <Compile Include="TerminalEmulator\CommandResultEx.cs" />
+    <Compile Include="TerminalEmulator\CommandResultPopup.cs" />
+    <Compile Include="TerminalEmulator\CommandResultPopupSession.cs" />
+    <Compile Include="TerminalEmulator\Encoding.cs" />
+    <Compile Include="TerminalEmulator\GEnv.cs" />
+    <Compile Include="TerminalEmulator\IntelliSense.cs" />
+    <Compile Include="TerminalEmulator\IntelliSenseCommand.cs" />
+    <Compile Include="TerminalEmulator\IntelliSenseEx.cs" />
+    <Compile Include="TerminalEmulator\IntelliSenseItem.cs" />
+    <Compile Include="TerminalEmulator\IntelliSenseWindow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="IconList.cs">
+    <Compile Include="TerminalEmulator\KeepAlive.cs" />
+    <Compile Include="TerminalEmulator\KeyFunction.cs" />
+    <Compile Include="TerminalEmulator\Logger.cs" />
+    <Compile Include="TerminalEmulator\LoggerEx.cs" />
+    <Compile Include="TerminalEmulator\ModalTaskEx.cs" />
+    <Compile Include="TerminalEmulator\OldTerminalParam.cs" />
+    <Compile Include="TerminalEmulator\Options.cs" />
+    <Compile Include="TerminalEmulator\PromptRecognizer.cs" />
+    <Compile Include="TerminalEmulator\Properties\Resources.Designer.cs" />
+    <Compile Include="TerminalEmulator\ShellScheme.cs" />
+    <Compile Include="TerminalEmulator\TerminalBase.cs" />
+    <Compile Include="TerminalEmulator\TerminalCommands.cs" />
+    <Compile Include="TerminalEmulator\TerminalControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TerminalEmulator\TerminalDocument.cs" />
+    <Compile Include="TerminalEmulator\TerminalEmulatorEx.cs" />
+    <Compile Include="TerminalEmulator\TerminalEmulatorPlugin.cs" />
+    <Compile Include="TerminalEmulator\TerminalOutput.cs" />
+    <Compile Include="TerminalEmulator\TerminalSettings.cs" />
+    <Compile Include="TerminalEmulator\TerminalSettingsEx.cs" />
+    <Compile Include="TerminalEmulator\TerminalSettingsSerialize.cs" />
+    <Compile Include="TerminalEmulator\TerminalToolBar.cs" />
+    <Compile Include="TerminalEmulator\TerminalUtil.cs" />
+    <Compile Include="TerminalEmulator\Util.cs" />
+    <Compile Include="TerminalEmulator\VT100.cs" />
+    <Compile Include="TerminalEmulator\WarningWithDisableOption.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputBox.cs">
+    <Compile Include="TerminalEmulator\XmlLogger.cs" />
+    <Compile Include="TerminalEmulator\XTerm.cs" />
+    <Compile Include="TerminalSession\AutoShellExecutor.cs" />
+    <Compile Include="TerminalSession\CopyPaste.cs" />
+    <Compile Include="TerminalSession\CygwinLoginDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="KeyGenWizard.cs">
+    <Compile Include="TerminalSession\CygwinPlugin.cs" />
+    <Compile Include="TerminalSession\IOpenSessionTabPage.cs" />
+    <Compile Include="TerminalSession\LoginDialogBase.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="KnownHosts.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LineFeedStyleDialog.cs">
+    <Compile Include="TerminalSession\OpenSessionDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginDialog.cs">
-      <SubType>Form</SubType>
+    <Compile Include="TerminalSession\OpenSessionDialog.Designer.cs">
+      <DependentUpon>OpenSessionDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="LogNoteForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MacroEnv.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MacroExec.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MacroInterface.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MacroList.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MacroModule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MacroTrace.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ModuleProperty.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MultiPaneControl.cs">
+    <Compile Include="TerminalSession\OpenSessionTabPageSSH.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="OptionDialog.cs">
-      <SubType>Form</SubType>
+    <Compile Include="TerminalSession\OpenSessionTabPageSSH.Designer.cs">
+      <DependentUpon>OpenSessionTabPageSSH.cs</DependentUpon>
     </Compile>
-    <Compile Include="PeripheralOptionPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="RCollectionUtil.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SendingLargeText.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SerialConfig.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SerialLoginDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ServerInfo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SSHOptionPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="SSHShortcutLoginDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TabBar.cs">
+    <Compile Include="TerminalSession\OpenSessionTabPageTelnet.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="TerminalControl.cs">
+    <Compile Include="TerminalSession\OpenSessionTabPageTelnet.Designer.cs">
+      <DependentUpon>OpenSessionTabPageTelnet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TerminalSession\PaneBridge.cs" />
+    <Compile Include="TerminalSession\Properties\Resources.Designer.cs" />
+    <Compile Include="TerminalSession\Reproduce.cs" />
+    <Compile Include="TerminalSession\ShortcutFile.cs" />
+    <Compile Include="TerminalSession\ShortcutFileCommands.cs" />
+    <Compile Include="TerminalSession\SSHShortcutLoginDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TerminalSession\StartCommands.cs" />
+    <Compile Include="TerminalSession\StoragePerWindow.cs" />
+    <Compile Include="TerminalSession\TelnetSSHLoginDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TerminalSession\TelnetSSHPlugin.cs" />
+    <Compile Include="TerminalSession\TerminalSession.cs" />
+    <Compile Include="TerminalSession\TerminalSessionEx.cs" />
+    <Compile Include="TerminalSession\TerminalSessionOptions.cs" />
+    <Compile Include="TerminalSession\TerminalSessionPlugin.cs" />
+    <Compile Include="UI\ColorButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="TerminalOptionPanel.cs">
-      <SubType>Component</SubType>
+    <Compile Include="UI\ColorDialog.cs">
+      <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Terminal\CommandTarget.cs" />
-    <Compile Include="Terminal\CommunicationUtil.cs" />
-    <Compile Include="Terminal\ConfigColorAttr.cs" />
-    <Compile Include="Terminal\Connections.cs" />
-    <Compile Include="Terminal\DebugUtil.cs" />
-    <Compile Include="Terminal\Encoding.cs" />
-    <Compile Include="Terminal\GDocument.cs" />
-    <Compile Include="Terminal\GEnv.cs" />
-    <Compile Include="Terminal\GLine.cs" />
-    <Compile Include="Terminal\Interface.cs" />
-    <Compile Include="Terminal\InterThread.cs" />
-    <Compile Include="Terminal\KeepAlive.cs" />
-    <Compile Include="Terminal\LocalShell.cs" />
-    <Compile Include="Terminal\Log.cs" />
-    <Compile Include="Terminal\Options.cs" />
-    <Compile Include="Terminal\Paste.cs" />
-    <Compile Include="Terminal\RenderProfile.cs" />
-    <Compile Include="Terminal\SelectionKeyProcessor.cs" />
-    <Compile Include="Terminal\SSH.cs" />
-    <Compile Include="Terminal\Telnet.cs" />
-    <Compile Include="Terminal\TerminalBase.cs" />
-    <Compile Include="Terminal\TerminalConnection.cs" />
-    <Compile Include="Terminal\TerminalDataReceiver.cs" />
-    <Compile Include="Terminal\TerminalDocument.cs" />
-    <Compile Include="Terminal\TerminalInput.cs" />
-    <Compile Include="Terminal\TerminalPane.cs">
+    <Compile Include="UI\ColorUtil.cs" />
+    <Compile Include="UI\DrawUtil.cs" />
+    <Compile Include="UI\GButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Terminal\TerminalParam.cs" />
-    <Compile Include="Terminal\TerminalUtil.cs" />
-    <Compile Include="Terminal\TextDecoration.cs" />
-    <Compile Include="Terminal\TextSelection.cs" />
-    <Compile Include="Terminal\Util.cs" />
-    <Compile Include="Terminal\VT100.cs" />
-    <Compile Include="Terminal\WarningWithDisableOption.cs">
+    <Compile Include="UI\GMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\HotKey.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\ListItem.cs" />
+    <Compile Include="UI\PaneDivision.cs" />
+    <Compile Include="UI\PaneSplitter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\TabBar.cs" />
+    <Compile Include="UI\ThreeButtonMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Terminal\Win32.cs" />
-    <Compile Include="Terminal\XMLUtil.cs" />
-    <Compile Include="Terminal\xmodem.cs" />
-    <Compile Include="Terminal\XTerm.cs" />
-    <Compile Include="TestUtil.cs" />
-    <Compile Include="ThreeButtonMessageBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WelcomeDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WinApi.cs" />
-    <Compile Include="XModemDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <EmbeddedResource Include="AboutBox.resx">
+    <Compile Include="UI\Util.cs" />
+    <Compile Include="UI\Win32.cs" />
+    <Compile Include="UI\WinFormsUtil.cs" />
+    <EmbeddedResource Include="Core\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChangeLogDialog.resx">
-      <DependentUpon>ChangeLogDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ChangePassphrase.resx">
-      <DependentUpon>ChangePassphrase.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Credits.resx">
+    <EmbeddedResource Include="Core\Credits.resx">
       <DependentUpon>Credits.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="CygwinLoginDialog.resx">
-      <DependentUpon>CygwinLoginDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="Core\icons.resx" />
+    <EmbeddedResource Include="Core\PluginList.resx">
+      <DependentUpon>PluginList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EditDisplayDialog.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>EditDisplayDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditEnvVariable.resx">
-      <DependentUpon>EditEnvVariable.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditEscapeSequenceColor.resx">
-      <DependentUpon>EditEscapeSequenceColor.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditRenderProfile.resx">
-      <DependentUpon>EditRenderProfile.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EnvVariable.resx">
-      <DependentUpon>EnvVariable.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GDialogBar.resx">
-      <DependentUpon>GDialogBar.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GFontDialog.resx">
-      <DependentUpon>GFontDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GFrame.resx">
-      <DependentUpon>GFrame.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Core\strings.resx" />
+    <EmbeddedResource Include="Core\strings_ja.resx" />
     <EmbeddedResource Include="Granados\strings.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Granados\strings_ja.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="IconList.resx">
-      <DependentUpon>IconList.cs</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="Plugin\strings.resx" />
+    <EmbeddedResource Include="Plugin\strings_ja.resx" />
+    <EmbeddedResource Include="Protocols\strings.resx" />
+    <EmbeddedResource Include="Protocols\strings_ja.resx" />
+    <EmbeddedResource Include="TerminalEmulator\Properties\Resources.resx" />
+    <EmbeddedResource Include="TerminalEmulator\rulechars.resx" />
+    <EmbeddedResource Include="TerminalEmulator\strings.resx" />
+    <EmbeddedResource Include="TerminalEmulator\strings_ja.resx" />
+    <EmbeddedResource Include="TerminalEmulator\WarningWithDisableOption.resx">
+      <DependentUpon>WarningWithDisableOption.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="icons.resx">
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="TerminalSession\CygwinLoginDialog.resx">
+      <DependentUpon>CygwinLoginDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputBox.resx">
-      <DependentUpon>InputBox.cs</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="TerminalSession\LoginDialogBase.resx">
+      <DependentUpon>LoginDialogBase.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="KeyGenWizard.resx">
-      <DependentUpon>KeyGenWizard.cs</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="TerminalSession\OpenSessionDialog.resx">
+      <DependentUpon>OpenSessionDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LineFeedStyleDialog.resx">
-      <DependentUpon>LineFeedStyleDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="TerminalSession\OpenSessionTabPageSSH.resx">
+      <DependentUpon>OpenSessionTabPageSSH.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LoginDialog.resx">
-      <DependentUpon>LoginDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="TerminalSession\OpenSessionTabPageTelnet.resx">
+      <DependentUpon>OpenSessionTabPageTelnet.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LogNoteForm.resx">
-      <DependentUpon>LogNoteForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MacroList.resx">
-      <DependentUpon>MacroList.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MacroTrace.resx">
-      <DependentUpon>MacroTrace.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ModuleProperty.resx">
-      <DependentUpon>ModuleProperty.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MultiPaneControl.resx">
-      <DependentUpon>MultiPaneControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OptionDialog.resx">
-      <DependentUpon>OptionDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SendingLargeText.resx">
-      <DependentUpon>SendingLargeText.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SerialConfig.resx">
-      <DependentUpon>SerialConfig.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SerialLoginDialog.resx">
-      <DependentUpon>SerialLoginDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ServerInfo.resx">
-      <DependentUpon>ServerInfo.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SSHShortcutLoginDialog.resx">
+    <EmbeddedResource Include="TerminalSession\Properties\Resources.resx" />
+    <EmbeddedResource Include="TerminalSession\SSHShortcutLoginDialog.resx">
       <DependentUpon>SSHShortcutLoginDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="strings.resx">
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="TerminalSession\strings.resx" />
+    <EmbeddedResource Include="TerminalSession\strings_ja.resx" />
+    <EmbeddedResource Include="TerminalSession\TelnetSSHLoginDialog.resx">
+      <DependentUpon>TelnetSSHLoginDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="strings_ja.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TabBar.resx">
-      <DependentUpon>TabBar.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TerminalControl.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>TerminalControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Terminal\rulechars.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Terminal\strings.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Terminal\strings_ja.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ThreeButtonMessageBox.resx">
+    <EmbeddedResource Include="UI\ThreeButtonMessageBox.resx">
       <DependentUpon>ThreeButtonMessageBox.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="WelcomeDialog.resx">
-      <DependentUpon>WelcomeDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XModemDialog.resx">
-      <DependentUpon>XModemDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Core\stringresource.xml" />
+    <Content Include="Plugin\stringresource.xml" />
+    <Content Include="Protocols\stringresource.xml" />
+    <Content Include="TerminalEmulator\Resources\Bell16x16.png" />
+    <Content Include="TerminalEmulator\Resources\CommentLog16x16.png" />
+    <Content Include="TerminalEmulator\Resources\Info16x16.png" />
+    <Content Include="TerminalEmulator\Resources\Intellisense16x16.png" />
+    <Content Include="TerminalEmulator\Resources\LineFeed16x16.png" />
+    <Content Include="TerminalEmulator\Resources\LocalEcho16x16.png" />
+    <Content Include="TerminalEmulator\Resources\Poderosa16x16.png" />
+    <Content Include="TerminalEmulator\Resources\SuspendLog16x16.png" />
+    <Content Include="TerminalEmulator\stringresource.xml" />
+    <Content Include="TerminalSession\Resources\AuthSmall.png" />
+    <Content Include="TerminalSession\Resources\Cygwin16x16.png" />
+    <Content Include="TerminalSession\Resources\MacroSmall.png" />
+    <Content Include="TerminalSession\Resources\NewConnection16x16.png" />
+    <Content Include="TerminalSession\Resources\Open16x16.png" />
+    <Content Include="TerminalSession\Resources\Save16x16.png" />
+    <Content Include="TerminalSession\Resources\SFU16x16.png" />
+    <Content Include="TerminalSession\Resources\Single16x16.png" />
+    <Content Include="TerminalSession\Resources\TerminalSmall.png" />
+    <Content Include="TerminalSession\Resources\X11Small.png" />
+    <Content Include="TerminalSession\stringresource.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

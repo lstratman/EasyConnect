@@ -1,0 +1,251 @@
+﻿<root>
+  <resheader name="ResMimeType">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="Version">
+    <value>1.0.0.0</value>
+  </resheader>
+  <resheader name="Reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="Writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Common.OK">
+    <value>OK</value>
+  </data>
+  <data name="Common.Cancel">
+    <value>キャンセル</value>
+  </data>
+  <data name="Enum.Language.English">
+    <value>英語</value>
+  </data>
+  <data name="Enum.Language.Japanese">
+    <value>日本語</value>
+  </data>
+  <data name="Form.AboutBox.Text">
+    <value>バージョン情報</value>
+  </data>
+  <data name="Form.AboutBox._creditButton">
+    <value>クレジット..,</value>
+  </data>
+  <data name="Menu.File">
+    <value>ファイル(&amp;F)</value>
+  </data>
+  <data name="Menu.NewWindow">
+    <value>新しいウィンドウ(&amp;W)</value>
+  </data>
+  <data name="Menu.Quit">
+    <value>終了(&amp;X)</value>
+  </data>
+  <data name="Menu.Edit">
+    <value>編集(&amp;E)</value>
+  </data>
+  <data name="Menu.Copy">
+    <value>コピー(&amp;Y)</value>
+  </data>
+  <data name="Menu.Paste">
+    <value>貼り付け(&amp;P)</value>
+  </data>
+  <data name="Menu.CopyAsLook">
+    <value>表示イメージをコピー(&amp;L)</value>
+  </data>
+  <data name="Menu.CopyToFile">
+    <value>ファイルへコピー(&amp;T)...</value>
+  </data>
+  <data name="Menu.PasteFromFile">
+    <value>ファイルから貼り付け(&amp;F)...</value>
+  </data>
+  <data name="Menu.SelectAll">
+    <value>すべて選択(&amp;A)</value>
+  </data>
+  <data name="Menu.FreeSelectionMode">
+    <value>フリー選択モード(&amp;S)</value>
+  </data>
+  <data name="Menu.AutoSelectionMode">
+    <value>自動選択モード(&amp;U)</value>
+  </data>
+  <data name="Menu.Console">
+    <value>コンソール(&amp;C)</value>
+  </data>
+  <data name="Menu.ConsoleClose">
+    <value>閉じる(&amp;C)</value>
+  </data>
+  <data name="Menu.Tool">
+    <value>ツール(&amp;T)</value>
+  </data>
+  <data name="Menu.KeyGen">
+    <value>SSH鍵作成ウィザード(&amp;K)...</value>
+  </data>
+  <data name="Menu.ChangePassphrase">
+    <value>秘密鍵のパスフレーズ変更(&amp;P)...</value>
+  </data>
+  <data name="Menu.LaunchPortforwarding">
+    <value>ポートフォワーディングツールの起動(&amp;F)...</value>
+  </data>
+  <data name="Menu.Macro">
+    <value>マクロ(&amp;M)</value>
+  </data>
+  <data name="Menu.Option">
+    <value>オプション(&amp;O)...</value>
+  </data>
+  <data name="Menu.MacroConfig">
+    <value>環境設定(&amp;C)...</value>
+  </data>
+  <data name="Menu.StopMacro">
+    <value>実行中のマクロの停止(&amp;S)</value>
+  </data>
+  <data name="Menu.Window">
+    <value>ウィンドウ(&amp;W)</value>
+  </data>
+  <data name="Menu.DivideFrameHorizontal">
+    <value>上下に分割(&amp;H)</value>
+  </data>
+  <data name="Menu.DivideFrameVertical">
+    <value>左右に分割(&amp;V)</value>
+  </data>
+  <data name="Menu.UnifyFrame">
+    <value>分割を結合(&amp;U)</value>
+  </data>
+  <data name="Menu.UnifyAllFrame">
+    <value>すべての分割を結合(&amp;A)</value>
+  </data>
+  <data name="Menu.CloseAll">
+    <value>すべて閉じる(&amp;C)</value>
+  </data>
+  <data name="Menu.CloseAllDisconnected">
+    <value>切断しているすべてを閉じる(&amp;D)</value>
+  </data>
+  <data name="Menu.SetTabRowCount">
+    <value>タブの段数(&amp;T)</value>
+  </data>
+  <data name="Menu.Plugin">
+    <value>プラグイン(&amp;P)</value>
+  </data>
+  <data name="Menu.PluginList">
+    <value>プラグインリスト(&amp;P)...</value>
+  </data>
+  <data name="Menu.ExtensionPointList">
+    <value>拡張ポイントリスト(&amp;E)...</value>
+  </data>
+  <data name="Menu.Help">
+    <value>ヘルプ(&amp;H)</value>
+  </data>
+  <data name="Menu.AboutBox">
+    <value>バージョン情報(&amp;A)...</value>
+  </data>
+  <data name="Menu.PoderosaWeb">
+    <value>PoderosaのWebを開く(&amp;W)...</value>
+  </data>
+  <data name="CommandCategory.Application">
+    <value>アプリケーション</value>
+  </data>
+  <data name="CommandCategory.Edit">
+    <value>編集</value>
+  </data>
+  <data name="CommandCategory.Window">
+    <value>ウィンドウ</value>
+  </data>
+  <data name="CommandCategory.Dialog">
+    <value>ダイアログ</value>
+  </data>
+  <data name="Command.NewWindow">
+    <value>新しいウィンドウを開く</value>
+  </data>
+  <data name="Command.Quit">
+    <value>Poderosaの終了</value>
+  </data>
+  <data name="Command.Copy">
+    <value>コピー</value>
+  </data>
+  <data name="Command.Paste">
+    <value>貼り付け</value>
+  </data>
+  <data name="Command.CloseDocument">
+    <value>閉じる</value>
+  </data>
+  <data name="Command.CloseAll">
+    <value>すべて閉じる</value>
+  </data>
+  <data name="Command.SplitHorizontal">
+    <value>上下に分割</value>
+  </data>
+  <data name="Command.SplitVertical">
+    <value>左右に分割</value>
+  </data>
+  <data name="Command.SplitUnify">
+    <value>分割の結合</value>
+  </data>
+  <data name="Command.UnifyAll">
+    <value>すべての分割の結合</value>
+  </data>
+  <data name="Command.NextTab">
+    <value>次のタブ</value>
+  </data>
+  <data name="Command.PreviousTab">
+    <value>前のタブ</value>
+  </data>
+  <data name="Command.PluginList">
+    <value>プラグインリストの表示</value>
+  </data>
+  <data name="Command.ExtensionPointList">
+    <value>拡張ポイントリストの表示</value>
+  </data>
+  <data name="Command.AboutBox">
+    <value>バージョン情報</value>
+  </data>
+  <data name="Command.PoderosaWeb">
+    <value>PoderosaのWebを開く</value>
+  </data>
+  <data name="Form.PluginList.Text">
+    <value>プラグインリスト</value>
+  </data>
+  <data name="Form.PluginList._enableHeader">
+    <value>有効</value>
+  </data>
+  <data name="Form.PluginList._versionHeader">
+    <value>バージョン</value>
+  </data>
+  <data name="Form.PluginList._venderHeader">
+    <value>ベンダー</value>
+  </data>
+  <data name="Form.ExtensionPointList.Text">
+    <value>拡張ポイントリスト</value>
+  </data>
+  <data name="Form.ExtensionPointList._ownerHeader">
+    <value>オーナプラグインID</value>
+  </data>
+  <data name="Form.ExtensionPointList._countHeader">
+    <value>拡張の数</value>
+  </data>
+  <data name="Enum.ImageStyle.Center">
+    <value>中央</value>
+  </data>
+  <data name="Enum.ImageStyle.TopLeft">
+    <value>左上</value>
+  </data>
+  <data name="Enum.ImageStyle.TopRight">
+    <value>右上</value>
+  </data>
+  <data name="Enum.ImageStyle.BottomLeft">
+    <value>左下</value>
+  </data>
+  <data name="Enum.ImageStyle.BottomRight">
+    <value>右下</value>
+  </data>
+  <data name="Enum.ImageStyle.Scaled">
+    <value>伸縮</value>
+  </data>
+  <data name="Enum.ImageStyle.HorizontalFit">
+    <value>横幅に合わせる</value>
+  </data>
+  <data name="Enum.ImageStyle.VerticalFit">
+    <value>高さに合わせる</value>
+  </data>
+  <data name="Message.ValueMustBePositive">
+    <value>値は正でなければなりません</value>
+  </data>
+  <data name="Message.ValueMustBeContainedRange">
+    <value>値は {0} と {1} の間でなければなりません</value>
+  </data>
+</root>

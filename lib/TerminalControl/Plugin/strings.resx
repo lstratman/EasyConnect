@@ -1,0 +1,57 @@
+﻿<root>
+  <resheader name="ResMimeType">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="Version">
+    <value>1.0.0.0</value>
+  </resheader>
+  <resheader name="Reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="Writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PoderosaWorld.Messages.DuplicatedMessageLoopExtension">
+    <value>Two extensions which have IGUIMessageLoop, {0} and {1}, were attempted to start at the same time. The latter is disregarded.</value>
+  </data>
+  <data name="PluginManager.Messages.TypeLoadError">
+    <value>Failed to load a type {1} from an assembly {0}. </value>
+  </data>
+  <data name="PluginManager.Messages.IPluginIsNotImplemented">
+    <value>Failed to load a type {0} because it doesn't have IPlugin interface.</value>
+  </data>
+  <data name="PluginManager.Messages.PluginInfoAttributeNotFound">
+    <value>Failed to load a type {0} because PluginInfoAttribute is not provided.</value>
+  </data>
+  <data name="PluginManager.Messages.AssemblyLoadError">
+    <value>Assembly {0} was not able to be loaded.</value>
+  </data>
+  <data name="PluginManager.Messages.BootWithoutThisPlugin">
+    <value>Poderosa starts ignoring plug-in {0}. </value>
+  </data>
+  <data name="PluginManager.Messages.IDNotFound">
+    <value>ID is not specified for plug-in {0}. Poderosa starts ignoring it. </value>
+  </data>
+  <data name="PluginManager.Messages.IDDuplication">
+    <value>ID:{1} for plug-in {0} overlaps. Poderosa starts ignoring it. </value>
+  </data>
+  <data name="PluginManager.Messages.DependencyNotFound">
+    <value>{1} on which plug-in {0} depends is missing. Poderosa starts ignoring it. </value>
+  </data>
+  <data name="PluginManager.Messages.DependencyLoopError">
+    <value>The following plug-ins are not able to be loaded due to the circular dependencies. {0}</value>
+  </data>
+  <data name="PluginManager.Messages.PluginInitializeFailed">
+    <value>Failed to initialize plug-in {0}. </value>
+  </data>
+  <data name="PluginManager.Messages.DuplicatedExtensionPointID">
+    <value>Extension point {0} overlaps. </value>
+  </data>
+  <data name="PluginManager.Messages.NewExtensionPointOutsideInit">
+    <value>The definition of a new extension point was attempted when the plug-in is not in the initializing state.</value>
+  </data>
+  <data name="Message.Util.InternalError">
+    <value>An internal error occurred. Please check {0} . 
+{1}</value>
+  </data>
+</root>

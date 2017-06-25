@@ -1,0 +1,520 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+$Id: stringresource.xml,v 1.7 2012/03/18 01:26:33 kzmi Exp $
+-->
+<string-resource>
+
+<record name="Common.OK">
+  <ja>OK</ja>
+  <en>OK</en>
+</record>
+<record name="Common.Cancel">
+  <ja>キャンセル</ja>
+  <en>Cancel</en>
+</record>
+<record name="Common.MessageBoxTitle">
+  <ja>Poderosa</ja>
+  <en>Poderosa</en>
+</record>
+<record name="Message.GUtil.InternalError">
+  <ja>内部エラーです。{0}を参照してください。
+{1}</ja>
+  <en>An internal error occurred. Please check {0} file. 
+{1}</en>
+</record>
+
+<!-- Logger.cs -->
+<record name="Message.CheckLogFileName.EmptyPath">
+  <ja>パスが指定されていません。</ja>
+  <en>The path is not specified.</en>
+</record>
+<record name="Message.CheckLogFileName.NotWritable">
+  <ja>{0}に書き込みできません。</ja>
+  <en>{0} is not writable.</en>
+</record>
+<record name="Message.CheckLogFileName.BadPathName">
+  <ja>{0}は正しいパス名ではありません。</ja>
+  <en>{0} is a incorrect path name.</en>
+</record>
+<record name="Message.CheckLogFileName.AlreadyExist">
+  <ja>ファイル {0} は既に存在します。</ja>
+  <en>The file {0} already exists.</en>
+</record>
+<record name="Util.CheckLogFileName.Caption">
+  <ja>ログファイル</ja>
+  <en>Log file</en>
+</record>
+<record name="Util.CheckLogFileName.OverWrite">
+  <ja>上書きする(&amp;O)</ja>
+  <en>&amp;Overwrite</en>
+</record>
+<record name="Util.CheckLogFileName.Append">
+  <ja>追記する(&amp;A)</ja>
+  <en>&amp;Append</en>
+</record>
+<record name="Util.CheckLogFileName.Cancel">
+  <ja>キャンセル(&amp;C)</ja>
+  <en>&amp;Cancel</en>
+</record>
+
+
+<!-- TerminalBase.cs -->
+<record name="Message.AbstractTerminal.UnsupportedCharSet">
+  <ja>未サポートのキャラクタセット {0} が検出されました。画面表示が乱れるかもしれません。</ja>
+  <en>An unsupported character set {0} is detected. The screen may not be displayed correctly.</en>
+</record>
+<record name="Message.AbstractTerminal.UnexpectedChar">
+  <ja>現在のエンコーディング {0} に合わないデータを受信しました。エンコーディング設定を確認してください。</ja>
+  <en>Failed to decode characters by the current encoding {0}. Please check the encode setting.</en>
+</record>
+<record name="Message.EscapesequenceTerminal.UnsupportedSequence">
+  <ja>未サポートのエスケープシーケンスを見つけました。
+</ja>
+  <en>An unsupported escape sequence is detected.
+</en>
+</record>
+
+<record name="Message.ConnectionCommandTarget.CloseError">
+  <ja>接続を閉じるときにエラーが発生しました。</ja>
+  <en>An error occurred when closing the connection.</en>
+</record>
+<record name="Message.ConnectionCommandTarget.AreYouThereCondition">
+  <ja>AreYouThereを実行できるのはTelnetだけです。</ja>
+  <en>"Are You There" can be executed on Telnet connections only.</en>
+</record>
+<record name="Message.ConnectionCommandTarget.BreakCondition">
+  <ja>Break送信を実行できるのはシリアル,Telnet,SSH2です。</ja>
+  <en>"Send Break" can be executed to serial, Telnet, and SSH2 connections only.</en>
+</record>
+<record name="Message.ConnectionCommandTarget.SendError">
+  <ja>送信に失敗しました。</ja>
+  <en>Failed to transmit.</en>
+</record>
+<record name="Caption.ConnectionCommandTarget.DuringPaste">
+  <ja>貼り付け中</ja>
+  <en>Pasting</en>
+</record>
+
+<record name="Message.TerminalControl.FailedToSend">
+  <ja>送信に失敗しました。</ja>
+  <en>Failed to transmit.</en>
+</record>
+
+<!-- Options.cs -->
+<record name="Enum.WarningOption.Ignore">
+  <ja>無視</ja>
+  <en>Ignore</en>
+</record>
+<record name="Enum.WarningOption.StatusBar">
+  <ja>ステータスバーに表示</ja>
+  <en>Display in status bar</en>
+</record>
+<record name="Enum.WarningOption.MessageBox">
+  <ja>メッセージボックスを表示</ja>
+  <en>Display a message box</en>
+</record>
+<record name="Enum.DisconnectNotification.MessageBox">
+  <ja>メッセージボックスを表示</ja>
+  <en>Display a message box</en>
+</record>
+<record name="Enum.DisconnectNotification.StatusBar">
+  <ja>ステータスバーに表示</ja>
+  <en>Display in status bar</en>
+</record>
+<record name="Enum.AltKeyAction.Menu">
+  <ja>メニューとショートカット</ja>
+  <en>Menus and shortcuts</en>
+</record>
+<record name="Enum.AltKeyAction.ESC">
+  <ja>ESC &lt;x&gt;</ja>
+  <en>ESC &lt;x&gt;</en>
+</record>
+<record name="Enum.AltKeyAction.Meta">
+  <ja>Metaキー</ja>
+  <en>Meta Key</en>
+</record>
+<record name="Enum.MouseButtonAction.None">
+  <ja>何もしない</ja>
+  <en>Do Nothing</en>
+</record>
+<record name="Enum.MouseButtonAction.ContextMenu">
+  <ja>コンテキストメニュー</ja>
+  <en>Context menu</en>
+</record>
+<record name="Enum.MouseButtonAction.Paste">
+  <ja>貼り付け</ja>
+  <en>Paste</en>
+</record>
+<record name="Enum.KeyboardStyle.None">
+  <ja>なし</ja>
+  <en>None</en>
+</record>
+<record name="Enum.KeyboardStyle.Default">
+  <ja>英語キーボード用</ja>
+  <en>Standard keyboard</en>
+</record>
+<record name="Enum.KeyboardStyle.Japanese">
+  <ja>日本語キーボード用</ja>
+  <en>Japanese keyboard</en>
+</record>
+<record name="Enum.KeyboardStyle.Chinese">
+  <ja>中国語キーボード用</ja>
+  <en>Chinese keyboard</en>
+</record>
+
+<!-- Command -->
+<record name="CommandCategory.Terminal">
+  <ja>ターミナル</ja>
+  <en>Terminal</en>
+</record>
+<record name="CommandCategory.TerminalEdit">
+  <ja>編集-ターミナル</ja>
+  <en>Edit-Terminal</en>
+</record>
+<record name="CommandCategory.Encoding">
+  <ja>エンコーディング</ja>
+  <en>Encoding</en>
+</record>
+<record name="Command.CopyAsLook">
+  <ja>表示イメージをコピー</ja>
+  <en>Copy As You Look</en>
+</record>
+<record name="Command.CopyToFile">
+  <ja>ファイルへコピー</ja>
+  <en>Copy to file</en>
+</record>
+<record name="Command.PasteFromFile">
+  <ja>ファイルから貼り付け</ja>
+  <en>Paste from file</en>
+</record>
+<record name="Command.ClearScreen">
+  <ja>スクリーンのクリア</ja>
+  <en>Clear screen</en>
+</record>
+<record name="Command.ClearBuffer">
+  <ja>バッファのクリア</ja>
+  <en>Clear buffer</en>
+</record>
+<record name="Command.SelectAll">
+  <ja>すべて選択</ja>
+  <en>Select All</en>
+</record>
+<record name="Command.ToggleLocalEcho">
+  <ja>ローカルエコーの切り替え</ja>
+  <en>Toggle local echo</en>
+</record>
+<record name="Command.ToggleCharTriggerIntelliSense">
+  <ja>文字入力に伴うシェル補完の切り替え</ja>
+  <en>Toggle shell complement by character input</en>
+</record>
+<record name="Command.ResetTerminal">
+  <ja>ターミナルのリセット</ja>
+  <en>Reset terminal</en>
+</record>
+<record name="Command.SendBreak">
+  <ja>ブレイク信号送信</ja>
+  <en>Send Break</en>
+</record>
+<record name="Command.AreYouThere">
+  <ja>AreYouThereの送信</ja>
+  <en>Send "Are You There"</en>
+</record>
+<record name="Command.ReceiveLineBreak">
+  <ja>受信時の改行設定</ja>
+  <en>Line feed rule when recieving</en>
+</record>
+<record name="Command.IntelliSense">
+  <ja>シェル補完</ja>
+  <en>Shell complement</en>
+</record>
+<record name="Command.Encoding.ISO8859_1">
+  <ja>iso-8859-1</ja>
+  <en>iso-8859-1</en>
+</record>
+<record name="Command.Encoding.UTF8">
+  <ja>utf-8 (cjk)</ja>
+  <en>utf-8 (cjk)</en>
+</record>
+<record name="Command.Encoding.UTF8_Latin">
+  <ja>utf-8 (latin)</ja>
+  <en>utf-8 (latin)</en>
+</record>
+<record name="Command.Encoding.EUC_JP">
+  <ja>euc-jp</ja>
+  <en>euc-jp</en>
+</record>
+<record name="Command.Encoding.SHIFT_JIS">
+  <ja>shift-jis</ja>
+  <en>shift-jis</en>
+</record>
+<record name="Command.Encoding.GB2312">
+  <ja>gb2312</ja>
+  <en>gb2312</en>
+</record>
+<record name="Command.Encoding.BIG5">
+  <ja>big5</ja>
+  <en>big5</en>
+</record>
+<record name="Command.Encoding.EUC_CN">
+  <ja>euc-cn</ja>
+  <en>euc-cn</en>
+</record>
+<record name="Command.Encoding.EUC_KR">
+  <ja>euc-kr</ja>
+  <en>euc-kr</en>
+</record>
+<record name="Command.Encoding.OEM850">
+  <ja>oem850</ja>
+  <en>oem850</en>
+</record>
+<record name="Caption.SelectPasteFile">
+  <ja>ペーストするファイルの選択</ja>
+  <en>File to paste</en>
+</record>
+<record name="Menu.PopupCommandResult">
+  <ja>コマンド結果をポップアップ(&amp;P)</ja>
+  <en>&amp;Pop up command result</en>
+</record>
+<record name="Menu.CopyCommandResult">
+  <ja>コマンド結果をコピー(&amp;C)</ja>
+  <en>&amp;Copy command result</en>
+</record>
+
+<!--
+<record name="CommandCategory.">
+  <ja></ja>
+  <en></en>
+</record>
+-->
+
+<!-- TerminalCommand.cs -->
+<record name="Menu.Copy">
+  <ja>コピー(&amp;C)</ja>
+  <en>&amp;Copy</en>
+</record>
+<record name="Menu.CopyAsLook">
+  <ja>表示イメージをコピー(&amp;L)</ja>
+  <en>Copy As You &amp;Look</en>
+</record>
+<record name="Menu.CopyToFile">
+  <ja>ファイルへコピー(&amp;T)...</ja>
+  <en>Copy &amp;to File...</en>
+</record>
+<record name="Menu.Paste">
+  <ja>貼り付け(&amp;P)</ja>
+  <en>&amp;Paste</en>
+</record>
+<record name="Menu.PasteFromFile">
+  <ja>ファイルから貼り付け(&amp;F)...</ja>
+  <en>Paste &amp;from file...</en>
+</record>
+<record name="Menu.ClearScreen">
+  <ja>スクリーンのクリア(&amp;C)</ja>
+  <en>&amp;Clear screen</en>
+</record>
+<record name="Menu.ClearBuffer">
+  <ja>バッファのクリア(&amp;B)</ja>
+  <en>Clear &amp;buffer</en>
+</record>
+<record name="Menu.SelectAll">
+  <ja>すべて選択(&amp;A)</ja>
+  <en>Select &amp;All</en>
+</record>
+
+<record name="Menu.NewLine">
+  <ja>改行の送信(&amp;N)</ja>
+  <en>&amp;Line feed transmission</en>
+</record>
+<record name="Menu.Encoding">
+  <ja>エンコーディング(&amp;E)</ja>
+  <en>&amp;Encoding</en>
+</record>
+<record name="Menu.LineFeedRule">
+  <ja>受信時の改行設定(&amp;B)...</ja>
+  <en>Line &amp;feed rule while recieving...</en>
+</record>
+<record name="Menu.LocalEcho">
+  <ja>ローカルエコー(&amp;O)</ja>
+  <en>Local ech&amp;o</en>
+</record>
+<record name="Menu.SendSpecial">
+  <ja>特殊(&amp;S)</ja>
+  <en>&amp;Special</en>
+</record>
+<record name="Menu.SendBreak">
+  <ja>Break信号送信(&amp;B)</ja>
+  <en>Send &amp;Break</en>
+</record>
+<record name="Menu.AreYouThere">
+  <ja>Are You There送信(&amp;A)</ja>
+  <en>Send &amp;Are You There</en>
+</record>
+<record name="Menu.SerialConfig">
+  <ja>シリアルポート再設定(&amp;S)...</ja>
+  <en>Reconfigure &amp;serial port</en>
+</record>
+<record name="Menu.ResetTerminal">
+  <ja>ターミナルのリセット(&amp;R)</ja>
+  <en>&amp;Reset terminal</en>
+</record>
+<record name="Menu.SuspendLog">
+  <ja>ログの一時停止(&amp;U)</ja>
+  <en>S&amp;uspend log</en>
+</record>
+<record name="Menu.CommentLog">
+  <ja>ログにコメントをつける(&amp;G)...</ja>
+  <en>Comment to lo&amp;g...</en>
+</record>
+<record name="Menu.ChangeLog">
+  <ja>ログの設定(&amp;L)...</ja>
+  <en>Change &amp;log...</en>
+</record>
+<record name="Menu.ServerInfo">
+  <ja>ホスト情報(&amp;H)...</ja>
+  <en>&amp;Host information...</en>
+</record>
+<record name="Menu.ToggleCharTriggerIntelliSense">
+  <ja>文字入力でシェル補完(&amp;H)</ja>
+  <en>S&amp;hell Complement by character input</en>
+</record>
+<record name="Menu.SelectIntelliSenseScheme">
+  <ja>シェルスキーム(&amp;C)</ja>
+  <en>&amp;Shell scheme</en>
+</record>
+<record name="Menu.DocumentClose">
+  <ja>閉じる(&amp;C)</ja>
+  <en>&amp;Close</en>
+</record>
+
+
+<!-- TerminalToolBar.cs -->
+<record name="Form.ToolBar._encodingLabel">
+  <ja>エンコーディング</ja>
+  <en>Encoding</en>
+</record>
+<record name="Form.ToolBar._newLineLabel">
+  <ja>改行</ja>
+  <en>Line feed</en>
+</record>
+<record name="Caption.CurrentShellScheme">
+  <ja>現在のシェルスキーム</ja>
+  <en>Current shell scheme</en>
+</record>
+
+
+<!-- TerminalParam.cs -->
+<record name="Enum.AuthType.Password">
+  <ja>パスワード</ja>
+  <en>Password</en>
+</record>
+<record name="Enum.AuthType.PublicKey">
+  <ja>公開鍵</ja>
+  <en>Public Key</en>
+</record>
+<record name="Enum.AuthType.KeyboardInteractive">
+  <ja>Keyboard Interactive</ja>
+  <en>Keyboard interactive</en>
+</record>
+<record name="Enum.EncodingType.ISO8859_1">
+  <ja>iso-8859-1</ja>
+  <en>iso-8859-1</en>
+</record>
+<record name="Enum.EncodingType.UTF8">
+  <ja>utf-8 (cjk)</ja>
+  <en>utf-8 (cjk)</en>
+</record>
+<record name="Enum.EncodingType.UTF8_Latin">
+  <ja>utf-8 (latin)</ja>
+  <en>utf-8 (latin)</en>
+</record>
+<record name="Enum.EncodingType.EUC_JP">
+  <ja>euc-jp</ja>
+  <en>euc-jp</en>
+</record>
+<record name="Enum.EncodingType.SHIFT_JIS">
+  <ja>shift-jis</ja>
+  <en>shift-jis</en>
+</record>
+<record name="Enum.EncodingType.BIG5">
+  <ja>big5</ja>
+  <en>big5</en>
+</record>
+<record name="Enum.EncodingType.EUC_CN">
+  <ja>euc-cn</ja>
+  <en>euc-cn</en>
+</record>
+<record name="Enum.EncodingType.EUC_KR">
+  <ja>euc-kr</ja>
+  <en>euc-kr</en>
+</record>
+<record name="Enum.EncodingType.GB2312">
+  <ja>gb2312</ja>
+  <en>gb2312</en>
+</record>
+<record name="Enum.EncodingType.OEM850">
+  <ja>oem850</ja>
+  <en>oem850</en>
+</record>
+<record name="Enum.LogType.None">
+  <ja>なし</ja>
+  <en>None</en>
+</record>
+<record name="Enum.LogType.Default">
+  <ja>標準</ja>
+  <en>Standard</en>
+</record>
+<record name="Enum.LogType.PlainTextWithTimestamp">
+  <ja>標準(タイムスタンプ付)</ja>
+  <en>Standard (with timestamp)</en>
+</record>
+<record name="Enum.LogType.Binary">
+  <ja>バイナリ</ja>
+  <en>Binary</en>
+</record>
+<record name="Enum.LogType.Xml">
+  <ja>デバッグ</ja>
+  <en>Debug</en>
+</record>
+<record name="Enum.NewLine.CR">
+  <ja>CR</ja>
+  <en>CR</en>
+</record>
+<record name="Enum.NewLine.LF">
+  <ja>LF</ja>
+  <en>LF</en>
+</record>
+<record name="Enum.NewLine.CRLF">
+  <ja>CR+LF</ja>
+  <en>CR+LF</en>
+</record>
+<record name="Enum.TerminalType.KTerm">
+  <ja>kterm</ja>
+  <en>kterm</en>
+</record>
+<record name="Enum.TerminalType.XTerm">
+  <ja>xterm</ja>
+  <en>xterm</en>
+</record>
+<record name="Enum.TerminalType.VT100">
+  <ja>vt100</ja>
+  <en>vt100</en>
+</record>
+<record name="Message.TCPTerminalParam.PropCannotBeSet">
+  <ja>このプロパティは設定できません。</ja>
+  <en>This property can not be changed.</en>
+</record>
+<record name="Mesage.SSHTerminalParam.MethodSetError">
+  <ja>SSH1またはSSH2を指定してください。</ja>
+  <en>The method must be SSH1 or SSH2.</en>
+</record>
+<!-- WarningWithDisableOption.cs -->
+<record name="Form.WarningWithDisableOption.Text">
+  <ja>注意</ja>
+  <en>Warning</en>
+</record>
+<record name="Form.WarningWithDisableOption._disableCheckBox">
+  <ja>次回からこのメッセージを表示しない(&amp;N)</ja>
+  <en>Do &amp;not display this message from next time</en>
+</record>
+
+</string-resource>

@@ -1,136 +1,167 @@
-/*
- Copyright (c) 2005 Poderosa Project, All Rights Reserved.
- This file is a part of the Granados SSH Client Library that is subject to
- the license included in the distributed package.
- You may not use this file except in compliance with the license.
+Ôªø// Copyright (c) 2005-2016 Poderosa Project, All Rights Reserved.
+// This file is a part of the Granados SSH Client Library that is subject to
+// the license included in the distributed package.
+// You may not use this file except in compliance with the license.
 
- $Id: SSH1UserAuthKey.cs,v 1.2 2005/04/20 08:58:56 okajima Exp $
-*/
 using System;
 using System.IO;
 using System.Text;
 using System.Security.Cryptography;
-using System.Diagnostics;
 
-using Granados.SSHC;
+using Granados.IO.SSH1;
+using Granados.Crypto;
+using Granados.Util;
+using Granados.Mono.Math;
 
-namespace Granados.SSHCV1
-{
-	/// <summary>
-	/// private key for user authentication
-	/// </summary>
-	public class SSH1UserAuthKey
-	{
-		private BigInteger _modulus;
-		private BigInteger _publicExponent;
-		private BigInteger _privateExponent;
-		private BigInteger _primeP;
-		private BigInteger _primeQ;
-		private BigInteger _crtCoefficient;
 
-		public BigInteger PublicModulus {
-			get {
-				return _modulus;
-			}
-		}
-		public BigInteger PublicExponent {
-			get {
-				return _publicExponent;
-			}
-		}
+#if PODEROSA_KEYFORMAT
+using Granados.Poderosa.KeyFormat;
+#endif
 
-		/// <summary>
-		/// constructs from file
-		/// </summary>
-		/// <param name="path">file name</param>
-		/// <param name="passphrase">passphrase or empty string if passphrase is not required</param>
-		public SSH1UserAuthKey(string path, string passphrase)
-		{
-			Stream s = File.Open(path, FileMode.Open);
-			byte[] header = new byte[32];
-			s.Read(header, 0, header.Length);
-			if(Encoding.ASCII.GetString(header)!="SSH PRIVATE KEY FILE FORMAT 1.1\n")
-				throw new SSHException(String.Format(Strings.GetString("BrokenKeyFile"), path));
+namespace Granados.SSH1 {
+    /// <summary>
+    /// private key for user authentication
+    /// </summary>
+    /// <exclude/>
+    public class SSH1UserAuthKey {
+        private BigInteger _modulus;
+        private BigInteger _publicExponent;
+        private BigInteger _privateExponent;
+        private BigInteger _primeP;
+        private BigInteger _primeQ;
+        private BigInteger _crtCoefficient;
+        private string _comment;
 
-			SSH1DataReader reader = new SSH1DataReader(ReadAll(s));
-			s.Close();
+        public BigInteger PublicModulus {
+            get {
+                return _modulus;
+            }
+        }
+        public BigInteger PublicExponent {
+            get {
+                return _publicExponent;
+            }
+        }
 
-			byte[] cipher = reader.Read(2); //first 2 bytes indicates algorithm and next 8 bytes is space
-			reader.Read(8);
+        public string Comment {
+            get {
+                return _comment;
+            }
+        }
 
-			_modulus = reader.ReadMPInt();
-			_publicExponent = reader.ReadMPInt();
-			byte[] comment = reader.ReadString();
-			byte[] prvt = reader.ReadAll();
-			//ïKóvÇ»ÇÁïúçÜ
-			CipherAlgorithm algo = (CipherAlgorithm)cipher[1];
-			if(algo!=0) {
-				Cipher c = CipherFactory.CreateCipher(SSHProtocol.SSH1, algo, ConvertToKey(passphrase));
-				byte[] buf = new byte[prvt.Length];
-				c.Decrypt(prvt, 0, prvt.Length, buf, 0);
-				prvt = buf;
-			}
+        /// <summary>
+        /// constructs from file
+        /// </summary>
+        /// <param name="path">file name</param>
+        /// <param name="passphrase">passphrase or empty string if passphrase is not required</param>
+        public SSH1UserAuthKey(string path, string passphrase) {
+#if PODEROSA_KEYFORMAT
+            PrivateKeyLoader loader = new PrivateKeyLoader(path);
+            loader.LoadSSH1PrivateKey(
+                            passphrase,
+                            out _modulus,
+                            out _publicExponent,
+                            out _privateExponent,
+                            out _primeP,
+                            out _primeQ,
+                            out _crtCoefficient,
+                            out _comment);
+#else
+            Stream s = File.Open(path, FileMode.Open);
+            byte[] header = new byte[32];
+            s.Read(header, 0, header.Length);
+            if (Encoding.ASCII.GetString(header) != "SSH PRIVATE KEY FILE FORMAT 1.1\n")
+                throw new SSHException(String.Format(Strings.GetString("BrokenKeyFile"), path));
 
-			SSH1DataReader prvtreader = new SSH1DataReader(prvt);
-			byte[] mark = prvtreader.Read(4);
-			if(mark[0]!=mark[2] || mark[1]!=mark[3])
-				throw new SSHException(Strings.GetString("WrongPassphrase"));
+            SSH1DataReader reader = new SSH1DataReader(ReadAll(s));
+            s.Close();
 
-			_privateExponent = prvtreader.ReadMPInt();
-			_crtCoefficient = prvtreader.ReadMPInt();
-			_primeP = prvtreader.ReadMPInt();
-			_primeQ = prvtreader.ReadMPInt();
-		}
+            byte[] cipher = reader.Read(2); //first 2 bytes indicates algorithm and next 8 bytes is space
+            reader.Read(8);
 
-		public BigInteger decryptChallenge(BigInteger encryptedchallenge) {
-			BigInteger primeExponentP = PrimeExponent(_privateExponent, _primeP);
-			BigInteger primeExponentQ = PrimeExponent(_privateExponent, _primeQ);
+            _modulus = reader.ReadMPInt();
+            _publicExponent = reader.ReadMPInt();
+            _comment = reader.ReadString();
+            byte[] prvt = reader.GetRemainingDataView().GetBytes();
+            //ÂøÖË¶Å„Å™„ÇâÂæ©Âè∑
+            CipherAlgorithm algo = (CipherAlgorithm)cipher[1];
+            if (algo != 0) {
+                Cipher c = CipherFactory.CreateCipher(SSHProtocol.SSH1, algo, ConvertToKey(passphrase));
+                byte[] buf = new byte[prvt.Length];
+                c.Decrypt(prvt, 0, prvt.Length, buf, 0);
+                prvt = buf;
+            }
 
-			BigInteger p2;
-			BigInteger q2;
-			BigInteger k;
-			BigInteger result;
+            SSH1DataReader prvtreader = new SSH1DataReader(prvt);
+            byte[] mark = prvtreader.Read(4);
+            if (mark[0] != mark[2] || mark[1] != mark[3])
+                throw new SSHException(Strings.GetString("WrongPassphrase"));
 
-			p2 = encryptedchallenge % _primeP;
-			p2 = p2.modPow(primeExponentP, _primeP);
+            _privateExponent = prvtreader.ReadMPInt();
+            _crtCoefficient = prvtreader.ReadMPInt();
+            _primeP = prvtreader.ReadMPInt();
+            _primeQ = prvtreader.ReadMPInt();
+#endif
+        }
 
-			q2 = encryptedchallenge % _primeQ;
-			q2 = q2.modPow(primeExponentQ, _primeQ);
+        public BigInteger decryptChallenge(BigInteger encryptedchallenge) {
+            BigInteger primeExponentP = PrimeExponent(_privateExponent, _primeP);
+            BigInteger primeExponentQ = PrimeExponent(_privateExponent, _primeQ);
 
-			if(p2==q2) return p2;
+            BigInteger p2;
+            BigInteger q2;
+            BigInteger k;
+            BigInteger result;
 
-			k = (q2 - p2) % _primeQ;
-			if(k.IsNegative) k += _primeQ;
-			k = k * _crtCoefficient;
-			k = k % _primeQ;
+            p2 = encryptedchallenge % _primeP;
+            p2 = p2.ModPow(primeExponentP, _primeP);
 
-			result = k * _primeP;
-			result = result + p2;
-			
-			return result;
-		}
+            q2 = encryptedchallenge % _primeQ;
+            q2 = q2.ModPow(primeExponentQ, _primeQ);
 
-		private static BigInteger PrimeExponent(BigInteger privateExponent,	BigInteger prime) {
-			BigInteger pe = prime - new BigInteger(1);
-			return privateExponent % pe;
+            if (p2 == q2)
+                return p2;
 
-		}
+            if (q2 > p2) {
+                k = (q2 - p2) % _primeQ;
+            }
+            else {
+                // add multiple of _primeQ greater than _primeP
+                BigInteger d = _primeQ + (_primeP / _primeQ) * _primeQ;
+                k = (d + q2 - p2) % _primeQ;
+            }
+            k = k * _crtCoefficient;
+            k = k % _primeQ;
 
-		private static byte[] ReadAll(Stream s) {
-			byte[] t = new byte[0x1000];
-			int l = s.Read(t, 0, 0x1000);
-			if(l==t.Length) throw new IOException("Key file is too big");
-			return t;
-		}
+            result = k * _primeP;
+            result = result + p2;
 
-		//key from passphrase
-		private static byte[] ConvertToKey(string passphrase) {
-			byte[] t = Encoding.ASCII.GetBytes(passphrase);
-			byte[] md5 = new MD5CryptoServiceProvider().ComputeHash(t);
-			byte[] result = new byte[32];
-			Array.Copy(md5, 0, result, 0, 16);
-			Array.Copy(md5, 0, result, 16, 16);
-			return result;
-		}
-	}
+            return result;
+        }
+
+        private static BigInteger PrimeExponent(BigInteger privateExponent, BigInteger prime) {
+            BigInteger pe = prime - new BigInteger(1);
+            return privateExponent % pe;
+        }
+
+#if !PODEROSA_KEYFORMAT
+        private static byte[] ReadAll(Stream s) {
+            byte[] t = new byte[0x1000];
+            int l = s.Read(t, 0, 0x1000);
+            if (l == t.Length)
+                throw new IOException("Key file is too big");
+            return t;
+        }
+
+        //key from passphrase
+        private static byte[] ConvertToKey(string passphrase) {
+            byte[] t = Encoding.ASCII.GetBytes(passphrase);
+            byte[] md5 = new MD5CryptoServiceProvider().ComputeHash(t);
+            byte[] result = new byte[32];
+            Array.Copy(md5, 0, result, 0, 16);
+            Array.Copy(md5, 0, result, 16, 16);
+            return result;
+        }
+#endif
+    }
 }
