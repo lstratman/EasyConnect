@@ -118,7 +118,7 @@ namespace EasyConnect.Protocols
 			// 
 			// BaseConnectionForm
 			// 
-			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
+			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
 			this.ClientSize = new System.Drawing.Size(630, 531);
 			this.Controls.Add(this.disconnectedPanel);
 			this.Controls.Add(this.connectingLabel);
