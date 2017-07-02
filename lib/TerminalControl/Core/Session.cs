@@ -33,7 +33,7 @@ namespace Poderosa.Sessions {
     }
 
     [PluginInfo(ID = SessionManagerPlugin.PLUGIN_ID, Version = VersionInfo.PODEROSA_VERSION, Author = VersionInfo.PROJECT_NAME, Dependencies = "org.poderosa.core.window")]
-    internal class SessionManagerPlugin :
+    public class SessionManagerPlugin :
         PluginBase,
         ISessionManager,
         ISessionManagerForViewSplitter {
@@ -274,42 +274,42 @@ namespace Poderosa.Sessions {
          * そのうちのどれであるかを指定してここを呼ぶ。例えば、Focus移動のときは改めてFocus()を呼ばないなど内部で場合分けがなされる
          */
         public void ActivateDocument(IPoderosaDocument document, ActivateReason reason) {
-            Debug.Assert(document != null);
+            //Debug.Assert(document != null);
 
-            //ネストの防止 Focus系イベントハンドラがあるとどうしても呼ばれてしまうので
-            if (_activateContext != null)
-                return;
+            ////ネストの防止 Focus系イベントハンドラがあるとどうしても呼ばれてしまうので
+            //if (_activateContext != null)
+            //    return;
 
-            try {
-                _activateContext = new ActivateContext(document, reason);
+            //try {
+            //    _activateContext = new ActivateContext(document, reason);
 
-                DocumentHost dh = FindDocumentHost(document);
-                Debug.Assert(dh != null);
+            //    DocumentHost dh = FindDocumentHost(document);
+            //    Debug.Assert(dh != null);
 
-                if (dh.CurrentView != null) { //既に見えている場合
-                    if (reason != ActivateReason.ViewGotFocus)
-                        SetFocusToView(dh.CurrentView); //ユーザのフォーカス指定だった場合はそれに任せる
-                }
-                else { //見えてはいなかった場合
-                    IPoderosaView view = dh.LastAttachedView;
-                    Debug.Assert(view != null); //これを強制する仕組みをどこかにほしいかも。今はすべてのDocumentが最初にAttachDocumentAndViewされることを想定している
-                    AttachDocumentAndView(document, view);
-                    Debug.Assert(dh.CurrentView == view);
-                    if (!view.AsControl().Focused)
-                        view.AsControl().Focus();
-                }
+            //    if (dh.CurrentView != null) { //既に見えている場合
+            //        if (reason != ActivateReason.ViewGotFocus)
+            //            SetFocusToView(dh.CurrentView); //ユーザのフォーカス指定だった場合はそれに任せる
+            //    }
+            //    else { //見えてはいなかった場合
+            //        IPoderosaView view = dh.LastAttachedView;
+            //        Debug.Assert(view != null); //これを強制する仕組みをどこかにほしいかも。今はすべてのDocumentが最初にAttachDocumentAndViewされることを想定している
+            //        AttachDocumentAndView(document, view);
+            //        Debug.Assert(dh.CurrentView == view);
+            //        if (!view.AsControl().Focused)
+            //            view.AsControl().Focus();
+            //    }
 
-                Debug.Assert(dh.CurrentView.Document == document);
+            //    Debug.Assert(dh.CurrentView.Document == document);
 
 
-                //通知
-                NotifyActivation(ViewToForm(dh.CurrentView), document, reason);
-            }
-            finally {
-                _activateContext = null;
-                if (DebugOpt.DumpDocumentRelation)
-                    DumpDocumentRelation();
-            }
+            //    //通知
+            //    NotifyActivation(ViewToForm(dh.CurrentView), document, reason);
+            //}
+            //finally {
+            //    _activateContext = null;
+            //    if (DebugOpt.DumpDocumentRelation)
+            //        DumpDocumentRelation();
+            //}
         }
 
         //SessionHostから呼ばれる系列
@@ -495,7 +495,7 @@ namespace Poderosa.Sessions {
         }
     }
 
-    internal class SessionHost : ISessionHost {
+    public class SessionHost : ISessionHost {
         private SessionManagerPlugin _parent;
         private ISession _session;
         private List<IPoderosaDocument> _documents;
@@ -580,7 +580,7 @@ namespace Poderosa.Sessions {
         }
     }
 
-    internal class DocumentHost {
+    public class DocumentHost {
         private SessionManagerPlugin _manager;
         private SessionHost _sessionHost;
         private IPoderosaDocument _document;
@@ -649,7 +649,7 @@ namespace Poderosa.Sessions {
 
     }
 
-    internal class ClosingContext {
+    public class ClosingContext {
         private enum CloseType {
             OneDocument,
             OneSession,

@@ -41,7 +41,7 @@ namespace Poderosa.Sessions {
     }
 
     //接続に対して関連付けるデータ
-    internal class TerminalSession : ITerminalSession, IAbstractTerminalHost, ITerminalControlHost {
+    public class TerminalSession : ITerminalSession, IAbstractTerminalHost, ITerminalControlHost {
         private delegate void HostCauseCloseDelagate(string msg);
 
         private ISessionHost _sessionHost;
@@ -91,7 +91,16 @@ namespace Poderosa.Sessions {
                 if (_terminated)
                     return TerminalSessionsPlugin.Instance.WindowManager.ActiveWindow; //終了しているときはSessionHost等も取得不能
                 else
-                    return (IPoderosaMainWindow)_sessionHost.GetParentFormFor(_terminal.IDocument).GetAdapter(typeof(IPoderosaMainWindow));
+                {
+                    IPoderosaForm parentForm = _sessionHost.GetParentFormFor(_terminal.IDocument);
+
+                    if (parentForm == null)
+                    {
+                        return null;
+                    }
+
+                    return (IPoderosaMainWindow)parentForm.GetAdapter(typeof(IPoderosaMainWindow));
+                }
             }
         }
         public ITerminalConnection TerminalConnection {

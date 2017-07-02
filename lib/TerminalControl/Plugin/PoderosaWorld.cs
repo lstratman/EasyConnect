@@ -56,6 +56,18 @@ namespace Poderosa.Boot {
                 return _poderosaCulture;
             }
         }
+
+        public void InitializePlugins()
+        {
+            if (_startupContext.Tracer == null)
+            {
+                DefaultTracer tracer = new DefaultTracer(_stringResource);
+                _startupContext.Tracer = tracer;
+            }
+
+            _pluginManager.InitializePlugins(_startupContext);
+        }
+
         #endregion
 
         #region IStartupContextSupplier
@@ -95,7 +107,7 @@ namespace Poderosa.Boot {
             _startupContext.Tracer = tracer;
 
             //Step1 プラグインの構成と初期化
-            _pluginManager.InitializePlugins(_startupContext);
+            InitializePlugins();
 
             //エラーレポート
             if (!tracer.Document.IsEmpty)

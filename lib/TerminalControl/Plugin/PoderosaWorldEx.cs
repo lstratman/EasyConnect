@@ -78,6 +78,8 @@ namespace Poderosa.Plugins {
         IPoderosaCulture Culture {
             get;
         }
+
+        void InitializePlugins();
     }
 
     /// <summary>
