@@ -157,6 +157,8 @@
     <Compile Include="ConnectionWindow.Designer.cs">
       <DependentUpon>ConnectionWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="EasyConnectColorTable.cs" />
+    <Compile Include="EasyConnectToolStripRender.cs" />
     <Compile Include="GlobalOptionsWindow.cs">
       <SubType>Form</SubType>
     </Compile>

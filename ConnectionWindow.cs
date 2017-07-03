@@ -97,6 +97,9 @@ namespace EasyConnect
 		{
 			InitializeComponent();
 
+		    _toolsMenu.Renderer = new EasyConnectToolStripRender();
+		    _bookmarksMenu.Renderer = new EasyConnectToolStripRender();
+
 			// Create the panels that will contain the display text for each auto complete entry when the user is typing in the URL text box
 			for (int i = 0; i < 6; i++)
 			{
@@ -537,7 +540,7 @@ namespace EasyConnect
 		{
 			_toolsButton.BackgroundImage = Resources.ButtonPressedBackground;
 			_toolsMenu.DefaultDropDownDirection = ToolStripDropDownDirection.Left;
-			_toolsMenu.Show(_toolsButton, -187 + _toolsButton.Width, _toolsButton.Height);
+			_toolsMenu.Show(_toolsButton, -1 * _toolsMenu.Width + _toolsButton.Width, _toolsButton.Height);
 		}
 
 		protected override void OnVisibleChanged(EventArgs e)
