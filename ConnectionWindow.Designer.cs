@@ -93,7 +93,7 @@
             // 
             this._newTabMenuItem.Name = "_newTabMenuItem";
             this._newTabMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this._newTabMenuItem.Size = new System.Drawing.Size(186, 22);
+            this._newTabMenuItem.Size = new System.Drawing.Size(172, 22);
             this._newTabMenuItem.Text = "New tab";
             this._newTabMenuItem.Click += new System.EventHandler(this._newTabMenuItem_Click);
             // 
@@ -101,44 +101,44 @@
             // 
             this._newWindowMenuItem.Name = "_newWindowMenuItem";
             this._newWindowMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this._newWindowMenuItem.Size = new System.Drawing.Size(186, 22);
+            this._newWindowMenuItem.Size = new System.Drawing.Size(172, 22);
             this._newWindowMenuItem.Text = "New window";
             this._newWindowMenuItem.Click += new System.EventHandler(this._newWindowMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(183, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(169, 6);
             // 
             // _historyToolStripMenuItem
             // 
             this._historyToolStripMenuItem.Name = "_historyToolStripMenuItem";
             this._historyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
-            this._historyToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this._historyToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this._historyToolStripMenuItem.Text = "History";
             this._historyToolStripMenuItem.Click += new System.EventHandler(this._historyToolStripMenuItem_Click);
             // 
             // _toolsMenuSeparator1
             // 
             this._toolsMenuSeparator1.Name = "_toolsMenuSeparator1";
-            this._toolsMenuSeparator1.Size = new System.Drawing.Size(183, 6);
+            this._toolsMenuSeparator1.Size = new System.Drawing.Size(169, 6);
             // 
             // _optionsMenuItem
             // 
             this._optionsMenuItem.Name = "_optionsMenuItem";
-            this._optionsMenuItem.Size = new System.Drawing.Size(186, 22);
+            this._optionsMenuItem.Size = new System.Drawing.Size(172, 22);
             this._optionsMenuItem.Text = "Options";
             this._optionsMenuItem.Click += new System.EventHandler(this._optionsMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(183, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(169, 6);
             // 
             // _updatesMenuItem
             // 
             this._updatesMenuItem.Name = "_updatesMenuItem";
-            this._updatesMenuItem.Size = new System.Drawing.Size(186, 22);
+            this._updatesMenuItem.Size = new System.Drawing.Size(172, 22);
             this._updatesMenuItem.Text = "Check for update";
             this._updatesMenuItem.Visible = false;
             this._updatesMenuItem.Click += new System.EventHandler(this._updatesMenuItem_Click);
@@ -146,20 +146,20 @@
             // _toolsMenuSeparator2
             // 
             this._toolsMenuSeparator2.Name = "_toolsMenuSeparator2";
-            this._toolsMenuSeparator2.Size = new System.Drawing.Size(183, 6);
+            this._toolsMenuSeparator2.Size = new System.Drawing.Size(169, 6);
             this._toolsMenuSeparator2.Visible = false;
             // 
             // _aboutMenuItem
             // 
             this._aboutMenuItem.Name = "_aboutMenuItem";
-            this._aboutMenuItem.Size = new System.Drawing.Size(186, 22);
+            this._aboutMenuItem.Size = new System.Drawing.Size(172, 22);
             this._aboutMenuItem.Text = "About...";
             this._aboutMenuItem.Click += new System.EventHandler(this._aboutMenuItem_Click);
             // 
             // _exitMenuItem
             // 
             this._exitMenuItem.Name = "_exitMenuItem";
-            this._exitMenuItem.Size = new System.Drawing.Size(186, 22);
+            this._exitMenuItem.Size = new System.Drawing.Size(172, 22);
             this._exitMenuItem.Text = "Exit";
             this._exitMenuItem.Click += new System.EventHandler(this._exitMenuItem_Click);
             // 
@@ -172,7 +172,7 @@
             this.bookmarkThisSiteToolStripMenuItem});
             this._bookmarksMenu.Name = "_bookmarksMenu";
             this._bookmarksMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this._bookmarksMenu.Size = new System.Drawing.Size(278, 70);
+            this._bookmarksMenu.Size = new System.Drawing.Size(278, 48);
             this._bookmarksMenu.VisibleChanged += new System.EventHandler(this._bookmarksMenu_VisibleChanged);
             // 
             // _bookmarksManagerMenuItem2
@@ -180,7 +180,7 @@
             this._bookmarksManagerMenuItem2.Name = "_bookmarksManagerMenuItem2";
             this._bookmarksManagerMenuItem2.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.O)));
-            this._bookmarksManagerMenuItem2.Size = new System.Drawing.Size(258, 22);
+            this._bookmarksManagerMenuItem2.Size = new System.Drawing.Size(277, 22);
             this._bookmarksManagerMenuItem2.Text = "Bookmarks manager";
             this._bookmarksManagerMenuItem2.Click += new System.EventHandler(this._bookmarksManagerMenuItem2_Click);
             // 
@@ -188,7 +188,7 @@
             // 
             this.bookmarkThisSiteToolStripMenuItem.Name = "bookmarkThisSiteToolStripMenuItem";
             this.bookmarkThisSiteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.bookmarkThisSiteToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
+            this.bookmarkThisSiteToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.bookmarkThisSiteToolStripMenuItem.Text = "Bookmark this server";
             this.bookmarkThisSiteToolStripMenuItem.Click += new System.EventHandler(this._bookmarkMenuItem_Click);
             // 
