@@ -42,27 +42,28 @@
             // nameLabel
             // 
             this.nameLabel.AutoSize = true;
-            this.nameLabel.Location = new System.Drawing.Point(10, 13);
+            this.nameLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nameLabel.Location = new System.Drawing.Point(10, 10);
             this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(38, 13);
+            this.nameLabel.Size = new System.Drawing.Size(46, 17);
             this.nameLabel.TabIndex = 0;
             this.nameLabel.Text = "Name:";
             // 
             // nameTextBox
             // 
-            this.nameTextBox.Location = new System.Drawing.Point(57, 10);
+            this.nameTextBox.Location = new System.Drawing.Point(62, 10);
             this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.Size = new System.Drawing.Size(207, 20);
+            this.nameTextBox.Size = new System.Drawing.Size(202, 20);
             this.nameTextBox.TabIndex = 1;
             // 
             // bookmarksTreeView
             // 
             this.bookmarksTreeView.ImageIndex = 0;
             this.bookmarksTreeView.ImageList = this.bookmarkImageList;
-            this.bookmarksTreeView.Location = new System.Drawing.Point(13, 58);
+            this.bookmarksTreeView.Location = new System.Drawing.Point(13, 62);
             this.bookmarksTreeView.Name = "bookmarksTreeView";
             this.bookmarksTreeView.SelectedImageIndex = 1;
-            this.bookmarksTreeView.Size = new System.Drawing.Size(251, 192);
+            this.bookmarksTreeView.Size = new System.Drawing.Size(251, 188);
             this.bookmarksTreeView.TabIndex = 2;
             // 
             // bookmarkImageList
@@ -95,9 +96,10 @@
             // destinationLabel
             // 
             this.destinationLabel.AutoSize = true;
+            this.destinationLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.destinationLabel.Location = new System.Drawing.Point(10, 42);
             this.destinationLabel.Name = "destinationLabel";
-            this.destinationLabel.Size = new System.Drawing.Size(89, 13);
+            this.destinationLabel.Size = new System.Drawing.Size(112, 17);
             this.destinationLabel.TabIndex = 5;
             this.destinationLabel.Text = "Destination folder";
             // 

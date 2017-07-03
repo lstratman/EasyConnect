@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Security.SecureString secureString2 = new System.Security.SecureString();
+            System.Security.SecureString secureString1 = new System.Security.SecureString();
             this._passwordTextBox = new SecurePasswordTextBox.SecureTextBox();
             this.okButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
@@ -39,11 +39,11 @@
             // 
             // _passwordTextBox
             // 
-            this._passwordTextBox.Location = new System.Drawing.Point(80, 38);
+            this._passwordTextBox.Location = new System.Drawing.Point(90, 38);
             this._passwordTextBox.Name = "_passwordTextBox";
             this._passwordTextBox.PasswordChar = '*';
-            this._passwordTextBox.SecureText = secureString2;
-            this._passwordTextBox.Size = new System.Drawing.Size(166, 20);
+            this._passwordTextBox.SecureText = secureString1;
+            this._passwordTextBox.Size = new System.Drawing.Size(156, 20);
             this._passwordTextBox.TabIndex = 2;
             this._passwordTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this._passwordTextBox_KeyDown);
             // 
@@ -70,26 +70,28 @@
             // _passwordLabel
             // 
             this._passwordLabel.AutoSize = true;
-            this._passwordLabel.Location = new System.Drawing.Point(18, 41);
+            this._passwordLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._passwordLabel.Location = new System.Drawing.Point(19, 38);
             this._passwordLabel.Name = "_passwordLabel";
-            this._passwordLabel.Size = new System.Drawing.Size(56, 13);
+            this._passwordLabel.Size = new System.Drawing.Size(67, 17);
             this._passwordLabel.TabIndex = 7;
             this._passwordLabel.Text = "Password:";
             // 
             // _usernameTextBox
             // 
-            this._usernameTextBox.Location = new System.Drawing.Point(80, 12);
+            this._usernameTextBox.Location = new System.Drawing.Point(90, 12);
             this._usernameTextBox.Name = "_usernameTextBox";
-            this._usernameTextBox.Size = new System.Drawing.Size(166, 20);
+            this._usernameTextBox.Size = new System.Drawing.Size(156, 20);
             this._usernameTextBox.TabIndex = 1;
             this._usernameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this._usernameTextBox_KeyDown);
             // 
             // _usernameLabel
             // 
             this._usernameLabel.AutoSize = true;
-            this._usernameLabel.Location = new System.Drawing.Point(16, 15);
+            this._usernameLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._usernameLabel.Location = new System.Drawing.Point(16, 12);
             this._usernameLabel.Name = "_usernameLabel";
-            this._usernameLabel.Size = new System.Drawing.Size(58, 13);
+            this._usernameLabel.Size = new System.Drawing.Size(70, 17);
             this._usernameLabel.TabIndex = 9;
             this._usernameLabel.Text = "Username:";
             // 
