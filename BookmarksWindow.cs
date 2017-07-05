@@ -163,6 +163,9 @@ namespace EasyConnect
 					protocol.ProtocolTitle, null, (sender, args) => _addBookmarkMenuItem_Click(currentProtocol));
 				_addBookmarkMenuItem.DropDownItems.Add(protocolMenuItem);
 			}
+
+            _bookmarkContextMenu.Renderer = new EasyConnectToolStripRender();
+            _folderContextMenu.Renderer = new EasyConnectToolStripRender();
 		}
 
 		/// <summary>

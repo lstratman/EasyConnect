@@ -211,6 +211,7 @@ namespace EasyConnect
             // 
             // _folderContextMenu
             // 
+            this._folderContextMenu.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._folderContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._folderOpenAllMenuItem,
             this._folderOpenAllNewWindowMenuItem,
@@ -233,71 +234,71 @@ namespace EasyConnect
             this._importBookmarkMenuItem});
             this._folderContextMenu.Name = "_folderContextMenu";
             this._folderContextMenu.ShowImageMargin = false;
-            this._folderContextMenu.Size = new System.Drawing.Size(248, 326);
+            this._folderContextMenu.Size = new System.Drawing.Size(270, 326);
             this._folderContextMenu.Closed += new System.Windows.Forms.ToolStripDropDownClosedEventHandler(this._folderContextMenu_Closed);
             this._folderContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this._folderContextMenu_Opening);
             // 
             // _folderOpenAllMenuItem
             // 
             this._folderOpenAllMenuItem.Name = "_folderOpenAllMenuItem";
-            this._folderOpenAllMenuItem.Size = new System.Drawing.Size(247, 22);
+            this._folderOpenAllMenuItem.Size = new System.Drawing.Size(269, 22);
             this._folderOpenAllMenuItem.Text = "Open all bookmarks";
             this._folderOpenAllMenuItem.Click += new System.EventHandler(this._folderOpenAllMenuItem_Click);
             // 
             // _folderOpenAllNewWindowMenuItem
             // 
             this._folderOpenAllNewWindowMenuItem.Name = "_folderOpenAllNewWindowMenuItem";
-            this._folderOpenAllNewWindowMenuItem.Size = new System.Drawing.Size(247, 22);
+            this._folderOpenAllNewWindowMenuItem.Size = new System.Drawing.Size(269, 22);
             this._folderOpenAllNewWindowMenuItem.Text = "Open all bookmarks in a new window";
             this._folderOpenAllNewWindowMenuItem.Click += new System.EventHandler(this._folderOpenAllNewWindowMenuItem_Click);
             // 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(244, 6);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(266, 6);
             // 
             // _setUsernamePasswordMenuItem
             // 
             this._setUsernamePasswordMenuItem.Name = "_setUsernamePasswordMenuItem";
-            this._setUsernamePasswordMenuItem.Size = new System.Drawing.Size(247, 22);
+            this._setUsernamePasswordMenuItem.Size = new System.Drawing.Size(269, 22);
             this._setUsernamePasswordMenuItem.Text = "Set username and password...";
             this._setUsernamePasswordMenuItem.Click += new System.EventHandler(this._setUsernamePasswordMenuItem_Click);
             // 
             // _clearUsernamePasswordToolStripMenuItem
             // 
             this._clearUsernamePasswordToolStripMenuItem.Name = "_clearUsernamePasswordToolStripMenuItem";
-            this._clearUsernamePasswordToolStripMenuItem.Size = new System.Drawing.Size(247, 22);
+            this._clearUsernamePasswordToolStripMenuItem.Size = new System.Drawing.Size(269, 22);
             this._clearUsernamePasswordToolStripMenuItem.Text = "Clear username and password";
             this._clearUsernamePasswordToolStripMenuItem.Click += new System.EventHandler(this._clearUsernamePasswordToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(244, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(266, 6);
             // 
             // _renameFolderMenuItem
             // 
             this._renameFolderMenuItem.Name = "_renameFolderMenuItem";
-            this._renameFolderMenuItem.Size = new System.Drawing.Size(247, 22);
+            this._renameFolderMenuItem.Size = new System.Drawing.Size(269, 22);
             this._renameFolderMenuItem.Text = "Rename...";
             this._renameFolderMenuItem.Click += new System.EventHandler(this._renameFolderMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(244, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(266, 6);
             // 
             // _cutFolderMenuItem
             // 
             this._cutFolderMenuItem.Name = "_cutFolderMenuItem";
-            this._cutFolderMenuItem.Size = new System.Drawing.Size(247, 22);
+            this._cutFolderMenuItem.Size = new System.Drawing.Size(269, 22);
             this._cutFolderMenuItem.Text = "Cut";
             this._cutFolderMenuItem.Click += new System.EventHandler(this._cutFolderMenuItem_Click);
             // 
             // _copyFolderMenuItem
             // 
             this._copyFolderMenuItem.Name = "_copyFolderMenuItem";
-            this._copyFolderMenuItem.Size = new System.Drawing.Size(247, 22);
+            this._copyFolderMenuItem.Size = new System.Drawing.Size(269, 22);
             this._copyFolderMenuItem.Text = "Copy";
             this._copyFolderMenuItem.Click += new System.EventHandler(this._copyFolderMenuItem_Click);
             // 
@@ -305,56 +306,56 @@ namespace EasyConnect
             // 
             this._pasteFolderMenuItem.Enabled = false;
             this._pasteFolderMenuItem.Name = "_pasteFolderMenuItem";
-            this._pasteFolderMenuItem.Size = new System.Drawing.Size(247, 22);
+            this._pasteFolderMenuItem.Size = new System.Drawing.Size(269, 22);
             this._pasteFolderMenuItem.Text = "Paste";
             this._pasteFolderMenuItem.Click += new System.EventHandler(this._pasteFolderMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(244, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(266, 6);
             // 
             // _deleteFolderMenuItem
             // 
             this._deleteFolderMenuItem.Name = "_deleteFolderMenuItem";
-            this._deleteFolderMenuItem.Size = new System.Drawing.Size(247, 22);
+            this._deleteFolderMenuItem.Size = new System.Drawing.Size(269, 22);
             this._deleteFolderMenuItem.Text = "Delete";
             this._deleteFolderMenuItem.Click += new System.EventHandler(this._deleteFolderMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(244, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(266, 6);
             // 
             // _addBookmarkMenuItem
             // 
             this._addBookmarkMenuItem.Name = "_addBookmarkMenuItem";
-            this._addBookmarkMenuItem.Size = new System.Drawing.Size(247, 22);
+            this._addBookmarkMenuItem.Size = new System.Drawing.Size(269, 22);
             this._addBookmarkMenuItem.Text = "Add bookmark...";
             // 
             // _addFolderMenuItem
             // 
             this._addFolderMenuItem.Name = "_addFolderMenuItem";
-            this._addFolderMenuItem.Size = new System.Drawing.Size(247, 22);
+            this._addFolderMenuItem.Size = new System.Drawing.Size(269, 22);
             this._addFolderMenuItem.Text = "Add folder...";
             this._addFolderMenuItem.Click += new System.EventHandler(this._addFolderMenuItem_Click);
             // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(244, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(266, 6);
             // 
             // _exportBookMarkMenuitem
             // 
             this._exportBookMarkMenuitem.Name = "_exportBookMarkMenuitem";
-            this._exportBookMarkMenuitem.Size = new System.Drawing.Size(247, 22);
+            this._exportBookMarkMenuitem.Size = new System.Drawing.Size(269, 22);
             this._exportBookMarkMenuitem.Text = "Export";
             this._exportBookMarkMenuitem.Click += new System.EventHandler(this._exportBookMarkMenuitem_Click);
             // 
             // _importBookmarkMenuItem
             // 
             this._importBookmarkMenuItem.Name = "_importBookmarkMenuItem";
-            this._importBookmarkMenuItem.Size = new System.Drawing.Size(247, 22);
+            this._importBookmarkMenuItem.Size = new System.Drawing.Size(269, 22);
             this._importBookmarkMenuItem.Text = "Import";
             this._importBookmarkMenuItem.Click += new System.EventHandler(this._importBookmarkMenuItem_Click);
             // 
@@ -366,6 +367,7 @@ namespace EasyConnect
             // 
             // _bookmarkContextMenu
             // 
+            this._bookmarkContextMenu.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._bookmarkContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._openBookmarkNewTabMenuItem,
             this._openBookmarkNewWindowMenuItem,
@@ -379,70 +381,70 @@ namespace EasyConnect
             this.deleteToolStripMenuItem1});
             this._bookmarkContextMenu.Name = "_bookmarkContextMenu";
             this._bookmarkContextMenu.ShowImageMargin = false;
-            this._bookmarkContextMenu.Size = new System.Drawing.Size(171, 176);
+            this._bookmarkContextMenu.Size = new System.Drawing.Size(184, 198);
             this._bookmarkContextMenu.Closed += new System.Windows.Forms.ToolStripDropDownClosedEventHandler(this._bookmarkContextMenu_Closed);
             // 
             // _openBookmarkNewTabMenuItem
             // 
             this._openBookmarkNewTabMenuItem.Name = "_openBookmarkNewTabMenuItem";
-            this._openBookmarkNewTabMenuItem.Size = new System.Drawing.Size(170, 22);
+            this._openBookmarkNewTabMenuItem.Size = new System.Drawing.Size(183, 22);
             this._openBookmarkNewTabMenuItem.Text = "Open in a new tab";
             this._openBookmarkNewTabMenuItem.Click += new System.EventHandler(this._openBookmarkNewTabMenuItem_Click);
             // 
             // _openBookmarkNewWindowMenuItem
             // 
             this._openBookmarkNewWindowMenuItem.Name = "_openBookmarkNewWindowMenuItem";
-            this._openBookmarkNewWindowMenuItem.Size = new System.Drawing.Size(170, 22);
+            this._openBookmarkNewWindowMenuItem.Size = new System.Drawing.Size(183, 22);
             this._openBookmarkNewWindowMenuItem.Text = "Open in a new window";
             this._openBookmarkNewWindowMenuItem.Click += new System.EventHandler(this._openBookmarkNewWindowMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(167, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(180, 6);
             // 
             // _editBookmarkMenuItem
             // 
             this._editBookmarkMenuItem.Name = "_editBookmarkMenuItem";
-            this._editBookmarkMenuItem.Size = new System.Drawing.Size(170, 22);
+            this._editBookmarkMenuItem.Size = new System.Drawing.Size(183, 22);
             this._editBookmarkMenuItem.Text = "Edit...";
             this._editBookmarkMenuItem.Click += new System.EventHandler(this._editBookmarkMenuItem_Click);
             // 
             // renameToolStripMenuItem
             // 
             this.renameToolStripMenuItem.Name = "renameToolStripMenuItem";
-            this.renameToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.renameToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.renameToolStripMenuItem.Text = "Rename...";
             this.renameToolStripMenuItem.Click += new System.EventHandler(this.renameToolStripMenuItem_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(167, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(180, 6);
             // 
             // _cutBookmarkMenuItem
             // 
             this._cutBookmarkMenuItem.Name = "_cutBookmarkMenuItem";
-            this._cutBookmarkMenuItem.Size = new System.Drawing.Size(170, 22);
+            this._cutBookmarkMenuItem.Size = new System.Drawing.Size(183, 22);
             this._cutBookmarkMenuItem.Text = "Cut";
             this._cutBookmarkMenuItem.Click += new System.EventHandler(this._cutBookmarkMenuItem_Click);
             // 
             // copyToolStripMenuItem
             // 
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.copyToolStripMenuItem.Text = "Copy";
             this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
             // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(167, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(180, 6);
             // 
             // deleteToolStripMenuItem1
             // 
             this.deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
-            this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(170, 22);
+            this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(183, 22);
             this.deleteToolStripMenuItem1.Text = "Delete";
             this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
             // 
