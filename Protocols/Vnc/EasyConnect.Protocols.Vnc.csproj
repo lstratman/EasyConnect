@@ -37,6 +37,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="RemoteViewing, Version=0.9.1.0, Culture=neutral, PublicKeyToken=af024afb4750c24a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Quamotion.RemoteViewing.1.0.7\lib\net40\RemoteViewing.dll</HintPath>
+    </Reference>
+    <Reference Include="RemoteViewing.Windows.Forms, Version=0.9.1.0, Culture=neutral, PublicKeyToken=af024afb4750c24a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Quamotion.RemoteViewing.Windows.Forms.1.0.7\lib\net40\RemoteViewing.Windows.Forms.dll</HintPath>
+    </Reference>
     <Reference Include="SecurePasswordTextBox">
       <HintPath>..\..\lib\SecurePasswordTextBox.dll</HintPath>
     </Reference>
@@ -49,9 +55,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VncSharp">
-      <HintPath>..\..\packages\VncSharp.1.0.7.0\lib\VncSharp.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources.Designer.cs">
@@ -59,7 +62,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="VncClippedDesktopPolicy.cs" />
     <Compile Include="VncConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VncConnectionForm.cs">
@@ -68,11 +70,6 @@
     <Compile Include="VncConnectionForm.Designer.cs">
       <DependentUpon>VncConnectionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="VncDesignModeDesktopPolicy.cs" />
-    <Compile Include="VncDesktop.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="VncDesktopTransformPolicy.cs" />
     <Compile Include="VncOptionsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,7 +77,6 @@
       <DependentUpon>VncOptionsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="VncProtocol.cs" />
-    <Compile Include="VncScaledDesktopPolicy.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\EasyConnect.Common.csproj">

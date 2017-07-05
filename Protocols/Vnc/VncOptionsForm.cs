@@ -66,8 +66,8 @@ namespace EasyConnect.Protocols.Vnc
 			_portUpDown.Value = Connection.Port;
 
 			_displayUpDown.Value = Connection.Display;
-			_scaleCheckbox.Checked = Connection.Scale;
 			_viewOnlyCheckbox.Checked = Connection.ViewOnly;
+		    _clipboardCheckbox.Checked = Connection.ShareClipboard;
 
 			if (Connection.Password != null)
 				_passwordTextBox.SecureText = Connection.Password;
@@ -87,9 +87,9 @@ namespace EasyConnect.Protocols.Vnc
 			Connection.Host = _hostNameTextBox.Text;
 			Connection.Port = Convert.ToInt32(_portUpDown.Value);
 			Connection.Display = Convert.ToInt32(_displayUpDown.Value);
-			Connection.Scale = _scaleCheckbox.Checked;
 			Connection.ViewOnly = _viewOnlyCheckbox.Checked;
 			Connection.Password = _passwordTextBox.SecureText;
+		    Connection.ShareClipboard = _clipboardCheckbox.Checked;
 		}
 
 		/// <summary>

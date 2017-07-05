@@ -1,19 +1,21 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Threading;
 using System.Windows.Forms;
-using VncSharp;
+using RemoteViewing.Vnc;
+using RemoteViewing.Windows.Forms;
 
 namespace EasyConnect.Protocols.Vnc
 {
 	/// <summary>
-	/// UI that displays a VNC connection via the <see cref="VncDesktop"/> class.
+	/// UI that displays a VNC connection via the <see cref="VncControl"/> class.
 	/// </summary>
 	public partial class VncConnectionForm : BaseConnectionForm<VncConnection>
 	{
-		/// <summary>
+        /// <summary>
 		/// Default constructor.
 		/// </summary>
 		public VncConnectionForm()
@@ -21,10 +23,10 @@ namespace EasyConnect.Protocols.Vnc
 			InitializeComponent();
 		}
 
-		/// <summary>
-		/// Control instance that hosts the actual VNC display UI.
-		/// </summary>
-		protected override Control ConnectionWindow
+        /// <summary>
+        /// Control instance that hosts the actual VNC display UI.
+        /// </summary>
+        protected override Control ConnectionWindow
 		{
 			get
 			{
@@ -34,31 +36,38 @@ namespace EasyConnect.Protocols.Vnc
 
 		/// <summary>
 		/// Establishes the connection to the remote server; initializes this <see cref="_vncConnection"/>'s properties from 
-		/// <see cref="BaseConnectionForm{T}.Connection"/> and then calls <see cref="VncDesktop.Connect(string, int, bool, bool)"/> on 
+		/// <see cref="BaseConnectionForm{T}.Connection"/> and then calls <see cref="VncClient.Connect(string, int, VncClientConnectOptions)"/> on 
 		/// <see cref="_vncConnection"/>.
 		/// </summary>
 		public override void Connect()
 		{
-			// Set the various properties for the connection
-			_vncConnection.VncPort = Connection.Port;
-			
-			// Establish the actual connection
-			_vncConnection.VncUpdated += _vncConnection_VncUpdated;
-			_vncConnection.ConnectionLost += OnConnectionLost;
-			_vncConnection.GetPassword = GetPassword;
+		    OnResize(null);
 
-			// Spin the connection process up on a different thread to avoid blocking the UI.
-			Thread connectionThread = new Thread(
+            VncClientConnectOptions connectionOptions = new VncClientConnectOptions()
+            {
+                PasswordRequiredCallback = GetPassword
+            };
+
+            // Establish the actual connection
+            _vncConnection.Connected += OnConnected;
+			_vncConnection.ConnectionFailed += OnConnectionLost;
+		    _vncConnection.AllowInput = !Connection.ViewOnly;
+		    _vncConnection.AllowRemoteCursor = false;
+		    _vncConnection.AllowClipboardSharingFromServer = Connection.ShareClipboard;
+		    _vncConnection.AllowClipboardSharingToServer = Connection.ShareClipboard;
+
+            // Spin the connection process up on a different thread to avoid blocking the UI.
+            Thread connectionThread = new Thread(
 				() =>
 				{
 					try
 					{
-						_vncConnection.Connect(Connection.Host, Connection.Display, Connection.ViewOnly, Connection.Scale);
+						_vncConnection.Client.Connect(Connection.Host, Connection.Port + Connection.Display, connectionOptions);
 					}
 
 					catch (Exception e)
 					{
-						OnConnectionLost(this, new ErrorEventArgs(e));
+                        Invoke(new Action(() => OnConnectionLost(this, new ErrorEventArgs(e))));
 					}
 				});
 
@@ -66,32 +75,38 @@ namespace EasyConnect.Protocols.Vnc
 		}
 
 		/// <summary>
-		/// Callback that's invoked whenever the client (<see cref="_vncConnection"/>) receives screen data from the server.  We use this method to determine
-		/// when we are *really* connected:  we have successfully established a network connection to the server *and* we have started receiving screen data.
-		/// It's only at that point that we actually display the VNC UI.
-		/// </summary>
-		/// <param name="sender">Object from which this event originated, in this case, <see cref="_vncConnection"/>.</param>
-		/// <param name="e">Arguments associated with this event.</param>
-		void _vncConnection_VncUpdated(object sender, VncEventArgs e)
-		{
-			if (!IsConnected)
-				OnConnected(sender, e);
-		}
-
-		/// <summary>
 		/// Decrypts the password (if any) associated with the connection (<see cref="BaseConnection.InheritedPassword"/> and provides it to 
 		/// <see cref="_vncConnection"/> for use in the connection process.
 		/// </summary>
 		/// <returns>The decrypted contents, if any, of <see cref="BaseConnection.InheritedPassword"/>.</returns>
-		private string GetPassword()
+		private char[] GetPassword(VncClient client)
 		{
 			string password = null;
 			SecureString inheritedPassword = Connection.InheritedPassword;
 
-			if (inheritedPassword != null && inheritedPassword.Length > 0)
-				password = Marshal.PtrToStringAnsi(Marshal.SecureStringToGlobalAllocAnsi(inheritedPassword));
+		    if (inheritedPassword != null && inheritedPassword.Length > 0)
+		        password = Marshal.PtrToStringAnsi(Marshal.SecureStringToGlobalAllocAnsi(inheritedPassword));
 
-			return password;
+			return password.ToCharArray();
 		}
+
+	    private void VncConnectionForm_FormClosing(object sender, FormClosingEventArgs e)
+	    {
+	        if (_vncConnection.Client.IsConnected)
+	        {
+	            _vncConnection.Client.Close();
+	        }
+        }
+
+	    protected override void OnConnected(object sender, EventArgs e)
+	    {
+	        base.OnConnected(sender, e);
+
+            _vncConnection.Width = _vncConnection.Client.Framebuffer.Width;
+	        _vncConnection.Height = _vncConnection.Client.Framebuffer.Height;
+
+            _vncConnection.Left = Math.Max(ClientSize.Width - _vncConnection.Width, 0) / 2;
+	        _vncConnection.Top = Math.Max(ClientSize.Height - _vncConnection.Height, 0) / 2;
+        }
 	}
 }

@@ -47,9 +47,11 @@
             this._displayPanel = new System.Windows.Forms.Panel();
             this._viewOnlyCheckbox = new System.Windows.Forms.CheckBox();
             this._viewOnlyLabel = new System.Windows.Forms.Label();
-            this._scaleCheckbox = new System.Windows.Forms.CheckBox();
             this._displayUpDown = new System.Windows.Forms.NumericUpDown();
-            this._scaleLabel = new System.Windows.Forms.Label();
+            this._behaviorPanel = new System.Windows.Forms.Panel();
+            this._clipboardCheckbox = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this._clipboardLabel = new System.Windows.Forms.Label();
             this._titleLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this._flowLayoutPanel.SuspendLayout();
@@ -58,6 +60,7 @@
             ((System.ComponentModel.ISupportInitialize)(this._portUpDown)).BeginInit();
             this._displayPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._displayUpDown)).BeginInit();
+            this._behaviorPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // _displayLabel
@@ -88,6 +91,7 @@
             this._flowLayoutPanel.Controls.Add(this._generalPanel);
             this._flowLayoutPanel.Controls.Add(this._hostPanel);
             this._flowLayoutPanel.Controls.Add(this._displayPanel);
+            this._flowLayoutPanel.Controls.Add(this._behaviorPanel);
             this._flowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this._flowLayoutPanel.Location = new System.Drawing.Point(0, 61);
             this._flowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
@@ -220,20 +224,18 @@
             // 
             this._displayPanel.Controls.Add(this._viewOnlyCheckbox);
             this._displayPanel.Controls.Add(this._viewOnlyLabel);
-            this._displayPanel.Controls.Add(this._scaleCheckbox);
             this._displayPanel.Controls.Add(this._displayUpDown);
             this._displayPanel.Controls.Add(this._displayLabel);
             this._displayPanel.Controls.Add(this._displayNumberLabel);
-            this._displayPanel.Controls.Add(this._scaleLabel);
             this._displayPanel.Location = new System.Drawing.Point(18, 190);
             this._displayPanel.Name = "_displayPanel";
-            this._displayPanel.Size = new System.Drawing.Size(684, 118);
+            this._displayPanel.Size = new System.Drawing.Size(684, 103);
             this._displayPanel.TabIndex = 83;
             // 
             // _viewOnlyCheckbox
             // 
             this._viewOnlyCheckbox.AutoSize = true;
-            this._viewOnlyCheckbox.Location = new System.Drawing.Point(159, 83);
+            this._viewOnlyCheckbox.Location = new System.Drawing.Point(159, 63);
             this._viewOnlyCheckbox.Name = "_viewOnlyCheckbox";
             this._viewOnlyCheckbox.Size = new System.Drawing.Size(15, 14);
             this._viewOnlyCheckbox.TabIndex = 84;
@@ -242,21 +244,12 @@
             // _viewOnlyLabel
             // 
             this._viewOnlyLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._viewOnlyLabel.Location = new System.Drawing.Point(31, 83);
+            this._viewOnlyLabel.Location = new System.Drawing.Point(31, 63);
             this._viewOnlyLabel.Name = "_viewOnlyLabel";
             this._viewOnlyLabel.Size = new System.Drawing.Size(125, 20);
             this._viewOnlyLabel.TabIndex = 83;
             this._viewOnlyLabel.Text = "View only?:";
             this._viewOnlyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // _scaleCheckbox
-            // 
-            this._scaleCheckbox.AutoSize = true;
-            this._scaleCheckbox.Location = new System.Drawing.Point(159, 64);
-            this._scaleCheckbox.Name = "_scaleCheckbox";
-            this._scaleCheckbox.Size = new System.Drawing.Size(15, 14);
-            this._scaleCheckbox.TabIndex = 82;
-            this._scaleCheckbox.UseVisualStyleBackColor = true;
             // 
             // _displayUpDown
             // 
@@ -265,15 +258,44 @@
             this._displayUpDown.Size = new System.Drawing.Size(61, 20);
             this._displayUpDown.TabIndex = 81;
             // 
-            // _scaleLabel
+            // _behaviorPanel
             // 
-            this._scaleLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._scaleLabel.Location = new System.Drawing.Point(31, 60);
-            this._scaleLabel.Name = "_scaleLabel";
-            this._scaleLabel.Size = new System.Drawing.Size(125, 20);
-            this._scaleLabel.TabIndex = 54;
-            this._scaleLabel.Text = "Scale?:";
-            this._scaleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this._behaviorPanel.Controls.Add(this._clipboardCheckbox);
+            this._behaviorPanel.Controls.Add(this.label2);
+            this._behaviorPanel.Controls.Add(this._clipboardLabel);
+            this._behaviorPanel.Location = new System.Drawing.Point(18, 299);
+            this._behaviorPanel.Name = "_behaviorPanel";
+            this._behaviorPanel.Size = new System.Drawing.Size(684, 80);
+            this._behaviorPanel.TabIndex = 87;
+            // 
+            // _clipboardCheckbox
+            // 
+            this._clipboardCheckbox.AutoSize = true;
+            this._clipboardCheckbox.Location = new System.Drawing.Point(159, 46);
+            this._clipboardCheckbox.Name = "_clipboardCheckbox";
+            this._clipboardCheckbox.Size = new System.Drawing.Size(15, 14);
+            this._clipboardCheckbox.TabIndex = 82;
+            this._clipboardCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(8, 11);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(61, 21);
+            this.label2.TabIndex = 55;
+            this.label2.Text = "Display";
+            // 
+            // _clipboardLabel
+            // 
+            this._clipboardLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._clipboardLabel.Location = new System.Drawing.Point(31, 42);
+            this._clipboardLabel.Name = "_clipboardLabel";
+            this._clipboardLabel.Size = new System.Drawing.Size(125, 20);
+            this._clipboardLabel.TabIndex = 54;
+            this._clipboardLabel.Text = "Share clipboard?:";
+            this._clipboardLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // _titleLabel
             // 
@@ -319,6 +341,8 @@
             this._displayPanel.ResumeLayout(false);
             this._displayPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._displayUpDown)).EndInit();
+            this._behaviorPanel.ResumeLayout(false);
+            this._behaviorPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -335,10 +359,8 @@
         private System.Windows.Forms.TextBox _hostNameTextBox;
 		private System.Windows.Forms.Label _hostLabel;
         private System.Windows.Forms.Panel _displayPanel;
-        private System.Windows.Forms.Label _scaleLabel;
         private System.Windows.Forms.NumericUpDown _portUpDown;
         private System.Windows.Forms.NumericUpDown _displayUpDown;
-        private System.Windows.Forms.CheckBox _scaleCheckbox;
         private System.Windows.Forms.CheckBox _viewOnlyCheckbox;
         private System.Windows.Forms.Label _viewOnlyLabel;
 		private System.Windows.Forms.Panel _generalPanel;
@@ -348,5 +370,9 @@
 		private System.Windows.Forms.Label _inheritedPasswordLabel;
 		private System.Windows.Forms.Label _titleLabel;
 		private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel _behaviorPanel;
+        private System.Windows.Forms.CheckBox _clipboardCheckbox;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label _clipboardLabel;
     }
 }

@@ -15,6 +15,7 @@ namespace EasyConnect.Protocols.Vnc
 		public VncConnection()
 		{
 			Port = 5900;
+		    ShareClipboard = true;
 		}
 
 		/// <summary>
@@ -41,10 +42,10 @@ namespace EasyConnect.Protocols.Vnc
 						ViewOnly = (bool) entry.Value;
 						break;
 
-					case "Scale":
-						Scale = (bool) entry.Value;
-						break;
-				}
+				    case "ShareClipboard":
+				        ShareClipboard = (bool) entry.Value;
+				        break;
+                }
 			}
 		}
 
@@ -75,23 +76,14 @@ namespace EasyConnect.Protocols.Vnc
 			set;
 		}
 
-		/// <summary>
-		/// Flag indicating whether or not scaling should be performed to fit the connection's display into the viewing window.
-		/// </summary>
-		public bool Scale
-		{
-			get;
-			set;
-		}
-
-		/// <summary>
-		/// If <see cref="EncryptionType"/> is specified, this is the file path to the key that should be used during the encryption/decryption process.
-		/// </summary>
-		public string KeyFile
-		{
-			get;
-			set;
-		}
+        /// <summary>
+        /// Flag indicating whether or not to share the clipboard with the remote server.
+        /// </summary>
+	    public bool ShareClipboard
+	    {
+	        get;
+	        set;
+	    }
 
 		/// <summary>
 		/// Method required for <see cref="ISerializable"/>; serializes the connection data to <paramref name="info"/>.
@@ -105,7 +97,7 @@ namespace EasyConnect.Protocols.Vnc
 			info.AddValue("Port", Port);
 			info.AddValue("Display", Display);
 			info.AddValue("ViewOnly", ViewOnly);
-			info.AddValue("Scale", Scale);
+            info.AddValue("ShareClipboard", ShareClipboard);
 		}
 	}
 }

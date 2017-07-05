@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VncConnectionForm));
-            this._vncConnection = new VncDesktop();
+            this._vncConnection = new RemoteViewing.Windows.Forms.VncControl();
             this.SuspendLayout();
             // 
             // _vncConnection
             // 
-            this._vncConnection.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._vncConnection.Dock = System.Windows.Forms.DockStyle.None;
             this._vncConnection.Enabled = true;
             this._vncConnection.Location = new System.Drawing.Point(0, 0);
             this._vncConnection.Name = "_vncConnection";
@@ -50,12 +50,13 @@
             this.Name = "VncConnectionForm";
             this.Text = "VncConnectionForm";
             this.ResumeLayout(false);
+            this.FormClosing += VncConnectionForm_FormClosing;
 
         }
 
         #endregion
 
-        private VncDesktop _vncConnection;
+        private RemoteViewing.Windows.Forms.VncControl _vncConnection;
 
     }
 }
