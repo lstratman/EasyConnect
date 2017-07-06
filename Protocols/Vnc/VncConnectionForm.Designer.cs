@@ -50,7 +50,6 @@
             this.Name = "VncConnectionForm";
             this.Text = "VncConnectionForm";
             this.ResumeLayout(false);
-            this.FormClosing += VncConnectionForm_FormClosing;
 
         }
 

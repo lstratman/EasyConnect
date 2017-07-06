@@ -43,6 +43,8 @@ namespace EasyConnect.Protocols.Vnc
 		{
 		    OnResize(null);
 
+		    ParentForm.Closing += VncConnectionForm_FormClosing;
+
             VncClientConnectOptions connectionOptions = new VncClientConnectOptions()
             {
                 PasswordRequiredCallback = GetPassword
@@ -90,7 +92,7 @@ namespace EasyConnect.Protocols.Vnc
 			return password.ToCharArray();
 		}
 
-	    private void VncConnectionForm_FormClosing(object sender, FormClosingEventArgs e)
+	    private void VncConnectionForm_FormClosing(object sender, CancelEventArgs e)
 	    {
 	        if (_vncConnection.Client.IsConnected)
 	        {
