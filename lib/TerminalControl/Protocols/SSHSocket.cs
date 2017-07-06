@@ -56,6 +56,9 @@ namespace Poderosa.Protocols {
             }
         }
 
+        public event EventHandler NormalTermination;
+        public event EventHandler<AbnormalTerminationEventArgs> AbnormalTermination;
+
         public virtual void OnError(Exception error) {
             OnAbnormalTerminationCore(error.Message);
         }
@@ -84,23 +87,41 @@ namespace Poderosa.Protocols {
             _normalTerminationCalled = true;
             _parent.CloseBySocket();
 
-            try {
+            try
+            {
                 if (_callback != null)
                     _callback.OnNormalTermination();
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 CloseError(ex);
+            }
+            finally
+            {
+                if (NormalTermination != null)
+                {
+                    NormalTermination(this, null);
+                }
             }
         }
         protected void OnAbnormalTerminationCore(string msg) {
             _parent.CloseBySocket();
 
-            try {
+            try
+            {
                 if (_callback != null)
                     _callback.OnAbnormalTermination(msg);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 CloseError(ex);
+            }
+            finally
+            {
+                if (AbnormalTermination != null)
+                {
+                    AbnormalTermination(this, new AbnormalTerminationEventArgs(msg));
+                }
             }
         }
         //Termination処理の失敗時の処理

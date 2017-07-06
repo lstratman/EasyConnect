@@ -180,7 +180,7 @@ namespace Poderosa.Protocols {
     }
 
 
-    internal class ConnectionStats {
+    public class ConnectionStats {
         private int _sentDataAmount;
         private int _receivedDataAmount;
 
@@ -204,7 +204,7 @@ namespace Poderosa.Protocols {
         }
     }
 
-    internal abstract class TerminalConnection : ITerminalConnection {
+    public abstract class TerminalConnection : ITerminalConnection {
         protected ITerminalParameter _destination;
         protected ConnectionStats _stats;
         protected ITerminalOutput _terminalOutput; //派生クラスではこれをセットする
@@ -263,7 +263,7 @@ namespace Poderosa.Protocols {
         }
     }
 
-    internal abstract class TCPTerminalConnection : TerminalConnection {
+    public abstract class TCPTerminalConnection : TerminalConnection {
 
         protected TCPTerminalConnection(ITCPParameter p)
             : base((ITerminalParameter)p.GetAdapter(typeof(ITerminalParameter))) {
@@ -271,7 +271,7 @@ namespace Poderosa.Protocols {
     }
 
 
-    internal class SSHTerminalConnection : TCPTerminalConnection {
+    public class SSHTerminalConnection : TCPTerminalConnection {
 
         private readonly SSHSocket _sshSocket;
         private readonly ISSHLoginParameter _sshLoginParameter;

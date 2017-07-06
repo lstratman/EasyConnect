@@ -249,12 +249,17 @@ namespace Granados {
         /// Notifies that the connection has been closed.
         /// </summary>
         void OnConnectionClosed();
+
+        event EventHandler NormalTermination;
+        event EventHandler<AbnormalTerminationEventArgs> AbnormalTermination;
     }
 
     /// <summary>
     /// A simple connection event handler class that do nothing.
     /// </summary>
     public class SimpleSSHConnectionEventHandler : ISSHConnectionEventHandler {
+        public event EventHandler NormalTermination;
+        public event EventHandler<AbnormalTerminationEventArgs> AbnormalTermination;
 
         public virtual void OnDebugMessage(bool alwaysDisplay, string message) {
         }
@@ -383,6 +388,32 @@ namespace Granados.SSH {
     internal class SSHConnectionEventHandlerIgnoreErrorWrapper : ISSHConnectionEventHandler {
 
         private readonly ISSHConnectionEventHandler _coreHandler;
+
+        public event EventHandler NormalTermination
+        {
+            add
+            {
+                _coreHandler.NormalTermination += value;
+            }
+
+            remove
+            {
+                _coreHandler.NormalTermination -= value;
+            }
+        }
+
+        public event EventHandler<AbnormalTerminationEventArgs> AbnormalTermination
+        {
+            add
+            {
+                _coreHandler.AbnormalTermination += value;
+            }
+
+            remove
+            {
+                _coreHandler.AbnormalTermination -= value;
+            }
+        }
 
         public SSHConnectionEventHandlerIgnoreErrorWrapper(ISSHConnectionEventHandler handler) {
             _coreHandler = handler;
@@ -538,6 +569,16 @@ namespace Granados.SSH {
 
             throw new SSHException(
                 String.Format(Strings.GetString("InvalidServerVersionFormat"), _serverVersion));
+        }
+    }
+
+    public class AbnormalTerminationEventArgs : EventArgs
+    {
+        public string Message;
+
+        public AbnormalTerminationEventArgs(string message)
+        {
+            Message = message;
         }
     }
 

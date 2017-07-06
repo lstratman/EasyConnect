@@ -107,11 +107,18 @@ namespace EasyConnect.Protocols.Ssh
 		    PoderosaProtocolService.AsyncSSHConnect(this, sshParameters);
 		}
 
+	    protected override void OnConnected(object sender, EventArgs e)
+	    {
+	        base.OnConnected(sender, e);
+	        _terminal.Focus();
+	    }
+
 	    public void SuccessfullyExit(ITerminalConnection connection)
 	    {
 	        ITerminalSettings terminalSettings = PoderosaTerminalEmulatorService.CreateDefaultTerminalSettings(Connection.DisplayName, null);
             TerminalSession session = new TerminalSession(connection, terminalSettings);
             SessionHost sessionHost = new SessionHost(PoderosaSessionManagerPlugin, session);
+	        SSHTerminalConnection sshConnection = (SSHTerminalConnection) connection;
 
 	        Invoke(
 	            new Action(
@@ -120,11 +127,24 @@ namespace EasyConnect.Protocols.Ssh
 	                    _terminal.Attach(session);
 	                    session.InternalStart(sessionHost);
 
+                        sshConnection.ConnectionEventReceiver.NormalTermination += ConnectionEventReceiver_NormalTermination;
+                        sshConnection.ConnectionEventReceiver.AbnormalTermination += ConnectionEventReceiver_AbnormalTermination;
+
 	                    OnConnected(_terminal, null);
                     }));
 	    }
 
-	    public void ConnectionFailed(string message)
+        private void ConnectionEventReceiver_AbnormalTermination(object sender, Granados.SSH.AbnormalTerminationEventArgs e)
+        {
+            Invoke(new Action(() => OnConnectionLost(this, new ErrorEventArgs(new Exception(e.Message)))));
+        }
+
+        private void ConnectionEventReceiver_NormalTermination(object sender, EventArgs e)
+        {
+            Invoke(new Action(() => ParentForm.Close()));
+        }
+
+        public void ConnectionFailed(string message)
 	    {
 	        Invoke(new Action(() => OnConnectionLost(this, new ErrorEventArgs(new Exception(message)))));
 	    }
