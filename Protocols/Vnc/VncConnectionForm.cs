@@ -95,6 +95,7 @@ namespace EasyConnect.Protocols.Vnc
 	        if (_vncConnection.Client.IsConnected)
 	        {
 	            _vncConnection.Client.Close();
+                _vncConnection.Dispose();
 	        }
         }
 
