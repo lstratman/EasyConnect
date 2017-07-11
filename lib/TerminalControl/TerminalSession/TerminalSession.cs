@@ -201,6 +201,17 @@ namespace Poderosa.Sessions {
                 return PrepareCloseResult.TerminateSession;
         }
 
+        public void InternalAttachView(IPoderosaDocument document, TerminalControl tp)
+        {
+            Debug.WriteLineIf(DebugOpt.ViewManagement, "ATTACH VIEW");
+            Debug.Assert(document == _terminal.IDocument);
+            Debug.Assert(tp != null);
+            tp.Attach(this);
+
+            _terminalControl = tp;
+            _terminal.Attached(tp);
+        }
+
         public void InternalAttachView(IPoderosaDocument document, IPoderosaView view) {
             Debug.WriteLineIf(DebugOpt.ViewManagement, "ATTACH VIEW");
             Debug.Assert(document == _terminal.IDocument);

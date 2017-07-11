@@ -312,10 +312,6 @@
       <Project>{9794E3F6-45AA-4841-8AE3-60B9662A1B1E}</Project>
       <Name>EasyConnect.Protocols</Name>
     </ProjectReference>
-    <ProjectReference Include="Protocols\PowerShell\EasyConnect.Protocols.PowerShell.csproj">
-      <Project>{d52a0782-348b-4ee9-bd8f-c795ff184ff0}</Project>
-      <Name>EasyConnect.Protocols.PowerShell</Name>
-    </ProjectReference>
     <ProjectReference Include="Protocols\Rdp\EasyConnect.Protocols.Rdp.csproj">
       <Project>{17c67ef4-73fc-46e7-a8c7-2bd963f7d81a}</Project>
       <Name>EasyConnect.Protocols.Rdp</Name>

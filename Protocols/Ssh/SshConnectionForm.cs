@@ -119,13 +119,15 @@ namespace EasyConnect.Protocols.Ssh
             TerminalSession session = new TerminalSession(connection, terminalSettings);
             SessionHost sessionHost = new SessionHost(PoderosaSessionManagerPlugin, session);
 	        SSHTerminalConnection sshConnection = (SSHTerminalConnection) connection;
-
+            
 	        Invoke(
 	            new Action(
 	                () =>
 	                {
 	                    _terminal.Attach(session);
+
 	                    session.InternalStart(sessionHost);
+                        session.InternalAttachView(sessionHost.DocumentAt(0), _terminal);
 
                         sshConnection.ConnectionEventReceiver.NormalTermination += ConnectionEventReceiver_NormalTermination;
                         sshConnection.ConnectionEventReceiver.AbnormalTermination += ConnectionEventReceiver_AbnormalTermination;
