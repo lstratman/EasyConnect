@@ -34,6 +34,8 @@ namespace EasyConnect.Protocols.Ssh
             PoderosaProtocolService = (IProtocolService) PoderosaApplication.PluginManager.FindPlugin("org.poderosa.protocols", typeof(IProtocolService));
 	        PoderosaTerminalEmulatorService = (ITerminalEmulatorService) PoderosaApplication.PluginManager.FindPlugin("org.poderosa.terminalemulator", typeof(ITerminalEmulatorService));
 	        PoderosaSessionManagerPlugin = (SessionManagerPlugin) PoderosaApplication.PluginManager.FindPlugin("org.poderosa.core.sessions", typeof(ISessionManager));
+
+            PoderosaTerminalEmulatorService.TerminalEmulatorOptions.RightButtonAction = MouseButtonAction.Paste;
         }
 
 		/// <summary>
@@ -62,7 +64,7 @@ namespace EasyConnect.Protocols.Ssh
         /// </summary>
         public override void Connect()
 		{
-			_terminal.Font = Connection.Font;
+            _terminal.Font = Connection.Font;
 			_terminal.ForeColor = Connection.TextColor;
 			_terminal.BackColor = Connection.BackgroundColor;
 
@@ -116,9 +118,12 @@ namespace EasyConnect.Protocols.Ssh
 	    public void SuccessfullyExit(ITerminalConnection connection)
 	    {
 	        ITerminalSettings terminalSettings = PoderosaTerminalEmulatorService.CreateDefaultTerminalSettings(Connection.DisplayName, null);
+
             TerminalSession session = new TerminalSession(connection, terminalSettings);
             SessionHost sessionHost = new SessionHost(PoderosaSessionManagerPlugin, session);
-	        SSHTerminalConnection sshConnection = (SSHTerminalConnection) connection;
+	        TerminalView terminalView = new TerminalView(null, _terminal);
+
+            SSHTerminalConnection sshConnection = (SSHTerminalConnection) connection;
             
 	        Invoke(
 	            new Action(
@@ -127,7 +132,7 @@ namespace EasyConnect.Protocols.Ssh
 	                    _terminal.Attach(session);
 
 	                    session.InternalStart(sessionHost);
-                        session.InternalAttachView(sessionHost.DocumentAt(0), _terminal);
+                        session.InternalAttachView(sessionHost.DocumentAt(0), terminalView);
 
                         sshConnection.ConnectionEventReceiver.NormalTermination += ConnectionEventReceiver_NormalTermination;
                         sshConnection.ConnectionEventReceiver.AbnormalTermination += ConnectionEventReceiver_AbnormalTermination;

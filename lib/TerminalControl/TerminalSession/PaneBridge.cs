@@ -39,7 +39,7 @@ namespace Poderosa.Terminal {
     }
 
     //TerminalControlにビュー機能を与えるクラス
-    internal class TerminalView : IPoderosaView, IContentReplaceableViewSite, IGeneralViewCommands {
+    public class TerminalView : IPoderosaView, IContentReplaceableViewSite, IGeneralViewCommands {
         private IPoderosaForm _parent;
         private TerminalControl _control;
         private IContentReplaceableView _contentReplaceableView; //包含するやつ
