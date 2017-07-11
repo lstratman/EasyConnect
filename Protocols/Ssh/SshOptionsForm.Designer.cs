@@ -34,8 +34,6 @@
             this._titleLabel = new System.Windows.Forms.Label();
             this._fontDialog = new System.Windows.Forms.FontDialog();
             this._colorDialog = new System.Windows.Forms.ColorDialog();
-            this._clearScreenKeysLabel = new System.Windows.Forms.Label();
-            this._clearScreenLabel = new System.Windows.Forms.Label();
             this._pasteKeysLabel = new System.Windows.Forms.Label();
             this._copyKeysLabel = new System.Windows.Forms.Label();
             this._pasteLabel = new System.Windows.Forms.Label();
@@ -94,35 +92,15 @@
             this._fontDialog.Color = System.Drawing.SystemColors.ControlText;
             this._fontDialog.FixedPitchOnly = true;
             // 
-            // _clearScreenKeysLabel
-            // 
-            this._clearScreenKeysLabel.AutoSize = true;
-            this._clearScreenKeysLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._clearScreenKeysLabel.Location = new System.Drawing.Point(124, 92);
-            this._clearScreenKeysLabel.Name = "_clearScreenKeysLabel";
-            this._clearScreenKeysLabel.Size = new System.Drawing.Size(42, 17);
-            this._clearScreenKeysLabel.TabIndex = 92;
-            this._clearScreenKeysLabel.Text = "Alt+L";
-            // 
-            // _clearScreenLabel
-            // 
-            this._clearScreenLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._clearScreenLabel.Location = new System.Drawing.Point(31, 88);
-            this._clearScreenLabel.Name = "_clearScreenLabel";
-            this._clearScreenLabel.Size = new System.Drawing.Size(150, 20);
-            this._clearScreenLabel.TabIndex = 91;
-            this._clearScreenLabel.Text = "Clear screen:";
-            this._clearScreenLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // _pasteKeysLabel
             // 
             this._pasteKeysLabel.AutoSize = true;
             this._pasteKeysLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._pasteKeysLabel.Location = new System.Drawing.Point(123, 67);
             this._pasteKeysLabel.Name = "_pasteKeysLabel";
-            this._pasteKeysLabel.Size = new System.Drawing.Size(44, 17);
+            this._pasteKeysLabel.Size = new System.Drawing.Size(114, 17);
             this._pasteKeysLabel.TabIndex = 90;
-            this._pasteKeysLabel.Text = "Alt+V";
+            this._pasteKeysLabel.Text = "Mouse right-click";
             // 
             // _copyKeysLabel
             // 
@@ -130,9 +108,9 @@
             this._copyKeysLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._copyKeysLabel.Location = new System.Drawing.Point(123, 42);
             this._copyKeysLabel.Name = "_copyKeysLabel";
-            this._copyKeysLabel.Size = new System.Drawing.Size(43, 17);
+            this._copyKeysLabel.Size = new System.Drawing.Size(88, 17);
             this._copyKeysLabel.TabIndex = 89;
-            this._copyKeysLabel.Text = "Alt+C";
+            this._copyKeysLabel.Text = "Mouse select";
             // 
             // _pasteLabel
             // 
@@ -166,8 +144,6 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this._clearScreenKeysLabel);
-            this.panel2.Controls.Add(this._clearScreenLabel);
             this.panel2.Controls.Add(this._pasteKeysLabel);
             this.panel2.Controls.Add(this._copyKeysLabel);
             this.panel2.Controls.Add(this._pasteLabel);
@@ -175,7 +151,7 @@
             this.panel2.Controls.Add(this._copyLabel);
             this.panel2.Location = new System.Drawing.Point(18, 325);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(684, 115);
+            this.panel2.Size = new System.Drawing.Size(684, 98);
             this.panel2.TabIndex = 88;
             // 
             // panel1
@@ -231,7 +207,7 @@
             this._flowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this._flowLayoutPanel.Name = "_flowLayoutPanel";
             this._flowLayoutPanel.Padding = new System.Windows.Forms.Padding(15, 0, 15, 15);
-            this._flowLayoutPanel.Size = new System.Drawing.Size(721, 464);
+            this._flowLayoutPanel.Size = new System.Drawing.Size(721, 442);
             this._flowLayoutPanel.TabIndex = 87;
             this._flowLayoutPanel.WrapContents = false;
             this._flowLayoutPanel.Resize += new System.EventHandler(this._flowLayoutPanel_Resize);
@@ -481,7 +457,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.ClientSize = new System.Drawing.Size(724, 525);
+            this.ClientSize = new System.Drawing.Size(724, 503);
             this.Controls.Add(this._titleLabel);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this._flowLayoutPanel);
@@ -509,8 +485,6 @@
 		private System.Windows.Forms.Label _titleLabel;
 		private System.Windows.Forms.FontDialog _fontDialog;
 		private System.Windows.Forms.ColorDialog _colorDialog;
-		private System.Windows.Forms.Label _clearScreenKeysLabel;
-		private System.Windows.Forms.Label _clearScreenLabel;
 		private System.Windows.Forms.Label _pasteKeysLabel;
 		private System.Windows.Forms.Label _copyKeysLabel;
 		private System.Windows.Forms.Label _pasteLabel;
