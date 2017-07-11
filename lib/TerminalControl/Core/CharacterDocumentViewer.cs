@@ -743,7 +743,7 @@ namespace Poderosa.View {
         public void OnSelectionStarted() {
         }
         public void OnSelectionFixed() {
-            if (WindowManagerPlugin.Instance.WindowPreference.OriginalPreference.AutoCopyByLeftButton) {
+            //if (WindowManagerPlugin.Instance.WindowPreference.OriginalPreference.AutoCopyByLeftButton) {
                 ICommandTarget ct = (ICommandTarget)this.GetAdapter(typeof(ICommandTarget));
                 if (ct != null) {
                     CommandManagerPlugin cm = CommandManagerPlugin.Instance;
@@ -758,7 +758,7 @@ namespace Poderosa.View {
                             cm.Execute(gv.Copy, ct);
                     }
                 }
-            }
+            //}
 
         }
         #endregion
