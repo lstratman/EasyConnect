@@ -123,6 +123,9 @@ namespace EasyConnect.Protocols.Ssh
             SessionHost sessionHost = new SessionHost(PoderosaSessionManagerPlugin, session);
 	        TerminalView terminalView = new TerminalView(null, _terminal);
 
+	        _terminal.GetRenderProfile().BackColor = Connection.BackgroundColor;
+	        _terminal.GetRenderProfile().ForeColor = Connection.TextColor;
+
             SSHTerminalConnection sshConnection = (SSHTerminalConnection) connection;
             
 	        Invoke(

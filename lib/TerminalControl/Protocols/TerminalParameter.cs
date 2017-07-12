@@ -24,7 +24,7 @@ namespace Poderosa.Protocols {
      *    包含関係を継承で表現していたところにムリが生じていた。複数インタフェースの実装のために便宜的に継承を使っているにすぎない
      */
 
-    internal abstract class TerminalParameter : ITerminalParameter, IAutoExecMacroParameter, ICloneable {
+    public abstract class TerminalParameter : ITerminalParameter, IAutoExecMacroParameter, ICloneable {
 
         public const string DEFAULT_TERMINAL_TYPE = "xterm";
 
@@ -369,7 +369,7 @@ namespace Poderosa.Protocols {
         #endregion
     }
 
-    internal class EmptyTerminalParameter : TerminalParameter {
+    public class EmptyTerminalParameter : TerminalParameter {
         public override bool UIEquals(ITerminalParameter t) {
             return t is EmptyTerminalParameter;
         }

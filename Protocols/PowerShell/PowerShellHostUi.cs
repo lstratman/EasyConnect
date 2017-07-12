@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
-using WalburySoftware;
+using Poderosa.Terminal;
 using Timer = System.Timers.Timer;
 
 namespace EasyConnect.Protocols.PowerShell
@@ -97,6 +97,8 @@ namespace EasyConnect.Protocols.PowerShell
 		/// </summary>
 		protected TerminalControl _terminal;
 
+	    protected StreamConnection _connection;
+
 		/// <summary>
 		/// Timer to use for asynchronous UI events.
 		/// </summary>
@@ -115,10 +117,11 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <param name="progressBar">Progress bar UI element to update when writing progress records.</param>
 		/// <param name="progressLabel">Label UI element to update when writing progress records.</param>
 		public PowerShellHostUi(
-			TerminalControl terminal, Func<string, Collection<PSObject>> executeHelper, ToolStripProgressBar progressBar, ToolStripStatusLabel progressLabel)
+			TerminalControl terminal, StreamConnection connection, Func<string, Collection<PSObject>> executeHelper, ToolStripProgressBar progressBar, ToolStripStatusLabel progressLabel)
 		{
 			_terminal = terminal;
-			_powerShellRawUi = new PowerShellRawUi(terminal);
+		    _connection = connection;
+			_powerShellRawUi = new PowerShellRawUi(terminal, connection);
 			_executeHelper = executeHelper;
 			_progressBar = progressBar;
 			_progressLabel = progressLabel;
@@ -368,11 +371,8 @@ namespace EasyConnect.Protocols.PowerShell
 					_intellisenseThread.Start();
 				}
 
-				// Get the incoming stream of characters being entered by the user through the console
-				StreamConnection connection = _terminal.TerminalPane.ConnectionTag.Connection as StreamConnection;
-
 				// Tell the stream to start capturing
-				connection.Capture = true;
+				_connection.Capture = true;
 
 				_currentInputLine.Clear();
 				_inputSemaphore.Reset();
@@ -382,13 +382,13 @@ namespace EasyConnect.Protocols.PowerShell
 					               {
 						               Name = "PowerShellHostUi Input Thread"
 					               };
-				_inputThread.Start(connection);
+				_inputThread.Start(_connection);
 
 				// Wait until the input thread sees a new line
 				_inputSemaphore.WaitOne();
 
 				// Stop capturing characters via the console
-				connection.Capture = false;
+				_connection.Capture = false;
 
 				return _currentInputLine.ToString();
 			}
@@ -539,7 +539,7 @@ namespace EasyConnect.Protocols.PowerShell
 							// Cycle to the next Intellisense candidate
 							if (intellisenseStartLocation != null && intellisenseCandidates.Count > 0)
 							{
-								intellisenseCandidatesIndex += _terminal.TerminalPane.ShiftKeyDown
+								intellisenseCandidatesIndex += ShiftKeyDown
 									                               ? -1
 									                               : 1;
 
@@ -822,7 +822,7 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			// Replace newlines in the value with the ANSI newline control code
 			byte[] buffer = Encoding.UTF8.GetBytes(value.Replace("\n", "\x001BE"));
-			_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(buffer, 0, buffer.Length);
+			_connection.Receive(buffer, 0, buffer.Length);
 		}
 
 		/// <summary>
@@ -1099,5 +1099,11 @@ namespace EasyConnect.Protocols.PowerShell
 					WriteErrorLine("Invalid choice: " + data);
 			}
 		}
+
+	    public bool ShiftKeyDown
+	    {
+	        get;
+	        set;
+	    }
 	}
 }
