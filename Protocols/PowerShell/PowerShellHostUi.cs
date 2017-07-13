@@ -406,6 +406,8 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <param name="state"><see cref="StreamConnection"/> that we are to read the user's input from.</param>
 		private void ReadInput(object state)
 		{
+            Thread.Sleep(250);
+
 			StreamConnection connection = state as StreamConnection;
 			bool foundCarriageReturn = false;
 			Coordinates promptStart = RawUI.CursorPosition;
