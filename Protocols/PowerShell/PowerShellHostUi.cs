@@ -26,6 +26,8 @@ namespace EasyConnect.Protocols.PowerShell
 		/// </summary>
 		protected string _currentHistoryCommand;
 
+	    protected int _currentInputLineMaxLength = 0;
+
 		/// <summary>
 		/// Current line of text that the user has entered at the command prompt.
 		/// </summary>
@@ -374,6 +376,7 @@ namespace EasyConnect.Protocols.PowerShell
 				// Tell the stream to start capturing
 				_connection.Capture = true;
 
+			    _currentInputLineMaxLength = 0;
 				_currentInputLine.Clear();
 				_inputSemaphore.Reset();
 
@@ -587,7 +590,7 @@ namespace EasyConnect.Protocols.PowerShell
 						// Handle the BACKSPACE character
 						if (currentByte == 8)
 						{
-							Coordinates currentPosition = RawUI.CursorPosition;
+							Coordinates currentPosition = GetCurrentCursorPosition(promptStart, insertPosition);
 
 							// If the cursor is somewhere other than the very start of the prompt
 							if (insertPosition > 0)
@@ -596,7 +599,7 @@ namespace EasyConnect.Protocols.PowerShell
 								_currentInputLine.Remove(insertPosition - 1, 1);
 								insertPosition--;
 
-								currentPosition = currentPosition.X > 1
+								currentPosition = currentPosition.X > 0
 									                  ? new Coordinates(currentPosition.X - 1, currentPosition.Y)
 									                  : new Coordinates(RawUI.BufferSize.Width, currentPosition.Y - 1);
 
@@ -629,25 +632,25 @@ namespace EasyConnect.Protocols.PowerShell
 							// ^7 translates to the HOME key
 						else if (currentByte == 55 && inEscapeSequence)
 						{
-							RawUI.CursorPosition = promptStart;
-							insertPosition = 0;
+						    insertPosition = 0;
+                            RawUI.CursorPosition = GetCurrentCursorPosition(promptStart, insertPosition);
 						}
 
 							// ^8 translates to the END key
 						else if (currentByte == 56 && inEscapeSequence)
 						{
-							RawUI.CursorPosition = promptEnd;
-							insertPosition = _currentInputLine.Length;
+						    insertPosition = _currentInputLine.Length;
+                            RawUI.CursorPosition = GetCurrentCursorPosition(promptStart, insertPosition);
 						}
 
 							// ^D translates to the left arrow, so we move the cursor backwards
 						else if (currentByte == 68 && inEscapeSequence)
 						{
-							Coordinates currentPosition = RawUI.CursorPosition;
+						    Coordinates currentPosition = GetCurrentCursorPosition(promptStart, insertPosition);
 
-							if (RawUI.CursorPosition != promptStart)
+                            if (RawUI.CursorPosition != promptStart)
 							{
-								RawUI.CursorPosition = currentPosition.X > 1
+								RawUI.CursorPosition = currentPosition.X > 0
 									                       ? new Coordinates(currentPosition.X - 1, currentPosition.Y)
 									                       : new Coordinates(RawUI.BufferSize.Width, currentPosition.Y - 1);
 								insertPosition--;
@@ -659,13 +662,13 @@ namespace EasyConnect.Protocols.PowerShell
 							// ^D translates to the right arrow, so we move the cursor forwards
 						else if (currentByte == 67 && inEscapeSequence)
 						{
-							Coordinates currentPosition = RawUI.CursorPosition;
+						    Coordinates currentPosition = GetCurrentCursorPosition(promptStart, insertPosition);
 
-							if (RawUI.CursorPosition != promptEnd)
+                            if (RawUI.CursorPosition != promptEnd)
 							{
 								RawUI.CursorPosition = currentPosition.X < RawUI.BufferSize.Width
 									                       ? new Coordinates(currentPosition.X + 1, currentPosition.Y)
-									                       : new Coordinates(1, currentPosition.Y + 1);
+									                       : new Coordinates(0, currentPosition.Y + 1);
 								insertPosition++;
 							}
 
@@ -675,10 +678,10 @@ namespace EasyConnect.Protocols.PowerShell
 							// ^D translates to the DELETE key, so we remove the current character
 						else if (currentByte == 51 && inEscapeSequence)
 						{
-							Coordinates currentPosition = RawUI.CursorPosition;
+						    Coordinates currentPosition = GetCurrentCursorPosition(promptStart, insertPosition);
 
-							// If the cursor is somewhere other than the very start of the prompt
-							if (RawUI.CursorPosition != promptEnd)
+                            // If the cursor is somewhere other than the very start of the prompt
+                            if (RawUI.CursorPosition != promptEnd)
 							{
 								// Remove the current character from _currentInputLine
 								_currentInputLine.Remove(insertPosition, 1);
@@ -691,7 +694,7 @@ namespace EasyConnect.Protocols.PowerShell
 									Write(" ");
 									RawUI.CursorPosition = currentPosition;
 
-									promptEnd = promptEnd.X > 1
+									promptEnd = promptEnd.X > 0
 										            ? new Coordinates(promptEnd.X - 1, promptEnd.Y)
 										            : new Coordinates(RawUI.BufferSize.Width, promptEnd.Y - 1);
 								}
@@ -784,20 +787,22 @@ namespace EasyConnect.Protocols.PowerShell
 
 							if (insertPosition < _currentInputLine.Length)
 							{
-								Coordinates currentPosition = RawUI.CursorPosition;
+								Coordinates currentPosition = GetCurrentCursorPosition(promptStart, insertPosition);
 								Write(_currentInputLine.ToString(insertPosition, _currentInputLine.Length - insertPosition));
 								RawUI.CursorPosition = currentPosition;
 							}
 
 							promptEnd = promptEnd.X < RawUI.BufferSize.Width
 								            ? new Coordinates(promptEnd.X + 1, promptEnd.Y)
-								            : new Coordinates(1, promptEnd.Y + 1);
+								            : new Coordinates(0, promptEnd.Y + 1);
 						}
 
 						else
 							inEscapeSequence = false;
 					}
 				}
+
+			    _currentInputLineMaxLength = Math.Max(_currentInputLineMaxLength, _currentInputLine.Length);
 
 				// If we're still waiting on a carriage return, sleep
 				if (!foundCarriageReturn)
@@ -806,6 +811,22 @@ namespace EasyConnect.Protocols.PowerShell
 
 			_inputSemaphore.Set();
 		}
+
+	    protected Coordinates GetCurrentCursorPosition(Coordinates promptStart, int insertPosition)
+	    {
+	        int promptYLength = (int) Math.Floor((_currentInputLineMaxLength + promptStart.X) / (decimal) RawUI.BufferSize.Width);
+
+	        Coordinates currentCursorPosition = new Coordinates(
+	            (promptStart.X + insertPosition) % RawUI.BufferSize.Width,
+	            promptStart.Y + (int)Math.Floor((promptStart.X + insertPosition) / (decimal)RawUI.BufferSize.Width));
+
+	        if (promptStart.Y + promptYLength > RawUI.BufferSize.Height - 1)
+	        {
+	            currentCursorPosition.Y -= promptYLength;
+	        }
+
+	        return currentCursorPosition;
+	    }
 
 		/// <summary>
 		/// Reads characters entered by the user until a newline (carriage return) is encountered and returns the characters as a secure string.
