@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -23,6 +24,9 @@ namespace EasyConnect.Protocols.Ssh
 	    private static readonly IProtocolService PoderosaProtocolService = null;
 	    private static readonly ITerminalEmulatorService PoderosaTerminalEmulatorService = null;
 	    private static readonly SessionManagerPlugin PoderosaSessionManagerPlugin = null;
+
+	    protected SSHTerminalConnection _sshConnection = null;
+	    protected bool _parentFormClosing = false;
 
         static SshConnectionForm()
 	    {
@@ -130,7 +134,7 @@ namespace EasyConnect.Protocols.Ssh
 	        session.TerminalSettings.RenderProfile = renderProfile;
 	        session.TerminalSettings.EndUpdate();
 
-            SSHTerminalConnection sshConnection = (SSHTerminalConnection) connection;
+            _sshConnection = (SSHTerminalConnection) connection;
             
 	        Invoke(
 	            new Action(
@@ -141,26 +145,41 @@ namespace EasyConnect.Protocols.Ssh
 	                    session.InternalStart(sessionHost);
                         session.InternalAttachView(sessionHost.DocumentAt(0), terminalView);
 
-                        sshConnection.ConnectionEventReceiver.NormalTermination += ConnectionEventReceiver_NormalTermination;
-                        sshConnection.ConnectionEventReceiver.AbnormalTermination += ConnectionEventReceiver_AbnormalTermination;
+	                    _sshConnection.ConnectionEventReceiver.NormalTermination += ConnectionEventReceiver_NormalTermination;
+	                    _sshConnection.ConnectionEventReceiver.AbnormalTermination += ConnectionEventReceiver_AbnormalTermination;
+
+                        ParentForm.Closing += ParentForm_OnClosing;
 
 	                    OnConnected(_terminal, null);
                     }));
 	    }
 
-        private void ConnectionEventReceiver_AbnormalTermination(object sender, Granados.SSH.AbnormalTerminationEventArgs e)
+	    private void ParentForm_OnClosing(object sender, CancelEventArgs cancelEventArgs)
+	    {
+	        if (_sshConnection != null && _sshConnection.Socket != null)
+	        {
+	            _parentFormClosing = true;
+	            _sshConnection.Close();
+                _sshConnection.Socket.Close();
+	        }
+	    }
+
+	    private void ConnectionEventReceiver_AbnormalTermination(object sender, Granados.SSH.AbnormalTerminationEventArgs e)
         {
-            Invoke(new Action(() => OnConnectionLost(this, new ErrorEventArgs(new Exception(e.Message)))));
+            if (!_parentFormClosing)
+                Invoke(new Action(() => OnConnectionLost(this, new ErrorEventArgs(new Exception(e.Message)))));
         }
 
         private void ConnectionEventReceiver_NormalTermination(object sender, EventArgs e)
         {
-            Invoke(new Action(() => ParentForm.Close()));
+            if (!_parentFormClosing)
+                Invoke(new Action(() => ParentForm.Close()));
         }
 
         public void ConnectionFailed(string message)
 	    {
-	        Invoke(new Action(() => OnConnectionLost(this, new ErrorEventArgs(new Exception(message)))));
+	        if (!_parentFormClosing)
+                Invoke(new Action(() => OnConnectionLost(this, new ErrorEventArgs(new Exception(message)))));
 	    }
 
 	    protected override void OnGotFocus(EventArgs e)
