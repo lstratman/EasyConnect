@@ -10,6 +10,7 @@ using Poderosa.Preferences;
 using Poderosa.Protocols;
 using Poderosa.Sessions;
 using Poderosa.Terminal;
+using Poderosa.View;
 
 namespace EasyConnect.Protocols.Ssh
 {
@@ -65,8 +66,6 @@ namespace EasyConnect.Protocols.Ssh
         public override void Connect()
 		{
             _terminal.Font = Connection.Font;
-			_terminal.ForeColor = Connection.TextColor;
-			_terminal.BackColor = Connection.BackgroundColor;
 
 		    ISSHLoginParameter sshParameters = PoderosaProtocolService.CreateDefaultSSHParameter();
 		    ITCPParameter tcpParameters = (ITCPParameter) sshParameters.GetAdapter(typeof(ITCPParameter));
@@ -122,9 +121,14 @@ namespace EasyConnect.Protocols.Ssh
             TerminalSession session = new TerminalSession(connection, terminalSettings);
             SessionHost sessionHost = new SessionHost(PoderosaSessionManagerPlugin, session);
 	        TerminalView terminalView = new TerminalView(null, _terminal);
+	        RenderProfile renderProfile = new RenderProfile(_terminal.GetRenderProfile());
 
-	        _terminal.GetRenderProfile().BackColor = Connection.BackgroundColor;
-	        _terminal.GetRenderProfile().ForeColor = Connection.TextColor;
+	        renderProfile.BackColor = Connection.BackgroundColor;
+	        renderProfile.ForeColor = Connection.TextColor;
+
+	        session.TerminalSettings.BeginUpdate();
+	        session.TerminalSettings.RenderProfile = renderProfile;
+	        session.TerminalSettings.EndUpdate();
 
             SSHTerminalConnection sshConnection = (SSHTerminalConnection) connection;
             
@@ -158,5 +162,15 @@ namespace EasyConnect.Protocols.Ssh
 	    {
 	        Invoke(new Action(() => OnConnectionLost(this, new ErrorEventArgs(new Exception(message)))));
 	    }
-	}
+
+	    protected override void OnGotFocus(EventArgs e)
+	    {
+	        base.OnGotFocus(e);
+
+	        if (Connection != null)
+	        {
+	            _terminal.Focus();
+	        }
+	    }
+    }
 }

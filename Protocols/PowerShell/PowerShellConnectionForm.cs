@@ -121,7 +121,7 @@ namespace EasyConnect.Protocols.PowerShell
 		/// </summary>
 		public override void Connect()
 		{
-			_terminal.Font = Connection.Font;
+		    _terminal.Font = Connection.Font;
 
 			_progressBar.Value = 0;
 			_progressLabel.Text = "";
@@ -141,9 +141,14 @@ namespace EasyConnect.Protocols.PowerShell
 			    TerminalSession session = new TerminalSession(connection, terminalSettings);
 			    SessionHost sessionHost = new SessionHost(PoderosaSessionManagerPlugin, session);
 			    TerminalView terminalView = new TerminalView(null, _terminal);
+			    RenderProfile renderProfile = new RenderProfile(_terminal.GetRenderProfile());
 
-			    _terminal.GetRenderProfile().BackColor = Connection.BackgroundColor;
-                _terminal.GetRenderProfile().ForeColor = Connection.TextColor;
+			    renderProfile.BackColor = Connection.BackgroundColor;
+			    renderProfile.ForeColor = Connection.TextColor;
+
+                session.TerminalSettings.BeginUpdate();
+			    session.TerminalSettings.RenderProfile = renderProfile;
+                session.TerminalSettings.EndUpdate();
 
                 _terminal.Attach(session);
 
@@ -478,5 +483,15 @@ namespace EasyConnect.Protocols.PowerShell
 
 			OnLoggedOff(this, null);
 		}
+
+	    protected override void OnGotFocus(EventArgs e)
+	    {
+	        base.OnGotFocus(e);
+
+	        if (Connection != null)
+	        {
+	            _terminal.Focus();
+            }
+	    }
 	}
 }
