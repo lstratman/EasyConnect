@@ -53,15 +53,15 @@
             this._displayLabel = new System.Windows.Forms.Label();
             this._backgroundColorLabel = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this._pasteKeysLabel = new System.Windows.Forms.Label();
+            this._copyKeysLabel = new System.Windows.Forms.Label();
+            this._pasteLabel = new System.Windows.Forms.Label();
+            this._copyLabel = new System.Windows.Forms.Label();
             this._shortcutsLabel = new System.Windows.Forms.Label();
             this._colorDialog = new System.Windows.Forms.ColorDialog();
             this._fontDialog = new System.Windows.Forms.FontDialog();
             this.panel1 = new System.Windows.Forms.Panel();
             this._titleLabel = new System.Windows.Forms.Label();
-            this._pasteKeysLabel = new System.Windows.Forms.Label();
-            this._copyKeysLabel = new System.Windows.Forms.Label();
-            this._pasteLabel = new System.Windows.Forms.Label();
-            this._copyLabel = new System.Windows.Forms.Label();
             this._flowLayoutPanel.SuspendLayout();
             this._hostPanel.SuspendLayout();
             this._generalPanel.SuspendLayout();
@@ -74,6 +74,7 @@
             this._flowLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this._flowLayoutPanel.AutoScroll = true;
             this._flowLayoutPanel.Controls.Add(this._hostPanel);
             this._flowLayoutPanel.Controls.Add(this._generalPanel);
             this._flowLayoutPanel.Controls.Add(this._displayPanel);
@@ -318,42 +319,6 @@
             this.panel2.Size = new System.Drawing.Size(684, 106);
             this.panel2.TabIndex = 88;
             // 
-            // _shortcutsLabel
-            // 
-            this._shortcutsLabel.AutoSize = true;
-            this._shortcutsLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._shortcutsLabel.Location = new System.Drawing.Point(8, 11);
-            this._shortcutsLabel.Name = "_shortcutsLabel";
-            this._shortcutsLabel.Size = new System.Drawing.Size(105, 21);
-            this._shortcutsLabel.TabIndex = 55;
-            this._shortcutsLabel.Text = "Shortcut Keys";
-            // 
-            // _fontDialog
-            // 
-            this._fontDialog.Color = System.Drawing.SystemColors.ControlText;
-            this._fontDialog.FixedPitchOnly = true;
-            // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.Color.Silver;
-            this.panel1.Location = new System.Drawing.Point(29, 62);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(667, 1);
-            this.panel1.TabIndex = 86;
-            // 
-            // _titleLabel
-            // 
-            this._titleLabel.AutoSize = true;
-            this._titleLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._titleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(92)))), ((int)(((byte)(97)))), ((int)(((byte)(102)))));
-            this._titleLabel.Location = new System.Drawing.Point(24, 19);
-            this._titleLabel.Name = "_titleLabel";
-            this._titleLabel.Size = new System.Drawing.Size(192, 30);
-            this._titleLabel.TabIndex = 85;
-            this._titleLabel.Text = "PowerShell Options";
-            // 
             // _pasteKeysLabel
             // 
             this._pasteKeysLabel.AutoSize = true;
@@ -393,6 +358,42 @@
             this._copyLabel.TabIndex = 91;
             this._copyLabel.Text = "Copy:";
             this._copyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // _shortcutsLabel
+            // 
+            this._shortcutsLabel.AutoSize = true;
+            this._shortcutsLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._shortcutsLabel.Location = new System.Drawing.Point(8, 11);
+            this._shortcutsLabel.Name = "_shortcutsLabel";
+            this._shortcutsLabel.Size = new System.Drawing.Size(105, 21);
+            this._shortcutsLabel.TabIndex = 55;
+            this._shortcutsLabel.Text = "Shortcut Keys";
+            // 
+            // _fontDialog
+            // 
+            this._fontDialog.Color = System.Drawing.SystemColors.ControlText;
+            this._fontDialog.FixedPitchOnly = true;
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.BackColor = System.Drawing.Color.Silver;
+            this.panel1.Location = new System.Drawing.Point(29, 62);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(667, 1);
+            this.panel1.TabIndex = 86;
+            // 
+            // _titleLabel
+            // 
+            this._titleLabel.AutoSize = true;
+            this._titleLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._titleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(92)))), ((int)(((byte)(97)))), ((int)(((byte)(102)))));
+            this._titleLabel.Location = new System.Drawing.Point(24, 19);
+            this._titleLabel.Name = "_titleLabel";
+            this._titleLabel.Size = new System.Drawing.Size(192, 30);
+            this._titleLabel.TabIndex = 85;
+            this._titleLabel.Text = "PowerShell Options";
             // 
             // PowerShellOptionsForm
             // 

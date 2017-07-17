@@ -88,6 +88,7 @@
             this._flowLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this._flowLayoutPanel.AutoScroll = true;
             this._flowLayoutPanel.Controls.Add(this._generalPanel);
             this._flowLayoutPanel.Controls.Add(this._hostPanel);
             this._flowLayoutPanel.Controls.Add(this._displayPanel);
@@ -97,7 +98,7 @@
             this._flowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this._flowLayoutPanel.Name = "_flowLayoutPanel";
             this._flowLayoutPanel.Padding = new System.Windows.Forms.Padding(15, 0, 15, 15);
-            this._flowLayoutPanel.Size = new System.Drawing.Size(719, 623);
+            this._flowLayoutPanel.Size = new System.Drawing.Size(719, 400);
             this._flowLayoutPanel.TabIndex = 83;
             this._flowLayoutPanel.WrapContents = false;
             // 
@@ -323,7 +324,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.ClientSize = new System.Drawing.Size(719, 683);
+            this.ClientSize = new System.Drawing.Size(719, 460);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this._titleLabel);
             this.Controls.Add(this._flowLayoutPanel);
