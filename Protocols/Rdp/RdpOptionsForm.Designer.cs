@@ -64,7 +64,6 @@
             this._passwordTextBox = new SecurePasswordTextBox.SecureTextBox();
             this._flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this._hostPanel = new System.Windows.Forms.Panel();
-            this._portUpDown = new System.Windows.Forms.NumericUpDown();
             this._portLabel = new System.Windows.Forms.Label();
             this._adminChannelCheckBox = new System.Windows.Forms.CheckBox();
             this._adminChannelLabel = new System.Windows.Forms.Label();
@@ -88,10 +87,10 @@
             this._useProxyCheckBox = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this._titleLabel = new System.Windows.Forms.Label();
+            this._portTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this._resolutionSlider)).BeginInit();
             this._flowLayoutPanel.SuspendLayout();
             this._hostPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._portUpDown)).BeginInit();
             this._generalPanel.SuspendLayout();
             this._displayPanel.SuspendLayout();
             this._resourcesPanel.SuspendLayout();
@@ -449,7 +448,7 @@
             // 
             // _hostPanel
             // 
-            this._hostPanel.Controls.Add(this._portUpDown);
+            this._hostPanel.Controls.Add(this._portTextBox);
             this._hostPanel.Controls.Add(this._portLabel);
             this._hostPanel.Controls.Add(this._adminChannelCheckBox);
             this._hostPanel.Controls.Add(this._adminChannelLabel);
@@ -460,23 +459,6 @@
             this._hostPanel.Name = "_hostPanel";
             this._hostPanel.Size = new System.Drawing.Size(684, 122);
             this._hostPanel.TabIndex = 84;
-            // 
-            // _portUpDown
-            // 
-            this._portUpDown.Location = new System.Drawing.Point(168, 67);
-            this._portUpDown.Maximum = new decimal(new int[] {
-            32167,
-            0,
-            0,
-            0});
-            this._portUpDown.Name = "_portUpDown";
-            this._portUpDown.Size = new System.Drawing.Size(61, 20);
-            this._portUpDown.TabIndex = 58;
-            this._portUpDown.Value = new decimal(new int[] {
-            3389,
-            0,
-            0,
-            0});
             // 
             // _portLabel
             // 
@@ -727,6 +709,13 @@
             this._titleLabel.TabIndex = 83;
             this._titleLabel.Text = "Remote Desktop Options";
             // 
+            // _portTextBox
+            // 
+            this._portTextBox.Location = new System.Drawing.Point(168, 65);
+            this._portTextBox.Name = "_portTextBox";
+            this._portTextBox.Size = new System.Drawing.Size(63, 20);
+            this._portTextBox.TabIndex = 58;
+            // 
             // RdpOptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -746,7 +735,6 @@
             this._flowLayoutPanel.ResumeLayout(false);
             this._hostPanel.ResumeLayout(false);
             this._hostPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._portUpDown)).EndInit();
             this._generalPanel.ResumeLayout(false);
             this._generalPanel.PerformLayout();
             this._displayPanel.ResumeLayout(false);
@@ -819,7 +807,7 @@
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.CheckBox _useProxyCheckBox;
-        private System.Windows.Forms.NumericUpDown _portUpDown;
         private System.Windows.Forms.Label _portLabel;
+        private System.Windows.Forms.TextBox _portTextBox;
     }
 }
