@@ -17,6 +17,7 @@ namespace EasyConnect.Protocols.Rdp
 		/// </summary>
 		public RdpConnection()
 		{
+		    Port = 3389;
 			AudioMode = AudioMode.Locally;
 			KeyboardMode = KeyboardMode.Remotely;
 			VisualStyles = true;
@@ -55,6 +56,8 @@ namespace EasyConnect.Protocols.Rdp
             UseTSProxy = info.GetBoolean("UseTSProxy");
             ProxyName = info.GetString("ProxyName");
             ProxyUserName = info.GetString("ProxyUserName");
+
+		    Port = info.GetInt32("Port");
 
             string encryptedProxyPassword = info.GetString("ProxyPassword");
             if (!String.IsNullOrEmpty(encryptedProxyPassword))
@@ -291,6 +294,12 @@ namespace EasyConnect.Protocols.Rdp
             get;
             set;
         }
+
+	    public int Port
+	    {
+	        get;
+	        set;
+	    }
         
         /// <summary>
 		/// Method required for <see cref="ISerializable"/>; serializes the connection data to <paramref name="info"/>.
@@ -318,6 +327,7 @@ namespace EasyConnect.Protocols.Rdp
 			info.AddValue("VisualStyles", VisualStyles);
 			info.AddValue("WindowContentsWhileDragging", WindowContentsWhileDragging);
 			info.AddValue("ConnectToAdminChannel", ConnectToAdminChannel);
+            info.AddValue("Port", Port);
 
             info.AddValue("UseTSProxy", UseTSProxy);
             info.AddValue("ProxyName", ProxyName);

@@ -521,6 +521,7 @@ namespace EasyConnect.Protocols.Rdp
 
 			Host = Connection.Host;
 
+		    _rdpWindow.AdvancedSettings2.RDPPort = Connection.Port;
 			_rdpWindow.AdvancedSettings3.EnableAutoReconnect = false;
 			_rdpWindow.Visible = false;
 			_rdpWindow.OnConnected += OnConnected;
