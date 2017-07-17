@@ -41,6 +41,14 @@ body {
     right: 30%;
 }
 
+.carousel-indicators li {
+    border-color: #428bca;
+}
+
+.carousel-indicators li.active {
+    background-color: #428bca;
+}
+
 #screenshots {
     border-radius: 3px;
     box-shadow: 0 0 3px #777;
@@ -176,4 +184,8 @@ pre .keywd {
 
 pre .comm {
     color: #319B44;
+}
+
+.col-md-7 h1 img {
+    margin-top: -14px
 }

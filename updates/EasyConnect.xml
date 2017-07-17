@@ -35,5 +35,11 @@
          <pubDate>Wed, 11 Dec 2013 10:38:00 -05</pubDate>
          <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-1.5.1.msi" sparkle:version="1.5.1.0" length="3682304" type="application/octet-stream" />
       </item>
+      <item>
+         <title>Version 2.0.0.0</title>
+         <sparkle:releaseNotesLink>http://lstratman.github.io/EasyConnect/updates/2.0.html</sparkle:releaseNotesLink>
+         <pubDate>Mon, 17 Jul 2017 13:58:00 -05</pubDate>
+         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-2.0.msi" sparkle:version="2.0.0.0" length="2150400" type="application/octet-stream" />
+      </item>
    </channel>
 </rss>
