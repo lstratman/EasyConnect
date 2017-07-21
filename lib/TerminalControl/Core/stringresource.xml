@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+$Id: stringresource.xml,v 1.4 2011/04/24 03:52:08 kzmi Exp $
+-->
+<string-resource>
+
+<record name="Common.OK">
+  <ja>OK</ja>
+  <en>OK</en>
+</record>
+<record name="Common.Cancel">
+  <ja>キャンセル</ja>
+  <en>Cancel</en>
+</record>
+
+<record name="Enum.Language.English">
+  <ja>英語</ja>
+  <en>English</en>
+</record>
+<record name="Enum.Language.Japanese">
+  <ja>日本語</ja>
+  <en>Japanese</en>
+</record>
+
+<!-- AboutBox.cs -->
+<record name="Form.AboutBox.Text">
+  <ja>バージョン情報</ja>
+  <en>About Poderosa</en>
+</record>
+<record name="Form.AboutBox._creditButton">
+  <ja>クレジット..,</ja>
+  <en>Credit...</en>
+</record>
+
+<record name="Menu.File">
+  <ja>ファイル(&amp;F)</ja>
+  <en>&amp;File</en>
+</record>
+<record name="Menu.NewWindow">
+  <ja>新しいウィンドウ(&amp;W)</ja>
+  <en>&amp;New Window</en>
+</record>
+<!--
+<record name="Menu.ReceiveFile">
+  <ja>XMODEMで受信(&amp;R)...</ja>
+  <en>&amp;Receive File by XMODEM...</en>
+</record>
+<record name="Menu.SendFile">
+  <ja>XMODEMで送信(&amp;T)...</ja>
+  <en>&amp;Transmit File by XMODEM...</en>
+</record>
+-->
+<record name="Menu.Quit">
+  <ja>終了(&amp;X)</ja>
+  <en>E&amp;xit</en>
+</record>
+
+<!-- Menu.Edit -->
+
+<record name="Menu.Edit">
+  <ja>編集(&amp;E)</ja>
+  <en>&amp;Edit</en>
+</record>
+<record name="Menu.Copy">
+  <ja>コピー(&amp;Y)</ja>
+  <en>Cop&amp;y</en>
+</record>
+<record name="Menu.Paste">
+  <ja>貼り付け(&amp;P)</ja>
+  <en>&amp;Paste</en>
+</record>
+<record name="Menu.CopyAsLook">
+  <ja>表示イメージをコピー(&amp;L)</ja>
+  <en>Copy as you &amp;Look</en>
+</record>
+<record name="Menu.CopyToFile">
+  <ja>ファイルへコピー(&amp;T)...</ja>
+  <en>Copy &amp;to File...</en>
+</record>
+<record name="Menu.PasteFromFile">
+  <ja>ファイルから貼り付け(&amp;F)...</ja>
+  <en>Paste &amp;from File...</en>
+</record>
+<record name="Menu.SelectAll">
+  <ja>すべて選択(&amp;A)</ja>
+  <en>Select &amp;All</en>
+</record>
+<record name="Menu.FreeSelectionMode">
+  <ja>フリー選択モード(&amp;S)</ja>
+  <en>Free &amp;selection mode</en>
+</record>
+<record name="Menu.AutoSelectionMode">
+  <ja>自動選択モード(&amp;U)</ja>
+  <en>A&amp;uto selection mode</en>
+</record>
+
+<!-- Menu.Console -->
+
+<record name="Menu.Console">
+  <ja>コンソール(&amp;C)</ja>
+  <en>&amp;Console</en>
+</record>
+<record name="Menu.ConsoleClose">
+  <ja>閉じる(&amp;C)</ja>
+  <en>&amp;Close</en>
+</record>
+
+<!-- Menu.Tool-->
+
+<record name="Menu.Tool">
+  <ja>ツール(&amp;T)</ja>
+  <en>&amp;Tools</en>
+</record>
+<record name="Menu.KeyGen">
+  <ja>SSH鍵作成ウィザード(&amp;K)...</ja>
+  <en>SSH &amp;key generation wizard...</en>
+</record>
+<record name="Menu.ChangePassphrase">
+  <ja>秘密鍵のパスフレーズ変更(&amp;P)...</ja>
+  <en>Change &amp;passphrase of private key...</en>
+</record>
+<record name="Menu.LaunchPortforwarding">
+  <ja>ポートフォワーディングツールの起動(&amp;F)...</ja>
+  <en>Start port&amp;forwarding tool...</en>
+</record>
+<record name="Menu.Macro">
+  <ja>マクロ(&amp;M)</ja>
+  <en>&amp;Macro</en>
+</record>
+<record name="Menu.Option">
+  <ja>オプション(&amp;O)...</ja>
+  <en>&amp;Options...</en>
+</record>
+<record name="Menu.MacroConfig">
+  <ja>環境設定(&amp;C)...</ja>
+  <en>&amp;Environment...</en>
+</record>
+<record name="Menu.StopMacro">
+  <ja>実行中のマクロの停止(&amp;S)</ja>
+  <en>&amp;Stop executing macro</en>
+</record>
+
+<!-- Menu.Window -->
+
+<record name="Menu.Window">
+  <ja>ウィンドウ(&amp;W)</ja>
+  <en>&amp;Window</en>
+</record>
+<record name="Menu.DivideFrameHorizontal">
+  <ja>上下に分割(&amp;H)</ja>
+  <en>Split &amp;Horizontally</en>
+</record>
+<record name="Menu.DivideFrameVertical">
+  <ja>左右に分割(&amp;V)</ja>
+  <en>Split &amp;Vertically</en>
+</record>
+<record name="Menu.UnifyFrame">
+  <ja>分割を結合(&amp;U)</ja>
+  <en>&amp;Unify</en>
+</record>
+<record name="Menu.UnifyAllFrame">
+  <ja>すべての分割を結合(&amp;A)</ja>
+  <en>Reset &amp;all splits</en>
+</record>
+<record name="Menu.CloseAll">
+  <ja>すべて閉じる(&amp;C)</ja>
+  <en>&amp;Close All</en>
+</record>
+<record name="Menu.CloseAllDisconnected">
+  <ja>切断しているすべてを閉じる(&amp;D)</ja>
+  <en>Close All &amp;Disconnected</en>
+</record>
+<record name="Menu.SetTabRowCount">
+  <ja>タブの段数(&amp;T)</ja>
+  <en>Number&amp; of Tab Rows</en>
+</record>
+
+<!-- Menu.Plugin -->
+<record name="Menu.Plugin">
+  <ja>プラグイン(&amp;P)</ja>
+  <en>&amp;Plug-in</en>
+</record>
+<record name="Menu.PluginList">
+  <ja>プラグインリスト(&amp;P)...</ja>
+  <en>&amp;Plug-in list...</en>
+</record>
+<record name="Menu.ExtensionPointList">
+  <ja>拡張ポイントリスト(&amp;E)...</ja>
+  <en>&amp;Extension point list...</en>
+</record>
+
+<!-- Menu.Help -->
+
+<record name="Menu.Help">
+  <ja>ヘルプ(&amp;H)</ja>
+  <en>&amp;Help</en>
+</record>
+<record name="Menu.AboutBox">
+  <ja>バージョン情報(&amp;A)...</ja>
+  <en>&amp;About Poderosa...</en>
+</record>
+<record name="Menu.PoderosaWeb">
+  <ja>PoderosaのWebを開く(&amp;W)...</ja>
+  <en>Open Poderosa &amp;web site...</en>
+</record>
+
+<!-- CommandCategory -->
+<record name="CommandCategory.Application">
+  <ja>アプリケーション</ja>
+  <en>Application</en>
+</record>
+<record name="CommandCategory.Edit">
+  <ja>編集</ja>
+  <en>Edit</en>
+</record>
+<record name="CommandCategory.Window">
+  <ja>ウィンドウ</ja>
+  <en>Window</en>
+</record>
+<record name="CommandCategory.Dialog">
+  <ja>ダイアログ</ja>
+  <en>Dialog</en>
+</record>
+
+<!-- Command Description -->
+<record name="Command.NewWindow">
+  <ja>新しいウィンドウを開く</ja>
+  <en>Open a new window</en>
+</record>
+<record name="Command.Quit">
+  <ja>Poderosaの終了</ja>
+  <en>Quit Poderosa</en>
+</record>
+<record name="Command.Copy">
+  <ja>コピー</ja>
+  <en>Copy</en>
+</record>
+<record name="Command.Paste">
+  <ja>貼り付け</ja>
+  <en>Paste</en>
+</record>
+<record name="Command.CloseDocument">
+  <ja>閉じる</ja>
+  <en>Close</en>
+</record>
+<record name="Command.CloseAll">
+  <ja>すべて閉じる</ja>
+  <en>Close All</en>
+</record>
+<record name="Command.SplitHorizontal">
+  <ja>上下に分割</ja>
+  <en>Make a horizontal split</en>
+</record>
+<record name="Command.SplitVertical">
+  <ja>左右に分割</ja>
+  <en>Make a vertical split</en>
+</record>
+<record name="Command.SplitUnify">
+  <ja>分割の結合</ja>
+  <en>Unify split</en>
+</record>
+<record name="Command.UnifyAll">
+  <ja>すべての分割の結合</ja>
+  <en>Unify all splits</en>
+</record>
+<record name="Command.NextTab">
+  <ja>次のタブ</ja>
+  <en>Next tab</en>
+</record>
+<record name="Command.PreviousTab">
+  <ja>前のタブ</ja>
+  <en>Previous tab</en>
+</record>
+<record name="Command.PluginList">
+  <ja>プラグインリストの表示</ja>
+  <en>Show plug-in list</en>
+</record>
+<record name="Command.ExtensionPointList">
+  <ja>拡張ポイントリストの表示</ja>
+  <en>Show extension point list</en>
+</record>
+<record name="Command.AboutBox">
+  <ja>バージョン情報</ja>
+  <en>Version information</en>
+</record>
+<record name="Command.PoderosaWeb">
+  <ja>PoderosaのWebを開く</ja>
+  <en>Open Poderosa web site</en>
+</record>
+
+<!-- PluginList Dialog -->
+<record name="Form.PluginList.Text">
+  <ja>プラグインリスト</ja>
+  <en>Plug-in list</en>
+</record>
+<record name="Form.PluginList._enableHeader">
+  <ja>有効</ja>
+  <en>Enabled</en>
+</record>
+<record name="Form.PluginList._versionHeader">
+  <ja>バージョン</ja>
+  <en>Version</en>
+</record>
+<record name="Form.PluginList._venderHeader">
+  <ja>ベンダー</ja>
+  <en>Vender</en>
+</record>
+
+<!-- ExtensionPointList Dialog -->
+<record name="Form.ExtensionPointList.Text">
+  <ja>拡張ポイントリスト</ja>
+  <en>Extension point list</en>
+</record>
+<record name="Form.ExtensionPointList._ownerHeader">
+  <ja>オーナプラグインID</ja>
+  <en>Owner plug-in ID</en>
+</record>
+<record name="Form.ExtensionPointList._countHeader">
+  <ja>拡張の数</ja>
+  <en>Number of extension point.</en>
+</record>
+
+
+<!-- Enums -->
+<record name="Enum.ImageStyle.Center">
+  <ja>中央</ja>
+  <en>Center</en>
+</record>
+<record name="Enum.ImageStyle.TopLeft">
+  <ja>左上</ja>
+  <en>UpperLeft</en>
+</record>
+<record name="Enum.ImageStyle.TopRight">
+  <ja>右上</ja>
+  <en>UpperRight</en>
+</record>
+<record name="Enum.ImageStyle.BottomLeft">
+  <ja>左下</ja>
+  <en>BottomLeft</en>
+</record>
+<record name="Enum.ImageStyle.BottomRight">
+  <ja>右下</ja>
+  <en>LowerRight</en>
+</record>
+<record name="Enum.ImageStyle.Scaled">
+  <ja>伸縮</ja>
+  <en>Scaled</en>
+</record>
+<record name="Enum.ImageStyle.HorizontalFit">
+  <ja>横幅に合わせる</ja>
+  <en>Horizontal Fit</en>
+</record>
+<record name="Enum.ImageStyle.VerticalFit">
+  <ja>高さに合わせる</ja>
+  <en>Vertical Fit</en>
+</record>
+
+<!-- Preference Validation -->
+<record name="Message.ValueMustBePositive">
+  <ja>値は正でなければなりません</ja>
+  <en>The values must be positive</en>
+</record>
+<record name="Message.ValueMustBeContainedRange">
+  <ja>値は {0} と {1} の間でなければなりません</ja>
+  <en>The value must be between {0} and {1}.</en>
+</record>
+
+<!--
+<record name="">
+  <ja></ja>
+  <en></en>
+</record>
+-->
+
+</string-resource>

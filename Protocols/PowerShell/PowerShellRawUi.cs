@@ -3,10 +3,7 @@ using System.Drawing;
 using System.Management.Automation.Host;
 using System.Text;
 using System.Threading;
-using Poderosa.Communication;
 using Poderosa.Terminal;
-using Poderosa.Text;
-using WalburySoftware;
 using Win32Interop.Methods;
 using Rectangle = System.Management.Automation.Host.Rectangle;
 using Size = System.Management.Automation.Host.Size;
@@ -48,15 +45,18 @@ namespace EasyConnect.Protocols.PowerShell
 		/// </summary>
 		protected TerminalControl _terminal;
 
+	    protected StreamConnection _connection;
+
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
 		/// <param name="terminal">Terminal control that will display the PowerShell console.</param>
-		public PowerShellRawUi(TerminalControl terminal)
+		public PowerShellRawUi(TerminalControl terminal, StreamConnection connection)
 		{
 			_terminal = terminal;
-			_backgroundColor = ClosestConsoleColor(_terminal.TerminalPane.ConnectionTag.RenderProfile.BackColor);
-			_foregroundColor = ClosestConsoleColor(_terminal.TerminalPane.ConnectionTag.RenderProfile.ForeColor);
+			_backgroundColor = ClosestConsoleColor(_terminal.BackColor);
+			_foregroundColor = ClosestConsoleColor(_terminal.ForeColor);
+		    _connection = connection;
 		}
 
 		/// <summary>
@@ -118,7 +118,7 @@ namespace EasyConnect.Protocols.PowerShell
 
 				// Send the appropriate ANSI sequence to the terminal
 				byte[] data = Encoding.UTF8.GetBytes("\x001B[" + commandValue + "m");
-				_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(data, 0, data.Length);
+				_connection.Receive(data, 0, data.Length);
 			}
 		}
 
@@ -129,7 +129,8 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return new Size(_terminal.TerminalPane.Connection.TerminalWidth, _terminal.TerminalPane.ConnectionTag.Document.Size);
+			    System.Drawing.Size terminalSize = _terminal.CalcTerminalSize(_terminal.GetRenderProfile());
+                return new Size(terminalSize.Width, terminalSize.Height);
 			}
 			set
 			{
@@ -143,15 +144,15 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return new Coordinates(_terminal.TerminalPane.ConnectionTag.Document.CaretColumn, _terminal.TerminalPane.ConnectionTag.Document.CurrentLineNumber);
+				return new Coordinates(_terminal.Caret.X, _terminal.Caret.Y);
 			}
 			set
 			{
-				Coordinates relativePosition = new Coordinates(value.X + 1, value.Y + 1 - _terminal.TerminalPane.ConnectionTag.Document.TopLineNumber);
+				//Coordinates relativePosition = new Coordinates(value.X + 1, value.Y + 1 - _terminal.GetTopLine().ID);
 
 				// Send the appropriate ANSI sequence to the terminal to set the cursor position
-				byte[] data = Encoding.UTF8.GetBytes(String.Format("\x001B[{1};{0}f", relativePosition.X, relativePosition.Y));
-				_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(data, 0, data.Length);
+				byte[] data = Encoding.UTF8.GetBytes(String.Format("\x001B[{1};{0}f", value.X + 1, value.Y + 1));
+				_connection.Receive(data, 0, data.Length);
 			}
 		}
 
@@ -162,7 +163,7 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return Convert.ToInt32(_terminal.TerminalPane.ConnectionTag.RenderProfile.FontSize);
+				return Convert.ToInt32(_terminal.Font.Size);
 			}
 			set
 			{
@@ -229,7 +230,7 @@ namespace EasyConnect.Protocols.PowerShell
 
 				// Send the appropriate ANSI sequence to the terminal
 				byte[] data = Encoding.UTF8.GetBytes("\x001B[" + commandValue + "m");
-				_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(data, 0, data.Length);
+				_connection.Receive(data, 0, data.Length);
 			}
 		}
 
@@ -241,7 +242,7 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return _terminal.TerminalPane.ConnectionTag.Terminal.TerminalMode == TerminalMode.Normal;
+			    return true;
 			}
 		}
 
@@ -274,11 +275,10 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return new Coordinates(0, _terminal.TerminalPane.ConnectionTag.Document.TopLineNumber);
+				return new Coordinates(0, _terminal.GetTopLine().ID);
 			}
 			set
 			{
-				_terminal.TerminalPane.ConnectionTag.Document.TopLineNumber = value.Y;
 			}
 		}
 
@@ -289,7 +289,7 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			get
 			{
-				return new Size(_terminal.TerminalPane.Connection.TerminalWidth, _terminal.TerminalPane.Connection.TerminalHeight);
+				return BufferSize;
 			}
 			set
 			{
@@ -349,7 +349,7 @@ namespace EasyConnect.Protocols.PowerShell
 		public void RestoreForegroundColor()
 		{
 			byte[] data = Encoding.UTF8.GetBytes("\x001B[39m");
-			_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(data, 0, data.Length);
+			_connection.Receive(data, 0, data.Length);
 		}
 
 		/// <summary>
@@ -358,7 +358,7 @@ namespace EasyConnect.Protocols.PowerShell
 		public void RestoreBackgroundColor()
 		{
 			byte[] data = Encoding.UTF8.GetBytes("\x001B[49m");
-			_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(data, 0, data.Length);
+			_connection.Receive(data, 0, data.Length);
 		}
 
 		/// <summary>
@@ -387,8 +387,7 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <returns>Data for the key that the user pressed.</returns>
 		public override KeyInfo ReadKey(ReadKeyOptions options)
 		{
-			StreamConnection connection = _terminal.TerminalPane.ConnectionTag.Connection as StreamConnection;
-			connection.Capture = true;
+			_connection.Capture = true;
 			_inputSemaphore.Reset();
 
 			// Start up a thread to watch the terminal's input bufer
@@ -396,11 +395,11 @@ namespace EasyConnect.Protocols.PowerShell
 				               {
 					               Name = "PowerShellRawUi Input Thread"
 				               };
-			_inputThread.Start(new Tuple<StreamConnection, ReadKeyOptions>(connection, options));
+			_inputThread.Start(new Tuple<StreamConnection, ReadKeyOptions>(_connection, options));
 
 			// ReadInput will signal through this semaphore when a key has been pressed
 			_inputSemaphore.WaitOne();
-			connection.Capture = false;
+			_connection.Capture = false;
 
 			return _readKey;
 		}
@@ -556,7 +555,7 @@ namespace EasyConnect.Protocols.PowerShell
 
 							if ((options & ReadKeyOptions.NoEcho) != ReadKeyOptions.NoEcho)
 							{
-								_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(
+								_connection.Transmit(
 									new byte[]
 										{
 											currentByte

@@ -156,6 +156,8 @@ namespace EasyConnect.Protocols.Rdp
                                                ? new SecureString()
                                                : Connection.ProxyPassword.Copy());
 
+		    _portTextBox.Text = Connection.Port.ToString();
+
             // Hide the host panel if we're in defaults mode
 			if (DefaultsMode)
 				_hostPanel.Visible = false;
@@ -216,6 +218,11 @@ namespace EasyConnect.Protocols.Rdp
             Connection.ProxyName = _proxyHostNameTextBox.Text;
             Connection.ProxyUserName = _proxyUserNameTextBox.Text;
             Connection.ProxyPassword = _proxyPasswordTextBox.SecureText;
+
+		    int port = 0;
+
+            if (Int32.TryParse(_portTextBox.Text, out port))
+		        Connection.Port = port;
 		}
 
 		/// <summary>
@@ -280,5 +287,5 @@ namespace EasyConnect.Protocols.Rdp
 					                               : "";
 			}
 		}
-	}
+    }
 }

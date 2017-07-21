@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<?define ProductVersion="1.5.1" ?>
+	<?define ProductVersion="2.0.1.0" ?>
 	<?define UpgradeCode="D49D0936-12DD-4DCE-BB1C-413823B2D6D0" ?>
 
 	<Product Id="*" Name="$(var.EasyConnect.ProjectName)" Language="1033" Version="$(var.ProductVersion)" Manufacturer="Luke Stratman" UpgradeCode="$(var.UpgradeCode)">
@@ -11,10 +11,10 @@
 		<Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
 
 		<Upgrade Id="$(var.UpgradeCode)">
-			<UpgradeVersion Minimum="1.0.0.0" Maximum="99.0.0.0" Property="PREVIOUSVERSIONSINSTALLED" IncludeMinimum="yes" IncludeMaximum="no" />
+			<UpgradeVersion Minimum="1.0.0.0" Maximum="$(var.ProductVersion)" Property="PREVIOUSVERSIONSINSTALLED" IncludeMinimum="yes" IncludeMaximum="no" />
 		</Upgrade>
 
-		<Feature Id="ProductFeature" Title="$(var.EasyConnect.ProjectName)" Level="1" Description="$(var.EasyConnect.ProjectName) is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's, supporting the Remote Desktop Protocol (RDP), Secure Shell (SSH), and VNC protocols." Display="expand" ConfigurableDirectory="INSTALLFOLDER">
+		<Feature Id="ProductFeature" Title="$(var.EasyConnect.ProjectName)" Level="1" Description="$(var.EasyConnect.ProjectName) is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's, supporting the Remote Desktop Protocol (RDP), Secure Shell (SSH), PowerShell, and VNC protocols." Display="expand" ConfigurableDirectory="INSTALLFOLDER">
 			<Feature Id="MainExecutable" Title="Main Executable" Description="Main executable and common libraries." Level="1" Absent="disallow">
 				<ComponentGroupRef Id="MainExecutableComponents" />
 				<ComponentGroupRef Id="StartMenuComponents"/>
@@ -27,7 +27,7 @@
 			</Feature>
 			<Feature Id="SshPlugin" Title="Secure Shell Plugin" Description="Plugin to allow secure shell (SSH) connections." Level="1" Absent="allow">
 				<ComponentGroupRef Id="SshPluginComponents"/>
-				<ComponentGroupRef Id="PoderosaComponents"/>
+			  <ComponentGroupRef Id="TerminalControlComponents"/>
 			</Feature>
 			<Feature Id="PowerShellPlugin" Title="PowerShell Plugin" Description="Plugin to allow PowerShell connections." Level="1" Absent="allow">
 				<ComponentGroupRef Id="PowerShellPluginComponents"/>
@@ -82,8 +82,8 @@
 			<Component Id="SystemDrawingHtmlAssemblyComponent" Guid="D84D05BB-2EA8-4999-8B7E-D0AD2E57441E">
 				<File Id="SystemDrawingHtmlAssembly" Name="System.Drawing.Html.dll" Source="$(var.EasyConnect.TargetDir)System.Drawing.Html.dll"/>
 			</Component>
-			<Component Id="TitleBarTabsComponent" Guid="99CFCC2A-BBC5-47A5-BFBA-E7164413A52D">
-				<File Id="TitleBarTabsAssembly" Name="Stratman.Windows.Forms.TitleBarTabs.dll" Source="$(var.EasyConnect.TargetDir)Stratman.Windows.Forms.TitleBarTabs.dll"/>
+			<Component Id="EasyTabsComponent" Guid="99CFCC2A-BBC5-47A5-BFBA-E7164413A52D">
+				<File Id="EasyTabsAssembly" Name="EasyTabs.dll" Source="$(var.EasyConnect.TargetDir)EasyTabs.dll"/>
 				<File Id="WindowsAPICodePackAssembly" Name="Microsoft.WindowsAPICodePack.dll" Source="$(var.EasyConnect.TargetDir)Microsoft.WindowsAPICodePack.dll"/>
 				<File Id="WindowsAPICodePackShellAssembly" Name="Microsoft.WindowsAPICodePack.Shell.dll" Source="$(var.EasyConnect.TargetDir)Microsoft.WindowsAPICodePack.Shell.dll"/>
 			</Component>
@@ -116,9 +116,8 @@
 		<ComponentGroup Id="VncPluginComponents" Directory="INSTALLFOLDER">
 			<Component Id="VncPluginAssemblyComponent" Guid="D39F04E9-B216-4EDB-A041-FFEB65AB0AE5">
 				<File Id="VncPluginAssembly" Name="$(var.EasyConnect.Protocols.Vnc.TargetFileName)" Source="$(var.EasyConnect.Protocols.Vnc.TargetPath)"/>
-				<File Id="ViewerXAxInteropAssembly" Name="AxInterop.ViewerX.dll" Source="$(var.EasyConnect.Protocols.Vnc.TargetDir)AxInterop.ViewerX.dll"/>
-				<File Id="ViewerXInteropAssembly" Name="Interop.ViewerX.dll" Source="$(var.EasyConnect.Protocols.Vnc.TargetDir)Interop.ViewerX.dll"/>
-				<File Id="ScvncctrlAssembly" Name="scvncctrl.dll" Source="$(var.EasyConnect.Protocols.Vnc.TargetDir)scvncctrl.dll"/>
+				<File Id="RemoteViewingAssembly" Name="RemoteViewing.dll" Source="$(var.EasyConnect.Protocols.Vnc.TargetDir)RemoteViewing.dll"/>
+			  <File Id="RemoteViewingWindowsFormsAssembly" Name="RemoteViewing.Windows.Forms.dll" Source="$(var.EasyConnect.Protocols.Vnc.TargetDir)RemoteViewing.Windows.Forms.dll"/>
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="SshPluginComponents" Directory="INSTALLFOLDER">
@@ -129,19 +128,6 @@
 		<ComponentGroup Id="TerminalControlComponents" Directory="INSTALLFOLDER">
 			<Component Id="TerminalControlAssemblyComponent" Guid="551F46DF-CB96-4FFA-865C-307373054014">
 				<File Id="TerminalControlAssembly" Name="$(var.TerminalControl.TargetFileName)" Source="$(var.TerminalControl.TargetPath)"/>
-			</Component>
-		</ComponentGroup>
-		<ComponentGroup Id="PoderosaComponents" Directory="INSTALLFOLDER">
-			<Component Id="PoderosaAssemblyComponent" Guid="81FD4C1D-C53D-49D5-BF25-9D35FD01D975">
-				<File Id="GranadosAssembly" Name="Granados.dll" Source="$(var.EasyConnect.Protocols.Ssh.TargetDir)Granados.dll"/>
-				<File Id="PoderosaCoreAssembly" Name="Poderosa.Core.dll" Source="$(var.EasyConnect.Protocols.Ssh.TargetDir)Poderosa.Core.dll"/>
-				<File Id="PoderosaPluginAssembly" Name="Poderosa.Plugin.dll" Source="$(var.EasyConnect.Protocols.Ssh.TargetDir)Poderosa.Plugin.dll"/>
-				<File Id="PoderosaPortForwardingAssembly" Name="Poderosa.PortForwardingCommand.dll" Source="$(var.EasyConnect.Protocols.Ssh.TargetDir)Poderosa.PortForwardingCommand.dll"/>
-				<File Id="PoderosaProtocolsAssembly" Name="Poderosa.Protocols.dll" Source="$(var.EasyConnect.Protocols.Ssh.TargetDir)Poderosa.Protocols.dll"/>
-				<File Id="PoderosaTerminalControlAssembly" Name="Poderosa.TerminalControl.dll" Source="$(var.EasyConnect.Protocols.Ssh.TargetDir)Poderosa.TerminalControl.dll"/>
-				<File Id="PoderosaTerminalEmulatorAssembly" Name="Poderosa.TerminalEmulator.dll" Source="$(var.EasyConnect.Protocols.Ssh.TargetDir)Poderosa.TerminalEmulator.dll"/>
-				<File Id="PoderosaTerminalSessionAssembly" Name="Poderosa.TerminalSession.dll" Source="$(var.EasyConnect.Protocols.Ssh.TargetDir)Poderosa.TerminalSession.dll"/>
-				<File Id="PoderosaUIAssembly" Name="Poderosa.UI.dll" Source="$(var.EasyConnect.Protocols.Ssh.TargetDir)Poderosa.UI.dll"/>
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="PowerShellPluginComponents" Directory="INSTALLFOLDER">

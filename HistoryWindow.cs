@@ -12,7 +12,7 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using EasyConnect.Protocols;
 using EasyConnect.Protocols.Rdp;
-using Stratman.Windows.Forms.TitleBarTabs;
+using EasyTabs;
 
 namespace EasyConnect
 {
@@ -51,7 +51,8 @@ namespace EasyConnect
 
 			InitializeComponent();
 
-			_historyListView.ListViewItemSorter = new HistoryComparer(_connections);
+		    historyContextMenu.Renderer = new EasyConnectToolStripRender();
+            _historyListView.ListViewItemSorter = new HistoryComparer(_connections);
 
 			// Get the icon for each protocol
 			foreach (IProtocol protocol in ConnectionFactory.GetProtocols())
@@ -139,7 +140,7 @@ namespace EasyConnect
 
 				for (insertIndex = 0; insertIndex < _historyListView.Groups.Count; insertIndex++)
 				{
-					if (String.Compare(_historyListView.Groups[insertIndex].Name, groupName, StringComparison.Ordinal) > 0)
+					if (String.Compare(_historyListView.Groups[insertIndex].Name, groupName, StringComparison.Ordinal) < 0)
 						break;
 				}
 

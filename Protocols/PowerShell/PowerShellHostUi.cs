@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
-using WalburySoftware;
+using Poderosa.Terminal;
 using Timer = System.Timers.Timer;
 
 namespace EasyConnect.Protocols.PowerShell
@@ -25,6 +25,8 @@ namespace EasyConnect.Protocols.PowerShell
 		/// Current command, if any, from the history buffer that is being displayed in the prompt.
 		/// </summary>
 		protected string _currentHistoryCommand;
+
+	    protected int _currentInputLineMaxLength = 0;
 
 		/// <summary>
 		/// Current line of text that the user has entered at the command prompt.
@@ -97,6 +99,8 @@ namespace EasyConnect.Protocols.PowerShell
 		/// </summary>
 		protected TerminalControl _terminal;
 
+	    protected StreamConnection _connection;
+
 		/// <summary>
 		/// Timer to use for asynchronous UI events.
 		/// </summary>
@@ -115,10 +119,11 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <param name="progressBar">Progress bar UI element to update when writing progress records.</param>
 		/// <param name="progressLabel">Label UI element to update when writing progress records.</param>
 		public PowerShellHostUi(
-			TerminalControl terminal, Func<string, Collection<PSObject>> executeHelper, ToolStripProgressBar progressBar, ToolStripStatusLabel progressLabel)
+			TerminalControl terminal, StreamConnection connection, Func<string, Collection<PSObject>> executeHelper, ToolStripProgressBar progressBar, ToolStripStatusLabel progressLabel)
 		{
 			_terminal = terminal;
-			_powerShellRawUi = new PowerShellRawUi(terminal);
+		    _connection = connection;
+			_powerShellRawUi = new PowerShellRawUi(terminal, connection);
 			_executeHelper = executeHelper;
 			_progressBar = progressBar;
 			_progressLabel = progressLabel;
@@ -368,12 +373,10 @@ namespace EasyConnect.Protocols.PowerShell
 					_intellisenseThread.Start();
 				}
 
-				// Get the incoming stream of characters being entered by the user through the console
-				StreamConnection connection = _terminal.TerminalPane.ConnectionTag.Connection as StreamConnection;
-
 				// Tell the stream to start capturing
-				connection.Capture = true;
+				_connection.Capture = true;
 
+			    _currentInputLineMaxLength = 0;
 				_currentInputLine.Clear();
 				_inputSemaphore.Reset();
 
@@ -382,13 +385,13 @@ namespace EasyConnect.Protocols.PowerShell
 					               {
 						               Name = "PowerShellHostUi Input Thread"
 					               };
-				_inputThread.Start(connection);
+				_inputThread.Start(_connection);
 
 				// Wait until the input thread sees a new line
 				_inputSemaphore.WaitOne();
 
 				// Stop capturing characters via the console
-				connection.Capture = false;
+				_connection.Capture = false;
 
 				return _currentInputLine.ToString();
 			}
@@ -406,6 +409,8 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <param name="state"><see cref="StreamConnection"/> that we are to read the user's input from.</param>
 		private void ReadInput(object state)
 		{
+            Thread.Sleep(250);
+
 			StreamConnection connection = state as StreamConnection;
 			bool foundCarriageReturn = false;
 			Coordinates promptStart = RawUI.CursorPosition;
@@ -539,7 +544,7 @@ namespace EasyConnect.Protocols.PowerShell
 							// Cycle to the next Intellisense candidate
 							if (intellisenseStartLocation != null && intellisenseCandidates.Count > 0)
 							{
-								intellisenseCandidatesIndex += _terminal.TerminalPane.ShiftKeyDown
+								intellisenseCandidatesIndex += ShiftKeyDown
 									                               ? -1
 									                               : 1;
 
@@ -585,7 +590,7 @@ namespace EasyConnect.Protocols.PowerShell
 						// Handle the BACKSPACE character
 						if (currentByte == 8)
 						{
-							Coordinates currentPosition = RawUI.CursorPosition;
+							Coordinates currentPosition = GetCurrentCursorPosition(promptStart, insertPosition);
 
 							// If the cursor is somewhere other than the very start of the prompt
 							if (insertPosition > 0)
@@ -594,7 +599,7 @@ namespace EasyConnect.Protocols.PowerShell
 								_currentInputLine.Remove(insertPosition - 1, 1);
 								insertPosition--;
 
-								currentPosition = currentPosition.X > 1
+								currentPosition = currentPosition.X > 0
 									                  ? new Coordinates(currentPosition.X - 1, currentPosition.Y)
 									                  : new Coordinates(RawUI.BufferSize.Width, currentPosition.Y - 1);
 
@@ -627,25 +632,25 @@ namespace EasyConnect.Protocols.PowerShell
 							// ^7 translates to the HOME key
 						else if (currentByte == 55 && inEscapeSequence)
 						{
-							RawUI.CursorPosition = promptStart;
-							insertPosition = 0;
+						    insertPosition = 0;
+                            RawUI.CursorPosition = GetCurrentCursorPosition(promptStart, insertPosition);
 						}
 
 							// ^8 translates to the END key
 						else if (currentByte == 56 && inEscapeSequence)
 						{
-							RawUI.CursorPosition = promptEnd;
-							insertPosition = _currentInputLine.Length;
+						    insertPosition = _currentInputLine.Length;
+                            RawUI.CursorPosition = GetCurrentCursorPosition(promptStart, insertPosition);
 						}
 
 							// ^D translates to the left arrow, so we move the cursor backwards
 						else if (currentByte == 68 && inEscapeSequence)
 						{
-							Coordinates currentPosition = RawUI.CursorPosition;
+						    Coordinates currentPosition = GetCurrentCursorPosition(promptStart, insertPosition);
 
-							if (RawUI.CursorPosition != promptStart)
+                            if (RawUI.CursorPosition != promptStart)
 							{
-								RawUI.CursorPosition = currentPosition.X > 1
+								RawUI.CursorPosition = currentPosition.X > 0
 									                       ? new Coordinates(currentPosition.X - 1, currentPosition.Y)
 									                       : new Coordinates(RawUI.BufferSize.Width, currentPosition.Y - 1);
 								insertPosition--;
@@ -657,13 +662,13 @@ namespace EasyConnect.Protocols.PowerShell
 							// ^D translates to the right arrow, so we move the cursor forwards
 						else if (currentByte == 67 && inEscapeSequence)
 						{
-							Coordinates currentPosition = RawUI.CursorPosition;
+						    Coordinates currentPosition = GetCurrentCursorPosition(promptStart, insertPosition);
 
-							if (RawUI.CursorPosition != promptEnd)
+                            if (RawUI.CursorPosition != promptEnd)
 							{
 								RawUI.CursorPosition = currentPosition.X < RawUI.BufferSize.Width
 									                       ? new Coordinates(currentPosition.X + 1, currentPosition.Y)
-									                       : new Coordinates(1, currentPosition.Y + 1);
+									                       : new Coordinates(0, currentPosition.Y + 1);
 								insertPosition++;
 							}
 
@@ -673,10 +678,10 @@ namespace EasyConnect.Protocols.PowerShell
 							// ^D translates to the DELETE key, so we remove the current character
 						else if (currentByte == 51 && inEscapeSequence)
 						{
-							Coordinates currentPosition = RawUI.CursorPosition;
+						    Coordinates currentPosition = GetCurrentCursorPosition(promptStart, insertPosition);
 
-							// If the cursor is somewhere other than the very start of the prompt
-							if (RawUI.CursorPosition != promptEnd)
+                            // If the cursor is somewhere other than the very start of the prompt
+                            if (RawUI.CursorPosition != promptEnd)
 							{
 								// Remove the current character from _currentInputLine
 								_currentInputLine.Remove(insertPosition, 1);
@@ -689,7 +694,7 @@ namespace EasyConnect.Protocols.PowerShell
 									Write(" ");
 									RawUI.CursorPosition = currentPosition;
 
-									promptEnd = promptEnd.X > 1
+									promptEnd = promptEnd.X > 0
 										            ? new Coordinates(promptEnd.X - 1, promptEnd.Y)
 										            : new Coordinates(RawUI.BufferSize.Width, promptEnd.Y - 1);
 								}
@@ -782,20 +787,22 @@ namespace EasyConnect.Protocols.PowerShell
 
 							if (insertPosition < _currentInputLine.Length)
 							{
-								Coordinates currentPosition = RawUI.CursorPosition;
+								Coordinates currentPosition = GetCurrentCursorPosition(promptStart, insertPosition);
 								Write(_currentInputLine.ToString(insertPosition, _currentInputLine.Length - insertPosition));
 								RawUI.CursorPosition = currentPosition;
 							}
 
 							promptEnd = promptEnd.X < RawUI.BufferSize.Width
 								            ? new Coordinates(promptEnd.X + 1, promptEnd.Y)
-								            : new Coordinates(1, promptEnd.Y + 1);
+								            : new Coordinates(0, promptEnd.Y + 1);
 						}
 
 						else
 							inEscapeSequence = false;
 					}
 				}
+
+			    _currentInputLineMaxLength = Math.Max(_currentInputLineMaxLength, _currentInputLine.Length);
 
 				// If we're still waiting on a carriage return, sleep
 				if (!foundCarriageReturn)
@@ -804,6 +811,22 @@ namespace EasyConnect.Protocols.PowerShell
 
 			_inputSemaphore.Set();
 		}
+
+	    protected Coordinates GetCurrentCursorPosition(Coordinates promptStart, int insertPosition)
+	    {
+	        int promptYLength = (int) Math.Floor((_currentInputLineMaxLength + promptStart.X) / (decimal) RawUI.BufferSize.Width);
+
+	        Coordinates currentCursorPosition = new Coordinates(
+	            (promptStart.X + insertPosition) % RawUI.BufferSize.Width,
+	            promptStart.Y + (int)Math.Floor((promptStart.X + insertPosition) / (decimal)RawUI.BufferSize.Width));
+
+	        if (promptStart.Y + promptYLength > RawUI.BufferSize.Height - 1)
+	        {
+	            currentCursorPosition.Y -= promptYLength;
+	        }
+
+	        return currentCursorPosition;
+	    }
 
 		/// <summary>
 		/// Reads characters entered by the user until a newline (carriage return) is encountered and returns the characters as a secure string.
@@ -822,7 +845,7 @@ namespace EasyConnect.Protocols.PowerShell
 		{
 			// Replace newlines in the value with the ANSI newline control code
 			byte[] buffer = Encoding.UTF8.GetBytes(value.Replace("\n", "\x001BE"));
-			_terminal.TerminalPane.ConnectionTag.Receiver.DataArrived(buffer, 0, buffer.Length);
+			_connection.Receive(buffer, 0, buffer.Length);
 		}
 
 		/// <summary>
@@ -1099,5 +1122,11 @@ namespace EasyConnect.Protocols.PowerShell
 					WriteErrorLine("Invalid choice: " + data);
 			}
 		}
+
+	    public bool ShiftKeyDown
+	    {
+	        get;
+	        set;
+	    }
 	}
 }

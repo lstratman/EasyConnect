@@ -77,6 +77,7 @@
             this._nameHeader,
             this._hostHeader});
             this._historyListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._historyListView.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._historyListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this._historyListView.Location = new System.Drawing.Point(0, 0);
             this._historyListView.Name = "_historyListView";

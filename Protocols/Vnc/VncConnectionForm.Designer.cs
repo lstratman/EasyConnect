@@ -29,17 +29,15 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VncConnectionForm));
-            this._vncConnection = new AxViewerX.AxCSC_ViewerXControl();
-            ((System.ComponentModel.ISupportInitialize)(this._vncConnection)).BeginInit();
+            this._vncConnection = new RemoteViewing.Windows.Forms.VncControl();
             this.SuspendLayout();
             // 
             // _vncConnection
             // 
-            this._vncConnection.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._vncConnection.Dock = System.Windows.Forms.DockStyle.None;
             this._vncConnection.Enabled = true;
             this._vncConnection.Location = new System.Drawing.Point(0, 0);
             this._vncConnection.Name = "_vncConnection";
-            this._vncConnection.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("_vncConnection.OcxState")));
             this._vncConnection.Size = new System.Drawing.Size(786, 551);
             this._vncConnection.TabIndex = 0;
             // 
@@ -51,14 +49,13 @@
             this.Controls.Add(this._vncConnection);
             this.Name = "VncConnectionForm";
             this.Text = "VncConnectionForm";
-            ((System.ComponentModel.ISupportInitialize)(this._vncConnection)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private AxViewerX.AxCSC_ViewerXControl _vncConnection;
+        private RemoteViewing.Windows.Forms.VncControl _vncConnection;
 
     }
 }

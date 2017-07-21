@@ -67,15 +67,15 @@ namespace EasyConnect
 				{
 					Label formLabel = new Label
 						                  {
-											  BackColor = Color.FromArgb(249, 249, 249),
+											  BackColor = Color.FromArgb(242, 242, 242),
 							                  TextAlign = ContentAlignment.MiddleLeft,
 							                  Padding = new Padding(0, 0, 0, 0),
 							                  Size = new Size(233, 29),
 							                  Text = "       " + form.Text,
-							                  Font = new Font("Segoe UI", 8.0f),
+							                  Font = new Font("Segoe UI", 10.0f),
 							                  Margin = new Padding(0),
 							                  Location = new Point(0, 0),
-							                  ForeColor = Color.FromArgb(153, 153, 153),
+							                  ForeColor = Color.FromArgb(0, 0, 0),
 											  Cursor = Cursors.Hand
 						                  };
 
@@ -108,6 +108,7 @@ namespace EasyConnect
 
 			_containerPanel.Controls.Clear();
 			_containerPanel.Controls.Add(optionsForm);
+			_containerPanel.AutoScrollMinSize = optionsForm.Size;
 
 			optionsForm.Show();
 
@@ -115,13 +116,13 @@ namespace EasyConnect
 			foreach (Label label in _sidebarFlowLayoutPanel.Controls.Cast<Label>().Where(c => c.Name != "_optionsLabel"))
 			{
 				label.Image = null;
-				label.ForeColor = Color.FromArgb(153, 153, 153);
+				label.ForeColor = Color.FromArgb(0, 0, 0);
 				label.Cursor = Cursors.Hand;
 			}
 
 			navigationLabel.Image = Resources.SelectedOptionCategoryBackground;
 			navigationLabel.ImageAlign = ContentAlignment.MiddleCenter;
-			navigationLabel.ForeColor = Color.FromArgb(92, 97, 102);
+			navigationLabel.ForeColor = Color.FromArgb(66, 139, 202);
 			navigationLabel.Cursor = Cursors.Default;
 		}
 
