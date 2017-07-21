@@ -1,0 +1,251 @@
+﻿<root>
+  <resheader name="ResMimeType">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="Version">
+    <value>1.0.0.0</value>
+  </resheader>
+  <resheader name="Reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="Writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Common.OK">
+    <value>OK</value>
+  </data>
+  <data name="Common.Cancel">
+    <value>Cancel</value>
+  </data>
+  <data name="Enum.Language.English">
+    <value>English</value>
+  </data>
+  <data name="Enum.Language.Japanese">
+    <value>Japanese</value>
+  </data>
+  <data name="Form.AboutBox.Text">
+    <value>About Poderosa</value>
+  </data>
+  <data name="Form.AboutBox._creditButton">
+    <value>Credit...</value>
+  </data>
+  <data name="Menu.File">
+    <value>&amp;File</value>
+  </data>
+  <data name="Menu.NewWindow">
+    <value>&amp;New Window</value>
+  </data>
+  <data name="Menu.Quit">
+    <value>E&amp;xit</value>
+  </data>
+  <data name="Menu.Edit">
+    <value>&amp;Edit</value>
+  </data>
+  <data name="Menu.Copy">
+    <value>Cop&amp;y</value>
+  </data>
+  <data name="Menu.Paste">
+    <value>&amp;Paste</value>
+  </data>
+  <data name="Menu.CopyAsLook">
+    <value>Copy as you &amp;Look</value>
+  </data>
+  <data name="Menu.CopyToFile">
+    <value>Copy &amp;to File...</value>
+  </data>
+  <data name="Menu.PasteFromFile">
+    <value>Paste &amp;from File...</value>
+  </data>
+  <data name="Menu.SelectAll">
+    <value>Select &amp;All</value>
+  </data>
+  <data name="Menu.FreeSelectionMode">
+    <value>Free &amp;selection mode</value>
+  </data>
+  <data name="Menu.AutoSelectionMode">
+    <value>A&amp;uto selection mode</value>
+  </data>
+  <data name="Menu.Console">
+    <value>&amp;Console</value>
+  </data>
+  <data name="Menu.ConsoleClose">
+    <value>&amp;Close</value>
+  </data>
+  <data name="Menu.Tool">
+    <value>&amp;Tools</value>
+  </data>
+  <data name="Menu.KeyGen">
+    <value>SSH &amp;key generation wizard...</value>
+  </data>
+  <data name="Menu.ChangePassphrase">
+    <value>Change &amp;passphrase of private key...</value>
+  </data>
+  <data name="Menu.LaunchPortforwarding">
+    <value>Start port&amp;forwarding tool...</value>
+  </data>
+  <data name="Menu.Macro">
+    <value>&amp;Macro</value>
+  </data>
+  <data name="Menu.Option">
+    <value>&amp;Options...</value>
+  </data>
+  <data name="Menu.MacroConfig">
+    <value>&amp;Environment...</value>
+  </data>
+  <data name="Menu.StopMacro">
+    <value>&amp;Stop executing macro</value>
+  </data>
+  <data name="Menu.Window">
+    <value>&amp;Window</value>
+  </data>
+  <data name="Menu.DivideFrameHorizontal">
+    <value>Split &amp;Horizontally</value>
+  </data>
+  <data name="Menu.DivideFrameVertical">
+    <value>Split &amp;Vertically</value>
+  </data>
+  <data name="Menu.UnifyFrame">
+    <value>&amp;Unify</value>
+  </data>
+  <data name="Menu.UnifyAllFrame">
+    <value>Reset &amp;all splits</value>
+  </data>
+  <data name="Menu.CloseAll">
+    <value>&amp;Close All</value>
+  </data>
+  <data name="Menu.CloseAllDisconnected">
+    <value>Close All &amp;Disconnected</value>
+  </data>
+  <data name="Menu.SetTabRowCount">
+    <value>Number&amp; of Tab Rows</value>
+  </data>
+  <data name="Menu.Plugin">
+    <value>&amp;Plug-in</value>
+  </data>
+  <data name="Menu.PluginList">
+    <value>&amp;Plug-in list...</value>
+  </data>
+  <data name="Menu.ExtensionPointList">
+    <value>&amp;Extension point list...</value>
+  </data>
+  <data name="Menu.Help">
+    <value>&amp;Help</value>
+  </data>
+  <data name="Menu.AboutBox">
+    <value>&amp;About Poderosa...</value>
+  </data>
+  <data name="Menu.PoderosaWeb">
+    <value>Open Poderosa &amp;web site...</value>
+  </data>
+  <data name="CommandCategory.Application">
+    <value>Application</value>
+  </data>
+  <data name="CommandCategory.Edit">
+    <value>Edit</value>
+  </data>
+  <data name="CommandCategory.Window">
+    <value>Window</value>
+  </data>
+  <data name="CommandCategory.Dialog">
+    <value>Dialog</value>
+  </data>
+  <data name="Command.NewWindow">
+    <value>Open a new window</value>
+  </data>
+  <data name="Command.Quit">
+    <value>Quit Poderosa</value>
+  </data>
+  <data name="Command.Copy">
+    <value>Copy</value>
+  </data>
+  <data name="Command.Paste">
+    <value>Paste</value>
+  </data>
+  <data name="Command.CloseDocument">
+    <value>Close</value>
+  </data>
+  <data name="Command.CloseAll">
+    <value>Close All</value>
+  </data>
+  <data name="Command.SplitHorizontal">
+    <value>Make a horizontal split</value>
+  </data>
+  <data name="Command.SplitVertical">
+    <value>Make a vertical split</value>
+  </data>
+  <data name="Command.SplitUnify">
+    <value>Unify split</value>
+  </data>
+  <data name="Command.UnifyAll">
+    <value>Unify all splits</value>
+  </data>
+  <data name="Command.NextTab">
+    <value>Next tab</value>
+  </data>
+  <data name="Command.PreviousTab">
+    <value>Previous tab</value>
+  </data>
+  <data name="Command.PluginList">
+    <value>Show plug-in list</value>
+  </data>
+  <data name="Command.ExtensionPointList">
+    <value>Show extension point list</value>
+  </data>
+  <data name="Command.AboutBox">
+    <value>Version information</value>
+  </data>
+  <data name="Command.PoderosaWeb">
+    <value>Open Poderosa web site</value>
+  </data>
+  <data name="Form.PluginList.Text">
+    <value>Plug-in list</value>
+  </data>
+  <data name="Form.PluginList._enableHeader">
+    <value>Enabled</value>
+  </data>
+  <data name="Form.PluginList._versionHeader">
+    <value>Version</value>
+  </data>
+  <data name="Form.PluginList._venderHeader">
+    <value>Vender</value>
+  </data>
+  <data name="Form.ExtensionPointList.Text">
+    <value>Extension point list</value>
+  </data>
+  <data name="Form.ExtensionPointList._ownerHeader">
+    <value>Owner plug-in ID</value>
+  </data>
+  <data name="Form.ExtensionPointList._countHeader">
+    <value>Number of extension point.</value>
+  </data>
+  <data name="Enum.ImageStyle.Center">
+    <value>Center</value>
+  </data>
+  <data name="Enum.ImageStyle.TopLeft">
+    <value>UpperLeft</value>
+  </data>
+  <data name="Enum.ImageStyle.TopRight">
+    <value>UpperRight</value>
+  </data>
+  <data name="Enum.ImageStyle.BottomLeft">
+    <value>BottomLeft</value>
+  </data>
+  <data name="Enum.ImageStyle.BottomRight">
+    <value>LowerRight</value>
+  </data>
+  <data name="Enum.ImageStyle.Scaled">
+    <value>Scaled</value>
+  </data>
+  <data name="Enum.ImageStyle.HorizontalFit">
+    <value>Horizontal Fit</value>
+  </data>
+  <data name="Enum.ImageStyle.VerticalFit">
+    <value>Vertical Fit</value>
+  </data>
+  <data name="Message.ValueMustBePositive">
+    <value>The values must be positive</value>
+  </data>
+  <data name="Message.ValueMustBeContainedRange">
+    <value>The value must be between {0} and {1}.</value>
+  </data>
+</root>

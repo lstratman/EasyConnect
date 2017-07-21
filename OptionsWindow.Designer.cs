@@ -1,4 +1,5 @@
-﻿using SecurePasswordTextBox;
+﻿using System.Drawing;
+using SecurePasswordTextBox;
 
 namespace EasyConnect
 {
@@ -56,7 +57,7 @@ namespace EasyConnect
 			// 
 			this._sidebarFlowLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-			this._sidebarFlowLayoutPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
+			this._sidebarFlowLayoutPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
 			this._sidebarFlowLayoutPanel.Controls.Add(this._optionsLabel);
 			this._sidebarFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
 			this._sidebarFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);

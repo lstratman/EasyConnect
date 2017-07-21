@@ -7,7 +7,7 @@ using System.Management.Automation.Runspaces;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using WalburySoftware;
+using Poderosa.Terminal;
 
 namespace EasyConnect.Protocols.PowerShell
 {
@@ -55,11 +55,11 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <param name="progressBar">Progress bar UI element to update when writing progress records.</param>
 		/// <param name="progressLabel">Label UI element to update when writing progress records.</param>
 		public PowerShellHost(
-			PowerShellConnectionForm parentForm, TerminalControl terminal, Func<string, Collection<PSObject>> executeHelper, ToolStripProgressBar progressBar,
+			PowerShellConnectionForm parentForm, TerminalControl terminal, StreamConnection connection, Func<string, Collection<PSObject>> executeHelper, ToolStripProgressBar progressBar,
 			ToolStripStatusLabel progressLabel)
 		{
 			_parentForm = parentForm;
-			_powerShellHostUi = new PowerShellHostUi(terminal, executeHelper, progressBar, progressLabel);
+			_powerShellHostUi = new PowerShellHostUi(terminal, connection, executeHelper, progressBar, progressLabel);
 		}
 
 		/// <summary>

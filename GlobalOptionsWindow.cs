@@ -60,6 +60,11 @@ namespace EasyConnect
 
 			_parentTabs.Options.AutoHideToolbar = _autoHideCheckbox.Checked;
 			_parentTabs.Options.EncryptionType = (EncryptionType) Enum.Parse(typeof (EncryptionType), ((ListItem) _encryptionTypeDropdown.SelectedItem).Value);
+			_parentTabs.Options.EnableAeroPeek = _enableAeroPeekCheckbox.Checked;
+
+			if (_parentTabs.AeroPeekEnabled != _enableAeroPeekCheckbox.Checked)
+				_parentTabs.AeroPeekEnabled = _enableAeroPeekCheckbox.Checked;
+			
 			_parentTabs.Options.Save();
 		}
 

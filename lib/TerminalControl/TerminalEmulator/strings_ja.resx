@@ -1,0 +1,376 @@
+﻿<root>
+  <resheader name="ResMimeType">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="Version">
+    <value>1.0.0.0</value>
+  </resheader>
+  <resheader name="Reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="Writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Common.OK">
+    <value>OK</value>
+  </data>
+  <data name="Common.Cancel">
+    <value>キャンセル</value>
+  </data>
+  <data name="Common.MessageBoxTitle">
+    <value>Poderosa</value>
+  </data>
+  <data name="Message.GUtil.InternalError">
+    <value>内部エラーです。{0}を参照してください。
+{1}</value>
+  </data>
+  <data name="Message.CheckLogFileName.EmptyPath">
+    <value>パスが指定されていません。</value>
+  </data>
+  <data name="Message.CheckLogFileName.NotWritable">
+    <value>{0}に書き込みできません。</value>
+  </data>
+  <data name="Message.CheckLogFileName.BadPathName">
+    <value>{0}は正しいパス名ではありません。</value>
+  </data>
+  <data name="Message.CheckLogFileName.AlreadyExist">
+    <value>ファイル {0} は既に存在します。</value>
+  </data>
+  <data name="Util.CheckLogFileName.Caption">
+    <value>ログファイル</value>
+  </data>
+  <data name="Util.CheckLogFileName.OverWrite">
+    <value>上書きする(&amp;O)</value>
+  </data>
+  <data name="Util.CheckLogFileName.Append">
+    <value>追記する(&amp;A)</value>
+  </data>
+  <data name="Util.CheckLogFileName.Cancel">
+    <value>キャンセル(&amp;C)</value>
+  </data>
+  <data name="Message.AbstractTerminal.UnsupportedCharSet">
+    <value>未サポートのキャラクタセット {0} が検出されました。画面表示が乱れるかもしれません。</value>
+  </data>
+  <data name="Message.AbstractTerminal.UnexpectedChar">
+    <value>現在のエンコーディング {0} に合わないデータを受信しました。エンコーディング設定を確認してください。</value>
+  </data>
+  <data name="Message.EscapesequenceTerminal.UnsupportedSequence">
+    <value>未サポートのエスケープシーケンスを見つけました。
+</value>
+  </data>
+  <data name="Message.ConnectionCommandTarget.CloseError">
+    <value>接続を閉じるときにエラーが発生しました。</value>
+  </data>
+  <data name="Message.ConnectionCommandTarget.AreYouThereCondition">
+    <value>AreYouThereを実行できるのはTelnetだけです。</value>
+  </data>
+  <data name="Message.ConnectionCommandTarget.BreakCondition">
+    <value>Break送信を実行できるのはシリアル,Telnet,SSH2です。</value>
+  </data>
+  <data name="Message.ConnectionCommandTarget.SendError">
+    <value>送信に失敗しました。</value>
+  </data>
+  <data name="Caption.ConnectionCommandTarget.DuringPaste">
+    <value>貼り付け中</value>
+  </data>
+  <data name="Message.TerminalControl.FailedToSend">
+    <value>送信に失敗しました。</value>
+  </data>
+  <data name="Enum.WarningOption.Ignore">
+    <value>無視</value>
+  </data>
+  <data name="Enum.WarningOption.StatusBar">
+    <value>ステータスバーに表示</value>
+  </data>
+  <data name="Enum.WarningOption.MessageBox">
+    <value>メッセージボックスを表示</value>
+  </data>
+  <data name="Enum.DisconnectNotification.MessageBox">
+    <value>メッセージボックスを表示</value>
+  </data>
+  <data name="Enum.DisconnectNotification.StatusBar">
+    <value>ステータスバーに表示</value>
+  </data>
+  <data name="Enum.AltKeyAction.Menu">
+    <value>メニューとショートカット</value>
+  </data>
+  <data name="Enum.AltKeyAction.ESC">
+    <value>ESC &lt;x&gt;</value>
+  </data>
+  <data name="Enum.AltKeyAction.Meta">
+    <value>Metaキー</value>
+  </data>
+  <data name="Enum.MouseButtonAction.None">
+    <value>何もしない</value>
+  </data>
+  <data name="Enum.MouseButtonAction.ContextMenu">
+    <value>コンテキストメニュー</value>
+  </data>
+  <data name="Enum.MouseButtonAction.Paste">
+    <value>貼り付け</value>
+  </data>
+  <data name="Enum.KeyboardStyle.None">
+    <value>なし</value>
+  </data>
+  <data name="Enum.KeyboardStyle.Default">
+    <value>英語キーボード用</value>
+  </data>
+  <data name="Enum.KeyboardStyle.Japanese">
+    <value>日本語キーボード用</value>
+  </data>
+  <data name="Enum.KeyboardStyle.Chinese">
+    <value>中国語キーボード用</value>
+  </data>
+  <data name="CommandCategory.Terminal">
+    <value>ターミナル</value>
+  </data>
+  <data name="CommandCategory.TerminalEdit">
+    <value>編集-ターミナル</value>
+  </data>
+  <data name="CommandCategory.Encoding">
+    <value>エンコーディング</value>
+  </data>
+  <data name="Command.CopyAsLook">
+    <value>表示イメージをコピー</value>
+  </data>
+  <data name="Command.CopyToFile">
+    <value>ファイルへコピー</value>
+  </data>
+  <data name="Command.PasteFromFile">
+    <value>ファイルから貼り付け</value>
+  </data>
+  <data name="Command.ClearScreen">
+    <value>スクリーンのクリア</value>
+  </data>
+  <data name="Command.ClearBuffer">
+    <value>バッファのクリア</value>
+  </data>
+  <data name="Command.SelectAll">
+    <value>すべて選択</value>
+  </data>
+  <data name="Command.ToggleLocalEcho">
+    <value>ローカルエコーの切り替え</value>
+  </data>
+  <data name="Command.ToggleCharTriggerIntelliSense">
+    <value>文字入力に伴うシェル補完の切り替え</value>
+  </data>
+  <data name="Command.ResetTerminal">
+    <value>ターミナルのリセット</value>
+  </data>
+  <data name="Command.SendBreak">
+    <value>ブレイク信号送信</value>
+  </data>
+  <data name="Command.AreYouThere">
+    <value>AreYouThereの送信</value>
+  </data>
+  <data name="Command.ReceiveLineBreak">
+    <value>受信時の改行設定</value>
+  </data>
+  <data name="Command.IntelliSense">
+    <value>シェル補完</value>
+  </data>
+  <data name="Command.Encoding.ISO8859_1">
+    <value>iso-8859-1</value>
+  </data>
+  <data name="Command.Encoding.UTF8">
+    <value>utf-8 (cjk)</value>
+  </data>
+  <data name="Command.Encoding.UTF8_Latin">
+    <value>utf-8 (latin)</value>
+  </data>
+  <data name="Command.Encoding.EUC_JP">
+    <value>euc-jp</value>
+  </data>
+  <data name="Command.Encoding.SHIFT_JIS">
+    <value>shift-jis</value>
+  </data>
+  <data name="Command.Encoding.GB2312">
+    <value>gb2312</value>
+  </data>
+  <data name="Command.Encoding.BIG5">
+    <value>big5</value>
+  </data>
+  <data name="Command.Encoding.EUC_CN">
+    <value>euc-cn</value>
+  </data>
+  <data name="Command.Encoding.EUC_KR">
+    <value>euc-kr</value>
+  </data>
+  <data name="Command.Encoding.OEM850">
+    <value>oem850</value>
+  </data>
+  <data name="Caption.SelectPasteFile">
+    <value>ペーストするファイルの選択</value>
+  </data>
+  <data name="Menu.PopupCommandResult">
+    <value>コマンド結果をポップアップ(&amp;P)</value>
+  </data>
+  <data name="Menu.CopyCommandResult">
+    <value>コマンド結果をコピー(&amp;C)</value>
+  </data>
+  <data name="Menu.Copy">
+    <value>コピー(&amp;C)</value>
+  </data>
+  <data name="Menu.CopyAsLook">
+    <value>表示イメージをコピー(&amp;L)</value>
+  </data>
+  <data name="Menu.CopyToFile">
+    <value>ファイルへコピー(&amp;T)...</value>
+  </data>
+  <data name="Menu.Paste">
+    <value>貼り付け(&amp;P)</value>
+  </data>
+  <data name="Menu.PasteFromFile">
+    <value>ファイルから貼り付け(&amp;F)...</value>
+  </data>
+  <data name="Menu.ClearScreen">
+    <value>スクリーンのクリア(&amp;C)</value>
+  </data>
+  <data name="Menu.ClearBuffer">
+    <value>バッファのクリア(&amp;B)</value>
+  </data>
+  <data name="Menu.SelectAll">
+    <value>すべて選択(&amp;A)</value>
+  </data>
+  <data name="Menu.NewLine">
+    <value>改行の送信(&amp;N)</value>
+  </data>
+  <data name="Menu.Encoding">
+    <value>エンコーディング(&amp;E)</value>
+  </data>
+  <data name="Menu.LineFeedRule">
+    <value>受信時の改行設定(&amp;B)...</value>
+  </data>
+  <data name="Menu.LocalEcho">
+    <value>ローカルエコー(&amp;O)</value>
+  </data>
+  <data name="Menu.SendSpecial">
+    <value>特殊(&amp;S)</value>
+  </data>
+  <data name="Menu.SendBreak">
+    <value>Break信号送信(&amp;B)</value>
+  </data>
+  <data name="Menu.AreYouThere">
+    <value>Are You There送信(&amp;A)</value>
+  </data>
+  <data name="Menu.SerialConfig">
+    <value>シリアルポート再設定(&amp;S)...</value>
+  </data>
+  <data name="Menu.ResetTerminal">
+    <value>ターミナルのリセット(&amp;R)</value>
+  </data>
+  <data name="Menu.SuspendLog">
+    <value>ログの一時停止(&amp;U)</value>
+  </data>
+  <data name="Menu.CommentLog">
+    <value>ログにコメントをつける(&amp;G)...</value>
+  </data>
+  <data name="Menu.ChangeLog">
+    <value>ログの設定(&amp;L)...</value>
+  </data>
+  <data name="Menu.ServerInfo">
+    <value>ホスト情報(&amp;H)...</value>
+  </data>
+  <data name="Menu.ToggleCharTriggerIntelliSense">
+    <value>文字入力でシェル補完(&amp;H)</value>
+  </data>
+  <data name="Menu.SelectIntelliSenseScheme">
+    <value>シェルスキーム(&amp;C)</value>
+  </data>
+  <data name="Menu.DocumentClose">
+    <value>閉じる(&amp;C)</value>
+  </data>
+  <data name="Form.ToolBar._encodingLabel">
+    <value>エンコーディング</value>
+  </data>
+  <data name="Form.ToolBar._newLineLabel">
+    <value>改行</value>
+  </data>
+  <data name="Caption.CurrentShellScheme">
+    <value>現在のシェルスキーム</value>
+  </data>
+  <data name="Enum.AuthType.Password">
+    <value>パスワード</value>
+  </data>
+  <data name="Enum.AuthType.PublicKey">
+    <value>公開鍵</value>
+  </data>
+  <data name="Enum.AuthType.KeyboardInteractive">
+    <value>Keyboard Interactive</value>
+  </data>
+  <data name="Enum.EncodingType.ISO8859_1">
+    <value>iso-8859-1</value>
+  </data>
+  <data name="Enum.EncodingType.UTF8">
+    <value>utf-8 (cjk)</value>
+  </data>
+  <data name="Enum.EncodingType.UTF8_Latin">
+    <value>utf-8 (latin)</value>
+  </data>
+  <data name="Enum.EncodingType.EUC_JP">
+    <value>euc-jp</value>
+  </data>
+  <data name="Enum.EncodingType.SHIFT_JIS">
+    <value>shift-jis</value>
+  </data>
+  <data name="Enum.EncodingType.BIG5">
+    <value>big5</value>
+  </data>
+  <data name="Enum.EncodingType.EUC_CN">
+    <value>euc-cn</value>
+  </data>
+  <data name="Enum.EncodingType.EUC_KR">
+    <value>euc-kr</value>
+  </data>
+  <data name="Enum.EncodingType.GB2312">
+    <value>gb2312</value>
+  </data>
+  <data name="Enum.EncodingType.OEM850">
+    <value>oem850</value>
+  </data>
+  <data name="Enum.LogType.None">
+    <value>なし</value>
+  </data>
+  <data name="Enum.LogType.Default">
+    <value>標準</value>
+  </data>
+  <data name="Enum.LogType.PlainTextWithTimestamp">
+    <value>標準(タイムスタンプ付)</value>
+  </data>
+  <data name="Enum.LogType.Binary">
+    <value>バイナリ</value>
+  </data>
+  <data name="Enum.LogType.Xml">
+    <value>デバッグ</value>
+  </data>
+  <data name="Enum.NewLine.CR">
+    <value>CR</value>
+  </data>
+  <data name="Enum.NewLine.LF">
+    <value>LF</value>
+  </data>
+  <data name="Enum.NewLine.CRLF">
+    <value>CR+LF</value>
+  </data>
+  <data name="Enum.TerminalType.KTerm">
+    <value>kterm</value>
+  </data>
+  <data name="Enum.TerminalType.XTerm">
+    <value>xterm</value>
+  </data>
+  <data name="Enum.TerminalType.VT100">
+    <value>vt100</value>
+  </data>
+  <data name="Message.TCPTerminalParam.PropCannotBeSet">
+    <value>このプロパティは設定できません。</value>
+  </data>
+  <data name="Mesage.SSHTerminalParam.MethodSetError">
+    <value>SSH1またはSSH2を指定してください。</value>
+  </data>
+  <data name="Form.WarningWithDisableOption.Text">
+    <value>注意</value>
+  </data>
+  <data name="Form.WarningWithDisableOption._disableCheckBox">
+    <value>次回からこのメッセージを表示しない(&amp;N)</value>
+  </data>
+</root>

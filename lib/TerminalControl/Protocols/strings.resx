@@ -1,0 +1,145 @@
+﻿<root>
+  <resheader name="ResMimeType">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="Version">
+    <value>1.0.0.0</value>
+  </resheader>
+  <resheader name="Reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="Writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Common.OK">
+    <value>OK</value>
+  </data>
+  <data name="Common.Cancel">
+    <value>Cancel</value>
+  </data>
+  <data name="Message.SSHConnector.Cancelled">
+    <value>Abort the connection.</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._homeDirectoryLabel">
+    <value>&amp;Home directory</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._lMessage">
+    <value>If you cannot start the shell, please re-compile CygTerm.</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._advancedOptionCheck">
+    <value>&amp;Advanced configuration</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._shellLabel">
+    <value>&amp;Shell</value>
+  </data>
+  <data name="Form.CygwinLoginDialog.TextCygwin">
+    <value>Connection to cygwin</value>
+  </data>
+  <data name="Form.CygwinLoginDialog.TextSFU">
+    <value>Connection to SFU</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._logTypeLabel">
+    <value>Log &amp;type</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._logFileLabel">
+    <value>&amp;Log file</value>
+  </data>
+  <data name="Message.CygwinLoginDialog.EmptyHomeDirectory">
+    <value>The home directory is empty.</value>
+  </data>
+  <data name="Message.CygwinLoginDialog.EmptyShell">
+    <value>The shell is empty.</value>
+  </data>
+  <data name="Caption.CygwinLoginDialog.ConnectingCygwin">
+    <value>Connection to cygwin - Connecting... (Ctrl+C to Stop)</value>
+  </data>
+  <data name="Caption.CygwinLoginDialog.ConnectingSFU">
+    <value>Connection to SFU - Connecting... (Ctrl+C to Stop)</value>
+  </data>
+  <data name="Message.CygwinLoginDialog.ConnectionError">
+    <value>Connection error</value>
+  </data>
+  <data name="Message.AddressNotResolved">
+    <value>The IP address of the host {0} was not obtained.</value>
+  </data>
+  <data name="Message.FailedToConnectPort">
+    <value>Failed to connect the port {1} of the host {0}.</value>
+  </data>
+  <data name="Message.FailedToConnectAddress">
+    <value>Failed to connect the host {0}.</value>
+  </data>
+  <data name="Message.ConnectionTimedOut">
+    <value>Timed out to connect.</value>
+  </data>
+  <data name="Message.CygwinUtil.KeyNotFound">
+    <value>Cygwin registry key is not found. Cygwin may be not installed correctly.</value>
+  </data>
+  <data name="Message.SFUUtil.KeyNotFound">
+    <value>The registry key {0} is not found. Services for Unix may be not installed correctly.</value>
+  </data>
+  <data name="Message.CygwinUtil.CygtermExeNotFound">
+    <value>cygterm.exe cannot be found.</value>
+  </data>
+  <data name="Message.CygwinUtil.FailedToRunCygterm">
+    <value>Failed to run cygterm</value>
+  </data>
+  <data name="Message.CygwinUtil.FailedToConnect">
+    <value>An error occurred while connecting to cygwin.
+</value>
+  </data>
+  <data name="Message.SFUUtil.FailedToConnect">
+    <value>An error occurred while connecting to Services for Unix.
+</value>
+  </data>
+  <data name="Message.HostKeyChecker.AskHostKeyRegister">
+    <value>The public key of the SSH server is not cached in ssh_known_hosts. Do you wish to register it and continue?</value>
+  </data>
+  <data name="Message.HostKeyChecker.AskHostKeyRenew">
+    <value>The public key of the SSH server differs from the old key in ssh_known_hosts. Do you wish to renew it and continue?</value>
+  </data>
+  <data name="Message.SSHSocket.FailedToStartShell">
+    <value>Failed to start the shell.</value>
+  </data>
+  <data name="Message.SSHSocket.AuthenticationFailed">
+    <value>Authentication failed.</value>
+  </data>
+  <data name="Message.Telnet.FailedToSendTerminalType">
+    <value>Failed to specify terminal type.</value>
+  </data>
+  <data name="Message.Telnet.FailedToSendWidnowSize">
+    <value>Failed to specify window size.</value>
+  </data>
+  <data name="Message.Telnet.FailedToSendSuppressGoAhead">
+    <value>Failed to specify SuppressGoAhead option.</value>
+  </data>
+  <data name="Caption.TCPTerminalConnection.UsingSOCKS">
+    <value>(Using SOCKS)</value>
+  </data>
+  <data name="Message.SSHTerminalconnection.BreakError">
+    <value>Failed to send break signal. Please check whether the SSH server supports break signals.</value>
+  </data>
+  <data name="Message.SSHTerminalConnection.ReproduceErrorOnSSH1">
+    <value>The "Memory Passphrase until the Application Quits" option in the SSH tab of the option dialog must be set when you reproduce SSH1 connections.</value>
+  </data>
+  <data name="Message.SSHTerminalConnection.ReproduceErrorOnSSH2">
+    <value>The "Memory Passphrase until the Application Quits" option in the SSH tab of the option dialog must be set when you reproduce closed SSH2 connections.</value>
+  </data>
+  <data name="Message.SerialTerminalConnection.ReproduceError">
+    <value>Serial connections can not be reproduced.</value>
+  </data>
+  <data name="Message.SerialTerminalConnection.ConfigError">
+    <value>Failed to configure serial port.</value>
+  </data>
+  <data name="Message.SSHTerminalConnection.CloseError">
+    <value>An error occurred while closing the connection.</value>
+  </data>
+  <data name="Enum.IPVersionPriority.Both">
+    <value>No restriction</value>
+  </data>
+  <data name="Enum.IPVersionPriority.V4Only">
+    <value>Use IPv4 Only</value>
+  </data>
+  <data name="Enum.IPVersionPriority.V6Only">
+    <value>Use IPv6 Only</value>
+  </data>
+</root>

@@ -30,7 +30,7 @@ namespace EasyConnect.Protocols.Ssh
         /// </summary>
         private void InitializeComponent()
         {
-			this._terminal = new Poderosa.TerminalControl.SshTerminalControl();
+			this._terminal = new Poderosa.Terminal.TerminalControl();
             this.SuspendLayout();
             // 
             // _terminal
@@ -38,16 +38,11 @@ namespace EasyConnect.Protocols.Ssh
             this._terminal.Dock = DockStyle.Fill;
             this._terminal.BackColor = System.Drawing.Color.Black;
             this._terminal.ForeColor = System.Drawing.Color.Silver;
-            this._terminal.HostName = "";
-            this._terminal.IdentityFile = "";
             this._terminal.Location = new System.Drawing.Point(0, 0);
-	        this._terminal.SshProtocol = Poderosa.TerminalControl.SshProtocol.SSH2;
             this._terminal.Name = "_terminal";
             this._terminal.Size = new System.Drawing.Size(286, 266);
             this._terminal.TabIndex = 0;
             this._terminal.Text = "terminalControl1";
-            this._terminal.Username = "";
-	        this._terminal.TerminalType = Poderosa.TerminalControl.TerminalType.VT100;
             // 
             // SshConnectionForm
             // 
@@ -63,6 +58,6 @@ namespace EasyConnect.Protocols.Ssh
 
         #endregion
 
-        private Poderosa.TerminalControl.SshTerminalControl _terminal;
+        private Poderosa.Terminal.TerminalControl _terminal;
     }
 }

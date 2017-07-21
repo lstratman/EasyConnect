@@ -1,0 +1,145 @@
+﻿<root>
+  <resheader name="ResMimeType">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="Version">
+    <value>1.0.0.0</value>
+  </resheader>
+  <resheader name="Reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="Writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Common.OK">
+    <value>OK</value>
+  </data>
+  <data name="Common.Cancel">
+    <value>キャンセル</value>
+  </data>
+  <data name="Message.SSHConnector.Cancelled">
+    <value>接続を中止しました。</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._homeDirectoryLabel">
+    <value>ホームディレクトリ(&amp;H)</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._lMessage">
+    <value>シェルがうまく起動できないときはCygTermをコンパイルしなおしてください。</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._advancedOptionCheck">
+    <value>高度な設定(&amp;A)</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._shellLabel">
+    <value>シェル(&amp;S)</value>
+  </data>
+  <data name="Form.CygwinLoginDialog.TextCygwin">
+    <value>cygwinへの接続</value>
+  </data>
+  <data name="Form.CygwinLoginDialog.TextSFU">
+    <value>SFUへの接続</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._logTypeLabel">
+    <value>ログの種別(&amp;T)</value>
+  </data>
+  <data name="Form.CygwinLoginDialog._logFileLabel">
+    <value>ログの保存先(&amp;L)</value>
+  </data>
+  <data name="Message.CygwinLoginDialog.EmptyHomeDirectory">
+    <value>ホームディレクトリが入力されていません。</value>
+  </data>
+  <data name="Message.CygwinLoginDialog.EmptyShell">
+    <value>シェルが入力されていません。</value>
+  </data>
+  <data name="Caption.CygwinLoginDialog.ConnectingCygwin">
+    <value>cygwinへの接続 - 接続中 (Ctrl+Cで中止します)</value>
+  </data>
+  <data name="Caption.CygwinLoginDialog.ConnectingSFU">
+    <value>SFUへの接続 - 接続中 (Ctrl+Cで中止します)</value>
+  </data>
+  <data name="Message.CygwinLoginDialog.ConnectionError">
+    <value>接続エラー</value>
+  </data>
+  <data name="Message.AddressNotResolved">
+    <value>ホスト名 {0} のIPアドレスが取得できませんでした。</value>
+  </data>
+  <data name="Message.FailedToConnectPort">
+    <value>{0} のポート {1} への接続ができませんでした。</value>
+  </data>
+  <data name="Message.FailedToConnectAddress">
+    <value>{0} への接続ができませんでした。</value>
+  </data>
+  <data name="Message.ConnectionTimedOut">
+    <value>接続はタイムアウトしました</value>
+  </data>
+  <data name="Message.CygwinUtil.KeyNotFound">
+    <value>Cygwinのレジストリキーがみつかりません。Cygwinが正しくインストールされていないと思われます。</value>
+  </data>
+  <data name="Message.SFUUtil.KeyNotFound">
+    <value>レジストリキー{0}がみつかりません。Services for Unixが正しくインストールされていないと思われます。</value>
+  </data>
+  <data name="Message.CygwinUtil.CygtermExeNotFound">
+    <value>cygterm.exeが見つかりません</value>
+  </data>
+  <data name="Message.CygwinUtil.FailedToRunCygterm">
+    <value>cygtermの実行に失敗しました</value>
+  </data>
+  <data name="Message.CygwinUtil.FailedToConnect">
+    <value>cygwinとの接続中にエラーが発生しました。
+</value>
+  </data>
+  <data name="Message.SFUUtil.FailedToConnect">
+    <value>Services for Unixとの接続中にエラーが発生しました。
+</value>
+  </data>
+  <data name="Message.HostKeyChecker.AskHostKeyRegister">
+    <value>SSHサーバの公開鍵はssh_known_hostsに登録されていません。登録して続行しますか？</value>
+  </data>
+  <data name="Message.HostKeyChecker.AskHostKeyRenew">
+    <value>SSHサーバの公開鍵はssh_known_hostsに登録されているものと異なります。更新して続行しますか？</value>
+  </data>
+  <data name="Message.SSHSocket.FailedToStartShell">
+    <value>シェルの開始に失敗しました。</value>
+  </data>
+  <data name="Message.SSHSocket.AuthenticationFailed">
+    <value>認証に失敗しました。</value>
+  </data>
+  <data name="Message.Telnet.FailedToSendTerminalType">
+    <value>ターミナルタイプの指定に失敗しました。</value>
+  </data>
+  <data name="Message.Telnet.FailedToSendWidnowSize">
+    <value>ウィンドウサイズの指定に失敗しました。</value>
+  </data>
+  <data name="Message.Telnet.FailedToSendSuppressGoAhead">
+    <value>SuppressGoAheadの指定に失敗しました。</value>
+  </data>
+  <data name="Caption.TCPTerminalConnection.UsingSOCKS">
+    <value>(SOCKSを使用)</value>
+  </data>
+  <data name="Message.SSHTerminalconnection.BreakError">
+    <value>Break信号の送信ができませんでした。SSHサーバがBreak信号をサポートしているか確認してください。</value>
+  </data>
+  <data name="Message.SSHTerminalConnection.ReproduceErrorOnSSH1">
+    <value>SSH1で接続を複製するときはオプションのSSHタブでパスフレーズを記憶するようにしていないといけません。</value>
+  </data>
+  <data name="Message.SSHTerminalConnection.ReproduceErrorOnSSH2">
+    <value>SSH2で一度閉じた接続を複製するときはオプションのSSHタブでパスフレーズを記憶するようにしていないといけません。</value>
+  </data>
+  <data name="Message.SerialTerminalConnection.ReproduceError">
+    <value>シリアル接続の複製はできません。</value>
+  </data>
+  <data name="Message.SerialTerminalConnection.ConfigError">
+    <value>シリアルポートの設定に失敗しました。</value>
+  </data>
+  <data name="Message.SSHTerminalConnection.CloseError">
+    <value>接続を閉じるときにエラーが発生しました。</value>
+  </data>
+  <data name="Enum.IPVersionPriority.Both">
+    <value>制限なし</value>
+  </data>
+  <data name="Enum.IPVersionPriority.V4Only">
+    <value>IPv4のみ使用</value>
+  </data>
+  <data name="Enum.IPVersionPriority.V6Only">
+    <value>IPv6のみ使用</value>
+  </data>
+</root>

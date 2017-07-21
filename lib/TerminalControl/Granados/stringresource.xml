@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+$Id: stringresource.xml,v 1.4 2011/05/01 15:28:52 kzmi Exp $
+-->
+<string-resource>
+  <record name="ConnectionClosed">
+    <en>Connection closed.</en>
+    <ja>接続が切断しました。</ja>
+  </record>
+  <record name="ServerDoesntRespond">
+    <en>Server doesn't respond.</en>
+    <ja>サーバから応答がありません。</ja>
+  </record>
+  <record name="RequestedTaskIsAlreadyRunning">
+    <en>The requested task is already running.</en>
+    <ja>要求されたタスクは実行中です。</ja>
+  </record>
+  <record name="HostKeyDenied">
+    <en>Host key has been denied.</en>
+    <ja>ホスト鍵を拒否しました。</ja>
+  </record>
+  <record name="AlgorithmNegotiationFailed">
+    <en>Algorithm negotiation failed.</en>
+    <ja>アルゴリズムネゴシエーションに失敗しました。</ja>
+  </record>
+  <record name="HostKeyAlgorithmMismatch">
+    <en>Host key algorithm mismatch.</en>
+    <ja>ホスト鍵のアルゴリズムが一致ません。</ja>
+  </record>
+  <record name="UnsupportedHostKeyAlgorithm">
+    <en>Unsupported host key algorithm.</en>
+    <ja>サポートしていないホスト鍵のアルゴリズムです。</ja>
+  </record>
+  <record name="AlgorithmNotSupportedByServer">
+    <en>Algorithm "{0}" is not supported for "{1}" by the server.</en>
+    <ja>サーバは"{1}"のアルゴリズム"{0}"をサポートしていません。</ja>
+  </record>
+  <record name="KeyExchangeAlgorithmNegotiationFailed">
+    <en>Negotiating key exchange algorithm failed.</en>
+    <ja>鍵交換アルゴリズムのネゴシエーションに失敗しました。</ja>
+  </record>
+  <record name="HostKeyAlgorithmNegotiationFailed">
+    <en>Negotiating host key algorithm failed.</en>
+    <ja>ホスト鍵アルゴリズムのネゴシエーションに失敗しました。</ja>
+  </record>
+  <record name="EncryptionAlgorithmNegotiationFailed">
+    <en>Negotiating encryption algorithm failed.</en>
+    <ja>暗号化アルゴリズムのネゴシエーションに失敗しました。</ja>
+  </record>
+  <record name="InvalidAuthenticationType">
+    <en>Invalid authentication type.</en>
+    <ja>認証方法が正しくありません。</ja>
+  </record>
+  <record name="AuthenticationFailed">
+    <en>User authentication failed.</en>
+    <ja>ユーザ認証に失敗しました。</ja>
+  </record>
+  <record name="BrokenKeyFile">
+    <en>{0} is not valid private key file.</en>
+    <ja>{0} は正しい鍵ファイルではありません。</ja>
+  </record>
+  <record name="WrongPassphrase">
+    <en>The passphrase is wrong.</en>
+    <ja>パスフレーズが誤っています</ja>
+  </record>
+  <record name="NotSSHServer">
+    <en>The destination is not a correct SSH server.</en>
+    <ja>接続先はSSHのサーバではありません。</ja>
+  </record>
+  <record name="IncompatibleProtocolVersion">
+    <en>The protocol version of the server [{0}] is not compatible with {1}.</en>
+    <ja>サーバのプロトコルバージョン [{0}] は {1} と互換性がありません。</ja>
+  </record>
+  <record name="InvalidServerVersionFormat">
+    <en>Format of server version is invalid: [{0}]</en>
+    <ja>サーババージョン形式が不正: [{0}]</ja>
+  </record>
+  <record name="ServerNotSupportedPassword">
+    <en>Server does not support the plain password authentication.</en>
+    <ja>サーバはパスワード認証をサポートしません。</ja>
+  </record>
+  <record name="ServerNotSupportedRSA">
+    <en>Server does not support the RSA authentication.</en>
+    <ja>サーバはRSA認証をサポートしません。</ja>
+  </record>
+  <record name="ServerNotSupportedX">
+    <en>Server does not support {0}.</en>
+    <ja>サーバは{0}をサポートしません。</ja>
+  </record>
+  <record name="ServerRefusedRSA">
+    <en>Server refused the RSA authentication.</en>
+    <ja>サーバはRSA認証を拒否しました。</ja>
+  </record>
+  <record name="UnexpectedResponse">
+    <en>Received unexpected response [{0}].</en>
+    <ja>予期しない応答 {0} を受信しました。</ja>
+  </record>
+  <record name="UnexpectedEOF">
+    <en>An unexpected end of stream is found.</en>
+    <ja>予期しないストリーム終端に到達しました。</ja>
+  </record>
+  <record name="UnsupportedPrivateKeyFormat">
+    <en>Unsupported private key format.</en>
+    <ja>サポートされていないプライベートキー形式です。</ja>
+  </record>
+  <record name="NotValidPrivateKeyFile">
+    <en>Not a valid private key file.</en>
+    <ja>正しいプライベートキーファイルではありません。</ja>
+  </record>
+  <record name="UnsupportedAuthenticationMethod">
+    <en>The private key file indicates unsupported authentication method.</en>
+    <ja>サポートされていない認証方式のプライベートキーファイルです。</ja>
+  </record>
+  <record name="Reason_UnsupportedDSAKeyFormat">
+    <en>unsupported DSA key format</en>
+    <ja>サポートされないDSAキー形式</ja>
+  </record>
+  <record name="Reason_UnsupportedProcType">
+    <en>unsupported Proc-Type</en>
+    <ja>サポートされないProc-Type</ja>
+  </record>
+  <record name="Reason_UnsupportedEncryptionType">
+    <en>unsupported encryption type</en>
+    <ja>サポートされない暗号化方式</ja>
+  </record>
+  <record name="OnlySingleInteractiveSessionCanBeStarted">
+    <en>Only single interactive session can be started</en>
+    <ja>開始できるインタラクティブセッションは一つだけです</ja>
+  </record>
+  <record name="X11ForwardingRejectedFromServer">
+    <en>X11 forwarding has been rejected from the server.</en>
+    <ja>X11フォワーディングがサーバから拒否されました。</ja>
+  </record>
+  <record name="XauthorityFileNotFound">
+    <en>.Xauthority file was not found.</en>
+    <ja>.Xauthorityファイルが見つかりません。</ja>
+  </record>
+  <record name="ReadingXauthorityFileFailed">
+    <en>Reading .Xauthority file failed.</en>
+    <ja>.Xauthorityファイルの読み込みに失敗しました。</ja>
+  </record>
+  <record name="SuitableAuthorizationInformationNotFound">
+    <en>The suitable authorization information was not found in the .Xauthority file.</en>
+    <ja>.Xauthorityファイルに適当な認証情報が見つかりません。</ja>
+  </record>
+  <record name="FailedToSendMessageToXServer">
+    <en>Failed to send a message to the X server.</en>
+    <ja>Xサーバへのメッセージ送信が失敗しました。</ja>
+  </record>
+  <record name="XServerDoesntRespond">
+    <en>X server doesn't respond.</en>
+    <ja>Xサーバからの応答がありません。</ja>
+  </record>
+  <record name="X11AuthorizationFailed">
+    <en>X11 authorization failed.</en>
+    <ja>X11認証が失敗しました。</ja>
+  </record>
+  <record name="InvalidDisplayNumber">
+    <en>Invalid display number.</en>
+    <ja>ディスプレイ番号が不正です。</ja>
+  </record>
+  <record name="FailedConnectXServer">
+    <en>Failed to connect to the X server.</en>
+    <ja>Xサーバへの接続に失敗しました。</ja>
+  </record>
+  <record name="FailedConnectXServerWithCygwinDomainSocket">
+    <en>Failed to connect to the X server with Cygwin's unix domain socket.</en>
+    <ja>CygwinのUnixドメインソケットによるXサーバへの接続に失敗しました。</ja>
+  </record>
+  <record name="X11UnixDirectoryPathRequired">
+    <en>Path to the .X11-unix directory is required.</en>
+    <ja>.X11-unixディレクトリのパスが必要です。</ja>
+  </record>
+  <record name="DomainSocketFileNotFound">
+    <en>Domain socket file was not found.</en>
+    <ja>ドメインソケットファイルが見つかりません。</ja>
+  </record>
+  <record name="FailedToReadDomainSocketFile">
+    <en>Failed to read the domain socket file.</en>
+    <ja>ドメインソケットファイルの読み込みに失敗しました。</ja>
+  </record>
+  <record name="FailedToOpenCygwinDomainSocket">
+    <en>Failed to open Cygwin's domain socket.</en>
+    <ja>Cygwinドメインソケットのオープンに失敗しました。</ja>
+  </record>
+  <record name="UnsupportedEllipticCurveInKeyPair">
+    <en>Unsupported elliptic curve is used for the key pair.</en>
+    <ja>サポートされていない楕円曲線がキーペアに使用されています。</ja>
+  </record>
+  <record name="UnsupportedEllipticCurve">
+    <en>Unsupported elliptic curve.</en>
+    <ja>サポートされていない楕円曲線</ja>
+  </record>
+  <record name="KeysAreBroken">
+    <en>Keys are broken.</en>
+    <ja>キーが正しくありません。</ja>
+  </record>
+  <record name="InvalidECPublicKey">
+    <en>Invalid elliptic curve public key.</en>
+    <ja>楕円曲線パブリックキーが正しくありません。</ja>
+  </record>
+  <record name="FailedSigning">
+    <en>Failed signing.</en>
+    <ja>署名に失敗しました。</ja>
+  </record>
+</string-resource>

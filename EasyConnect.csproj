@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EasyConnect</RootNamespace>
     <AssemblyName>EasyConnect</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
     </SccProjectName>
@@ -53,6 +53,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\EasyConnect.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -62,17 +63,20 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\EasyConnect.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <PlatformTarget>x86</PlatformTarget>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <DocumentationFile>bin\Debug\EasyConnect.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <PlatformTarget>x86</PlatformTarget>
     <OutputPath>bin\x86\Release\</OutputPath>
     <DocumentationFile>bin\x86\Release\EasyConnect.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>EasyConnect.EasyConnect</StartupObject>
@@ -81,22 +85,19 @@
     <Reference Include="AppLimit.NetSparkle.Net40">
       <HintPath>lib\AppLimit.NetSparkle.Net40.dll</HintPath>
     </Reference>
+    <Reference Include="EasyTabs, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\EasyTabs.1.3.1.0\lib\net40\EasyTabs.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\TitleBarTabs.1.1.3\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+      <HintPath>packages\EasyTabs.1.3.1.0\lib\net40\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\TitleBarTabs.1.1.3\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+      <HintPath>packages\EasyTabs.1.3.1.0\lib\net40\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="SecurePasswordTextBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Stratman.Windows.Forms.TitleBarTabs, Version=1.1.3.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\TitleBarTabs.1.1.3\lib\Stratman.Windows.Forms.TitleBarTabs.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -156,6 +157,8 @@
     <Compile Include="ConnectionWindow.Designer.cs">
       <DependentUpon>ConnectionWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="EasyConnectColorTable.cs" />
+    <Compile Include="EasyConnectToolStripRender.cs" />
     <Compile Include="GlobalOptionsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -238,7 +241,9 @@
       <DependentUpon>UsernamePasswordWindow.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

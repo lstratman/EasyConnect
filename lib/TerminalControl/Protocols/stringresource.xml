@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+$Id: stringresource.xml,v 1.6 2011/12/23 07:18:44 kzmi Exp $
+-->
+<string-resource>
+
+<record name="Common.OK">
+  <ja>OK</ja>
+  <en>OK</en>
+</record>
+<record name="Common.Cancel">
+  <ja>キャンセル</ja>
+  <en>Cancel</en>
+</record>
+
+<!-- CommunicationUtil.cs -->
+<record name="Message.SSHConnector.Cancelled">
+  <ja>接続を中止しました。</ja>
+  <en>Abort the connection.</en>
+</record>
+
+<!-- CygwinLoginDialog.cs -->
+<record name="Form.CygwinLoginDialog._homeDirectoryLabel">
+  <ja>ホームディレクトリ(&amp;H)</ja>
+  <en>&amp;Home directory</en>
+</record>
+<record name="Form.CygwinLoginDialog._lMessage">
+  <ja>シェルがうまく起動できないときはCygTermをコンパイルしなおしてください。</ja>
+  <en>If you cannot start the shell, please re-compile CygTerm.</en>
+</record>
+<record name="Form.CygwinLoginDialog._advancedOptionCheck">
+  <ja>高度な設定(&amp;A)</ja>
+  <en>&amp;Advanced configuration</en>
+</record>
+<record name="Form.CygwinLoginDialog._shellLabel">
+  <ja>シェル(&amp;S)</ja>
+  <en>&amp;Shell</en>
+</record>
+<record name="Form.CygwinLoginDialog.TextCygwin">
+  <ja>cygwinへの接続</ja>
+  <en>Connection to cygwin</en>
+</record>
+<record name="Form.CygwinLoginDialog.TextSFU">
+  <ja>SFUへの接続</ja>
+  <en>Connection to SFU</en>
+</record>
+<record name="Form.CygwinLoginDialog._logTypeLabel">
+  <ja>ログの種別(&amp;T)</ja>
+  <en>Log &amp;type</en>
+</record>
+<record name="Form.CygwinLoginDialog._logFileLabel">
+  <ja>ログの保存先(&amp;L)</ja>
+  <en>&amp;Log file</en>
+</record>
+<record name="Message.CygwinLoginDialog.EmptyHomeDirectory">
+  <ja>ホームディレクトリが入力されていません。</ja>
+  <en>The home directory is empty.</en>
+</record>
+<record name="Message.CygwinLoginDialog.EmptyShell">
+  <ja>シェルが入力されていません。</ja>
+  <en>The shell is empty.</en>
+</record>
+<record name="Caption.CygwinLoginDialog.ConnectingCygwin">
+  <ja>cygwinへの接続 - 接続中 (Ctrl+Cで中止します)</ja>
+  <en>Connection to cygwin - Connecting... (Ctrl+C to Stop)</en>
+</record>
+<record name="Caption.CygwinLoginDialog.ConnectingSFU">
+  <ja>SFUへの接続 - 接続中 (Ctrl+Cで中止します)</ja>
+  <en>Connection to SFU - Connecting... (Ctrl+C to Stop)</en>
+</record>
+<record name="Message.CygwinLoginDialog.ConnectionError">
+  <ja>接続エラー</ja>
+  <en>Connection error</en>
+</record>
+
+<!-- InterruptableConnector.cs -->
+<record name="Message.AddressNotResolved">
+  <ja>ホスト名 {0} のIPアドレスが取得できませんでした。</ja>
+  <en>The IP address of the host {0} was not obtained.</en>
+</record>
+<record name="Message.FailedToConnectPort">
+  <ja>{0} のポート {1} への接続ができませんでした。</ja>
+  <en>Failed to connect the port {1} of the host {0}.</en>
+</record>
+<record name="Message.FailedToConnectAddress">
+  <ja>{0} への接続ができませんでした。</ja>
+  <en>Failed to connect the host {0}.</en>
+</record>
+<record name="Message.ConnectionTimedOut">
+  <ja>接続はタイムアウトしました</ja>
+  <en>Timed out to connect.</en>
+</record>
+
+<!-- LocalShellUtil.cs -->
+<record name="Message.CygwinUtil.KeyNotFound">
+  <ja>Cygwinのレジストリキーがみつかりません。Cygwinが正しくインストールされていないと思われます。</ja>
+  <en>Cygwin registry key is not found. Cygwin may be not installed correctly.</en>
+</record>
+<record name="Message.SFUUtil.KeyNotFound">
+  <ja>レジストリキー{0}がみつかりません。Services for Unixが正しくインストールされていないと思われます。</ja>
+  <en>The registry key {0} is not found. Services for Unix may be not installed correctly.</en>
+</record>
+<record name="Message.CygwinUtil.CygtermExeNotFound">
+  <ja>cygterm.exeが見つかりません</ja>
+  <en>cygterm.exe cannot be found.</en>
+</record>
+<record name="Message.CygwinUtil.FailedToRunCygterm">
+  <ja>cygtermの実行に失敗しました</ja>
+  <en>Failed to run cygterm</en>
+</record>
+<record name="Message.CygwinUtil.FailedToConnect">
+  <ja>cygwinとの接続中にエラーが発生しました。
+</ja>
+  <en>An error occurred while connecting to cygwin.
+</en>
+</record>
+<record name="Message.SFUUtil.FailedToConnect">
+  <ja>Services for Unixとの接続中にエラーが発生しました。
+</ja>
+  <en>An error occurred while connecting to Services for Unix.
+</en>
+</record>
+
+
+<!-- SSH.cs -->
+<record name="Message.HostKeyChecker.AskHostKeyRegister">
+  <ja>SSHサーバの公開鍵はssh_known_hostsに登録されていません。登録して続行しますか？</ja>
+  <en>The public key of the SSH server is not cached in ssh_known_hosts. Do you wish to register it and continue?</en>
+</record>
+<record name="Message.HostKeyChecker.AskHostKeyRenew">
+  <ja>SSHサーバの公開鍵はssh_known_hostsに登録されているものと異なります。更新して続行しますか？</ja>
+  <en>The public key of the SSH server differs from the old key in ssh_known_hosts. Do you wish to renew it and continue?</en>
+</record>
+
+<!-- SSHSocket.cs -->
+<record name="Message.SSHSocket.FailedToStartShell">
+  <ja>シェルの開始に失敗しました。</ja>
+  <en>Failed to start the shell.</en>
+</record>
+<record name="Message.SSHSocket.AuthenticationFailed">
+  <ja>認証に失敗しました。</ja>
+  <en>Authentication failed.</en>
+</record>
+
+  <!-- Telnet.cs -->
+<record name="Message.Telnet.FailedToSendTerminalType">
+  <ja>ターミナルタイプの指定に失敗しました。</ja>
+  <en>Failed to specify terminal type.</en>
+</record>
+<record name="Message.Telnet.FailedToSendWidnowSize">
+  <ja>ウィンドウサイズの指定に失敗しました。</ja>
+  <en>Failed to specify window size.</en>
+</record>
+<record name="Message.Telnet.FailedToSendSuppressGoAhead">
+  <ja>SuppressGoAheadの指定に失敗しました。</ja>
+  <en>Failed to specify SuppressGoAhead option.</en>
+</record>
+
+<!-- TerminalConnection.cs -->
+<record name="Caption.TCPTerminalConnection.UsingSOCKS">
+  <ja>(SOCKSを使用)</ja>
+  <en>(Using SOCKS)</en>
+</record>
+<record name="Message.SSHTerminalconnection.BreakError">
+  <ja>Break信号の送信ができませんでした。SSHサーバがBreak信号をサポートしているか確認してください。</ja>
+  <en>Failed to send break signal. Please check whether the SSH server supports break signals.</en>
+</record>
+<record name="Message.SSHTerminalConnection.ReproduceErrorOnSSH1">
+  <ja>SSH1で接続を複製するときはオプションのSSHタブでパスフレーズを記憶するようにしていないといけません。</ja>
+  <en>The "Memory Passphrase until the Application Quits" option in the SSH tab of the option dialog must be set when you reproduce SSH1 connections.</en>
+</record>
+<record name="Message.SSHTerminalConnection.ReproduceErrorOnSSH2">
+  <ja>SSH2で一度閉じた接続を複製するときはオプションのSSHタブでパスフレーズを記憶するようにしていないといけません。</ja>
+  <en>The "Memory Passphrase until the Application Quits" option in the SSH tab of the option dialog must be set when you reproduce closed SSH2 connections.</en>
+</record>
+<record name="Message.SerialTerminalConnection.ReproduceError">
+  <ja>シリアル接続の複製はできません。</ja>
+  <en>Serial connections can not be reproduced.</en>
+</record>
+<record name="Message.SerialTerminalConnection.ConfigError">
+  <ja>シリアルポートの設定に失敗しました。</ja>
+  <en>Failed to configure serial port.</en>
+</record>
+<record name="Message.SSHTerminalConnection.CloseError">
+  <ja>接続を閉じるときにエラーが発生しました。</ja>
+  <en>An error occurred while closing the connection.</en>
+</record>
+
+<!-- Enums -->
+<record name="Enum.IPVersionPriority.Both">
+  <ja>制限なし</ja>
+  <en>No restriction</en>
+</record>
+<record name="Enum.IPVersionPriority.V4Only">
+  <ja>IPv4のみ使用</ja>
+  <en>Use IPv4 Only</en>
+</record>
+<record name="Enum.IPVersionPriority.V6Only">
+  <ja>IPv6のみ使用</ja>
+  <en>Use IPv6 Only</en>
+</record>
+
+
+
+</string-resource>

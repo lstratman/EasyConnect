@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this._terminal = new WalburySoftware.TerminalControl();
+			this._terminal = new Poderosa.Terminal.TerminalControl();
 			this._statusStrip = new System.Windows.Forms.StatusStrip();
 			this._statusStripSpacerLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this._progressLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -41,18 +41,12 @@
 			this._terminal.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this._terminal.AuthType = Poderosa.ConnectionParam.AuthType.Password;
 			this._terminal.BackColor = System.Drawing.Color.Navy;
 			this._terminal.ForeColor = System.Drawing.Color.White;
-			this._terminal.Host = "";
-			this._terminal.IdentifyFile = "";
 			this._terminal.Location = new System.Drawing.Point(-2, -2);
-			this._terminal.Method = WalburySoftware.ConnectionMethod.Telnet;
 			this._terminal.Name = "_terminal";
-			this._terminal.Password = "";
 			this._terminal.Size = new System.Drawing.Size(715, 500);
 			this._terminal.TabIndex = 0;
-			this._terminal.UserName = "";
 			// 
 			// _statusStrip
 			// 
@@ -101,7 +95,7 @@
 
 		#endregion
 
-		private WalburySoftware.TerminalControl _terminal;
+		private Poderosa.Terminal.TerminalControl _terminal;
 		private System.Windows.Forms.StatusStrip _statusStrip;
 		private System.Windows.Forms.ToolStripStatusLabel _statusStripSpacerLabel;
 		private System.Windows.Forms.ToolStripStatusLabel _progressLabel;

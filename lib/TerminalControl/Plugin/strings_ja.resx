@@ -1,0 +1,57 @@
+﻿<root>
+  <resheader name="ResMimeType">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="Version">
+    <value>1.0.0.0</value>
+  </resheader>
+  <resheader name="Reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="Writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.3102.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PoderosaWorld.Messages.DuplicatedMessageLoopExtension">
+    <value>IGUIMessageLoopを備えた２つの Extension {0}, {1} を同時に起動しようとしました。後者は無視されます。</value>
+  </data>
+  <data name="PluginManager.Messages.TypeLoadError">
+    <value>アセンブリ {0} から 型 {1} をロードできませんでした。</value>
+  </data>
+  <data name="PluginManager.Messages.IPluginIsNotImplemented">
+    <value>型 {0} は IPlugin を実装していないためロードできません。</value>
+  </data>
+  <data name="PluginManager.Messages.PluginInfoAttributeNotFound">
+    <value>型 {0} は PluginInfoAttribute を備えていないためロードできません。</value>
+  </data>
+  <data name="PluginManager.Messages.AssemblyLoadError">
+    <value>アセンブリ {0} をロードできませんでした。</value>
+  </data>
+  <data name="PluginManager.Messages.BootWithoutThisPlugin">
+    <value>プラグイン {0} を無視してPoderosaを起動します。</value>
+  </data>
+  <data name="PluginManager.Messages.IDNotFound">
+    <value>プラグイン {0} にIDが指定されていません。無視してPoderosaを起動します。</value>
+  </data>
+  <data name="PluginManager.Messages.IDDuplication">
+    <value>プラグイン {0} の ID {1} は重複しています。無視してPoderosaを起動します。</value>
+  </data>
+  <data name="PluginManager.Messages.DependencyNotFound">
+    <value>プラグイン {0} の依存先 {1} が見つかりません。無視してPoderosaを起動します。</value>
+  </data>
+  <data name="PluginManager.Messages.DependencyLoopError">
+    <value>次のプラグイン群に循環依存があるためロードできません。{0}</value>
+  </data>
+  <data name="PluginManager.Messages.PluginInitializeFailed">
+    <value>プラグイン {0} の初期化に失敗しました。</value>
+  </data>
+  <data name="PluginManager.Messages.DuplicatedExtensionPointID">
+    <value>拡張ポイント {0} が重複しています。</value>
+  </data>
+  <data name="PluginManager.Messages.NewExtensionPointOutsideInit">
+    <value>プラグインの初期化中以外で新しい拡張ポイントが定義されようとしました。</value>
+  </data>
+  <data name="Message.Util.InternalError">
+    <value>内部エラーです。{0}を参照してください。
+{1}</value>
+  </data>
+</root>

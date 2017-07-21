@@ -32,6 +32,12 @@ namespace EasyConnect
 			set;
 		}
 
+		public bool EnableAeroPeek
+		{
+			get;
+			set;
+		}
+
 		/// <summary>
 		/// Deserializes an instance of this class from an XML file on disk.
 		/// </summary>

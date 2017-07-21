@@ -1,169 +1,261 @@
-/*
- Copyright (c) 2005 Poderosa Project, All Rights Reserved.
- This file is a part of the Granados SSH Client Library that is subject to
- the license included in the distributed package.
- You may not use this file except in compliance with the license.
+﻿// Copyright (c) 2005-2016 Poderosa Project, All Rights Reserved.
+// This file is a part of the Granados SSH Client Library that is subject to
+// the license included in the distributed package.
+// You may not use this file except in compliance with the license.
 
- $Id: ConnectionParameter.cs,v 1.2 2005/04/20 08:58:56 okajima Exp $
-*/
-
+using Granados.AgentForwarding;
+using Granados.KeyboardInteractive;
+using Granados.KnownHosts;
+using Granados.PKI;
+using Granados.X11Forwarding;
 using System;
 
-using Granados.PKI;
+namespace Granados {
 
-namespace Granados.SSHC
-{
+    /// <summary>
+    /// SSH connection parameter.
+    /// </summary>
+    /// <remarks>
+    /// Fill the properties of ConnectionParameter object before you start the connection.
+    /// </remarks>
+    public class SSHConnectionParameter {
 
-	/// <summary>
-	/// Fill the properties of ConnectionParameter object before you start the connection.
-	/// </summary>
-	public class SSHConnectionParameter : ICloneable {
+        /// <summary>
+        /// Host name.
+        /// </summary>
+        public string HostName {
+            get;
+            set;
+        }
 
-		//protocol
-		private SSHProtocol _protocol;
-		public SSHProtocol Protocol {
-			get { return _protocol; }
-			set { _protocol = value; }
-		}
+        /// <summary>
+        /// Port number.
+        /// </summary>
+        public int PortNumber {
+            get;
+            set;
+        }
 
-		//algorithm
+        /// <summary>
+        /// SSH Protocol version.
+        /// </summary>
+        public SSHProtocol Protocol {
+            get;
+            set;
+        }
 
-		private CipherAlgorithm[] _cipherAlgorithms;
-		public CipherAlgorithm[] PreferableCipherAlgorithms {
-			get { return _cipherAlgorithms; }
-			set { _cipherAlgorithms = value; }
-		}
-		private PublicKeyAlgorithm[] _hostkeyAlgorithms;
-		public PublicKeyAlgorithm[] PreferableHostKeyAlgorithms {
-			get { return _hostkeyAlgorithms; }
-			set { _hostkeyAlgorithms = value; }
-		}
+        /// <summary>
+        /// Preferable cipher algorithms.
+        /// </summary>
+        public CipherAlgorithm[] PreferableCipherAlgorithms {
+            get;
+            set;
+        }
 
-		//account
+        /// <summary>
+        /// Preferable host key algorithms.
+        /// </summary>
+        public PublicKeyAlgorithm[] PreferableHostKeyAlgorithms {
+            get;
+            set;
+        }
 
-		private AuthenticationType _authtype;
-		public AuthenticationType AuthenticationType {
-			get { return _authtype; }
-			set { _authtype = value; }
-		}
-		private string _username;
-		public string UserName {
-			get { return _username; }
-			set { _username = value; }
-		}
-		private string _password;
-		public string Password {
-			get { return _password; }
-			set { _password = value; }
-		}
-		private string _identityFile;
-		public string IdentityFile {
-			get { return _identityFile; }
-			set { _identityFile = value; }
-		}
+        /// <summary>
+        /// Authentication type.
+        /// </summary>
+        public AuthenticationType AuthenticationType {
+            get;
+            set;
+        }
 
-		//host
-		private HostKeyCheckCallback _keycheck;
-		public HostKeyCheckCallback KeyCheck {
-			get { return _keycheck; }
-			set { _keycheck = value; }
-		}
+        /// <summary>
+        /// User name for login.
+        /// </summary>
+        public string UserName {
+            get;
+            set;
+        }
 
-		//terminal
+        /// <summary>
+        /// Password for login.
+        /// </summary>
+        public string Password {
+            get;
+            set;
+        }
 
-		private string _terminalname;
-		public string TerminalName {
-			get { return _terminalname; }
-			set { _terminalname = value; }
-		}
-		private int _width;
-		public int TerminalWidth {
-			get { return _width; }
-			set { _width = value; }
-		}
-		private int _height;
-		public int TerminalHeight {
-			get { return _height; }
-			set { _height = value; }
-		}
-		private int _pixelWidth;
-		public int TerminalPixelWidth {
-			get { return _pixelWidth; }
-			set { _pixelWidth = value; }
-		}
-		private int _pixelHeight;
-		public int TerminalPixelHeight {
-			get { return _pixelHeight; }
-			set { _pixelHeight = value; }
-		}
+        /// <summary>
+        /// Identity file path.
+        /// </summary>
+        public string IdentityFile {
+            get;
+            set;
+        }
 
-		private Random _random;
-		public Random Random {
-			get { return _random; }
-			set { _random = value; }
-		}
+        /// <summary>
+        /// Callback to verify a host key.
+        /// </summary>
+        public VerifySSHHostKeyDelegate VerifySSHHostKey {
+            get;
+            set;
+        }
 
-		private bool _checkMACError;
-		public bool CheckMACError {
-			get { return _checkMACError; }
-			set { _checkMACError = value; }
-		}
+        /// <summary>
+        /// A factory function to create a handler for the keyboard-interactive authentication.
+        /// </summary>
+        /// <remarks>
+        /// This property can be null if the keyboard-interactive authentication is not used.
+        /// </remarks>
+        public Func<ISSHConnection, IKeyboardInteractiveAuthenticationHandler> KeyboardInteractiveAuthenticationHandlerCreator {
+            get;
+            set;
+        }
 
-		//SSH2 only property
-		private int _windowsize;
-		public int WindowSize {
-			get { return _windowsize; }
-			set { _windowsize = value; }
-		}
-		//SSH2 only property
-		private int _maxpacketsize;
-		public int MaxPacketSize {
-			get { return _maxpacketsize; }
-			set { _maxpacketsize = value; }
-		}
+        /// <summary>
+        /// Terminal name. (vt100, xterm, etc.)
+        /// </summary>
+        public string TerminalName {
+            get;
+            set;
+        }
 
-		private string _ssh1VersionEOL;
-		public string SSH1VersionEOL {
-			get { return _ssh1VersionEOL; }
-			set { _ssh1VersionEOL = value; }
-		}
+        /// <summary>
+        /// Terminal columns.
+        /// </summary>
+        public int TerminalWidth {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Terminal raws.
+        /// </summary>
+        public int TerminalHeight {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Terminal width in pixels.
+        /// </summary>
+        public int TerminalPixelWidth {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Terminal height in pixels.
+        /// </summary>
+        public int TerminalPixelHeight {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Whether integrity of the incoming packet is checked using MAC.
+        /// </summary>
+        public bool CheckMACError {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Window size of the SSH2 channel.
+        /// </summary>
+        /// <remarks>This property is used only in SSH2.</remarks>
+        public int WindowSize {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Maximum packet size of the SSH2 connection.
+        /// </summary>
+        /// <remarks>This property is used only in SSH2.</remarks>
+        public int MaxPacketSize {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// End of line characters for terminating a version string.
+        /// </summary>
+        /// <remarks>
+        /// Some server may expect irregular end-of-line character(s).
+        /// Initial value is '\n' for SSH1 and '/r/n' for SSH2.
+        /// </remarks>
+        public string VersionEOL {
+            get {
+                return _versionEOL ?? ((Protocol == SSHProtocol.SSH1) ? "\n" : "\r\n");
+            }
+            set {
+                _versionEOL = value;
+            }
+        }
+        private string _versionEOL;
+
+        /// <summary>
+        /// Key provider for the agent forwarding.
+        /// </summary>
+        /// <remarks>
+        /// This property can be null.<br/>
+        /// If this property was not null, the agent forwarding will be requested to the server before a new shell is opened.
+        /// </remarks>
+        public IAgentForwardingAuthKeyProvider AgentForwardingAuthKeyProvider {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// X11 forwarding parameters.
+        /// </summary>
+        /// <remarks>
+        /// This property can be null.<br/>
+        /// If this property was not null, the X11 forwarding will be requested to the server before a new shell is opened.
+        /// </remarks>
+        public X11ForwardingParams X11ForwardingParams {
+            get;
+            set;
+        }
 
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="hostName">Host name</param>
+        /// <param name="portNumber">port number</param>
+        /// <param name="protocol">SSH protocol version</param>
+        /// <param name="authType">authentication type</param>
+        /// <param name="userName">user name for login</param>
+        /// <param name="password">password for login. pass empty string for the keyboard interactive mode.</param>
+        public SSHConnectionParameter(string hostName, int portNumber, SSHProtocol protocol, AuthenticationType authType, string userName, string password) {
+            HostName = hostName;
+            PortNumber = portNumber;
+            Protocol = protocol;
+            PreferableCipherAlgorithms = new CipherAlgorithm[] { CipherAlgorithm.AES256CTR, CipherAlgorithm.AES256, CipherAlgorithm.AES192CTR, CipherAlgorithm.AES192, CipherAlgorithm.AES128CTR, CipherAlgorithm.AES128, CipherAlgorithm.Blowfish, CipherAlgorithm.TripleDES };
+            PreferableHostKeyAlgorithms = new PublicKeyAlgorithm[] { PublicKeyAlgorithm.DSA, PublicKeyAlgorithm.RSA };
+            AuthenticationType = authType;
+            UserName = userName;
+            Password = password;
+            TerminalName = "vt100";
+            WindowSize = 0x1000;
+            MaxPacketSize = 0x10000;
+            CheckMACError = true;
+            VerifySSHHostKey = p => true;
+        }
 
-
-		public SSHConnectionParameter() {
-			_random = new Random();
-			_authtype = AuthenticationType.Password;
-			_terminalname = "vt100";
-			_width = 80;
-			_height = 25;
-			_protocol = SSHProtocol.SSH2;
-			_cipherAlgorithms = new CipherAlgorithm[] { CipherAlgorithm.AES128, CipherAlgorithm.Blowfish, CipherAlgorithm.TripleDES };
-			_hostkeyAlgorithms = new PublicKeyAlgorithm[] { PublicKeyAlgorithm.DSA, PublicKeyAlgorithm.RSA }; 
-			_windowsize = 0x1000;
-			_maxpacketsize = 0x10000;
-			_checkMACError = true;
-			_ssh1VersionEOL = "\n";
-		}
-
-		public object Clone() {
-			SSHConnectionParameter n = new SSHConnectionParameter();
-			n._authtype = _authtype;
-			n._cipherAlgorithms = _cipherAlgorithms;
-			n._height = _height;
-			n._hostkeyAlgorithms = _hostkeyAlgorithms;
-			n._identityFile = _identityFile;
-			n._keycheck = _keycheck;
-			n._maxpacketsize = _maxpacketsize;
-			n._password = _password;
-			n._protocol = _protocol;
-			n._random = _random;
-			n._terminalname = _terminalname;
-			n._username = _username;
-			n._width = _width;
-			n._windowsize = _windowsize;
-			n._checkMACError = _checkMACError;
-			return n;
-		}
-	}
+        /// <summary>
+        /// Clone this object.
+        /// </summary>
+        /// <returns>a new object.</returns>
+        public SSHConnectionParameter Clone() {
+            SSHConnectionParameter p = (SSHConnectionParameter)MemberwiseClone();
+            p.PreferableCipherAlgorithms = (CipherAlgorithm[])p.PreferableCipherAlgorithms.Clone();
+            p.PreferableHostKeyAlgorithms = (PublicKeyAlgorithm[])p.PreferableHostKeyAlgorithms.Clone();
+            if (p.X11ForwardingParams != null) {
+                p.X11ForwardingParams = p.X11ForwardingParams.Clone();
+            }
+            return p;
+        }
+    }
 }

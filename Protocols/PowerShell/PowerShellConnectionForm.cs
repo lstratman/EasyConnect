@@ -6,12 +6,14 @@ using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 using System.Threading;
 using System.Windows.Forms;
-using Poderosa;
-using Poderosa.Config;
-using Poderosa.Connection;
+using Poderosa.Boot;
 using Poderosa.ConnectionParam;
+using Poderosa.Plugins;
+using Poderosa.Preferences;
+using Poderosa.Protocols;
+using Poderosa.Sessions;
 using Poderosa.Terminal;
-using WalburySoftware;
+using Poderosa.View;
 using Shell = System.Management.Automation.PowerShell;
 
 namespace EasyConnect.Protocols.PowerShell
@@ -51,21 +53,38 @@ namespace EasyConnect.Protocols.PowerShell
 		/// </summary>
 		protected PowerShellHost _powerShellHost;
 
-		/// <summary>
-		/// Default constructor.  Turns off the warning that the terminal displays when it encounters an unknown terminal control code.
-		/// </summary>
-		public PowerShellConnectionForm()
+	    private static readonly IPoderosaWorld PoderosaApplication = null;
+	    private static readonly IProtocolService PoderosaProtocolService = null;
+	    private static readonly ITerminalEmulatorService PoderosaTerminalEmulatorService = null;
+	    private static readonly SessionManagerPlugin PoderosaSessionManagerPlugin = null;
+
+        /// <summary>
+        /// Default constructor.  Turns off the warning that the terminal displays when it encounters an unknown terminal control code.
+        /// </summary>
+        public PowerShellConnectionForm()
 		{
 			InitializeComponent();
-
-			GEnv.Options.WarningOption = WarningOption.Ignore;
-			Shown += PowerShellConnectionForm_Shown;
 		}
 
-		/// <summary>
-		/// Control instance that hosts the actual PowerShell prompt UI.
-		/// </summary>
-		protected override Control ConnectionWindow
+	    static PowerShellConnectionForm()
+	    {
+	        PoderosaApplication = (IPoderosaWorld)PoderosaStartup.CreatePoderosaApplication(new string[] { });
+	        PoderosaApplication.InitializePlugins();
+
+	        IRootExtension preferencesPlugin = (IRootExtension)PoderosaApplication.PluginManager.FindPlugin("org.poderosa.core.preferences", typeof(IPreferences));
+	        preferencesPlugin.InitializeExtension();
+
+	        PoderosaProtocolService = (IProtocolService)PoderosaApplication.PluginManager.FindPlugin("org.poderosa.protocols", typeof(IProtocolService));
+	        PoderosaTerminalEmulatorService = (ITerminalEmulatorService)PoderosaApplication.PluginManager.FindPlugin("org.poderosa.terminalemulator", typeof(ITerminalEmulatorService));
+	        PoderosaSessionManagerPlugin = (SessionManagerPlugin)PoderosaApplication.PluginManager.FindPlugin("org.poderosa.core.sessions", typeof(ISessionManager));
+
+	        PoderosaTerminalEmulatorService.TerminalEmulatorOptions.RightButtonAction = MouseButtonAction.Paste;
+	    }
+
+        /// <summary>
+        /// Control instance that hosts the actual PowerShell prompt UI.
+        /// </summary>
+        protected override Control ConnectionWindow
 		{
 			get
 			{
@@ -90,32 +109,11 @@ namespace EasyConnect.Protocols.PowerShell
 			get;
 			set;
 		}
-
-		/// <summary>
-		/// Handler method that's called when the connection window is shown, either initially or after the user switches to another tab and then back to this
-		/// one.  It's necessary to call <see cref="Connections.BringToActivationOrderTop"/> so that shortcut keys entered by the user are sent to the correct
-		/// window.
-		/// </summary>
-		/// <param name="sender">Object from which this event originated.</param>
-		/// <param name="e">Arguments associated with this event.</param>
-		private void PowerShellConnectionForm_Shown(object sender, EventArgs e)
-		{
-			if (IsConnected)
-				GEnv.Connections.BringToActivationOrderTop(_terminal.TerminalPane.ConnectionTag);
-		}
-
-		/// <summary>
-		/// Handler method that's called when the connection is established.  Adds this connection to <see cref="Connections"/> and sends it to the top of the
-		/// activation queue via a call to <see cref="Connections.BringToActivationOrderTop"/>.
-		/// </summary>
-		/// <param name="sender">Object from which this event originated.</param>
-		/// <param name="e">Arguments associated with this event.</param>
+        
 		protected override void OnConnected(object sender, EventArgs e)
 		{
-			GEnv.Connections.Add(_terminal.TerminalPane.ConnectionTag);
-			GEnv.Connections.BringToActivationOrderTop(_terminal.TerminalPane.ConnectionTag);
-
-			base.OnConnected(sender, e);
+            base.OnConnected(sender, e);
+		    _terminal.Focus();
 		}
 
 		/// <summary>
@@ -123,59 +121,64 @@ namespace EasyConnect.Protocols.PowerShell
 		/// </summary>
 		public override void Connect()
 		{
-			GEnv.Options.Font = Connection.Font;
+		    _terminal.Font = Connection.Font;
 
 			_progressBar.Value = 0;
 			_progressLabel.Text = "";
 
 			// This is not strictly a network connection:  we're relaying information that we receive from the runspace to the terminal over a local stream
 			// (a StreamConnection in this case)
-			TerminalParam terminalParam = TCPTerminalParam.Fake;
-			terminalParam.TerminalType = TerminalType.XTerm;
-			terminalParam.RenderProfile = new RenderProfile();
-			terminalParam.Encoding = EncodingType.UTF8;
-
+			ITerminalParameter terminalParam = new EmptyTerminalParameter();
 			StreamConnection connection = new StreamConnection(terminalParam)
 				                              {
 					                              Capture = false
 				                              };
 
-			ConnectionTag connectionTag = new ConnectionTag(connection);
-			connectionTag.Receiver.Listen();
-
 			// Attach the new "connection" to the terminal control
-			_terminal.TerminalPane.FakeVisible = true;
-			_terminal.TerminalPane.Attach(connectionTag);
-			_terminal.TerminalPane.Focus();
-			_terminal.TerminalPane.SendShiftTab = true;
-			_terminal.SetPaneColors(Connection.TextColor, Connection.BackgroundColor);
-
-			_powerShellHost = new PowerShellHost(this, _terminal, ExecuteQuiet, _progressBar, _progressLabel);
-
-			// Create the host and runspace instances for this interpreter.  If we're connecting to the local host, don't bother with the connection info.
-			// ReSharper disable StringCompareIsCultureSpecific.3
-			if (String.Compare(Connection.Host, "localhost", true) != 0 && Connection.Host != "127.0.0.1" &&
-			    String.Compare(Connection.Host, Environment.MachineName, true) != 0)
-				// ReSharper restore StringCompareIsCultureSpecific.3
-			{
-				WSManConnectionInfo connectionInfo = new WSManConnectionInfo
-					                                     {
-						                                     ComputerName = Connection.Host
-					                                     };
-
-				if (!String.IsNullOrEmpty(Connection.InheritedUsername))
-					connectionInfo.Credential = new PSCredential(Connection.InheritedUsername, Connection.InheritedPassword);
-
-				Runspace = RunspaceFactory.CreateRunspace(_powerShellHost, connectionInfo);
-			}
-
-			else
-				Runspace = RunspaceFactory.CreateRunspace(_powerShellHost);
-
 			try
 			{
+			    ITerminalSettings terminalSettings = PoderosaTerminalEmulatorService.CreateDefaultTerminalSettings(Connection.DisplayName, null);
+			    TerminalSession session = new TerminalSession(connection, terminalSettings);
+			    SessionHost sessionHost = new SessionHost(PoderosaSessionManagerPlugin, session);
+			    TerminalView terminalView = new TerminalView(null, _terminal);
+			    RenderProfile renderProfile = new RenderProfile(_terminal.GetRenderProfile());
+
+			    renderProfile.BackColor = Connection.BackgroundColor;
+			    renderProfile.ForeColor = Connection.TextColor;
+
+                session.TerminalSettings.BeginUpdate();
+			    session.TerminalSettings.RenderProfile = renderProfile;
+                session.TerminalSettings.EndUpdate();
+
+                _terminal.Attach(session);
+
+			    session.InternalStart(sessionHost);
+			    session.InternalAttachView(sessionHost.DocumentAt(0), terminalView);
+
+                _powerShellHost = new PowerShellHost(this, _terminal, connection, ExecuteQuiet, _progressBar, _progressLabel);
+
+				// Create the host and runspace instances for this interpreter.  If we're connecting to the local host, don't bother with the connection info.
+				// ReSharper disable StringCompareIsCultureSpecific.3
+				if (String.Compare(Connection.Host, "localhost", true) != 0 && Connection.Host != "127.0.0.1" &&
+					String.Compare(Connection.Host, Environment.MachineName, true) != 0)
+				// ReSharper restore StringCompareIsCultureSpecific.3
+				{
+					WSManConnectionInfo connectionInfo = new WSManConnectionInfo
+					{
+						ComputerName = Connection.Host
+					};
+
+					if (!String.IsNullOrEmpty(Connection.InheritedUsername))
+						connectionInfo.Credential = new PSCredential(Connection.InheritedUsername, Connection.InheritedPassword);
+
+					Runspace = RunspaceFactory.CreateRunspace(_powerShellHost, connectionInfo);
+				}
+
+				else
+					Runspace = RunspaceFactory.CreateRunspace(_powerShellHost);
+
 				Runspace.Open();
-			}
+            }
 
 			catch (Exception e)
 			{
@@ -319,8 +322,11 @@ namespace EasyConnect.Protocols.PowerShell
 					// handler.
 					lock (_instanceLock)
 					{
-						_currentPowerShell.Dispose();
-						_currentPowerShell = null;
+					    if (_currentPowerShell != null)
+					    {
+					        _currentPowerShell.Dispose();
+					        _currentPowerShell = null;
+					    }
 					}
 				}
 			}
@@ -477,5 +483,15 @@ namespace EasyConnect.Protocols.PowerShell
 
 			OnLoggedOff(this, null);
 		}
+
+	    protected override void OnGotFocus(EventArgs e)
+	    {
+	        base.OnGotFocus(e);
+
+	        if (Connection != null)
+	        {
+	            _terminal.Focus();
+            }
+	    }
 	}
 }

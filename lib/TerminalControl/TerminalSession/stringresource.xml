@@ -1,0 +1,465 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+$Id: stringresource.xml,v 1.7 2012/03/14 16:33:38 kzmi Exp $
+-->
+<string-resource>
+
+<record name="Common.OK">
+  <ja>OK</ja>
+  <en>OK</en>
+</record>
+<record name="Common.Cancel">
+  <ja>キャンセル</ja>
+  <en>Cancel</en>
+</record>
+<record name="Common.DoNot">
+  <ja>しない</ja>
+  <en>Don't</en>
+</record>
+<record name="Common.Do">
+  <ja>する</ja>
+  <en>Do</en>
+</record>
+<record name="Caption.Disconnected">
+  <ja>(切断)</ja>
+  <en>(Disconnected)</en>
+</record>
+<record name="Caption.HowToCancel">
+  <ja>ESCで中止</ja>
+  <en>ESC to stop</en>
+</record>
+
+<!-- Command -->
+<record name="CommandCategory.Connection">
+  <ja>接続</ja>
+  <en>Connection</en>
+</record>
+<record name="Command.TelnetSSH">
+  <ja>Telnet/SSH接続</ja>
+  <en>Connect by Telnet/SSH</en>
+</record>
+<record name="Command.Cygwin">
+  <ja>Cygwin接続</ja>
+  <en>Connect Cygwin</en>
+</record>
+<record name="Command.TerminalReproduce">
+  <ja>接続の複製/再接続</ja>
+  <en>Reproduce / Revive Connection</en>
+</record>
+
+<!-- CygwinLoginDialog.cs -->
+<record name="Form.CygwinLoginDialog._homeDirectoryLabel">
+  <ja>ホームディレクトリ(&amp;H)</ja>
+  <en>&amp;Home directory</en>
+</record>
+<record name="Form.CygwinLoginDialog._lMessage">
+  <ja>シェルがうまく起動できないときはCygTermをコンパイルしなおしてください。</ja>
+  <en>If you cannot start the shell, please re-compile CygTerm.</en>
+</record>
+<record name="Form.CygwinLoginDialog._advancedOptionCheck">
+  <ja>高度な設定(&amp;A)</ja>
+  <en>&amp;Advanced configuration</en>
+</record>
+<record name="Form.CygwinLoginDialog._shellLabel">
+  <ja>シェル(&amp;S)</ja>
+  <en>&amp;Shell</en>
+</record>
+<record name="Form.CygwinLoginDialog.TextCygwin">
+  <ja>cygwinへの接続</ja>
+  <en>Connection to Cygwin</en>
+</record>
+<record name="Form.CygwinLoginDialog.TextSFU">
+  <ja>SFUへの接続</ja>
+  <en>Connection to SFU</en>
+</record>
+<record name="Form.CygwinLoginDialog._logTypeLabel">
+  <ja>ログの種別(&amp;T)</ja>
+  <en>Log &amp;type</en>
+</record>
+<record name="Form.CygwinLoginDialog._logFileLabel">
+  <ja>ログの保存先(&amp;L)</ja>
+  <en>&amp;Log file</en>
+</record>
+<record name="Form.CygwinLoginDialog._encodingLabel">
+  <ja>エンコーディング(&amp;E)</ja>
+  <en>&amp;Encoding</en>
+</record>
+<record name="Form.CygwinLoginDialog._terminalTypeLabel">
+  <ja>ターミナル種別(&amp;Y)</ja>
+  <en>Terminal T&amp;ype</en>
+</record>
+<record name="Form.CygwinLoginDialog._cygwinDirLabel">
+  <ja>Cygwinディレクトリ(&amp;D) (オプション)</ja>
+  <en>Cygwin &amp;Directory (optional)</en>
+</record>
+<record name="Form.CygwinLoginDialog.SelectCygwinDir">
+  <ja>Cygwinディレクトリ選択</ja>
+  <en>Select Cygwin Directory</en>
+</record>
+<record name="Form.CygwinLoginDialog._autoExecMacroPathLabel">
+  <ja>自動開始マクロ</ja>
+  <en>Auto Exec Macro</en>
+</record>
+<record name="Message.CygwinLoginDialog.EmptyHomeDirectory">
+  <ja>ホームディレクトリが入力されていません。</ja>
+  <en>The home directory is empty.</en>
+</record>
+<record name="Message.CygwinLoginDialog.EmptyShell">
+  <ja>シェルが入力されていません。</ja>
+  <en>The shell is empty.</en>
+</record>
+<record name="Caption.CygwinLoginDialog.ConnectingCygwin">
+  <ja>cygwinへの接続 - 接続中 (Ctrl+Cで中止します)</ja>
+  <en>Connection to Cygwin - Connecting... (Ctrl+C to Stop)</en>
+</record>
+<record name="Caption.CygwinLoginDialog.ConnectingSFU">
+  <ja>SFUへの接続 - 接続中 (Ctrl+Cで中止します)</ja>
+  <en>Connection to SFU - Connecting... (Ctrl+C to Stop)</en>
+</record>
+<record name="Message.CygwinLoginDialog.ConnectionError">
+  <ja>接続エラー</ja>
+  <en>Connection Error</en>
+</record>
+
+<!-- LoginDialog.cs -->
+<record name="Form.LoginDialog._hostLabel">
+  <ja>ホスト(&amp;H)</ja>
+  <en>&amp;Host</en>
+</record>
+<record name="Form.LoginDialog._portLabel">
+  <ja>ポート(&amp;T)</ja>
+  <en>Por&amp;t</en>
+</record>
+<record name="Form.LoginDialog._methodLabel">
+  <ja>プロトコル(&amp;R)</ja>
+  <en>P&amp;rotocol</en>
+</record>
+<record name="Form.LoginDialog._sshGroup">
+  <ja>SSHパラメータ</ja>
+  <en>SSH Parameters</en>
+</record>
+<record name="Form.LoginDialog._privateKeyLabel">
+  <ja>鍵ファイル(&amp;K)</ja>
+  <en>&amp;Key File</en>
+</record>
+<record name="Form.LoginDialog._authenticationLabel">
+  <ja>認証方法(&amp;U)</ja>
+  <en>A&amp;uthentication</en>
+</record>
+<record name="Form.LoginDialog._passphraseLabel">
+  <ja>パスフレーズ(&amp;P)</ja>
+  <en>&amp;Passphrase</en>
+</record>
+<record name="Form.LoginDialog._usernameLabel">
+  <ja>アカウント(&amp;A)</ja>
+  <en>&amp;Account</en>
+</record>
+<record name="Form.LoginDialog._terminalGroup">
+  <ja>ターミナル</ja>
+  <en>Terminal settings</en>
+</record>
+<record name="Form.LoginDialog._localEchoLabel">
+  <ja>ローカルエコー(&amp;O)</ja>
+  <en>Local ech&amp;o</en>
+</record>
+<record name="Form.LoginDialog._newLineLabel">
+  <ja>改行の送信(&amp;N)</ja>
+  <en>&amp;New Line</en>
+</record>
+<record name="Form.LoginDialog._logFileLabel">
+  <ja>ログの保存先(&amp;F)</ja>
+  <en>Log &amp;File</en>
+</record>
+<record name="Form.LoginDialog._encodingLabel">
+  <ja>エンコーディング(&amp;E)</ja>
+  <en>&amp;Encoding</en>
+</record>
+<record name="Form.LoginDialog._logTypeLabel">
+  <ja>ログの種別(&amp;L)</ja>
+  <en>&amp;Log type</en>
+</record>
+<record name="Form.LoginDialog._terminalTypeLabel">
+  <ja>種類(&amp;Y)</ja>
+  <en>Terminal T&amp;ype</en>
+</record>
+<record name="Form.LoginDialog._autoExecMacroPathLabel">
+  <ja>自動開始マクロ</ja>
+  <en>Auto Exec Macro</en>
+</record>
+<record name="Form.LoginDialog._telnetNewLine">
+  <ja>Telnet&#13;&#10;New Line</ja>
+  <en>Telnet&#13;&#10;New Line</en>
+</record>
+<record name="Form.LoginDialog.Text">
+  <ja>新規接続</ja>
+  <en>New Connection</en>
+</record>
+<record name="Form.LoginDialog.Title">
+  <ja>新規セッション</ja>
+  <en>New Session</en>
+</record>
+<record name="Form.LoginDialog._useX11ForwardingCheckBox">
+  <ja>X11フォワーディングを使用</ja>
+  <en>Use X11 forwarding</en>
+</record>
+<record name="Form.LoginDialog._x11DisplayLabel">
+  <ja>ディスプレイ番号</ja>
+  <en>Display number</en>
+</record>
+<record name="Form.LoginDialog._x11DisplayNote">
+  <ja>(ローカルXサーバ)</ja>
+  <en>(local X server)</en>
+</record>
+<record name="Form.LoginDialog._x11DisplayText_ToolTip">
+  <ja>ローカルのXサーバのディスプレイ番号です。</ja>
+  <en>Display number of the local X server.</en>
+</record>
+<record name="Form.LoginDialog._x11ScreenLabel">
+  <ja>スクリーン番号</ja>
+  <en>Screen number</en>
+</record>
+<record name="Form.LoginDialog._x11ScreenText_ToolTip">
+  <ja>X11フォワーディングで使用するスクリーン番号です。</ja>
+  <en>Screen number to be used in the X11 forwarding.</en>
+</record>
+<record name="Form.LoginDialog._x11NeedAuthCheckBox">
+  <ja>Xサーバは認証が必要</ja>
+  <en>X server requires authorization</en>
+</record>
+<record name="Form.LoginDialog._x11XauthorityLabel">
+  <ja>.Xauthorityファイル</ja>
+  <en>.Xauthority file</en>
+</record>
+<record name="Form.LoginDialog._x11UseCygwinDomainSocketCheckBox">
+  <ja>CygwinのUnixドメインソケットを使用</ja>
+  <en>Use Cygwin's unix domain socket</en>
+</record>
+<record name="Form.LoginDialog._x11CygwinX11UnixFolderLabel">
+  <ja>.X11-unixフォルダ</ja>
+  <en>.X11-unix folder</en>
+</record>
+<record name="Form.LoginDialog._x11CygwinX11UnixFolderExampleLabel">
+  <ja>例 C:\Cygwin\tmp\.X11-unix</ja>
+  <en>e.g. C:\Cygwin\tmp\.X11-unix</en>
+</record>
+<record name="Form.LoginDialog._useAgentForwardingCheckBox">
+  <ja>エージェントフォワーディングを使用 (SSH2のみ)</ja>
+  <en>Use agent forwarding (only SSH2)</en>
+</record>
+<record name="Form.LoginDialog._agentForwardingConfigButton">
+  <ja>秘密鍵の設定...</ja>
+  <en>Private keys...</en>
+</record>
+<record name="Message.LoginDialog.InvalidPort">
+  <ja>ポートの指定 {0} は正しくありません。</ja>
+  <en>{0} is not valid as a port.</en>
+</record>
+<record name="Caption.LoginDialog.SelectXauthorityFile">
+  <ja>.Xauthorityファイルの選択</ja>
+  <en>Select .Xauthority file</en>
+</record>
+<record name="Caption.LoginDialog.Connecting">
+  <ja>新規接続 - 接続中 (Ctrl+Cで中止します)</ja>
+  <en>New Connection - Connecting... (Ctrl+C to Stop)</en>
+</record>
+<record name="Message.LoginDialog.HostIsEmpty">
+  <ja>ホスト名が入力されていません。</ja>
+  <en>The host name is empty.</en>
+</record>
+<record name="Message.LoginDialog.KeyFileNotExist">
+  <ja>秘密鍵ファイルが存在しません。</ja>
+  <en>The private key file does not exist.</en>
+</record>
+<record name="Message.LoginDialog.ProtocolVersionIsNotSpecified">
+  <ja>プロトコルバージョンが指定されていません。</ja>
+  <en>Protocol version is not specified.</en>
+</record>
+<record name="Message.LoginDialog.PrivateKeyFileIsNotSpecified">
+  <ja>鍵ファイルが指定されていません。</ja>
+  <en>Key file is not specified.</en>
+</record>
+<record name="Message.LoginDialog.X11DisplayIsNotEntered">
+  <ja>X11ディスプレイ番号が入力されていません。</ja>
+  <en>X11 display number is not entered.</en>
+</record>
+<record name="Message.LoginDialog.InvalidX11Display">
+  <ja>X11ディスプレイ番号が正しくありません。</ja>
+  <en>Invalid X11 display number.</en>
+</record>
+<record name="Message.LoginDialog.X11ScreenIsNotEntered">
+  <ja>X11スクリーン番号が入力されていません。</ja>
+  <en>X11 screen number is not entered.</en>
+</record>
+<record name="Message.LoginDialog.InvalidX11Screen">
+  <ja>X11スクリーン番号が正しくありません。</ja>
+  <en>Invalid X11 screen number.</en>
+</record>
+<record name="Message.LoginDialog.XauthorityFileIsNotSpecified">
+  <ja>.Xauthorityファイルが指定されていません。</ja>
+  <en>.Xauthority file is not specified.</en>
+</record>
+<record name="Message.LoginDialog.X11UnixFolderIsNotSpecified">
+  <ja>.X11-unixフォルダが指定されていません。</ja>
+  <en>.X11-unix folder is not specified.</en>
+</record>
+<record name="Caption.LoginDialog.ConnectionError">
+  <ja>接続エラー</ja>
+  <en>Connection error</en>
+</record>
+
+<!-- SSHShortcutLoginDialog.cs -->
+<record name="Form.SSHShortcutLoginDialog._privateKeyLabel">
+  <ja>秘密鍵(&amp;K)</ja>
+  <en>Private &amp;key</en>
+</record>
+<record name="Form.SSHShortcutLoginDialog._passphraseLabel">
+  <ja>パスフレーズ(&amp;P)</ja>
+  <en>&amp;Passphrase</en>
+</record>
+<record name="Form.SSHShortcutLoginDialog._logFileLabel">
+  <ja>ログの保存先(&amp;F)</ja>
+  <en>Log &amp;file</en>
+</record>
+<record name="Form.SSHShortcutLoginDialog._hostLabel">
+  <ja>ホスト</ja>
+  <en>Host</en>
+</record>
+<record name="Form.SSHShortcutLoginDialog._methodLabel">
+  <ja>接続</ja>
+  <en>Connection</en>
+</record>
+<record name="Form.SSHShortcutLoginDialog._accountLabel">
+  <ja>アカウント</ja>
+  <en>Account</en>
+</record>
+<record name="Form.SSHShortcutLoginDialog._authenticationTypeLabel">
+  <ja>認証方法</ja>
+  <en>Authentication</en>
+</record>
+<record name="Form.SSHShortcutLoginDialog._encodingLabel">
+  <ja>エンコーディング</ja>
+  <en>Encoding</en>
+</record>
+<record name="Form.SSHShortcutLoginDialog._logTypeLabel">
+  <ja>ログの種別(&amp;L)</ja>
+  <en>&amp;Log type</en>
+</record>
+<record name="Form.SSHShortcutLoginDialog._autoExecMacroPathLabel">
+  <ja>自動開始マクロ</ja>
+  <en>Auto Exec Macro</en>
+</record>
+<record name="Form.SSHShortcutLoginDialog.Text">
+  <ja>SSH ログイン</ja>
+  <en>SSH Login</en>
+</record>
+<record name="Caption.SSHShortcutLoginDialog.NotStandardPort">
+  <ja>(ポート{0})</ja>
+  <en>(Port {0})</en>
+</record>
+<record name="Caption.SSHShortcutLoginDialog.Connecting">
+  <ja>SSH ログイン - 接続中 (Ctrl+Cで中止します)</ja>
+  <en>SSH Login - Connecting... (Ctrl+C to Stop)</en>
+</record>
+<record name="Message.SSHShortcutLoginDialog.ConnectionError">
+  <ja>接続エラー</ja>
+  <en>Connection error</en>
+</record>
+<record name="Message.SSHShortcutLoginDialog.KeyFileNotExist">
+  <ja>秘密鍵ファイルが存在しません。</ja>
+  <en>The private key file does not exist.</en>
+</record>
+
+<!-- TelnetSSHPlugin.cs -->
+<record name="Menu.NewConnection">
+  <ja>新規Telnet/SSH接続(&amp;N)...</ja>
+  <en>New Telnet/SSH &amp;Connection...</en>
+</record>
+<record name="Menu.SerialNewConnection">
+  <ja>新規シリアル接続(&amp;E)...</ja>
+  <en>New S&amp;erial Connection...</en>
+</record>
+
+<!-- CygwinPlugin.cs -->
+<record name="Menu.CygwinNewConnection">
+  <ja>新規cygwin接続(&amp;C)...</ja>
+  <en>New &amp;Cygwin Connection...</en>
+</record>
+<record name="Menu.SFUNewConnection">
+  <ja>新規Services for Unix接続(&amp;U)...</ja>
+  <en>New Services for &amp;Unix Connection...</en>
+</record>
+
+<record name="Menu.ReproduceTerminal">
+  <ja>複製(&amp;R)</ja>
+  <en>&amp;Reproduce</en>
+</record>
+<record name="Menu.ReviveTerminal">
+  <ja>再接続(&amp;R)</ja>
+  <en>&amp;Revive</en>
+</record>
+
+
+<!-- ContainerUtil.cs -->
+<record name="Util.SelectLogFileByDialog.Caption">
+  <ja>ログの保存</ja>
+  <en>Save log file</en>
+</record>
+<record name="Util.SelectPrivateKey.Caption">
+  <ja>秘密鍵の選択</ja>
+  <en>Select private key file</en>
+</record>
+<record name="Util.SelectPicture.Caption">
+  <ja>画像の選択</ja>
+  <en>Select picture file</en>
+</record>
+
+
+<record name="Menu.OpenShortcutFile">
+  <ja>接続へのショートカットを開く(&amp;O)...</ja>
+  <en>&amp;Open shortcut file...</en>
+</record>
+<record name="Menu.SaveShortcutFile">
+  <ja>接続へのショートカットを保存(&amp;S)...</ja>
+  <en>&amp;Save shortcut file...</en>
+</record>
+
+
+<!-- TerminalSession.cs -->
+<record name="Message.AskCloseTerminalSession">
+  <ja>{0} への接続があります。切断しますか？</ja>
+  <en>A connection to {0} is active. Do you disconnect?</en>
+</record>
+
+<!-- ShortcutFile -->
+<record name="Caption.OpenShortcutFile">
+  <ja>接続へのショートカットを開く</ja>
+  <en>Open shortcut to connection</en>
+</record>
+<record name="Caption.SaveShortcutFile">
+  <ja>接続へのショートカットを保存</ja>
+  <en>Save shortcut to connection</en>
+</record>
+<record name="Menu.OpenShortcutFile">
+  <ja>接続へのショートカットを開く(&amp;O)...</ja>
+  <en>&amp;Open Shortcut File...</en>
+</record>
+<record name="Menu.SaveShortcutFile">
+  <ja>接続へのショートカットを保存(&amp;S)...</ja>
+  <en>&amp;Save Shortcut File...</en>
+</record>
+<record name="Command.OpenShortcutFile">
+  <ja>接続へのショートカットを開く</ja>
+  <en>Open Shortcut File</en>
+</record>
+<record name="Command.SaveShortcutFile">
+  <ja>接続へのショートカットを保存</ja>
+  <en>Save Shortcut File</en>
+</record>
+
+<!-- CopyPaste.cs -->
+<record name="Message.AskPasteNewLineChar">
+  <ja>クリップボードのデータに改行が含まれています。貼り付けますか？</ja>
+  <en>Clipboard data contains a new-line character. Do you want to paste it ?</en>
+</record>
+
+</string-resource>

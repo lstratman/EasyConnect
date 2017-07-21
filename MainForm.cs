@@ -4,7 +4,6 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
@@ -16,9 +15,9 @@ using System.Windows.Input;
 using AppLimit.NetSparkle;
 using EasyConnect.Properties;
 using EasyConnect.Protocols;
+using EasyTabs;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
-using Stratman.Windows.Forms.TitleBarTabs;
 using Win32Interop.Enums;
 using Win32Interop.Methods;
 
@@ -114,7 +113,7 @@ namespace EasyConnect
 		/// </summary>
 		protected bool _shiftDown = false;
 
-		protected Sparkle _sparkle;
+		protected static Sparkle _sparkle;
 
 		/// <summary>
 		/// Default constructor.
@@ -124,14 +123,17 @@ namespace EasyConnect
 			InitializeComponent();
 			Init();
 
-			_sparkle = new Sparkle(
-				String.IsNullOrEmpty(ConfigurationManager.AppSettings["appCastUrl"])
-					? "http://lstratman.github.io/EasyConnect/updates/EasyConnect.xml"
-					: ConfigurationManager.AppSettings["appCastUrl"]);
-			_sparkle.ApplicationWindowIcon = Icon;
-			_sparkle.ApplicationIcon = Icon.ToBitmap();
+			if (_sparkle == null)
+			{
+				_sparkle = new Sparkle(
+					String.IsNullOrEmpty(ConfigurationManager.AppSettings["appCastUrl"])
+						? "http://lstratman.github.io/EasyConnect/updates/EasyConnect.xml"
+						: ConfigurationManager.AppSettings["appCastUrl"]);
+				_sparkle.ApplicationWindowIcon = Icon;
+				_sparkle.ApplicationIcon = Icon.ToBitmap();
 
-			_sparkle.StartLoop(true, true);
+				_sparkle.StartLoop(true, true);
+			}
 		}
 
 		/// <summary>
