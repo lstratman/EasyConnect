@@ -1,4 +1,6 @@
-### Get the installer for the latest version <a href="http://lstratman.github.io/EasyConnect/updates/EasyConnect.msi" target="_blank">here</a>.
+[![Build status](https://ci.appveyor.com/api/projects/status/u8ugbo8oh1mffhet?svg=true)](https://ci.appveyor.com/project/lstratman/easyconnect)
+
+### Get the installer for the latest released version <a href="http://lstratman.github.io/EasyConnect/updates/EasyConnect.msi" target="_blank">here</a> or for the latest CI version <a href="https://ci.appveyor.com/api/projects/lstratman/EasyConnect/artifacts/Installer/bin/Release/EasyConnect.msi" target="_blank">here</a>.
 
 This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP), Secure Shell (SSH), PowerShell, and VNC but has a plugin architecture designed to enable third-party support for other protocols such as Citrix, etc.
 
