@@ -123,7 +123,7 @@ namespace EasyConnect
 			InitializeComponent();
 			Init();
 
-			if (_sparkle == null)
+			if (_sparkle == null && ConfigurationManager.AppSettings["checkForUpdates"] != "false")
 			{
 				_sparkle = new Sparkle(
 					String.IsNullOrEmpty(ConfigurationManager.AppSettings["appCastUrl"])
@@ -845,6 +845,11 @@ can be used.";
 		/// <returns>True if the update process was started successfully, false otherwise.</returns>
 		public void CheckForUpdate()
 		{
+            if (_sparkle == null)
+            {
+                return;
+            }
+
 			_sparkle.StopLoop();
 
 			_sparkle = new Sparkle(

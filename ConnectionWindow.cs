@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using EasyConnect.Properties;
 using EasyConnect.Protocols;
 using Timer = System.Timers.Timer;
+using System.Configuration;
 
 namespace EasyConnect
 {
@@ -146,7 +147,9 @@ namespace EasyConnect
 			_urlPanel.Click += _urlPanel_Click;
 			_urlPanelContainer.Controls.Add(_urlPanel);
 			urlTextBox.Visible = false;
-		}
+
+            _updatesMenuItem.Visible = ConfigurationManager.AppSettings["checkForUpdates"] != "false";
+        }
 
 		void _urlPanel_Click(object sender, EventArgs e)
 		{
