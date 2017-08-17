@@ -28,3 +28,10 @@ foreach ($file in $foundFiles)
 {
 	(Get-Content $file) | ForEach-Object {$_ -Replace ("version = """ + $assemblyPattern + """"), ("version = """ + $newVersion + """") } | Set-Content $file
 }
+
+$foundFiles = Get-ChildItem AppxManifest.xml -Recurse
+
+foreach ($file in $foundFiles)
+{
+	(Get-Content $file) | ForEach-Object {$_ -Replace (" Version=""" + $assemblyPattern + """"), (" Version=""" + $newVersion + """") } | Set-Content $file
+}
