@@ -11,6 +11,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using EasyConnect.Protocols;
 using EasyTabs;
+using System.Windows.Forms.VisualStyles;
 
 namespace EasyConnect
 {
@@ -114,6 +115,14 @@ namespace EasyConnect
 		/// </summary>
 		protected TreeNode _treeViewDropTarget = null;
 
+        protected ListViewItem _itemEditingNotes = null;
+
+        protected bool _listViewNotesDoubleClickStarted = false;
+
+        protected Timer _listViewNotesDoubleClickTimer = new Timer();
+
+        protected TextBox _notesTextBox = null;
+
 		/// <summary>
 		/// Constructor; deserializes the bookmarks folder structure, adds the various folder nodes to <see cref="_bookmarksFoldersTreeView"/>, and gets the
 		/// icons for each protocol.
@@ -122,6 +131,9 @@ namespace EasyConnect
 		public BookmarksWindow(MainForm applicationForm)
 		{
 			InitializeComponent();
+
+            _listViewNotesDoubleClickTimer.Tick += _listViewNotesDoubleClickTimer_Tick;
+            _listViewNotesDoubleClickTimer.Interval = SystemInformation.DoubleClickTime;
 
 			_applicationForm = applicationForm;
 			_bookmarksFoldersTreeView.Sorted = true;
@@ -168,10 +180,16 @@ namespace EasyConnect
             _folderContextMenu.Renderer = new EasyConnectToolStripRender();
 		}
 
-		/// <summary>
-		/// Root folder in the bookmarks folder structure.
-		/// </summary>
-		public BookmarksFolder RootFolder
+        private void _listViewNotesDoubleClickTimer_Tick(object sender, EventArgs e)
+        {
+            _listViewNotesDoubleClickTimer.Stop();
+            _listViewNotesDoubleClickStarted = false;
+        }
+
+        /// <summary>
+        /// Root folder in the bookmarks folder structure.
+        /// </summary>
+        public BookmarksFolder RootFolder
 		{
 			get
 			{
@@ -372,6 +390,8 @@ namespace EasyConnect
 					if (_bookmarksFoldersTreeView.SelectedNode == parentTreeNode)
 					{
 						ListViewItem newItem = new ListViewItem(currentFolder.Name, 0);
+                        newItem.SubItems.Add("");
+                        newItem.SubItems.Add(currentFolder.Notes);
 
 						_bookmarksListView.Items.Add(newItem);
 						_listViewFolders[newItem] = currentFolder;
@@ -455,6 +475,7 @@ namespace EasyConnect
 					{
 						ListViewItem newItem = new ListViewItem(currentBookmark.DisplayName, _connectionTypeIcons[currentBookmark.GetType()]);
 						newItem.SubItems.Add(currentBookmark.Host);
+                        newItem.SubItems.Add(currentBookmark.Notes);
 
 						_listViewConnections[newItem] = currentBookmark;
 						_bookmarksListView.Items.Add(newItem);
@@ -607,7 +628,9 @@ namespace EasyConnect
 				ListViewItem item = new ListViewItem(
 					new string[]
 						{
-							childFolder.Name
+							childFolder.Name,
+                            "",
+                            childFolder.Notes
 						}, 0);
 
 				_listViewFolders[item] = childFolder;
@@ -619,6 +642,7 @@ namespace EasyConnect
 			{
 				ListViewItem item = new ListViewItem(bookmark.DisplayName, _connectionTypeIcons[bookmark.GetType()]);
 				item.SubItems.Add(bookmark.Host);
+                item.SubItems.Add(bookmark.Notes);
 
 				_listViewConnections[item] = bookmark;
 				_bookmarksListView.Items.Add(item);
@@ -1663,5 +1687,116 @@ namespace EasyConnect
 				return String.CompareOrdinal(item1.Text, item2.Text);
 			}
 		}
-	}
+
+        private void _bookmarksListView_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
+        {
+            e.DrawDefault = true;
+        }
+
+        private void _bookmarksListView_DrawItem(object sender, DrawListViewItemEventArgs e)
+        {
+        }
+
+        private void _bookmarksListView_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
+        {
+            if (e.ColumnIndex != 2 || _itemEditingNotes != e.Item)
+            {
+                e.DrawDefault = true;
+                return;
+            }
+
+            if (_notesTextBox != null)
+            {
+                return;
+            }
+
+            _notesTextBox = new TextBox();
+
+            _notesTextBox.Location = new Point(e.Bounds.Left + 6, e.Bounds.Top + 4);
+            _notesTextBox.Size = new Size(e.Bounds.Width - 6, e.Bounds.Height + 2);
+            _notesTextBox.Text = _itemEditingNotes.SubItems[2].Text;
+            _notesTextBox.LostFocus += NotesTextBox_LostFocus;
+            _notesTextBox.KeyDown += NotesTextBox_KeyDown;
+            
+            _notesTextBox.SelectAll();
+
+            _splitContainer.Panel2.Controls.Add(_notesTextBox);
+            _notesTextBox.Focus();
+            _notesTextBox.BringToFront();
+
+            _bookmarksListView.Scrollable = false;
+        }
+
+        private void NotesTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                _bookmarksListView.Focus();
+            }
+        }
+
+        private void NotesTextBox_LostFocus(object sender, EventArgs e)
+        {
+            SuspendLayout();
+
+            if (_listViewConnections.ContainsKey(_itemEditingNotes))
+            {
+                _listViewConnections[_itemEditingNotes].Notes = _notesTextBox.Text;
+            }
+
+            else if (_listViewFolders.ContainsKey(_itemEditingNotes))
+            {
+                _listViewFolders[_itemEditingNotes].Notes = _notesTextBox.Text;
+            }
+
+            _itemEditingNotes.SubItems[2].Text = _notesTextBox.Text;
+            _itemEditingNotes = null;
+
+            _notesTextBox.LostFocus -= NotesTextBox_LostFocus;
+            _notesTextBox.KeyDown -= NotesTextBox_KeyDown;
+            _splitContainer.Panel2.Controls.Remove(_notesTextBox);
+            _notesTextBox = null;
+
+            _bookmarksListView.Scrollable = true;
+            _bookmarksListView.Invalidate();
+
+            ResumeLayout();
+        }
+
+        private void _bookmarksListView_MouseDown(object sender, MouseEventArgs e)
+        {
+            ListViewItem targetItem;
+            ListViewItem.ListViewSubItem targetSubItem;
+
+            GetListViewItemAt(e.X, e.Y, out targetItem, out targetSubItem);
+
+            if (targetSubItem == null || targetItem.SubItems.Count < 3 || targetItem.SubItems[2] != targetSubItem)
+            {
+                return;
+            }
+
+            if (!_listViewNotesDoubleClickStarted)
+            {
+                _listViewNotesDoubleClickStarted = true;
+                _listViewNotesDoubleClickTimer.Start();
+            }
+
+            else
+            {
+                _itemEditingNotes = targetItem;
+                _bookmarksListView.Invalidate();
+            }
+        }
+
+        private void GetListViewItemAt(int x, int y, out ListViewItem item, out ListViewItem.ListViewSubItem subItem)
+        {
+            subItem = null;
+            item = _bookmarksListView.GetItemAt(0, y);
+
+            if (item == null)
+                return;
+
+            subItem = item.GetSubItemAt(x, y);
+        }
+    }
 }

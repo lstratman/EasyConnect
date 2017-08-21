@@ -76,5 +76,11 @@ namespace EasyConnect.Protocols
 		/// </summary>
 		/// <returns>An anonymized copy of this connection, with sensitive information, like <see cref="Password"/>, removed.</returns>
 		object CloneAnon();
+
+        string Notes
+        {
+            get;
+            set;
+        }
 	}
 }

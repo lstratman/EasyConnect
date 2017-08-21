@@ -64,6 +64,12 @@ namespace EasyConnect.Protocols
 			}
 		}
 
+        public string Notes
+        {
+            get;
+            set;
+        }
+
 		/// <summary>
 		/// Username that should be used for all descendant <see cref="IConnection"/>s unless they have their own value explicitly defined.
 		/// </summary>
@@ -286,7 +292,11 @@ namespace EasyConnect.Protocols
 						Username = reader.ReadElementContentAsString();
 						break;
 
-					case "Password":
+                    case "Notes":
+                        Notes = reader.ReadElementContentAsString();
+                        break;
+
+                    case "Password":
 						EncryptedPassword = reader.ReadElementContentAsString();
 						break;
 
@@ -341,7 +351,10 @@ namespace EasyConnect.Protocols
 			if (!String.IsNullOrEmpty(Username))
 				writer.WriteElementString("Username", Username);
 
-			writer.WriteStartElement("ChildFolders");
+            if (!String.IsNullOrEmpty(Notes))
+                writer.WriteElementString("Notes", Notes);
+
+            writer.WriteStartElement("ChildFolders");
 
 			foreach (BookmarksFolder childFolder in ChildFolders)
 			{
