@@ -1091,7 +1091,18 @@ namespace Poderosa.Terminal {
                 if (data != null)
                     return data;
                 return base.SequenceKeyData(modifier, key);
-            } else {
+            }
+            else if (key == Keys.Home || key == Keys.End) {
+                byte[] r = new byte[3];
+                r[0] = 0x1B;
+                r[1] = (byte)'[';
+                if (key == Keys.Home)
+                    r[2] = (byte)'H';
+                else if (key == Keys.End)
+                    r[2] = (byte)'F';
+                return r;
+            }
+            else {
                 byte[] r = new byte[4];
                 r[0] = 0x1B;
                 r[1] = (byte)'[';
@@ -1099,14 +1110,10 @@ namespace Poderosa.Terminal {
                 //このあたりはxtermでは割と違うようだ
                 if (key == Keys.Insert)
                     r[2] = (byte)'2';
-                else if (key == Keys.Home)
-                    r[2] = (byte)'7';
                 else if (key == Keys.PageUp)
                     r[2] = (byte)'5';
                 else if (key == Keys.Delete)
                     r[2] = (byte)'3';
-                else if (key == Keys.End)
-                    r[2] = (byte)'8';
                 else if (key == Keys.PageDown)
                     r[2] = (byte)'6';
                 else
@@ -1189,6 +1196,12 @@ namespace Poderosa.Terminal {
                     break;
                 case Keys.Left:
                     c = 'D';
+                    break;
+                case Keys.Home:
+                    c = 'H';
+                    break;
+                case Keys.End:
+                    c = 'F';
                     break;
                 default:
                     return null;
