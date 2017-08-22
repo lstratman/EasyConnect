@@ -91,6 +91,8 @@ namespace EasyConnect
 
 		protected HtmlPanel _urlPanel;
 
+        protected bool _connectionFromOmniBar = false;
+
 		/// <summary>
 		/// Default constructor; initializes the UI for the OmniBar.
 		/// </summary>
@@ -256,7 +258,7 @@ namespace EasyConnect
 			urlTextBox.Visible = false;
 			_urlPanelContainer.Visible = true;
 
-			if (!String.IsNullOrEmpty(urlTextBox.Text))
+			if (!String.IsNullOrEmpty(urlTextBox.Text) && !_connectionFromOmniBar)
 			{
 				Match urlMatch = Regex.Match(urlTextBox.Text, "^((?<protocol>.*)://){0,1}(?<hostName>.*)$");
 
@@ -272,12 +274,14 @@ namespace EasyConnect
 					                   : ConnectionFactory.GetDefaultProtocol().ProtocolPrefix) + "://" + urlMatch.Groups["hostName"];
 			}
 
-			else
+			else if (!_connectionFromOmniBar)
 			{
 				_urlPanel.Text = "";
 			}
 
-			if (AutoHideToolbar && PointToClient(Cursor.Position).Y > toolbarBackground.Height)
+            _connectionFromOmniBar = false;
+
+            if (AutoHideToolbar && PointToClient(Cursor.Position).Y > toolbarBackground.Height)
 			{
 				_bookmarksMenu.Hide();
 				_toolsMenu.Hide();
@@ -314,6 +318,8 @@ namespace EasyConnect
 			_omniBarBorder.Visible = false;
 
 			_connection = _validAutoCompleteEntries[_omniBarPanel.Controls.IndexOf((HtmlPanel) sender) / 2];
+            _connectionFromOmniBar = true;
+
 			Connect();
 		}
 
@@ -345,16 +351,19 @@ namespace EasyConnect
 		{
 			if (e.KeyCode == Keys.Enter)
 			{
-				if (_omniBarFocusIndex == -1)
-				{
-					IConnection newConnection = ConnectionFactory.GetConnection(urlTextBox.Text);
-					newConnection.Guid = Guid.NewGuid();
+                if (_omniBarFocusIndex == -1)
+                {
+                    IConnection newConnection = ConnectionFactory.GetConnection(urlTextBox.Text);
+                    newConnection.Guid = Guid.NewGuid();
 
-					_connection = newConnection;
-				}
+                    _connection = newConnection;
+                }
 
-				else
-					_connection = _validAutoCompleteEntries[_omniBarFocusIndex];
+                else
+                {
+                    _connection = _validAutoCompleteEntries[_omniBarFocusIndex];
+                    _connectionFromOmniBar = true;
+                }
 
 				Connect();
 			}
