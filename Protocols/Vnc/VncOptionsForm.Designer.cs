@@ -39,7 +39,6 @@
             this._passwordLabel = new System.Windows.Forms.Label();
             this._generalLabel = new System.Windows.Forms.Label();
             this._hostPanel = new System.Windows.Forms.Panel();
-            this._portUpDown = new System.Windows.Forms.NumericUpDown();
             this._portLabel = new System.Windows.Forms.Label();
             this._hostNameLabel = new System.Windows.Forms.Label();
             this._hostNameTextBox = new System.Windows.Forms.TextBox();
@@ -54,10 +53,10 @@
             this._clipboardLabel = new System.Windows.Forms.Label();
             this._titleLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this._portTextBox = new System.Windows.Forms.TextBox();
             this._flowLayoutPanel.SuspendLayout();
             this._generalPanel.SuspendLayout();
             this._hostPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._portUpDown)).BeginInit();
             this._displayPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._displayUpDown)).BeginInit();
             this._behaviorPanel.SuspendLayout();
@@ -157,7 +156,7 @@
             // 
             // _hostPanel
             // 
-            this._hostPanel.Controls.Add(this._portUpDown);
+            this._hostPanel.Controls.Add(this._portTextBox);
             this._hostPanel.Controls.Add(this._portLabel);
             this._hostPanel.Controls.Add(this._hostNameLabel);
             this._hostPanel.Controls.Add(this._hostNameTextBox);
@@ -166,23 +165,6 @@
             this._hostPanel.Name = "_hostPanel";
             this._hostPanel.Size = new System.Drawing.Size(684, 99);
             this._hostPanel.TabIndex = 84;
-            // 
-            // _portUpDown
-            // 
-            this._portUpDown.Location = new System.Drawing.Point(115, 63);
-            this._portUpDown.Maximum = new decimal(new int[] {
-            32167,
-            0,
-            0,
-            0});
-            this._portUpDown.Name = "_portUpDown";
-            this._portUpDown.Size = new System.Drawing.Size(61, 20);
-            this._portUpDown.TabIndex = 56;
-            this._portUpDown.Value = new decimal(new int[] {
-            5900,
-            0,
-            0,
-            0});
             // 
             // _portLabel
             // 
@@ -319,6 +301,14 @@
             this.panel1.Size = new System.Drawing.Size(667, 1);
             this.panel1.TabIndex = 90;
             // 
+            // _portTextBox
+            // 
+            this._portTextBox.Location = new System.Drawing.Point(115, 63);
+            this._portTextBox.Name = "_portTextBox";
+            this._portTextBox.Size = new System.Drawing.Size(63, 20);
+            this._portTextBox.TabIndex = 59;
+            this._portTextBox.Text = "5900";
+            // 
             // VncOptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -338,7 +328,6 @@
             this._generalPanel.PerformLayout();
             this._hostPanel.ResumeLayout(false);
             this._hostPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._portUpDown)).EndInit();
             this._displayPanel.ResumeLayout(false);
             this._displayPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._displayUpDown)).EndInit();
@@ -360,7 +349,6 @@
         private System.Windows.Forms.TextBox _hostNameTextBox;
 		private System.Windows.Forms.Label _hostLabel;
         private System.Windows.Forms.Panel _displayPanel;
-        private System.Windows.Forms.NumericUpDown _portUpDown;
         private System.Windows.Forms.NumericUpDown _displayUpDown;
         private System.Windows.Forms.CheckBox _viewOnlyCheckbox;
         private System.Windows.Forms.Label _viewOnlyLabel;
@@ -375,5 +363,6 @@
         private System.Windows.Forms.CheckBox _clipboardCheckbox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label _clipboardLabel;
+        private System.Windows.Forms.TextBox _portTextBox;
     }
 }
