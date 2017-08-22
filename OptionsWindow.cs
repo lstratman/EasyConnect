@@ -91,7 +91,7 @@ namespace EasyConnect
 				{
 					Label formLabel = new Label
 						                  {
-											  BackColor = Color.FromArgb(242, 242, 242),
+											  BackColor = Color.White,
 							                  TextAlign = ContentAlignment.MiddleLeft,
 							                  Padding = new Padding(0, 0, 0, 0),
 							                  Size = new Size(233, 29),
@@ -141,13 +141,15 @@ namespace EasyConnect
 			{
 				label.Image = null;
 				label.ForeColor = Color.FromArgb(0, 0, 0);
-				label.Cursor = Cursors.Hand;
+                label.Font = new Font("Segoe UI", 10.0f);
+                label.Cursor = Cursors.Hand;
 			}
 
 			navigationLabel.Image = Resources.SelectedOptionCategoryBackground;
 			navigationLabel.ImageAlign = ContentAlignment.MiddleCenter;
 			navigationLabel.ForeColor = Color.FromArgb(66, 139, 202);
-			navigationLabel.Cursor = Cursors.Default;
+            navigationLabel.Font = new Font("Segoe UI", 10.0f, FontStyle.Bold);
+            navigationLabel.Cursor = Cursors.Default;
 		}
 
         /// <summary>

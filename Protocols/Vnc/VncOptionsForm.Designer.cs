@@ -127,7 +127,7 @@
             // 
             // _passwordTextBox
             // 
-            this._passwordTextBox.Location = new System.Drawing.Point(159, 39);
+            this._passwordTextBox.Location = new System.Drawing.Point(106, 41);
             this._passwordTextBox.Name = "_passwordTextBox";
             this._passwordTextBox.PasswordChar = '*';
             this._passwordTextBox.SecureText = secureString1;
@@ -169,7 +169,7 @@
             // 
             // _portUpDown
             // 
-            this._portUpDown.Location = new System.Drawing.Point(159, 63);
+            this._portUpDown.Location = new System.Drawing.Point(115, 63);
             this._portUpDown.Maximum = new decimal(new int[] {
             32167,
             0,
@@ -199,14 +199,14 @@
             this._hostNameLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._hostNameLabel.Location = new System.Drawing.Point(31, 38);
             this._hostNameLabel.Name = "_hostNameLabel";
-            this._hostNameLabel.Size = new System.Drawing.Size(122, 20);
+            this._hostNameLabel.Size = new System.Drawing.Size(78, 20);
             this._hostNameLabel.TabIndex = 53;
             this._hostNameLabel.Text = "Host name:";
             this._hostNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // _hostNameTextBox
             // 
-            this._hostNameTextBox.Location = new System.Drawing.Point(159, 39);
+            this._hostNameTextBox.Location = new System.Drawing.Point(115, 39);
             this._hostNameTextBox.Name = "_hostNameTextBox";
             this._hostNameTextBox.Size = new System.Drawing.Size(154, 20);
             this._hostNameTextBox.TabIndex = 52;
@@ -236,7 +236,7 @@
             // _viewOnlyCheckbox
             // 
             this._viewOnlyCheckbox.AutoSize = true;
-            this._viewOnlyCheckbox.Location = new System.Drawing.Point(159, 63);
+            this._viewOnlyCheckbox.Location = new System.Drawing.Point(115, 68);
             this._viewOnlyCheckbox.Name = "_viewOnlyCheckbox";
             this._viewOnlyCheckbox.Size = new System.Drawing.Size(15, 14);
             this._viewOnlyCheckbox.TabIndex = 84;
@@ -254,7 +254,7 @@
             // 
             // _displayUpDown
             // 
-            this._displayUpDown.Location = new System.Drawing.Point(159, 37);
+            this._displayUpDown.Location = new System.Drawing.Point(115, 40);
             this._displayUpDown.Name = "_displayUpDown";
             this._displayUpDown.Size = new System.Drawing.Size(61, 20);
             this._displayUpDown.TabIndex = 81;
@@ -272,7 +272,7 @@
             // _clipboardCheckbox
             // 
             this._clipboardCheckbox.AutoSize = true;
-            this._clipboardCheckbox.Location = new System.Drawing.Point(159, 46);
+            this._clipboardCheckbox.Location = new System.Drawing.Point(152, 46);
             this._clipboardCheckbox.Name = "_clipboardCheckbox";
             this._clipboardCheckbox.Size = new System.Drawing.Size(15, 14);
             this._clipboardCheckbox.TabIndex = 82;
@@ -323,7 +323,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(719, 460);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this._titleLabel);

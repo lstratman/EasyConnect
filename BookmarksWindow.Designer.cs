@@ -61,7 +61,7 @@ namespace EasyConnect
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Bookmarks");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Bookmarks");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BookmarksWindow));
             this._splitContainer = new System.Windows.Forms.SplitContainer();
             this._bookmarksFoldersTreeView = new System.Windows.Forms.TreeView();
@@ -118,12 +118,12 @@ namespace EasyConnect
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this._historyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this._optionsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._toolsMenuSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this._updatesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._toolsMenuSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this._aboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this._optionsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this._toolsMenuSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
             this._splitContainer.Panel2.SuspendLayout();
@@ -149,7 +149,7 @@ namespace EasyConnect
             // 
             // _splitContainer.Panel1
             // 
-            this._splitContainer.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this._splitContainer.Panel1.BackColor = System.Drawing.Color.White;
             this._splitContainer.Panel1.Controls.Add(this._bookmarksFoldersTreeView);
             // 
             // _splitContainer.Panel2
@@ -166,7 +166,7 @@ namespace EasyConnect
             this._bookmarksFoldersTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._bookmarksFoldersTreeView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this._bookmarksFoldersTreeView.BackColor = System.Drawing.Color.White;
             this._bookmarksFoldersTreeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this._bookmarksFoldersTreeView.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._bookmarksFoldersTreeView.ImageIndex = 0;
@@ -174,10 +174,10 @@ namespace EasyConnect
             this._bookmarksFoldersTreeView.LabelEdit = true;
             this._bookmarksFoldersTreeView.Location = new System.Drawing.Point(12, 12);
             this._bookmarksFoldersTreeView.Name = "_bookmarksFoldersTreeView";
-            treeNode2.Name = "root";
-            treeNode2.Text = "Bookmarks";
+            treeNode1.Name = "root";
+            treeNode1.Text = "Bookmarks";
             this._bookmarksFoldersTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
+            treeNode1});
             this._bookmarksFoldersTreeView.SelectedImageIndex = 1;
             this._bookmarksFoldersTreeView.ShowRootLines = false;
             this._bookmarksFoldersTreeView.Size = new System.Drawing.Size(233, 416);
@@ -203,7 +203,7 @@ namespace EasyConnect
             this._bookmarksListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._bookmarksListView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this._bookmarksListView.BackColor = System.Drawing.Color.White;
             this._bookmarksListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this._bookmarksListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this._bookmarkNameColumnHeader,
@@ -610,7 +610,7 @@ namespace EasyConnect
             this._toolsMenu.Name = "_toolsMenu";
             this._toolsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this._toolsMenu.ShowImageMargin = false;
-            this._toolsMenu.Size = new System.Drawing.Size(173, 204);
+            this._toolsMenu.Size = new System.Drawing.Size(173, 182);
             this._toolsMenu.VisibleChanged += new System.EventHandler(this._toolsMenu_VisibleChanged);
             // 
             // _newTabMenuItem
@@ -647,6 +647,18 @@ namespace EasyConnect
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(169, 6);
             // 
+            // _optionsMenuItem
+            // 
+            this._optionsMenuItem.Name = "_optionsMenuItem";
+            this._optionsMenuItem.Size = new System.Drawing.Size(172, 22);
+            this._optionsMenuItem.Text = "Options";
+            this._optionsMenuItem.Click += new System.EventHandler(this._optionsMenuItem_Click);
+            // 
+            // _toolsMenuSeparator1
+            // 
+            this._toolsMenuSeparator1.Name = "_toolsMenuSeparator1";
+            this._toolsMenuSeparator1.Size = new System.Drawing.Size(169, 6);
+            // 
             // _updatesMenuItem
             // 
             this._updatesMenuItem.Name = "_updatesMenuItem";
@@ -673,18 +685,6 @@ namespace EasyConnect
             this._exitMenuItem.Size = new System.Drawing.Size(172, 22);
             this._exitMenuItem.Text = "Exit";
             this._exitMenuItem.Click += new System.EventHandler(this._exitMenuItem_Click);
-            // 
-            // _optionsMenuItem
-            // 
-            this._optionsMenuItem.Name = "_optionsMenuItem";
-            this._optionsMenuItem.Size = new System.Drawing.Size(172, 22);
-            this._optionsMenuItem.Text = "Options";
-            this._optionsMenuItem.Click += new System.EventHandler(this._optionsMenuItem_Click);
-            // 
-            // _toolsMenuSeparator1
-            // 
-            this._toolsMenuSeparator1.Name = "_toolsMenuSeparator1";
-            this._toolsMenuSeparator1.Size = new System.Drawing.Size(169, 6);
             // 
             // BookmarksWindow
             // 

@@ -64,6 +64,7 @@
             this._passwordTextBox = new SecurePasswordTextBox.SecureTextBox();
             this._flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this._hostPanel = new System.Windows.Forms.Panel();
+            this._portTextBox = new System.Windows.Forms.TextBox();
             this._portLabel = new System.Windows.Forms.Label();
             this._adminChannelCheckBox = new System.Windows.Forms.CheckBox();
             this._adminChannelLabel = new System.Windows.Forms.Label();
@@ -87,7 +88,6 @@
             this._useProxyCheckBox = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this._titleLabel = new System.Windows.Forms.Label();
-            this._portTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this._resolutionSlider)).BeginInit();
             this._flowLayoutPanel.SuspendLayout();
             this._hostPanel.SuspendLayout();
@@ -460,6 +460,13 @@
             this._hostPanel.Size = new System.Drawing.Size(684, 122);
             this._hostPanel.TabIndex = 84;
             // 
+            // _portTextBox
+            // 
+            this._portTextBox.Location = new System.Drawing.Point(168, 65);
+            this._portTextBox.Name = "_portTextBox";
+            this._portTextBox.Size = new System.Drawing.Size(63, 20);
+            this._portTextBox.TabIndex = 58;
+            // 
             // _portLabel
             // 
             this._portLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -709,19 +716,12 @@
             this._titleLabel.TabIndex = 83;
             this._titleLabel.Text = "Remote Desktop Options";
             // 
-            // _portTextBox
-            // 
-            this._portTextBox.Location = new System.Drawing.Point(168, 65);
-            this._portTextBox.Name = "_portTextBox";
-            this._portTextBox.Size = new System.Drawing.Size(63, 20);
-            this._portTextBox.TabIndex = 58;
-            // 
             // RdpOptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(721, 1013);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this._titleLabel);

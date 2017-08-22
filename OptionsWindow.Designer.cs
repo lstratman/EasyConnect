@@ -80,7 +80,7 @@ namespace EasyConnect
             // 
             this._sidebarFlowLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this._sidebarFlowLayoutPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this._sidebarFlowLayoutPanel.BackColor = System.Drawing.Color.White;
             this._sidebarFlowLayoutPanel.Controls.Add(this._optionsLabel);
             this._sidebarFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this._sidebarFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
@@ -108,6 +108,7 @@ namespace EasyConnect
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._containerPanel.AutoScroll = true;
+            this._containerPanel.BackColor = System.Drawing.Color.White;
             this._containerPanel.Location = new System.Drawing.Point(217, 36);
             this._containerPanel.Name = "_containerPanel";
             this._containerPanel.Size = new System.Drawing.Size(524, 646);
@@ -216,7 +217,7 @@ namespace EasyConnect
             this._toolsMenu.Name = "_toolsMenu";
             this._toolsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this._toolsMenu.ShowImageMargin = false;
-            this._toolsMenu.Size = new System.Drawing.Size(173, 176);
+            this._toolsMenu.Size = new System.Drawing.Size(173, 154);
             this._toolsMenu.VisibleChanged += new System.EventHandler(this._toolsMenu_VisibleChanged);
             // 
             // _newTabMenuItem
