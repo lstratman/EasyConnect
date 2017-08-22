@@ -12,6 +12,8 @@ using System.Xml.Serialization;
 using EasyConnect.Protocols;
 using EasyTabs;
 using System.Windows.Forms.VisualStyles;
+using EasyConnect.Properties;
+using System.Configuration;
 
 namespace EasyConnect
 {
@@ -132,6 +134,8 @@ namespace EasyConnect
 		{
 			InitializeComponent();
 
+            _toolsMenu.Renderer = new EasyConnectToolStripRender();
+
             _listViewNotesDoubleClickTimer.Tick += _listViewNotesDoubleClickTimer_Tick;
             _listViewNotesDoubleClickTimer.Interval = SystemInformation.DoubleClickTime;
 
@@ -178,7 +182,28 @@ namespace EasyConnect
 
             _bookmarkContextMenu.Renderer = new EasyConnectToolStripRender();
             _folderContextMenu.Renderer = new EasyConnectToolStripRender();
-		}
+
+            HtmlPanel urlPanel = new HtmlPanel
+            {
+                AutoScroll = false,
+                Width = _urlPanelContainer.Width,
+                Height = _urlPanelContainer.Height,
+                Left = 0,
+                Top = 0,
+                Font = urlTextBox.Font,
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
+            };
+
+            _urlPanelContainer.Controls.Add(urlPanel);
+
+            _iconPictureBox.Image = new Icon(Icon, 16, 16).ToBitmap();
+            urlPanel.Text = String.Format(
+                    @"<div style=""background-color: #FFFFFF; font-family: Tahoma; font-size: 11.25pt; height: {0}px; color: #9999BF;"">easyconnect://<font color=""black"">bookmarks</font></div>",
+                    urlPanel.Height);
+
+            _updatesMenuItem.Visible = ConfigurationManager.AppSettings["checkForUpdates"] != "false";
+            _toolsMenuSeparator2.Visible = ConfigurationManager.AppSettings["checkForUpdates"] != "false";
+        }
 
         private void _listViewNotesDoubleClickTimer_Tick(object sender, EventArgs e)
         {
@@ -1797,6 +1822,119 @@ namespace EasyConnect
                 return;
 
             subItem = item.GetSubItemAt(x, y);
+        }
+
+        /// <summary>
+		/// Handler method that's called when the user's cursor goes over <see cref="_toolsButton"/>.  Sets the button's background to the standard
+		/// "hover" image.
+		/// </summary>
+		/// <param name="sender">Object from which this event originated, <see cref="_toolsButton"/> in this case.</param>
+		/// <param name="e">Arguments associated with this event.</param>
+		private void _toolsButton_MouseEnter(object sender, EventArgs e)
+        {
+            _toolsButton.BackgroundImage = Resources.ButtonHoverBackground;
+        }
+
+        /// <summary>
+        /// Handler method that's called when the user's cursor leaves <see cref="_toolsButton"/>.  Sets the button's background to nothing.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated, <see cref="_toolsButton"/> in this case.</param>
+        /// <param name="e">Arguments associated with this event.</param>
+        private void _toolsButton_MouseLeave(object sender, EventArgs e)
+        {
+            if (!_toolsMenu.Visible)
+                _toolsButton.BackgroundImage = null;
+        }
+
+        /// <summary>
+        /// Handler method that's called when the user clicks the "Exit" menu item in the tools menu.  Exits the entire application.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
+        private void _exitMenuItem_Click(object sender, EventArgs e)
+        {
+            ((Form)Parent).Close();
+        }
+
+        /// <summary>
+        /// Handler method that's called when the user clicks the "Tools" icon in the toolbar.  Opens up <see cref="_toolsMenu"/>.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
+        private void _toolsButton_Click(object sender, EventArgs e)
+        {
+            _toolsButton.BackgroundImage = Resources.ButtonPressedBackground;
+            _toolsMenu.DefaultDropDownDirection = ToolStripDropDownDirection.Left;
+            _toolsMenu.Show(_toolsButton, -1 * _toolsMenu.Width + _toolsButton.Width, _toolsButton.Height);
+        }
+
+        private void _aboutMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox aboutBox = new AboutBox();
+            aboutBox.ShowDialog(ParentTabs);
+        }
+
+        /// <summary>
+		/// Handler method that's called when the user clicks on the "Check for updates" menu item under the tools menu.  Starts the update check process by
+		/// calling <see cref="MainForm.CheckForUpdate"/> on <see cref="ParentTabs"/>.
+		/// </summary>
+		/// <param name="sender">Object from which this event originated.</param>
+		/// <param name="e">Arguments associated with this event.</param>
+		private void _updatesMenuItem_Click(object sender, EventArgs e)
+        {
+            ParentTabs.CheckForUpdate();
+        }
+
+        /// <summary>
+		/// Handler method that's called when the user clicks the "History" menu item under the tools menu.  Creates the history tab if one doesn't exist 
+		/// already and then switches to it.
+		/// </summary>
+		/// <param name="sender">Object from which this event originated.</param>
+		/// <param name="e">Arguments associated with this event.</param>
+		private void _historyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ParentTabs.OpenHistory();
+        }
+
+        /// <summary>
+		/// Handler method that's called when the user clicks the <see cref="_newWindowMenuItem"/> in the tools menu.  Creates a new <see cref="MainForm"/>
+		/// instance and opens it.
+		/// </summary>
+		/// <param name="sender">Object from which this event originated, <see cref="_newWindowMenuItem"/> in this case.</param>
+		/// <param name="e">Arguments associated with this event.</param>
+		private void _newWindowMenuItem_Click(object sender, EventArgs e)
+        {
+            MainForm newWindow = new MainForm(new List<Guid>());
+            ParentTabs.ApplicationContext.OpenWindow(newWindow);
+
+            newWindow.Show();
+        }
+
+        /// <summary>
+		/// Handler method that's called when the user clicks the "New tab" menu item under the tools menu.  Creates a new tab and then switches to it.
+		/// </summary>
+		/// <param name="sender">Object from which this event originated.</param>
+		/// <param name="e">Arguments associated with this event.</param>
+		private void _newTabMenuItem_Click(object sender, EventArgs e)
+        {
+            ParentTabs.AddNewTab();
+        }
+
+        /// <summary>
+		/// Handler method that's called when the user clicks the "Options" menu item under the tools menu.  Creates the options tab if one doesn't exist 
+		/// already and then switches to it.
+		/// </summary>
+		/// <param name="sender">Object from which this event originated.</param>
+		/// <param name="e">Arguments associated with this event.</param>
+		private void _optionsMenuItem_Click(object sender, EventArgs e)
+        {
+            ParentTabs.OpenOptions();
+        }
+
+        private void _toolsMenu_VisibleChanged(object sender, EventArgs e)
+        {
+            if (!_toolsMenu.Visible)
+                _toolsButton.BackgroundImage = null;
         }
     }
 }
