@@ -289,6 +289,7 @@
             this.urlBackground.Name = "urlBackground";
             this.urlBackground.Size = new System.Drawing.Size(546, 24);
             this.urlBackground.TabIndex = 2;
+            this.urlBackground.Resize += new System.EventHandler(this.urlBackground_Resize);
             // 
             // _iconPictureBox
             // 

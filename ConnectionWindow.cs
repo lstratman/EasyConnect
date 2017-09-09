@@ -1091,5 +1091,10 @@ namespace EasyConnect
 			AboutBox aboutBox = new AboutBox();
 			aboutBox.ShowDialog(ParentTabs);
 		}
-	}
+
+        private void urlBackground_Resize(object sender, EventArgs e)
+        {
+            _urlPanel.AutoScroll = false;
+        }
+    }
 }

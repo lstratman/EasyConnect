@@ -125,6 +125,8 @@ namespace EasyConnect
 
         protected TextBox _notesTextBox = null;
 
+        protected HtmlPanel _urlPanel = null;
+
 		/// <summary>
 		/// Constructor; deserializes the bookmarks folder structure, adds the various folder nodes to <see cref="_bookmarksFoldersTreeView"/>, and gets the
 		/// icons for each protocol.
@@ -183,23 +185,23 @@ namespace EasyConnect
             _bookmarkContextMenu.Renderer = new EasyConnectToolStripRender();
             _folderContextMenu.Renderer = new EasyConnectToolStripRender();
 
-            HtmlPanel urlPanel = new HtmlPanel
+            _iconPictureBox.Image = new Icon(Icon, 16, 16).ToBitmap();
+
+            _urlPanel = new HtmlPanel
             {
                 AutoScroll = false,
                 Width = _urlPanelContainer.Width,
                 Height = _urlPanelContainer.Height,
                 Left = 0,
-                Top = 0,
+                Top = 1,
                 Font = urlTextBox.Font,
                 Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
             };
 
-            _urlPanelContainer.Controls.Add(urlPanel);
-
-            _iconPictureBox.Image = new Icon(Icon, 16, 16).ToBitmap();
-            urlPanel.Text = String.Format(
-                    @"<div style=""background-color: #FFFFFF; font-family: Tahoma; font-size: 11.25pt; height: {0}px; color: #9999BF;"">easyconnect://<font color=""black"">bookmarks</font></div>",
-                    urlPanel.Height);
+            _urlPanelContainer.Controls.Add(_urlPanel);
+            _urlPanel.Text = String.Format(
+                    @"<span style=""background-color: #FFFFFF; font-family: {2}; font-size: {1}pt; height: {0}px; color: #9999BF"">easyconnect://<font color=""black"">bookmarks</font></span>",
+                    _urlPanel.Height, urlTextBox.Font.SizeInPoints, urlTextBox.Font.FontFamily.GetName(0));
 
 #if APPX
             _updatesMenuItem.Visible = false;
@@ -1948,6 +1950,11 @@ namespace EasyConnect
             _renameFolderMenuItem.Enabled = !_bookmarksFoldersTreeView.Focused || _bookmarksFoldersTreeView.SelectedNode.Parent != null;
             _cutFolderMenuItem.Enabled = !_bookmarksFoldersTreeView.Focused || _bookmarksFoldersTreeView.SelectedNode.Parent != null;
             _copyFolderMenuItem.Enabled = !_bookmarksFoldersTreeView.Focused || _bookmarksFoldersTreeView.SelectedNode.Parent != null;
+        }
+
+        private void urlBackground_Resize(object sender, EventArgs e)
+        {
+            _urlPanel.AutoScroll = false;
         }
     }
 }
