@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -12,7 +11,10 @@ using System.Security;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Windows.Input;
+#if !APPX
+using System.Configuration;
 using AppLimit.NetSparkle;
+#endif
 using EasyConnect.Properties;
 using EasyConnect.Protocols;
 using EasyTabs;
@@ -113,7 +115,9 @@ namespace EasyConnect
 		/// </summary>
 		protected bool _shiftDown = false;
 
-		protected static Sparkle _sparkle;
+#if !APPX
+        protected static Sparkle _sparkle;
+#endif
 
 		/// <summary>
 		/// Default constructor.
@@ -123,7 +127,8 @@ namespace EasyConnect
 			InitializeComponent();
 			Init();
 
-			if (_sparkle == null && ConfigurationManager.AppSettings["checkForUpdates"] != "false")
+#if !APPX
+            if (_sparkle == null && ConfigurationManager.AppSettings["checkForUpdates"] != "false")
 			{
 				_sparkle = new Sparkle(
 					String.IsNullOrEmpty(ConfigurationManager.AppSettings["appCastUrl"])
@@ -134,6 +139,7 @@ namespace EasyConnect
 
 				_sparkle.StartLoop(true, true);
 			}
+#endif
 		}
 
 		/// <summary>
@@ -845,6 +851,7 @@ can be used.";
 		/// <returns>True if the update process was started successfully, false otherwise.</returns>
 		public void CheckForUpdate()
 		{
+#if !APPX
             if (_sparkle == null)
             {
                 return;
@@ -861,14 +868,17 @@ can be used.";
 			_sparkle.checkLoopFinished += _sparkle_checkLoopFinished;
 
 			_sparkle.StartLoop(true, true);
+#endif
 		}
 
-		void _sparkle_checkLoopFinished(object sender, bool UpdateRequired)
+#if !APPX
+        void _sparkle_checkLoopFinished(object sender, bool UpdateRequired)
 		{
 			_sparkle.checkLoopFinished -= _sparkle_checkLoopFinished;
 
 			if (!UpdateRequired)
 				MessageBox.Show(this, "No updates are available.", "Software Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
+#endif
 	}
 }

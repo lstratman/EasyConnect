@@ -98,14 +98,19 @@ namespace EasyConnect
                     @"<div style=""background-color: #FFFFFF; font-family: Tahoma; font-size: 11.25pt; height: {0}px; color: #9999BF;"">easyconnect://<font color=""black"">history</font></div>",
                     urlPanel.Height);
 
+#if APPX
+            _updatesMenuItem.Visible = false;
+            _toolsMenuSeparator2.Visible = false;
+#else
             _updatesMenuItem.Visible = ConfigurationManager.AppSettings["checkForUpdates"] != "false";
             _toolsMenuSeparator2.Visible = ConfigurationManager.AppSettings["checkForUpdates"] != "false";
+#endif
         }
 
-		/// <summary>
-		/// List of all connections that the user has made in the last two weeks.
-		/// </summary>
-		public List<HistoricalConnection> Connections
+        /// <summary>
+        /// List of all connections that the user has made in the last two weeks.
+        /// </summary>
+        public List<HistoricalConnection> Connections
 		{
 			get
 			{

@@ -150,10 +150,16 @@ namespace EasyConnect
 			_urlPanelContainer.Controls.Add(_urlPanel);
 			urlTextBox.Visible = false;
 
+#if APPX
+            _updatesMenuItem.Visible = false;
+            _toolsMenuSeparator2.Visible = false;
+#else
             _updatesMenuItem.Visible = ConfigurationManager.AppSettings["checkForUpdates"] != "false";
+            _toolsMenuSeparator2.Visible = ConfigurationManager.AppSettings["checkForUpdates"] != "false";
+#endif
         }
 
-		void _urlPanel_Click(object sender, EventArgs e)
+        void _urlPanel_Click(object sender, EventArgs e)
 		{
 			_urlPanelContainer.Visible = false;
 			

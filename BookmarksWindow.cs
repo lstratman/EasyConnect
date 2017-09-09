@@ -201,8 +201,13 @@ namespace EasyConnect
                     @"<div style=""background-color: #FFFFFF; font-family: Tahoma; font-size: 11.25pt; height: {0}px; color: #9999BF;"">easyconnect://<font color=""black"">bookmarks</font></div>",
                     urlPanel.Height);
 
+#if APPX
+            _updatesMenuItem.Visible = false;
+            _toolsMenuSeparator2.Visible = false;
+#else
             _updatesMenuItem.Visible = ConfigurationManager.AppSettings["checkForUpdates"] != "false";
             _toolsMenuSeparator2.Visible = ConfigurationManager.AppSettings["checkForUpdates"] != "false";
+#endif
         }
 
         private void _listViewNotesDoubleClickTimer_Tick(object sender, EventArgs e)

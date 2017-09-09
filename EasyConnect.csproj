@@ -82,18 +82,34 @@
   <PropertyGroup>
     <StartupObject>EasyConnect.EasyConnect</StartupObject>
   </PropertyGroup>
-  <ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppX|AnyCPU'">
+    <OutputPath>bin\AppX\</OutputPath>
+    <DefineConstants>TRACE;APPX</DefineConstants>
+    <Optimize>true</Optimize>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppX|x86'">
+    <OutputPath>bin\x86\AppX\</OutputPath>
+    <DocumentationFile>bin\x86\Release\EasyConnect.XML</DocumentationFile>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(Configuration)' != 'AppX'">
     <Reference Include="AppLimit.NetSparkle.Net40">
       <HintPath>lib\AppLimit.NetSparkle.Net40.dll</HintPath>
     </Reference>
-    <Reference Include="EasyTabs, Version=1.3.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EasyTabs.1.3.2.0\lib\net40\EasyTabs.dll</HintPath>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="EasyTabs, Version=1.3.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\EasyTabs.1.3.3.0\lib\net40\EasyTabs.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EasyTabs.1.3.2.0\lib\net40\Microsoft.WindowsAPICodePack.dll</HintPath>
+      <HintPath>packages\EasyTabs.1.3.3.0\lib\net40\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EasyTabs.1.3.2.0\lib\net40\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+      <HintPath>packages\EasyTabs.1.3.3.0\lib\net40\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
@@ -336,9 +352,14 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>copy /y "$(SolutionDir)Win32Interop\SystemHookCore\$(ConfigurationName)\SystemHookCore.dll" "$(TargetDir)"
-copy /y "$(SolutionDir)Protocols\Vnc\bin\$(ConfigurationName)\scvncctrl.dll" "$(TargetDir)"
+  <PropertyGroup Condition="'$(Configuration)' == 'AppX'">
+    <PostBuildEvent>del "$(TargetDir)*.xml" 1&gt;:null 2&gt;&amp;1
+del "$(TargetDir)*.pdb" 1&gt;:null 2&gt;&amp;1
+del "$(TargetDir)$(ProjectName).appx" 1&gt;:null 2&gt;&amp;1
+copy "$(SolutionDir)AppXManifest.xml" "$(TargetDir)" 1&gt;:null 2&gt;&amp;1
+xcopy "$(SolutionDir)AppX\Assets\*" "$(TargetDir)\Assets" /I /Q /Y 1&gt;:null 2&gt;&amp;1
+cd "$(TargetDir)"
+"C:\Program Files (x86)\Windows Kits\10\bin\x86\makeappx.exe" pack /d . /p $(ProjectName).appx /l
 Exit /b 0</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
