@@ -1936,5 +1936,13 @@ namespace EasyConnect
             if (!_toolsMenu.Visible)
                 _toolsButton.BackgroundImage = null;
         }
+
+        private void _folderContextMenu_Opened(object sender, EventArgs e)
+        {
+            _deleteFolderMenuItem.Enabled = !_bookmarksFoldersTreeView.Focused || _bookmarksFoldersTreeView.SelectedNode.Parent != null;
+            _renameFolderMenuItem.Enabled = !_bookmarksFoldersTreeView.Focused || _bookmarksFoldersTreeView.SelectedNode.Parent != null;
+            _cutFolderMenuItem.Enabled = !_bookmarksFoldersTreeView.Focused || _bookmarksFoldersTreeView.SelectedNode.Parent != null;
+            _copyFolderMenuItem.Enabled = !_bookmarksFoldersTreeView.Focused || _bookmarksFoldersTreeView.SelectedNode.Parent != null;
+        }
     }
 }

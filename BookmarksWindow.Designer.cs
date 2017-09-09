@@ -273,9 +273,10 @@ namespace EasyConnect
             this._importBookmarkMenuItem});
             this._folderContextMenu.Name = "_folderContextMenu";
             this._folderContextMenu.ShowImageMargin = false;
-            this._folderContextMenu.Size = new System.Drawing.Size(270, 326);
+            this._folderContextMenu.Size = new System.Drawing.Size(270, 348);
             this._folderContextMenu.Closed += new System.Windows.Forms.ToolStripDropDownClosedEventHandler(this._folderContextMenu_Closed);
             this._folderContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this._folderContextMenu_Opening);
+            this._folderContextMenu.Opened += new System.EventHandler(this._folderContextMenu_Opened);
             // 
             // _folderOpenAllMenuItem
             // 
