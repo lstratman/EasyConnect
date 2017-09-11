@@ -22,6 +22,7 @@ using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
 using Win32Interop.Enums;
 using Win32Interop.Methods;
+using System.Threading.Tasks;
 
 namespace EasyConnect
 {
@@ -31,13 +32,13 @@ namespace EasyConnect
 	public partial class MainForm : TitleBarTabs
 	{
 		/// <summary>
-		/// Delegate to open the <see cref="HistoryWindow.HistoricalConnection"/> whose <see cref="IConnection.Guid"/> matches <paramref name="historyGuid"/>.
+		/// Delegate to open the <see cref="HistoricalConnection"/> whose <see cref="IConnection.Guid"/> matches <paramref name="historyGuid"/>.
 		/// </summary>
 		/// <param name="historyGuid">Value to use to match against <see cref="IConnection.Guid"/> when searching for a 
-		/// <see cref="HistoryWindow.HistoricalConnection"/></param>
-		/// <returns>The newly created tab for the connection to the <see cref="HistoryWindow.HistoricalConnection"/> whose <see cref="IConnection.Guid"/>
+		/// <see cref="HistoricalConnection"/></param>
+		/// <returns>The newly created tab for the connection to the <see cref="HistoricalConnection"/> whose <see cref="IConnection.Guid"/>
 		/// matches <paramref name="historyGuid"/>.</returns>
-		public delegate TitleBarTab ConnectToHistoryDelegate(Guid historyGuid);
+		public delegate Task<TitleBarTab> ConnectToHistoryDelegate(Guid historyGuid);
 
 		/// <summary>
 		/// Instance of the first created MainForm, used for remoting purposes to open history entries via the jump list.
@@ -58,7 +59,7 @@ namespace EasyConnect
 		/// <summary>
 		/// Contains the UI for using bookmarks but also the data concerning all of the bookmarks and folders that the user has.
 		/// </summary>
-		protected BookmarksWindow _bookmarks = null;
+		protected BookmarksWindow _bookmarksWindow = null;
 
 		/// <summary>
 		/// Flag indicating whether or not the user is currently pressing the Ctrl key.
@@ -68,7 +69,7 @@ namespace EasyConnect
 		/// <summary>
 		/// Contains the UI for looking at a user's connection history but also the data concerning those historical connections.
 		/// </summary>
-		protected HistoryWindow _history = null;
+		protected HistoryWindow _historyWindow = null;
 
 		/// <summary>
 		/// Pointer to the low-level mouse hook callback (<see cref="KeyboardHookCallback"/>).
@@ -108,7 +109,7 @@ namespace EasyConnect
 		/// <summary>
 		/// Queue of the ten most recent connections, indicating which ones are going to show up in the jump list.
 		/// </summary>
-		protected Queue<HistoryWindow.HistoricalConnection> _recentConnections = new Queue<HistoryWindow.HistoricalConnection>();
+		protected Queue<HistoricalConnection> _recentConnections = new Queue<HistoricalConnection>();
 
 		/// <summary>
 		/// Flag indicating whether the user is pressing the Shift button.
@@ -156,7 +157,7 @@ namespace EasyConnect
 				if (toBookmarks.Any())
 				{
 					OpenToBookmarks = (from Guid bookmarkGuid in toBookmarks
-					                   select Bookmarks.FindBookmark(bookmarkGuid)).ToList();
+					                   select Bookmarks.Instance.FindBookmark(bookmarkGuid)).ToList();
 				}
 			}
 
@@ -180,46 +181,35 @@ namespace EasyConnect
 		}
 
 		/// <summary>
-		/// Application-level (not connection protocol defaults) that the user has set.
-		/// </summary>
-		public Options Options
-		{
-			get
-			{
-				return _options ?? (_options = Options.Load());
-			}
-		}
-
-		/// <summary>
 		/// Contains the UI for using bookmarks but also the data concerning all of the bookmarks and folders that the user has.
 		/// </summary>
-		public BookmarksWindow Bookmarks
+		public BookmarksWindow BookmarksWindow
 		{
 			get
 			{
-				if (_bookmarks == null && ConnectionFactory.ReadyForCrypto)
-					_bookmarks = new BookmarksWindow(this);
+				if (_bookmarksWindow == null && ConnectionFactory.ReadyForCrypto)
+					_bookmarksWindow = new BookmarksWindow(this);
 
-				return _bookmarks;
+				return _bookmarksWindow;
 			}
 		}
 
 		/// <summary>
 		/// Contains the UI for looking at a user's connection history but also the data concerning those historical connections.
 		/// </summary>
-		public HistoryWindow History
+		protected HistoryWindow HistoryWindow
 		{
 			get
 			{
-				if (_history == null && ConnectionFactory.ReadyForCrypto)
-					_history = new HistoryWindow(this);
+				if (_historyWindow == null && ConnectionFactory.ReadyForCrypto)
+					_historyWindow = new HistoryWindow(this);
 
-				return _history;
+				return _historyWindow;
 			}
 		}
 
 		/// <summary>
-		/// <see cref="IConnection.Guid"/> of the <see cref="HistoryWindow.HistoricalConnection"/> that we should connect to initially.
+		/// <see cref="IConnection.Guid"/> of the <see cref="HistoricalConnection"/> that we should connect to initially.
 		/// </summary>
 		public Guid OpenToHistory
 		{
@@ -239,7 +229,7 @@ namespace EasyConnect
 		/// <summary>
 		/// Forces a complete redraw of the tabs overlay.
 		/// </summary>
-		public void RedrawTabs()
+		public new void RedrawTabs()
 		{
 			if (_overlay != null)
 				_overlay.Render(true);
@@ -251,105 +241,6 @@ namespace EasyConnect
 		protected void Init()
 		{
 			AeroPeekEnabled = false;
-			bool convertingToRsa = false;
-
-			// If the user hasn't formally selected an encryption type (either they're starting the application for the first time or are running a legacy
-			// version that explicitly used Rijndael), ask them if they want to use RSA
-			if (Options.EncryptionType == null)
-			{
-				string messageBoxText = @"Do you want to use an RSA key container to encrypt your passwords?
-
-The RSA encryption mode uses cryptographic keys associated with 
-your Windows user account to encrypt sensitive data without having 
-to enter an encryption password every time you start this 
-application. However, your bookmarks file will be tied uniquely to 
-this user account and you will be unable to share them between
-multiple users.";
-
-				if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect"))
-					messageBoxText += @"
-
-The alternative is to derive an encryption key from a password that
-you will need to enter every time that this application starts.";
-
-				else
-					messageBoxText += @"
-
-Since you've already encrypted your data with a password once, 
-you would need to enter it one more time to decrypt it before RSA 
-can be used.";
-
-				Options.EncryptionType = MessageBox.Show(messageBoxText, "Use RSA?", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes
-					                         ? EncryptionType.Rsa
-					                         : EncryptionType.Rijndael;
-
-				// Since they want to use RSA but already have connection data encrypted with Rijndael, we'll have to capture that password so that we can
-				// decrypt it using Rijndael and then re-encrypt it using the RSA keypair
-				convertingToRsa = Options.EncryptionType == EncryptionType.Rsa &&
-				                  Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect");
-			}
-
-			// If this is the first time that the user is running the application, pop up and information box informing them that they're going to enter a
-			// password used to encrypt sensitive connection details
-			if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect"))
-			{
-				if (Options.EncryptionType == EncryptionType.Rijndael)
-					MessageBox.Show(Resources.FirstRunPasswordText, Resources.FirstRunPasswordTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-				Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect");
-			}
-
-			if (Options.EncryptionType != null)
-				Options.Save();
-
-			bool encryptionTypeSet = false;
-
-			while (Bookmarks == null || _history == null)
-			{
-				// Get the user's encryption password via the password dialog
-				if (!encryptionTypeSet && (Options.EncryptionType == EncryptionType.Rijndael || convertingToRsa))
-				{
-					PasswordWindow passwordWindow = new PasswordWindow();
-					passwordWindow.ShowDialog();
-
-					ConnectionFactory.SetEncryptionType(EncryptionType.Rijndael, passwordWindow.Password);
-				}
-
-				else
-					ConnectionFactory.SetEncryptionType(Options.EncryptionType.Value);
-
-				// Create the bookmark and history windows which will try to use the password to decrypt sensitive connection details; if it's unable to, an
-				// exception will be thrown that wraps a CryptographicException instance
-				try
-				{
-					_bookmarks = new BookmarksWindow(this);
-					_history = new HistoryWindow(this);
-
-					ConnectionFactory.GetDefaultProtocol();
-
-					encryptionTypeSet = true;
-				}
-
-				catch (Exception e)
-				{
-					if ((Options.EncryptionType == EncryptionType.Rijndael || convertingToRsa) && !ContainsCryptographicException(e))
-						throw;
-
-					// Tell the user that their password is incorrect and, if they click OK, repeat the process
-					DialogResult result = MessageBox.Show(
-						Resources.IncorrectPasswordText, Resources.ErrorTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
-
-					if (result != DialogResult.OK)
-					{
-						IsClosing = true;
-						return;
-					}
-				}
-			}
-
-			// If we're converting over to RSA, we've already loaded and decrypted the sensitive data using 
-			if (convertingToRsa)
-				SetEncryptionType(Options.EncryptionType.Value, null);
 
 			// Create a remoting channel used to tell this window to open historical connections when entries in the jump list are clicked
 			if (_ipcChannel == null)
@@ -383,12 +274,13 @@ can be used.";
 		/// </summary>
 		/// <param name="encryptionType">Encryption type to use.</param>
 		/// <param name="encryptionPassword">Encryption password, if any, to use.</param>
-		private void SetEncryptionType(EncryptionType encryptionType, SecureString encryptionPassword)
+		private async Task SetEncryptionType(EncryptionType encryptionType, SecureString encryptionPassword)
 		{
 			ConnectionFactory.SetEncryptionType(encryptionType, encryptionPassword);
 
-			_bookmarks.Save();
-			_history.Save();
+			await Bookmarks.Instance.Save();
+			await History.Instance.Save();
+
 			ConnectionFactory.SetDefaults(ConnectionFactory.GetDefaults(ConnectionFactory.GetDefaultProtocol()));
 		}
 
@@ -482,21 +374,6 @@ can be used.";
 		}
 
 		/// <summary>
-		/// Recursive method that checks to see if <see cref="exception"/> or any of its <see cref="Exception.InnerException"/>s wrap a 
-		/// <see cref="CryptographicException"/> instance.
-		/// </summary>
-		/// <param name="exception">Exception that we're currently examining.</param>
-		/// <returns>True if <paramref name="exception"/> or any of its <see cref="Exception.InnerException"/>s wrap a <see cref="CryptographicException"/> 
-		/// instance, false otherwise.</returns>
-		protected bool ContainsCryptographicException(Exception exception)
-		{
-			if (exception is CryptographicException)
-				return true;
-
-			return exception.InnerException != null && ContainsCryptographicException(exception.InnerException);
-		}
-
-		/// <summary>
 		/// Handler method that's called when a tab is clicked on.  This is different from the <see cref="TitleBarTabs.TabSelected"/> event handler in that 
 		/// this is called even if the tab is currently active.  This is used to show the toolbar for <see cref="ConnectionWindow"/> instances that 
 		/// automatically hide their toolbars when the connection's UI is focused on.
@@ -512,15 +389,15 @@ can be used.";
 			_previouslyClickedTab = e.Tab;
 		}
 
-		/// <summary>
-		/// Handler method that's called when the user closes the <see cref="BookmarksWindow"/> tab.  Sets <see cref="_bookmarks"/> to null so that we know we
-		/// need to create a new instance the next time the user tries to open it.
-		/// </summary>
-		/// <param name="sender">Object from which this event originated.</param>
-		/// <param name="e">Arguments associated with this event.</param>
-		protected void Bookmarks_FormClosed(object sender, FormClosedEventArgs e)
+        /// <summary>
+        /// Handler method that's called when the user closes the <see cref="global::EasyConnect.BookmarksWindow"/> tab.  Sets <see cref="_bookmarksWindow"/> to null so that we know we
+        /// need to create a new instance the next time the user tries to open it.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
+        protected void Bookmarks_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			_bookmarks = null;
+			_bookmarksWindow = null;
 		}
 
 		/// <summary>
@@ -537,7 +414,7 @@ can be used.";
 				return;
 			}
 
-			_previousEncryptionType = Options.EncryptionType ?? EncryptionType.Rijndael;
+			_previousEncryptionType = Options.Instance.EncryptionType ?? EncryptionType.Rijndael;
 
 			// Create the options window and then add entries for each protocol type to the window
 			OptionsWindow optionsWindow = new OptionsWindow(this);
@@ -562,11 +439,11 @@ can be used.";
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void globalOptionsWindow_Closed(object sender, EventArgs e)
+		private async void globalOptionsWindow_Closed(object sender, EventArgs e)
 		{
-			if (_previousEncryptionType != Options.EncryptionType)
+			if (_previousEncryptionType != Options.Instance.EncryptionType)
 				// ReSharper disable PossibleInvalidOperationException
-				SetEncryptionType(Options.EncryptionType.Value, (sender as GlobalOptionsWindow).EncryptionPassword);
+				await SetEncryptionType(Options.Instance.EncryptionType.Value, (sender as GlobalOptionsWindow).EncryptionPassword);
 			// ReSharper restore PossibleInvalidOperationException
 		}
 
@@ -606,11 +483,11 @@ can be used.";
 				_overlay.Render(true);
 		}
 
-		/// <summary>
-		/// Opens a <see cref="HistoryWindow"/> instance when the user clicks on the "History" menu item in the tools menu from a 
-		/// <see cref="ConnectionWindow"/> instance.
-		/// </summary>
-		public void OpenHistory()
+        /// <summary>
+        /// Opens a <see cref="global::EasyConnect.HistoryWindow"/> instance when the user clicks on the "History" menu item in the tools menu from a 
+        /// <see cref="ConnectionWindow"/> instance.
+        /// </summary>
+        public void OpenHistory()
 		{
 			TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content is HistoryWindow);
 
@@ -621,26 +498,26 @@ can be used.";
 				return;
 			}
 
-			History.FormClosed += History_FormClosed;
-			ShowInEmptyTab(History);
+			HistoryWindow.FormClosed += History_FormClosed;
+			ShowInEmptyTab(HistoryWindow);
 		}
 
-		/// <summary>
-		/// Handler method that's called when the user closes the <see cref="HistoryWindow"/> tab.  Sets <see cref="_history"/> to null so that we know we
-		/// need to create a new instance the next time the user tries to open it.
-		/// </summary>
-		/// <param name="sender">Object from which this event originated.</param>
-		/// <param name="e">Arguments associated with this event.</param>
-		private void History_FormClosed(object sender, FormClosedEventArgs e)
+        /// <summary>
+        /// Handler method that's called when the user closes the <see cref="global::EasyConnect.HistoryWindow"/> tab.  Sets <see cref="_historyWindow"/> to null so that we know we
+        /// need to create a new instance the next time the user tries to open it.
+        /// </summary>
+        /// <param name="sender">Object from which this event originated.</param>
+        /// <param name="e">Arguments associated with this event.</param>
+        private void History_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			_history = null;
+			_historyWindow = null;
 		}
 
-		/// <summary>
-		/// Opens a <see cref="BookmarksWindow"/> instance when the user clicks on the "Bookmarks" menu item in the tools menu from a 
-		/// <see cref="ConnectionWindow"/> instance.
-		/// </summary>
-		public void OpenBookmarkManager()
+        /// <summary>
+        /// Opens a <see cref="global::EasyConnect.BookmarksWindow"/> instance when the user clicks on the "Bookmarks" menu item in the tools menu from a 
+        /// <see cref="ConnectionWindow"/> instance.
+        /// </summary>
+        public void OpenBookmarkManager()
 		{
 			TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content is BookmarksWindow);
 
@@ -651,22 +528,22 @@ can be used.";
 				return;
 			}
 
-			Bookmarks.FormClosed += Bookmarks_FormClosed;
-			ShowInEmptyTab(Bookmarks);
+			BookmarksWindow.FormClosed += Bookmarks_FormClosed;
+			ShowInEmptyTab(BookmarksWindow);
 		}
 
 		/// <summary>
-		/// Opens the <see cref="HistoryWindow.HistoricalConnection"/> whose <see cref="IConnection.Guid"/> property matches <paramref name="historyGuid"/>.
+		/// Opens the <see cref="HistoricalConnection"/> whose <see cref="IConnection.Guid"/> property matches <paramref name="historyGuid"/>.
 		/// </summary>
-		/// <param name="historyGuid">GUID used to identify the <see cref="HistoryWindow.HistoricalConnection"/> to open.</param>
-		/// <returns><see cref="ConnectionWindow"/> tab for the <see cref="HistoryWindow.HistoricalConnection"/> whose <see cref="IConnection.Guid"/> property 
+		/// <param name="historyGuid">GUID used to identify the <see cref="HistoricalConnection"/> to open.</param>
+		/// <returns><see cref="ConnectionWindow"/> tab for the <see cref="HistoricalConnection"/> whose <see cref="IConnection.Guid"/> property 
 		/// matches <paramref name="historyGuid"/>.</returns>
-		public TitleBarTab ConnectToHistory(Guid historyGuid)
+		public async Task<TitleBarTab> ConnectToHistory(Guid historyGuid)
 		{
-			IConnection connection = _history.FindInHistory(historyGuid);
+			IConnection connection = History.Instance.FindInHistory(historyGuid);
 
 			if (connection != null)
-				return Connect(connection);
+				return await Connect(connection);
 
 			return null;
 		}
@@ -675,10 +552,10 @@ can be used.";
 		/// Opens the <see cref="IConnection"/>s in <paramref name="bookmarks"/>.
 		/// </summary>
 		/// <param name="bookmarks">Bookmarks to open.</param>
-		public void ConnectToBookmarks(List<IConnection> bookmarks)
+		public async Task ConnectToBookmarks(List<IConnection> bookmarks)
 		{
 			foreach (IConnection bookmark in bookmarks)
-				Connect(bookmark);
+				await Connect(bookmark);
 
 			SelectedTabIndex = Tabs.Count - 1;
 		}
@@ -688,9 +565,9 @@ can be used.";
 		/// </summary>
 		/// <param name="connection">Connection that we are to open a new tab for.</param>
 		/// <returns>Tab that was created for <paramref name="connection"/>.</returns>
-		public TitleBarTab Connect(IConnection connection)
+		public async Task<TitleBarTab> Connect(IConnection connection)
 		{
-			return Connect(connection, false);
+			return await Connect(connection, false);
 		}
 
 		/// <summary>
@@ -699,7 +576,7 @@ can be used.";
 		/// <param name="connection">Connection that we are to open a new tab for.</param>
 		/// <param name="focusNewTab">Flag indicating whether we should focus on the new tab.</param>
 		/// <returns>Tab that was created for <paramref name="connection"/>.</returns>
-		public TitleBarTab Connect(IConnection connection, bool focusNewTab)
+		public async Task<TitleBarTab> Connect(IConnection connection, bool focusNewTab)
 		{
 			ConnectionWindow connectionWindow = new ConnectionWindow(connection);
 
@@ -716,7 +593,7 @@ can be used.";
 				_previouslyClickedTab = newTab;
 			}
 
-			connectionWindow.Connect();
+			await connectionWindow.Connect();
 
 			return newTab;
 		}
@@ -727,12 +604,12 @@ can be used.";
 		/// </summary>
 		/// <param name="connectionWindow"></param>
 		/// <param name="connection"></param>
-		public void RegisterConnection(ConnectionWindow connectionWindow, IConnection connection)
+		public async Task RegisterConnection(ConnectionWindow connectionWindow, IConnection connection)
 		{
-			_history.AddToHistory(connection);
+			await History.Instance.AddToHistory(connection);
 
 			// Add the connection to the jump list
-			if (_recentConnections.FirstOrDefault((HistoryWindow.HistoricalConnection c) => c.Connection.Guid == connection.Guid) == null)
+			if (_recentConnections.FirstOrDefault((HistoricalConnection c) => c.Connection.Guid == connection.Guid) == null)
 			{
 				_recentCategory.AddJumpListItems(
 					new JumpListLink(Application.ExecutablePath, connectionWindow.Text)
@@ -743,7 +620,7 @@ can be used.";
 						});
 				_jumpList.Refresh();
 
-				_recentConnections.Enqueue(_history.Connections.First((HistoryWindow.HistoricalConnection c) => c.Connection.Guid == connection.Guid));
+				_recentConnections.Enqueue(History.Instance.Connections.First((HistoricalConnection c) => c.Connection.Guid == connection.Guid));
 
 				if (_recentConnections.Count > _jumpList.MaxSlotsInList)
 					_recentConnections.Dequeue();
@@ -755,10 +632,9 @@ can be used.";
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (_bookmarks != null)
-				_bookmarks.Save();
+            await Bookmarks.Instance.Save();
 
 			foreach (TitleBarTab tab in Tabs.ToArray())
 				tab.Content.Close();
@@ -769,7 +645,7 @@ can be used.";
 		/// bookmarks specified by <see cref="OpenToBookmarks"/> or the history entries pointed to by <see cref="OpenToHistory"/>.
 		/// </summary>
 		/// <param name="e">Arguments associated with this event.</param>
-		protected override void OnShown(EventArgs e)
+		protected override async void OnShown(EventArgs e)
 		{
 			base.OnShown(e);
 
@@ -780,12 +656,12 @@ can be used.";
 				_jumpList.AddCustomCategories(_recentCategory);
 
 				// Get all of the historical connections and order them by their last connection times
-				List<HistoryWindow.HistoricalConnection> historicalConnections =
-					_history.Connections.OrderBy((HistoryWindow.HistoricalConnection c) => c.LastConnection).ToList();
+				List<HistoricalConnection> historicalConnections =
+                    History.Instance.Connections.OrderBy((HistoricalConnection c) => c.LastConnection).ToList();
 				historicalConnections = historicalConnections.GetRange(0, Math.Min(historicalConnections.Count, Convert.ToInt32(_jumpList.MaxSlotsInList)));
 
 				// Add each history entry to the jump list
-				foreach (HistoryWindow.HistoricalConnection historicalConnection in historicalConnections)
+				foreach (HistoricalConnection historicalConnection in historicalConnections)
 				{
 					_recentCategory.AddJumpListItems(
 						new JumpListLink(Application.ExecutablePath, historicalConnection.Connection.DisplayName)
@@ -799,11 +675,11 @@ can be used.";
 				_jumpList.Refresh();
 
 				if (OpenToHistory != Guid.Empty)
-					SelectedTab = Connect(_history.FindInHistory(OpenToHistory));
+					SelectedTab = await Connect(History.Instance.FindInHistory(OpenToHistory));
 			}
 
 			if (OpenToHistory == Guid.Empty && OpenToBookmarks != null)
-				ConnectToBookmarks(OpenToBookmarks);
+				await ConnectToBookmarks(OpenToBookmarks);
 		}
 
 		/// <summary>

@@ -14,6 +14,7 @@ using EasyTabs;
 using System.Windows.Forms.VisualStyles;
 using EasyConnect.Properties;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace EasyConnect
 {
@@ -95,11 +96,6 @@ namespace EasyConnect
 		protected Dictionary<ListViewItem, BookmarksFolder> _listViewFolders = new Dictionary<ListViewItem, BookmarksFolder>();
 
 		/// <summary>
-		/// Root folder in the bookmarks folder structure.
-		/// </summary>
-		protected BookmarksFolder _rootFolder = new BookmarksFolder();
-
-		/// <summary>
 		/// Flag indicating whether <see cref="_contextMenuItem"/> should be set automatically in <see cref="_folderContextMenu_Opening"/> to the currently
 		/// open folder in <see cref="FoldersTreeView"/>.
 		/// </summary>
@@ -145,26 +141,16 @@ namespace EasyConnect
 			_bookmarksFoldersTreeView.Sorted = true;
 			_bookmarksListView.ListViewItemSorter = new BookmarksListViewComparer();
 
-			if (File.Exists(BookmarksFileName))
-			{
-				// Deserialize the bookmarks folder structure from BookmarksFileName; BookmarksFolder.ReadXml() will call itself recursively to deserialize
-				// child folders, so all we have to do is start the deserialization process from the root folder
-				XmlSerializer bookmarksSerializer = new XmlSerializer(typeof (BookmarksFolder));
-
-				using (XmlReader bookmarksReader = new XmlTextReader(BookmarksFileName))
-					_rootFolder = (BookmarksFolder) bookmarksSerializer.Deserialize(bookmarksReader);
-			}
-
 			// Set the handler methods for changing the bookmarks or child folders; these are responsible for updating the tree view and list view UI when
 			// items are added or removed from the bookmarks or child folders collections
-			_rootFolder.Bookmarks.CollectionModified += Bookmarks_CollectionModified;
-			_rootFolder.ChildFolders.CollectionModified += ChildFolders_CollectionModified;
+			Bookmarks.Instance.RootFolder.Bookmarks.CollectionModified += Bookmarks_CollectionModified;
+            Bookmarks.Instance.RootFolder.ChildFolders.CollectionModified += ChildFolders_CollectionModified;
 
-			_folderTreeNodes[_bookmarksFoldersTreeView.Nodes[0]] = _rootFolder;
+			_folderTreeNodes[_bookmarksFoldersTreeView.Nodes[0]] = Bookmarks.Instance.RootFolder;
 
 			// Call Bookmarks_CollectionModified and ChildFolders_CollectionModified recursively through the folder structure to "simulate" bookmarks and
 			// folders being added to the collection so that the initial UI state for the tree view can be created
-			InitializeTreeView(_rootFolder);
+			InitializeTreeView(Bookmarks.Instance.RootFolder);
 
 			_bookmarksFoldersTreeView.Nodes[0].Expand();
 
@@ -217,17 +203,6 @@ namespace EasyConnect
             _listViewNotesDoubleClickTimer.Stop();
             _listViewNotesDoubleClickStarted = false;
         }
-
-        /// <summary>
-        /// Root folder in the bookmarks folder structure.
-        /// </summary>
-        public BookmarksFolder RootFolder
-		{
-			get
-			{
-				return _rootFolder;
-			}
-		}
 
 		/// <summary>
 		/// Main application instance that this window is associated with, which is used to call back into application functionality.
@@ -553,86 +528,27 @@ namespace EasyConnect
 		}
 
 		/// <summary>
-		/// Serializes the bookmarks to disk by simply serializing <see cref="RootFolder"/>, which recursively serializes its descendant folders and their
-		/// bookmarks.
-		/// </summary>
-		public void Save()
-		{
-			FileInfo destinationFile = new FileInfo(BookmarksFileName);
-			XmlSerializer bookmarksSerializer = new XmlSerializer(typeof (BookmarksFolder));
-
-			// ReSharper disable AssignNullToNotNullAttribute
-			Directory.CreateDirectory(destinationFile.DirectoryName);
-			// ReSharper restore AssignNullToNotNullAttribute
-
-			using (XmlWriter bookmarksWriter = new XmlTextWriter(BookmarksFileName, new UnicodeEncoding()))
-			{
-				bookmarksSerializer.Serialize(bookmarksWriter, _rootFolder);
-				bookmarksWriter.Flush();
-			}
-		}
-
-		/// <summary>
-		/// Serializes the bookmarks to disk after first removing any password-sensitive information.  This is accomplished by first calling
-		/// <see cref="BookmarksFolder.CloneAnon"/> on <see cref="RootFolder"/> and then serializing it.
-		/// </summary>
-		/// <param name="path">Path of the file that we are to serialize to.</param>
-		public void Export(string path)
-		{
-			FileInfo destinationFile = new FileInfo(path);
-			XmlSerializer bookmarksSerializer = new XmlSerializer(typeof (BookmarksFolder));
-
-			// ReSharper disable AssignNullToNotNullAttribute
-			Directory.CreateDirectory(destinationFile.DirectoryName);
-			// ReSharper restore AssignNullToNotNullAttribute
-
-			object clonedFolder = _rootFolder.CloneAnon();
-
-			using (XmlWriter bookmarksWriter = new XmlTextWriter(path, new UnicodeEncoding()))
-			{
-				bookmarksSerializer.Serialize(bookmarksWriter, clonedFolder);
-				bookmarksWriter.Flush();
-			}
-		}
-
-		/// <summary>
-		/// Imports bookmarks previously saved via a call to <see cref="Export"/> and overwrites any existing bookmarks data.
+		/// Imports bookmarks previously saved via a call to <see cref="Bookmarks.Export"/> and overwrites any existing bookmarks data.
 		/// </summary>
 		/// <param name="path">Path of the file that we're loading from.</param>
-		public void Import(string path)
+		public async Task Import(string path)
 		{
 			//ISSUE: Display shows old and new Bookmark items
 			//ISSUE: Dialog shows truncated suggested file name
+			if (await Bookmarks.Instance.Import(path))
+            { 
+				// Set the handler methods for changing the bookmarks or child folders; these are responsible for updating the tree view and list view 
+				// UI when items are added or removed from the bookmarks or child folders collections
+				Bookmarks.Instance.RootFolder.Bookmarks.CollectionModified += Bookmarks_CollectionModified;
+                Bookmarks.Instance.RootFolder.ChildFolders.CollectionModified += ChildFolders_CollectionModified;
 
-			if (
-				MessageBox.Show(
-					"This will erase any currently saved bookmarks and import the contents of the selected file. Do you wish to continue?",
-					"Continue with import?", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
-			{
-				if (File.Exists(path))
-				{
-					XmlSerializer bookmarksSerializer = new XmlSerializer(typeof (BookmarksFolder));
+				_folderTreeNodes[_bookmarksFoldersTreeView.Nodes[0]] = Bookmarks.Instance.RootFolder;
 
-					using (XmlReader bookmarksReader = new XmlTextReader(path))
-					{
-						BookmarksFolder importedRootFolder = (BookmarksFolder) bookmarksSerializer.Deserialize(bookmarksReader);
+				// Call Bookmarks_CollectionModified and ChildFolders_CollectionModified recursively through the folder structure to "simulate" 
+				// bookmarks and folders being added to the collection so that the initial UI state for the tree view can be created
+				InitializeTreeView(Bookmarks.Instance.RootFolder);
 
-						// Set the handler methods for changing the bookmarks or child folders; these are responsible for updating the tree view and list view 
-						// UI when items are added or removed from the bookmarks or child folders collections
-						importedRootFolder.Bookmarks.CollectionModified += Bookmarks_CollectionModified;
-						importedRootFolder.ChildFolders.CollectionModified += ChildFolders_CollectionModified;
-
-						_rootFolder = importedRootFolder;
-						_folderTreeNodes[_bookmarksFoldersTreeView.Nodes[0]] = _rootFolder;
-
-						// Call Bookmarks_CollectionModified and ChildFolders_CollectionModified recursively through the folder structure to "simulate" 
-						// bookmarks and folders being added to the collection so that the initial UI state for the tree view can be created
-						InitializeTreeView(_rootFolder);
-					}
-
-					_bookmarksFoldersTreeView.Nodes[0].Expand();
-					Save();
-				}
+				_bookmarksFoldersTreeView.Nodes[0].Expand();
 			}
 		}
 
@@ -687,13 +603,13 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated, <see cref="_bookmarksListView"/> in this case.</param>
 		/// <param name="e">Arguments associated with the click event.</param>
-		private void _bookmarksListView_MouseDoubleClick(object sender, MouseEventArgs e)
+		private async void _bookmarksListView_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
 			if (_bookmarksListView.SelectedItems.Count > 0)
 			{
 				// If the double-clicked item was a bookmark, open its connection in a new tab
 				if (_listViewConnections.ContainsKey(_bookmarksListView.SelectedItems[0]))
-					_applicationForm.Connect(_listViewConnections[_bookmarksListView.SelectedItems[0]], true);
+					await _applicationForm.Connect(_listViewConnections[_bookmarksListView.SelectedItems[0]], true);
 
 					// Otherwise, open the folder
 				else
@@ -743,9 +659,9 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void _openBookmarkNewTabMenuItem_Click(object sender, EventArgs e)
+		private async void _openBookmarkNewTabMenuItem_Click(object sender, EventArgs e)
 		{
-			OpenSelectedBookmarks();
+			await OpenSelectedBookmarks();
 		}
 
 		/// <summary>
@@ -784,7 +700,7 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
+		private async void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
 		{
 			// Defer the sorting until after we're finished to eliminate unnecessary redraws
 			_deferSort = true;
@@ -812,7 +728,7 @@ namespace EasyConnect
 			_bookmarksFoldersTreeView.BeginInvoke(new Action(SortTreeView));
 			_bookmarksListView.BeginInvoke(new Action(_bookmarksListView.Sort));
 
-			Save();
+			await Bookmarks.Instance.Save();
 		}
 
 		/// <summary>
@@ -821,31 +737,31 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void _folderOpenAllMenuItem_Click(object sender, EventArgs e)
+		private async void _folderOpenAllMenuItem_Click(object sender, EventArgs e)
 		{
-			OpenAllBookmarks(_contextMenuItem as BookmarksFolder);
+			await OpenAllBookmarks(_contextMenuItem as BookmarksFolder);
 		}
 
 		/// <summary>
 		/// Recursive method that opens all the descendant bookmarks in <paramref name="folder"/> in separate tabs.
 		/// </summary>
 		/// <param name="folder">Current folder for which we are opening bookmarks.</param>
-		private void OpenAllBookmarks(BookmarksFolder folder)
+		private async Task OpenAllBookmarks(BookmarksFolder folder)
 		{
 			foreach (IConnection connection in folder.Bookmarks)
-				_applicationForm.Connect(connection);
+				await _applicationForm.Connect(connection);
 
 			foreach (BookmarksFolder childFolder in folder.ChildFolders)
-				OpenAllBookmarks(childFolder);
+				await OpenAllBookmarks(childFolder);
 		}
 
 		/// <summary>
 		/// Opens all bookmarks currently selected in <see cref="_bookmarksListView"/>.
 		/// </summary>
-		private void OpenSelectedBookmarks()
+		private async Task OpenSelectedBookmarks()
 		{
 			foreach (ListViewItem item in _bookmarksListView.SelectedItems)
-				_applicationForm.Connect(_listViewConnections[item]);
+				await _applicationForm.Connect(_listViewConnections[item]);
 		}
 
 		/// <summary>
@@ -876,7 +792,7 @@ namespace EasyConnect
 		/// <see cref="_bookmarksListView"/> with the proper icon for the protocol and open its label for editing.
 		/// </summary>
 		/// <param name="type">Protocol that the bookmark is being created for.</param>
-		private void _addBookmarkMenuItem_Click(IProtocol type)
+		private async void _addBookmarkMenuItem_Click(IProtocol type)
 		{
 			// Create a new connection instance by cloning the protocol's default
 			IConnection connection = (IConnection) ConnectionFactory.GetDefaults(type.GetType()).Clone();
@@ -901,7 +817,7 @@ namespace EasyConnect
 			_bookmarksListView.SelectedIndices.Clear();
 
 			SortListView();
-			Save();
+            await Bookmarks.Instance.Save();
 
 			// Start the edit process for the new list item's name
 			newListItem.Selected = true;
@@ -914,7 +830,7 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event</param>
-		private void _addFolderMenuItem_Click(object sender, EventArgs e)
+		private async void _addFolderMenuItem_Click(object sender, EventArgs e)
 		{
 			// Create a new BookmarksFolder, add it to the tree view, and add it to the parent folder instance
 			BookmarksFolder newFolder = new BookmarksFolder
@@ -932,7 +848,7 @@ namespace EasyConnect
 			_bookmarksFoldersTreeView.SelectedNode = newNode;
 
 			SortTreeView();
-			Save();
+            await Bookmarks.Instance.Save();
 			newNode.BeginEdit();
 		}
 
@@ -942,13 +858,13 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void _bookmarksTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
+		private async void _bookmarksTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
 		{
 			if (e.CancelEdit || String.IsNullOrEmpty(e.Label))
 				return;
 
 			_folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode].Name = e.Label;
-			Save();
+            await Bookmarks.Instance.Save();
 
 			_bookmarksFoldersTreeView.BeginInvoke(new Action(SortTreeView));
 		}
@@ -974,7 +890,7 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void _deleteFolderMenuItem_Click(object sender, EventArgs e)
+		private async void _deleteFolderMenuItem_Click(object sender, EventArgs e)
 		{
 			_deferSort = true;
 
@@ -986,7 +902,7 @@ namespace EasyConnect
 
 			_deferSort = false;
 
-			Save();
+            await Bookmarks.Instance.Save();
 		}
 
 		/// <summary>
@@ -1009,7 +925,7 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated, <see cref="_bookmarksListView"/> in this case.</param>
 		/// <param name="e">Item being edited and its new label.</param>
-		private void _bookmarksListView_AfterLabelEdit(object sender, LabelEditEventArgs e)
+		private async void _bookmarksListView_AfterLabelEdit(object sender, LabelEditEventArgs e)
 		{
 			if (e.CancelEdit || String.IsNullOrEmpty(e.Label))
 				return;
@@ -1032,7 +948,7 @@ namespace EasyConnect
 			else
 				_listViewFolders[_bookmarksListView.Items[e.Item]].Name = e.Label;
 
-			Save();
+            await Bookmarks.Instance.Save();
 
 			if (_showOptionsAfterItemLabelEdit)
 			{
@@ -1089,42 +1005,6 @@ namespace EasyConnect
 
 			ParentTabs.ApplicationContext.OpenWindow(mainForm);
 			mainForm.Show();
-		}
-
-		/// <summary>
-		/// Locates the <see cref="IConnection"/> instance for the given <paramref name="bookmarkGuid"/> in the bookmarks folder structure.  Calls 
-		/// <see cref="FindBookmark(Guid, BookmarksFolder)"/> to do the actual work.
-		/// </summary>
-		/// <param name="bookmarkGuid"><see cref="IConnection.Guid"/> value of the <see cref="IConnection"/> that we're searching for.</param>
-		/// <returns>The <see cref="IConnection"/> bookmark corresponding to <paramref name="bookmarkGuid"/> if it exists, null otherwise.</returns>
-		public IConnection FindBookmark(Guid bookmarkGuid)
-		{
-			return FindBookmark(bookmarkGuid, _rootFolder);
-		}
-
-		/// <summary>
-		/// Recursive method that searches <paramref name="searchFolder"/> and its descendants for an <see cref="IConnection"/> instance whose 
-		/// <see cref="IConnection.Guid"/> property corresponds to <paramref name="bookmarkGuid"/>.  Called from <see cref="FindBookmark(Guid)"/>.
-		/// </summary>
-		/// <param name="bookmarkGuid"><see cref="IConnection.Guid"/> value of the <see cref="IConnection"/> that we're searching for.</param>
-		/// <param name="searchFolder">Current folder that we're searching.</param>
-		/// <returns>The <see cref="IConnection"/> bookmark corresponding to <paramref name="bookmarkGuid"/> if it exists, null otherwise.</returns>
-		protected IConnection FindBookmark(Guid bookmarkGuid, BookmarksFolder searchFolder)
-		{
-			IConnection bookmark = searchFolder.Bookmarks.FirstOrDefault(b => b.Guid == bookmarkGuid);
-
-			if (bookmark != null)
-				return bookmark;
-
-			foreach (BookmarksFolder childFolder in searchFolder.ChildFolders)
-			{
-				bookmark = FindBookmark(bookmarkGuid, childFolder);
-
-				if (bookmark != null)
-					return bookmark;
-			}
-
-			return null;
 		}
 
 		/// <summary>
@@ -1190,9 +1070,9 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void _pasteFolderMenuItem_Click(object sender, EventArgs e)
+		private async void _pasteFolderMenuItem_Click(object sender, EventArgs e)
 		{
-			PasteItems(_contextMenuItem as BookmarksFolder);
+			await PasteItems(_contextMenuItem as BookmarksFolder);
 		}
 
 		/// <summary>
@@ -1200,7 +1080,7 @@ namespace EasyConnect
 		/// <paramref name="targetFolder"/>.  Called from <see cref="_pasteFolderMenuItem_Click"/>.
 		/// </summary>
 		/// <param name="targetFolder">Target folder that we're pasting items into.</param>
-		private void PasteItems(BookmarksFolder targetFolder)
+		private async Task PasteItems(BookmarksFolder targetFolder)
 		{
 			_deferSort = true;
 
@@ -1263,7 +1143,7 @@ namespace EasyConnect
 
 			_deferSort = false;
 
-			Save();
+            await Bookmarks.Instance.Save();
 		}
 
 		/// <summary>
@@ -1348,14 +1228,14 @@ namespace EasyConnect
 
 		/// <summary>
 		/// Handler method that's called when the "Export" menu item in the context menu that appears when the user right-clicks on a folder in 
-		/// <see cref="_bookmarksFoldersTreeView"/>.  Opens a <see cref="_bookmarkExportDialog"/> and then calls <see cref="Export"/>.
+		/// <see cref="_bookmarksFoldersTreeView"/>.  Opens a <see cref="_bookmarkExportDialog"/> and then calls <see cref="Bookmarks.Export"/>.
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
 		private void _exportBookMarkMenuitem_Click(object sender, EventArgs e)
 		{
 			_bookmarkExportDialog.ShowDialog();
-			Export(_bookmarkExportDialog.FileName);
+			Bookmarks.Instance.Export(_bookmarkExportDialog.FileName);
 		}
 
 		/// <summary>
@@ -1364,10 +1244,10 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void _importBookmarkMenuItem_Click(object sender, EventArgs e)
+		private async void _importBookmarkMenuItem_Click(object sender, EventArgs e)
 		{
 			_bookmarkImportDialog.ShowDialog();
-			Import(_bookmarkImportDialog.FileName);
+			await Import(_bookmarkImportDialog.FileName);
 		}
 
 		/// <summary>
@@ -1492,7 +1372,7 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Data on items being dragged.</param>
-		private void _bookmarks_DragDrop(object sender, DragEventArgs e)
+		private async void _bookmarks_DragDrop(object sender, DragEventArgs e)
 		{
 			// Call the list view cut menu item handler if we were dragging from the list view
 			if (_draggingFromListView)
@@ -1510,7 +1390,7 @@ namespace EasyConnect
 			// Call PasteItems as appropriate to paste the dragged items into the destination folder
 			if (_listViewDropTarget != null)
 			{
-				PasteItems(_listViewFolders[_listViewDropTarget]);
+				await PasteItems(_listViewFolders[_listViewDropTarget]);
 
 				_listViewDropTarget.BackColor = _bookmarksListView.BackColor;
 				_listViewDropTarget.ForeColor = _bookmarksListView.ForeColor;
@@ -1518,7 +1398,7 @@ namespace EasyConnect
 
 			else if (_treeViewDropTarget != null)
 			{
-				PasteItems(_folderTreeNodes[_treeViewDropTarget]);
+				await PasteItems(_folderTreeNodes[_treeViewDropTarget]);
 
 				_treeViewDropTarget.BackColor = _bookmarksFoldersTreeView.BackColor;
 				_treeViewDropTarget.ForeColor = _bookmarksFoldersTreeView.ForeColor;
@@ -1617,14 +1497,14 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void _clearUsernamePasswordToolStripMenuItem_Click(object sender, EventArgs e)
+		private async void _clearUsernamePasswordToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			BookmarksFolder selectedFolder = _contextMenuItem as BookmarksFolder;
 
 			selectedFolder.Username = null;
 			selectedFolder.Password = null;
 
-			Save();
+            await Bookmarks.Instance.Save();
 		}
 
 		/// <summary>
@@ -1635,7 +1515,7 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void _setUsernamePasswordMenuItem_Click(object sender, EventArgs e)
+		private async void _setUsernamePasswordMenuItem_Click(object sender, EventArgs e)
 		{
 			BookmarksFolder selectedFolder = _contextMenuItem as BookmarksFolder;
 			UsernamePasswordWindow usernamePasswordWindow = new UsernamePasswordWindow
@@ -1651,7 +1531,7 @@ namespace EasyConnect
 				selectedFolder.Username = usernamePasswordWindow.Username;
 				selectedFolder.Password = usernamePasswordWindow.Password;
 
-				Save();
+                await Bookmarks.Instance.Save();
 			}
 		}
 

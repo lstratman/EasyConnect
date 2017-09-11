@@ -297,7 +297,7 @@ namespace EasyConnect.Protocols
 					XmlReader reader =
 						new XmlTextReader(
 							new FileStream(
-								Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Defaults.xml", FileMode.Open)))
+								Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Defaults.xml", FileMode.Open, FileAccess.Read)))
 				{
 					reader.MoveToContent();
 

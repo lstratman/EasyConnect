@@ -54,6 +54,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\EasyConnect.XML</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -65,6 +66,7 @@
     <DocumentationFile>
     </DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <PlatformTarget>x86</PlatformTarget>
@@ -89,6 +91,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppX|x86'">
     <OutputPath>bin\x86\AppX\</OutputPath>
@@ -129,6 +132,7 @@
       <HintPath>lib\System.Drawing.Html.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Runtime.WindowsRuntime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Win32Interop.Dwmapi, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -155,6 +159,12 @@
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
   </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'AppX'">
+    <Reference Include="Windows">
+      <HintPath>c:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral\Windows.winmd</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.WindowsRuntime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutBox.cs">
       <SubType>Form</SubType>
@@ -162,6 +172,7 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Bookmarks.cs" />
     <Compile Include="BookmarksWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -182,6 +193,8 @@
     <Compile Include="GlobalOptionsWindow.Designer.cs">
       <DependentUpon>GlobalOptionsWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="HistoricalConnection.cs" />
+    <Compile Include="History.cs" />
     <Compile Include="HistoryMethods.cs" />
     <Compile Include="HistoryWindow.cs">
       <SubType>Form</SubType>
@@ -189,6 +202,7 @@
     <Compile Include="HistoryWindow.designer.cs">
       <DependentUpon>HistoryWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="LegacyHistoricalConnection.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
