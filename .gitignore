@@ -185,3 +185,4 @@ UpgradeLog*.htm
 FakesAssemblies/
 
 .vs/
+*.pri
