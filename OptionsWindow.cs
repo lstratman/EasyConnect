@@ -277,17 +277,6 @@ namespace EasyConnect
             ParentTabs.AddNewTab();
         }
 
-        /// <summary>
-		/// Handler method that's called when the user clicks the "Options" menu item under the tools menu.  Creates the options tab if one doesn't exist 
-		/// already and then switches to it.
-		/// </summary>
-		/// <param name="sender">Object from which this event originated.</param>
-		/// <param name="e">Arguments associated with this event.</param>
-		private void _optionsMenuItem_Click(object sender, EventArgs e)
-        {
-            ParentTabs.OpenOptions();
-        }
-
         private void _toolsMenu_VisibleChanged(object sender, EventArgs e)
         {
             if (!_toolsMenu.Visible)

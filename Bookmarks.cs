@@ -16,12 +16,10 @@ namespace EasyConnect
 {
     public class Bookmarks
     {
-#if !APPX
         /// <summary>
 		/// Full path to the file where bookmarks data is serialized.
 		/// </summary>
 		private static string BookmarksFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EasyConnect", "Bookmarks.xml");
-#endif
 
         /// <summary>
 		/// Root folder in the bookmarks folder structure.
@@ -98,13 +96,33 @@ namespace EasyConnect
 
 #if APPX
             IStorageFile bookmarksFile = (IStorageFile)await ApplicationData.Current.LocalFolder.TryGetItemAsync("Bookmarks.xml");
+            string bookmarksFileText = null;
 
+            // If there isn't a file in the Windows Store app data directory, try the desktop app directory
             if (bookmarksFile == null)
+            {
+                try
+                {
+                    if (File.Exists(BookmarksFileName))
+                    {
+                        bookmarksFileText = File.ReadAllText(BookmarksFileName);
+                    }
+                }
+
+                catch (Exception)
+                {
+                }
+            }
+
+            else
+            {
+                bookmarksFileText = await FileIO.ReadTextAsync(bookmarksFile);
+            }
+
+            if (String.IsNullOrEmpty(bookmarksFileText))
             {
                 return;
             }
-
-            string bookmarksFileText = await FileIO.ReadTextAsync(bookmarksFile);
 
             using (StringReader bookmarksFileTextReader = new StringReader(bookmarksFileText))
             using (XmlReader bookmarksXmlReader = new XmlTextReader(bookmarksFileTextReader))

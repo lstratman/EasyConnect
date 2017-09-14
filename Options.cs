@@ -18,6 +18,8 @@ namespace EasyConnect
 	[Serializable]
 	public class Options
 	{
+        private static string OptionsFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EasyConnect", "Options.xml");
+
         private Options()
         {
         }
@@ -66,18 +68,38 @@ namespace EasyConnect
 		/// <returns></returns>
 		public static async Task Init()
 		{
+		    Instance = new Options();
+
 #if APPX
             IStorageFile optionsFile = (IStorageFile) await ApplicationData.Current.LocalFolder.TryGetItemAsync("Options.xml");
+		    string optionsFileText = null;
 
-            if (optionsFile == null)
-            {
-                Instance = new Options();
-                Instance.FirstLaunch = true;
+		    // If there isn't a file in the Windows Store app data directory, try the desktop app directory
+		    if (optionsFile == null)
+		    {
+		        try
+		        {
+		            if (File.Exists(OptionsFileName))
+		            {
+		                optionsFileText = File.ReadAllText(OptionsFileName);
+		            }
+		        }
 
-                return;
-            }
+		        catch (Exception)
+		        {
+		        }
+		    }
 
-            string optionsFileText = await FileIO.ReadTextAsync(optionsFile);
+		    else
+		    {
+		        optionsFileText = await FileIO.ReadTextAsync(optionsFile);
+		    }
+
+		    if (String.IsNullOrEmpty(optionsFileText))
+		    {
+		        Instance.FirstLaunch = true;
+		        return;
+		    }
 
             using (StringReader optionsFileTextReader = new StringReader(optionsFileText))
             using (XmlReader optionsXmlReader = new XmlTextReader(optionsFileTextReader))
@@ -87,7 +109,7 @@ namespace EasyConnect
             }
 #else
             // If the options file doesn't exist yet (first time the application is being run), just create a new instance of the class
-			if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Options.xml"))
+			if (!File.Exists(OptionsFileName))
             {
 				Instance = new Options();
                 Instance.FirstLaunch = true;
@@ -95,11 +117,8 @@ namespace EasyConnect
                 return;
             }
 
-			using (
-				XmlReader reader =
-					new XmlTextReader(
-						new FileStream(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Options.xml", FileMode.Open))
-				)
+            using (FileStream fileStream = new FileStream(OptionsFileName, FileMode.Open, FileAccess.Read))
+			using (XmlReader reader = new XmlTextReader(fileStream))
 			{
 				XmlSerializer serializer = new XmlSerializer(typeof (Options));
 				Instance = (Options) serializer.Deserialize(reader);
@@ -122,9 +141,7 @@ namespace EasyConnect
 
             await FileIO.WriteTextAsync(optionsFile, optionsFileText.ToString());
 #else
-            using (
-				FileStream fileStream = new FileStream(
-					Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Options.xml", FileMode.Create))
+            using (FileStream fileStream = new FileStream(OptionsFileName, FileMode.Create, FileAccess.Write))
 				serializer.Serialize(fileStream, this);
 #endif
         }

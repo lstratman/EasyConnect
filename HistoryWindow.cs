@@ -36,11 +36,6 @@ namespace EasyConnect
 		/// </summary>
 		protected Dictionary<Type, int> _connectionTypeIcons = new Dictionary<Type, int>();
 
-		/// <summary>
-		/// Filename where history data is loaded from/saved to.
-		/// </summary>
-		protected string _historyFileName = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\History.xml";
-
         protected HtmlPanel _urlPanel;
 
 		/// <summary>
@@ -321,9 +316,9 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void _optionsMenuItem_Click(object sender, EventArgs e)
+		private async void _optionsMenuItem_Click(object sender, EventArgs e)
         {
-            ParentTabs.OpenOptions();
+            await ParentTabs.OpenOptions();
         }
 
         private void _toolsMenu_VisibleChanged(object sender, EventArgs e)
@@ -372,6 +367,11 @@ namespace EasyConnect
         private void urlBackground_Resize(object sender, EventArgs e)
         {
             _urlPanel.AutoScroll = false;
+        }
+
+        private void HistoryWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            History.Instance.Connections.CollectionModified -= Connections_CollectionModified;
         }
     }
 }

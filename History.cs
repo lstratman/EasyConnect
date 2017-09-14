@@ -17,12 +17,10 @@ namespace EasyConnect
 {
     public class History
     {
-#if !APPX
         /// <summary>
 		/// Filename where history data is loaded from/saved to.
 		/// </summary>
 		private static string HistoryFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EasyConnect", "History.xml");
-#endif
 
         private ListWithEvents<HistoricalConnection> _connections = new ListWithEvents<HistoricalConnection>();
 
@@ -87,13 +85,33 @@ namespace EasyConnect
 
 #if APPX
             IStorageFile historyFile = (IStorageFile)await ApplicationData.Current.LocalFolder.TryGetItemAsync("History.xml");
+            string historyFileText = null;
 
+            // If there isn't a file in the Windows Store app data directory, try the desktop app directory
             if (historyFile == null)
+            {
+                try
+                {
+                    if (File.Exists(HistoryFileName))
+                    {
+                        historyFileText = File.ReadAllText(HistoryFileName);
+                    }
+                }
+
+                catch (Exception)
+                {
+                }
+            }
+
+            else
+            {
+                historyFileText = await FileIO.ReadTextAsync(historyFile);
+            }
+
+            if (String.IsNullOrEmpty(historyFileText))
             {
                 return;
             }
-
-            string historyFileText = await FileIO.ReadTextAsync(historyFile);
 
             using (StringReader historyFileTextReader = new StringReader(historyFileText))
             using (XmlReader historyXmlReader = new XmlTextReader(historyFileTextReader))

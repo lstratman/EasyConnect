@@ -112,6 +112,11 @@ namespace EasyConnect
 						case "Connection":
 							reader.Read();
 
+                            while (reader.NodeType != XmlNodeType.Element)
+                            {
+                                reader.Read();
+                            }
+
 							XmlSerializer serializer =
 								new XmlSerializer(
 									reader.LocalName == "HistoricalConnection"

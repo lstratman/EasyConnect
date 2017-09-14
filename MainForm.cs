@@ -281,7 +281,7 @@ namespace EasyConnect
 			await Bookmarks.Instance.Save();
 			await History.Instance.Save();
 
-			ConnectionFactory.SetDefaults(ConnectionFactory.GetDefaults(ConnectionFactory.GetDefaultProtocol()));
+			await ConnectionFactory.SetDefaults(await ConnectionFactory.GetDefaults(await ConnectionFactory.GetDefaultProtocol()));
 		}
 
 		/// <summary>
@@ -403,7 +403,7 @@ namespace EasyConnect
 		/// <summary>
 		/// Opens an <see cref="OptionsWindow"/> instance when the user clicks on the "Options" menu item from a <see cref="ConnectionWindow"/>.
 		/// </summary>
-		public void OpenOptions()
+		public async Task OpenOptions()
 		{
 			TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content is OptionsWindow);
 
@@ -425,14 +425,19 @@ namespace EasyConnect
 
 			foreach (IProtocol protocol in ConnectionFactory.GetProtocols())
 			{
-				Form optionsForm = protocol.GetOptionsFormInDefaultsMode();
+				Form optionsForm = await protocol.GetOptionsFormInDefaultsMode();
 
-				optionsForm.Closed += (sender, args) => ConnectionFactory.SetDefaults(((IOptionsForm) optionsForm).Connection);
+			    optionsForm.Closed += optionsForm_Closed;
 				optionsWindow.OptionsForms.Add(optionsForm);
 			}
 
 			ShowInEmptyTab(optionsWindow);
 		}
+
+	    private async void optionsForm_Closed(object sender, EventArgs e)
+	    {
+	        await ConnectionFactory.SetDefaults(((IOptionsForm)sender).Connection);
+        }
 
 		/// <summary>
 		/// Handler method that's closed when the user closes the global options window.  Sets the encryption type and the password that the user selected.

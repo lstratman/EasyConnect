@@ -260,7 +260,7 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated (<see cref="urlTextBox"/> in this case).</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void urlTextBox_LostFocus(object sender, EventArgs e)
+		private async void urlTextBox_LostFocus(object sender, EventArgs e)
 		{
 			urlTextBox.Visible = false;
 			_urlPanelContainer.Visible = true;
@@ -273,12 +273,12 @@ namespace EasyConnect
 					@"<div style=""background-color: #FFFFFF; font-family: {2}; font-size: {3}pt; height: {4}px; color: #9999BF;"">{0}://<font color=""black"">{1}</font></div>",
 					urlMatch.Groups["protocol"].Success
 						? urlMatch.Groups["protocol"].Value
-						: ConnectionFactory.GetDefaultProtocol().ProtocolPrefix, urlMatch.Groups["hostName"].Value, urlTextBox.Font.FontFamily.GetName(0),
+						: (await ConnectionFactory.GetDefaultProtocol()).ProtocolPrefix, urlMatch.Groups["hostName"].Value, urlTextBox.Font.FontFamily.GetName(0),
 					urlTextBox.Font.SizeInPoints, _urlPanel.Height);
 
 				urlTextBox.Text = (urlMatch.Groups["protocol"].Success
 					                   ? urlMatch.Groups["protocol"].Value
-					                   : ConnectionFactory.GetDefaultProtocol().ProtocolPrefix) + "://" + urlMatch.Groups["hostName"];
+					                   : (await ConnectionFactory.GetDefaultProtocol()).ProtocolPrefix) + "://" + urlMatch.Groups["hostName"];
 			}
 
 			else if (!_connectionFromOmniBar)
@@ -360,7 +360,7 @@ namespace EasyConnect
 			{
                 if (_omniBarFocusIndex == -1)
                 {
-                    IConnection newConnection = ConnectionFactory.GetConnection(urlTextBox.Text);
+                    IConnection newConnection = await ConnectionFactory.GetConnection(urlTextBox.Text);
                     newConnection.Guid = Guid.NewGuid();
 
                     _connection = newConnection;
@@ -721,9 +721,9 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void _optionsMenuItem_Click(object sender, EventArgs e)
+		private async void _optionsMenuItem_Click(object sender, EventArgs e)
 		{
-			ParentTabs.OpenOptions();
+			await ParentTabs.OpenOptions();
 		}
 
 		/// <summary>

@@ -180,6 +180,7 @@
             this.Name = "GlobalOptionsWindow";
             this.Text = "Global Options";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GlobalOptionsWindow_FormClosing);
+            this.Load += new System.EventHandler(this.GlobalOptionsWindow_Load);
             this.Shown += new System.EventHandler(this.GlobalOptionsWindow_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();

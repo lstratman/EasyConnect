@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EasyConnect.Protocols
@@ -58,7 +59,7 @@ namespace EasyConnect.Protocols
 		/// <see cref="GetOptionsForm()"/> with the exception of the hostname to use for the connection.
 		/// </summary>
 		/// <returns>Options form used to capture defaults to be used in connections for this protocol</returns>
-		Form GetOptionsFormInDefaultsMode();
+		Task<Form> GetOptionsFormInDefaultsMode();
 
 		/// <summary>
 		/// Creates the form that will house the UI for establishing and displaying <paramref name="connection"/>.

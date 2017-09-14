@@ -293,7 +293,7 @@ namespace EasyConnect.Protocols
 			object clonedConnection = SerializationUtilities.Clone(this);
 
 			((BaseConnection) clonedConnection).ParentFolder = null;
-			((BaseConnection) clonedConnection).Guid = new Guid();
+		    ((BaseConnection) clonedConnection).Guid = Guid.NewGuid();
 
 			return clonedConnection;
 		}

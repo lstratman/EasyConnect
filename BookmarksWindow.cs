@@ -25,11 +25,6 @@ namespace EasyConnect
 	public partial class BookmarksWindow : Form
 	{
 		/// <summary>
-		/// Full path to the file where bookmarks data is serialized.
-		/// </summary>
-		protected readonly string BookmarksFileName = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Bookmarks.xml";
-
-		/// <summary>
 		/// Main application instance that this window is associated with, which is used to call back into application functionality.
 		/// </summary>
 		protected MainForm _applicationForm = null;
@@ -795,7 +790,7 @@ namespace EasyConnect
 		private async void _addBookmarkMenuItem_Click(IProtocol type)
 		{
 			// Create a new connection instance by cloning the protocol's default
-			IConnection connection = (IConnection) ConnectionFactory.GetDefaults(type.GetType()).Clone();
+			IConnection connection = (IConnection) (await ConnectionFactory.GetDefaults(type.GetType())).Clone();
 
 			connection.Name = "New Connection";
 
@@ -1813,9 +1808,9 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void _optionsMenuItem_Click(object sender, EventArgs e)
+		private async void _optionsMenuItem_Click(object sender, EventArgs e)
         {
-            ParentTabs.OpenOptions();
+            await ParentTabs.OpenOptions();
         }
 
         private void _toolsMenu_VisibleChanged(object sender, EventArgs e)

@@ -134,7 +134,7 @@ can be used.";
 
                 // Since they want to use RSA but already have connection data encrypted with Rijndael, we'll have to capture that password so that we can
                 // decrypt it using Rijndael and then re-encrypt it using the RSA keypair
-                convertingToRsa = Options.Instance.EncryptionType == EncryptionType.Rsa && Options.Instance.FirstLaunch;
+                convertingToRsa = Options.Instance.EncryptionType == EncryptionType.Rsa && !Options.Instance.FirstLaunch;
             }
 
             // If this is the first time that the user is running the application, pop up and information box informing them that they're going to enter a
@@ -174,8 +174,7 @@ can be used.";
                 {
                     await Bookmarks.Init();
                     await History.Init();
-
-                    ConnectionFactory.GetDefaultProtocol();
+                    await ConnectionFactory.GetDefaultProtocol();
 
                     encryptionTypeSet = true;
                     break;
@@ -204,7 +203,7 @@ can be used.";
                 await Bookmarks.Instance.Save();
                 await History.Instance.Save();
 
-                ConnectionFactory.SetDefaults(ConnectionFactory.GetDefaults(ConnectionFactory.GetDefaultProtocol()));
+                await ConnectionFactory.SetDefaults(await ConnectionFactory.GetDefaults(await ConnectionFactory.GetDefaultProtocol()));
             }
 
             return true;

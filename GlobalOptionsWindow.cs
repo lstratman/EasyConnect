@@ -31,8 +31,6 @@ namespace EasyConnect
 
 			foreach (IProtocol protocol in ConnectionFactory.GetProtocols())
 				_defaultProtocolDropdown.Items.Add(protocol);
-
-			_defaultProtocolDropdown.SelectedItem = ConnectionFactory.GetDefaultProtocol();
 		}
 
 		/// <summary>
@@ -56,7 +54,7 @@ namespace EasyConnect
 			if (_parentTabs == null)
 				return;
 
-			ConnectionFactory.SetDefaultProtocol((IProtocol) _defaultProtocolDropdown.SelectedItem);
+			await ConnectionFactory.SetDefaultProtocol((IProtocol) _defaultProtocolDropdown.SelectedItem);
 
             Options.Instance.AutoHideToolbar = _autoHideCheckbox.Checked;
             Options.Instance.EncryptionType = (EncryptionType) Enum.Parse(typeof (EncryptionType), ((ListItem) _encryptionTypeDropdown.SelectedItem).Value);
@@ -144,5 +142,10 @@ namespace EasyConnect
 				set;
 			}
 		}
-	}
+
+        private async void GlobalOptionsWindow_Load(object sender, EventArgs e)
+        {
+            _defaultProtocolDropdown.SelectedItem = await ConnectionFactory.GetDefaultProtocol();
+        }
+    }
 }

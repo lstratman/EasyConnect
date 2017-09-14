@@ -322,6 +322,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "HistoryWindow";
             this.Text = "History";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HistoryWindow_FormClosing);
             this.historyContextMenu.ResumeLayout(false);
             this.toolbarBackground.ResumeLayout(false);
             this.toolbarBackground.PerformLayout();
