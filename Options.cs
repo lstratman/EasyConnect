@@ -6,7 +6,6 @@ using EasyConnect.Protocols;
 using System.Threading.Tasks;
 #if APPX
 using Windows.Storage;
-using Windows.Storage.Streams;
 #endif
 
 namespace EasyConnect
@@ -18,7 +17,7 @@ namespace EasyConnect
 	[Serializable]
 	public class Options
 	{
-        private static string OptionsFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EasyConnect", "Options.xml");
+        private static readonly string OptionsFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EasyConnect", "Options.xml");
 
         private Options()
         {
@@ -85,8 +84,10 @@ namespace EasyConnect
 		            }
 		        }
 
-		        catch (Exception)
-		        {
+#pragma warning disable RECS0022
+                catch (Exception)
+#pragma warning restore RECS0022
+                {
 		        }
 		    }
 

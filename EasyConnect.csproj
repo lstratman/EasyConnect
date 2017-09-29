@@ -156,6 +156,7 @@
   <ItemGroup Condition="'$(Configuration)' == 'AppX' Or '$(Configuration)' == 'AppXDebug'">
     <Reference Include="Windows">
       <HintPath>c:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral\Windows.winmd</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Runtime.WindowsRuntime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
   </ItemGroup>

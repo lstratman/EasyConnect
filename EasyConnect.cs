@@ -10,28 +10,27 @@ using System.Threading.Tasks;
 using EasyConnect.Protocols;
 using EasyConnect.Properties;
 using System.Security.Cryptography;
-using System.IO;
 
 namespace EasyConnect
 {
 	/// <summary>
 	/// Main class for this application.
 	/// </summary>
-	internal static class EasyConnect
+	static class EasyConnect
 	{
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
 		[STAThread]
 #if APPX
-        private static async Task Main()
+        static async Task Main()
 #else
-        private static void Main()
+        static void Main()
 #endif
         {
 			string[] arguments = Environment.GetCommandLineArgs();
-			string openHistory = arguments.FirstOrDefault((string s) => s.StartsWith("/openHistory:"));
-			string openBookmarks = arguments.FirstOrDefault((string s) => s.StartsWith("/openBookmarks:"));
+			string openHistory = arguments.FirstOrDefault((string s) => s.StartsWith("/openHistory:", StringComparison.CurrentCulture));
+			string openBookmarks = arguments.FirstOrDefault((string s) => s.StartsWith("/openBookmarks:", StringComparison.CurrentCulture));
 			Guid historyGuid = Guid.Empty;
 			Guid[] bookmarkGuids = null;
 
