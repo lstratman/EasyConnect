@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using EasyConnect.Protocols;
 using EasyConnect.Properties;
 using System.Security.Cryptography;
+#if !APPX
+using System.IO;
+#endif
 
 namespace EasyConnect
 {
