@@ -2,7 +2,7 @@
 using System.Security;
 using System.Windows.Forms;
 
-namespace EasyConnect
+namespace EasyConnect.Common
 {
 	/// <summary>
 	/// Displays a window that captures both a username and a password.
@@ -50,7 +50,7 @@ namespace EasyConnect
 		}
 
 		/// <summary>
-		/// Handler method that's called when the user clicks <see cref="cancelButton"/>.  Sets <see cref="DialogResult"/> to <see cref="DialogResult.Cancel"/>
+		/// Handler method that's called when the user clicks <see cref="cancelButton"/>.  Sets <see cref="System.Windows.Forms.DialogResult"/> to <see cref="System.Windows.Forms.DialogResult.Cancel"/>
 		/// and closes the window.
 		/// </summary>
 		/// <param name="sender">Object from which this event originated, <see cref="cancelButton"/> in this case.</param>
@@ -62,7 +62,7 @@ namespace EasyConnect
 		}
 
 		/// <summary>
-		/// Handler method that's called when the user clicks <see cref="okButton"/>.  Sets <see cref="DialogResult"/> to <see cref="DialogResult.OK"/> and 
+		/// Handler method that's called when the user clicks <see cref="okButton"/>.  Sets <see cref="System.Windows.Forms.DialogResult"/> to <see cref="System.Windows.Forms.DialogResult.OK"/> and 
 		/// closes the window.
 		/// </summary>
 		/// <param name="sender">Object from which this event originated, <see cref="okButton"/> in this case.</param>
@@ -74,8 +74,8 @@ namespace EasyConnect
 		}
 
 		/// <summary>
-		/// Handler method that's called when the user presses a key while in the <see cref="_usernameTextBox"/> field.  If <see cref="KeyEventArgs.KeyCode"/>
-		/// is <see cref="Keys.Enter"/>, we call <see cref="okButton_Click"/>.
+		/// Handler method that's called when the user presses a key while in the <see cref="_usernameTextBox"/> field.  If <see cref="System.Windows.Forms.KeyEventArgs.KeyCode"/>
+		/// is <see cref="System.Windows.Forms.Keys.Enter"/>, we call <see cref="okButton_Click"/>.
 		/// </summary>
 		/// <param name="sender">Object from which this event originated, <see cref="_usernameTextBox"/> in this case.</param>
 		/// <param name="e">Arguments associated with this event.</param>
@@ -86,8 +86,8 @@ namespace EasyConnect
 		}
 
 		/// <summary>
-		/// Handler method that's called when the user presses a key while in the <see cref="_passwordTextBox"/> field.  If <see cref="KeyEventArgs.KeyCode"/>
-		/// is <see cref="Keys.Enter"/>, we call <see cref="okButton_Click"/>.
+		/// Handler method that's called when the user presses a key while in the <see cref="_passwordTextBox"/> field.  If <see cref="System.Windows.Forms.KeyEventArgs.KeyCode"/>
+		/// is <see cref="System.Windows.Forms.Keys.Enter"/>, we call <see cref="okButton_Click"/>.
 		/// </summary>
 		/// <param name="sender">Object from which this event originated, <see cref="_passwordTextBox"/> in this case.</param>
 		/// <param name="e">Arguments associated with this event.</param>

@@ -1,4 +1,4 @@
-﻿namespace EasyConnect
+﻿namespace EasyConnect.Common
 {
     partial class UsernamePasswordWindow
     {

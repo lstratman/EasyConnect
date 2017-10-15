@@ -15,6 +15,7 @@ using System.Windows.Forms.VisualStyles;
 using EasyConnect.Properties;
 using System.Configuration;
 using System.Threading.Tasks;
+using EasyConnect.Common;
 
 namespace EasyConnect
 {
