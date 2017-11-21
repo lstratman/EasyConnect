@@ -23,6 +23,7 @@ namespace EasyConnect.Protocols.Rdp
 			VisualStyles = true;
 			PersistentBitmapCaching = true;
 			ConnectClipboard = true;
+            ConnectSmartCards = true;
 			ConnectPrinters = true;
 			RecordingMode = RecordingMode.RecordFromThisComputer;
 		}
@@ -39,7 +40,8 @@ namespace EasyConnect.Protocols.Rdp
 			AudioMode = info.GetValue<AudioMode>("AudioMode");
 			ColorDepth = info.GetInt32("ColorDepth");
 			ConnectClipboard = info.GetBoolean("ConnectClipboard");
-			ConnectDrives = info.GetBoolean("ConnectDrives");
+            ConnectSmartCards = info.GetBoolean("ConnectSmartCards");
+            ConnectDrives = info.GetBoolean("ConnectDrives");
 			ConnectPrinters = info.GetBoolean("ConnectPrinters");
 			DesktopBackground = info.GetBoolean("DesktopBackground");
 			DesktopComposition = info.GetBoolean("DesktopComposition");
@@ -138,10 +140,19 @@ namespace EasyConnect.Protocols.Rdp
 			set;
 		}
 
-		/// <summary>
-		/// Flag indicating whether the remote system should map network drives to the user's local hard drive instances.
+        /// <summary>
+		/// Flag indicating whether the remote session should redirect smart cards.
 		/// </summary>
-		public bool ConnectDrives
+		public bool ConnectSmartCards
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Flag indicating whether the remote system should map network drives to the user's local hard drive instances.
+        /// </summary>
+        public bool ConnectDrives
 		{
 			get;
 			set;
@@ -314,7 +325,8 @@ namespace EasyConnect.Protocols.Rdp
 			info.AddValue("AudioMode", AudioMode);
 			info.AddValue("ColorDepth", ColorDepth);
 			info.AddValue("ConnectClipboard", ConnectClipboard);
-			info.AddValue("ConnectDrives", ConnectDrives);
+            info.AddValue("ConnectSmartCards", ConnectSmartCards);
+            info.AddValue("ConnectDrives", ConnectDrives);
 			info.AddValue("ConnectPrinters", ConnectPrinters);
 			info.AddValue("DesktopBackground", DesktopBackground);
 			info.AddValue("DesktopComposition", DesktopComposition);

@@ -138,7 +138,8 @@ namespace EasyConnect.Protocols.Rdp
 			_audioRecordingDropdown.SelectedIndex = (int) Connection.RecordingMode;
 			_windowsKeyDropdown.SelectedIndex = (int) Connection.KeyboardMode;
 			_clipboardCheckbox.Checked = Connection.ConnectClipboard;
-			_printersCheckbox.Checked = Connection.ConnectPrinters;
+            _smartCardsCheckBox.Checked = Connection.ConnectSmartCards;
+            _printersCheckbox.Checked = Connection.ConnectPrinters;
 			_drivesCheckbox.Checked = Connection.ConnectDrives;
 			_desktopBackgroundCheckbox.Checked = Connection.DesktopBackground;
 			_fontSmoothingCheckbox.Checked = Connection.FontSmoothing;
@@ -203,6 +204,7 @@ namespace EasyConnect.Protocols.Rdp
 			Connection.RecordingMode = (RecordingMode) _audioRecordingDropdown.SelectedIndex;
 			Connection.KeyboardMode = (KeyboardMode) _windowsKeyDropdown.SelectedIndex;
 			Connection.ConnectClipboard = _clipboardCheckbox.Checked;
+            Connection.ConnectSmartCards = _smartCardsCheckBox.Checked;
 			Connection.ConnectPrinters = _printersCheckbox.Checked;
 			Connection.ConnectDrives = _drivesCheckbox.Checked;
 			Connection.DesktopBackground = _desktopBackgroundCheckbox.Checked;

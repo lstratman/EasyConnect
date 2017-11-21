@@ -76,6 +76,7 @@
             this._inheritedUsernameLabel = new System.Windows.Forms.Label();
             this._displayPanel = new System.Windows.Forms.Panel();
             this._resourcesPanel = new System.Windows.Forms.Panel();
+            this._smartCardsCheckBox = new System.Windows.Forms.CheckBox();
             this._experiencePanel = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
@@ -574,6 +575,7 @@
             // 
             // _resourcesPanel
             // 
+            this._resourcesPanel.Controls.Add(this._smartCardsCheckBox);
             this._resourcesPanel.Controls.Add(this._remoteAudioRecordingLabel);
             this._resourcesPanel.Controls.Add(this._remoteAudioPlaybackLabel);
             this._resourcesPanel.Controls.Add(this._localResourcesLabel);
@@ -587,8 +589,19 @@
             this._resourcesPanel.Controls.Add(this._drivesCheckbox);
             this._resourcesPanel.Location = new System.Drawing.Point(18, 372);
             this._resourcesPanel.Name = "_resourcesPanel";
-            this._resourcesPanel.Size = new System.Drawing.Size(684, 193);
+            this._resourcesPanel.Size = new System.Drawing.Size(684, 218);
             this._resourcesPanel.TabIndex = 83;
+            // 
+            // _smartCardsCheckBox
+            // 
+            this._smartCardsCheckBox.AutoSize = true;
+            this._smartCardsCheckBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._smartCardsCheckBox.Location = new System.Drawing.Point(189, 186);
+            this._smartCardsCheckBox.Name = "_smartCardsCheckBox";
+            this._smartCardsCheckBox.Size = new System.Drawing.Size(99, 21);
+            this._smartCardsCheckBox.TabIndex = 71;
+            this._smartCardsCheckBox.Text = "Smart Cards";
+            this._smartCardsCheckBox.UseVisualStyleBackColor = true;
             // 
             // _experiencePanel
             // 
@@ -601,7 +614,7 @@
             this._experiencePanel.Controls.Add(this._menuAnimationCheckbox);
             this._experiencePanel.Controls.Add(this._fontSmoothingCheckbox);
             this._experiencePanel.Controls.Add(this._desktopCompositionCheckbox);
-            this._experiencePanel.Location = new System.Drawing.Point(18, 571);
+            this._experiencePanel.Location = new System.Drawing.Point(18, 596);
             this._experiencePanel.Name = "_experiencePanel";
             this._experiencePanel.Size = new System.Drawing.Size(684, 209);
             this._experiencePanel.TabIndex = 83;
@@ -616,7 +629,7 @@
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this._useProxyCheckBox);
-            this.panel2.Location = new System.Drawing.Point(18, 786);
+            this.panel2.Location = new System.Drawing.Point(18, 811);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(684, 150);
             this.panel2.TabIndex = 85;
@@ -809,5 +822,6 @@
 		private System.Windows.Forms.CheckBox _useProxyCheckBox;
         private System.Windows.Forms.Label _portLabel;
         private System.Windows.Forms.TextBox _portTextBox;
+        private System.Windows.Forms.CheckBox _smartCardsCheckBox;
     }
 }
