@@ -3,16 +3,21 @@
   <metadata>
     <id>easyconnect</id>
     <title>EasyConnect</title>
-    <version>2.0.1.0</version>
+    <version>2.1.0.0</version>
     <authors>Luke Stratman</authors>
     <owners>Luke Stratman</owners>
     <description>Tabbed remote desktop application with a Chrome-like UI.</description>
-    <summary/>
+    <tags>rdp ssh vnc remote-desktop admin</tags>
+    <summary>This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP), Secure Shell (SSH), PowerShell, and VNC but has a plugin architecture designed to enable third-party support for other protocols such as Citrix, etc.</summary>
     <projectUrl>https://github.com/lstratman/EasyConnect</projectUrl>
-    <copyright>(c) 2013, Luke Stratman</copyright>
+    <copyright>(c) 2017, Luke Stratman</copyright>
     <licenseUrl>https://github.com/lstratman/EasyConnect/blob/master/GPL.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <releaseNotes>- Fixed a runtime error that occurs when clicking on the "view error message" link that is displayed when a connection cannot be established.</releaseNotes>
+    <releaseNotes> - Updated the look-and-feel to the latest version of Chrome.
+ - Updated the codebase for the terminal control used by the SSH and PowerShell plugins to the most recent version of the Poderosa project.
+ - Moved to a new library for VNC connections.
+ - Scrolling is now automatically enabled for all option screens.
+ - Added the ability to specify the port for remote desktop connections.</releaseNotes>
   </metadata>
   <files>
     <file src="tools\**" target="tools" />

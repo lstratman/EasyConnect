@@ -18,10 +18,15 @@ namespace EasyConnect.Protocols.Rdp
 		/// </summary>
 		protected bool _connectClipboard = false;
 
-		/// <summary>
-		/// Flag indicating if the RDP window's size has been set explicitly.
+        /// <summary>
+		/// Flag indicating whether the remote session should redirect smart cards.
 		/// </summary>
-		protected bool _rdpWindowSizeSet = false;
+		protected bool _connectSmartCards = false;
+
+        /// <summary>
+        /// Flag indicating if the RDP window's size has been set explicitly.
+        /// </summary>
+        protected bool _rdpWindowSizeSet = false;
 
 		/// <summary>
 		/// Default constructor.
@@ -164,7 +169,7 @@ namespace EasyConnect.Protocols.Rdp
 			set
 			{
 				_rdpWindow.AdvancedSettings2.RedirectPrinters = value;
-				_rdpWindow.AdvancedSettings2.DisableRdpdr = (!(value || ConnectClipboard)
+				_rdpWindow.AdvancedSettings2.DisableRdpdr = (!(value || ConnectPrinters)
 					                                             ? 1
 					                                             : 0);
 			}
@@ -183,17 +188,35 @@ namespace EasyConnect.Protocols.Rdp
 			set
 			{
 				_rdpWindow.AdvancedSettings6.RedirectClipboard = value;
-				_rdpWindow.AdvancedSettings.DisableRdpdr = (!(value || ConnectPrinters)
+				_rdpWindow.AdvancedSettings.DisableRdpdr = (!(value || ConnectClipboard)
 					                                            ? 1
 					                                            : 0);
 				_connectClipboard = value;
 			}
 		}
 
-		/// <summary>
-		/// Flag indicating whether the remote system should map network drives to the user's local hard drive instances.
+        /// <summary>
+		/// Flag indicating whether the remote session should redirect smart cards.
 		/// </summary>
-		public bool ConnectDrives
+		public bool ConnectSmartCards
+        {
+            get
+            {
+                return _connectSmartCards;
+            }
+
+            set
+            {
+                _rdpWindow.AdvancedSettings6.RedirectSmartCards = value;
+
+                _connectSmartCards = value;
+            }
+        }
+
+        /// <summary>
+        /// Flag indicating whether the remote system should map network drives to the user's local hard drive instances.
+        /// </summary>
+        public bool ConnectDrives
 		{
 			get
 			{
@@ -501,6 +524,7 @@ namespace EasyConnect.Protocols.Rdp
 			KeyboardMode = Connection.KeyboardMode;
 			ConnectPrinters = Connection.ConnectPrinters;
 			ConnectClipboard = Connection.ConnectClipboard;
+            ConnectSmartCards = Connection.ConnectSmartCards;
 			ConnectDrives = Connection.ConnectDrives;
 			DesktopBackground = Connection.DesktopBackground;
 			FontSmoothing = Connection.FontSmoothing;

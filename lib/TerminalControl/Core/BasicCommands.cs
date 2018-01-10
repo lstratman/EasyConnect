@@ -413,13 +413,7 @@ namespace Poderosa.Commands {
             }
         }
         private static CommandResult CmdOpenWeb(ICommandTarget target) {
-            try {
-                Process p = Process.Start("http://poderosa.sourceforge.net/");
-                return p == null ? CommandResult.Failed : CommandResult.Succeeded;
-            }
-            catch (Exception) {
-                return CommandResult.Failed;
-            }
+            return CommandResult.Succeeded;
         }
 
         //delegate util

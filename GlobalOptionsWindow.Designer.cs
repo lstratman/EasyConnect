@@ -164,7 +164,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(597, 384);
             this.Controls.Add(this._enableAeroPeekLabel);
             this.Controls.Add(this._enableAeroPeekCheckbox);
@@ -180,6 +180,7 @@
             this.Name = "GlobalOptionsWindow";
             this.Text = "Global Options";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GlobalOptionsWindow_FormClosing);
+            this.Load += new System.EventHandler(this.GlobalOptionsWindow_Load);
             this.Shown += new System.EventHandler(this.GlobalOptionsWindow_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -289,6 +289,7 @@
             this.urlBackground.Name = "urlBackground";
             this.urlBackground.Size = new System.Drawing.Size(546, 24);
             this.urlBackground.TabIndex = 2;
+            this.urlBackground.Resize += new System.EventHandler(this.urlBackground_Resize);
             // 
             // _iconPictureBox
             // 
@@ -303,7 +304,7 @@
             this._connectionContainerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._connectionContainerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this._connectionContainerPanel.BackColor = System.Drawing.Color.White;
             this._connectionContainerPanel.Location = new System.Drawing.Point(0, 36);
             this._connectionContainerPanel.Name = "_connectionContainerPanel";
             this._connectionContainerPanel.Size = new System.Drawing.Size(622, 399);

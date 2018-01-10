@@ -1,0 +1,46 @@
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   width="128"
+   height="128"
+   viewBox="0 0 128 128">
+  <rect
+     style="fill:#428bca;fill-opacity:1;stroke:none;stroke-width:2.3203125"
+     width="128"
+     height="128"
+     x="0"
+     y="0" />
+  <g transform="rotate(45 64 64)">
+    <ellipse
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.3203125"
+       id="path4485"
+       cx="64"
+       cy="64"
+       rx="62"
+       ry="62" />
+    <rect
+       style="fill:#428bca;fill-opacity:1;stroke:none;stroke-width:2.3203125"
+       width="15"
+       height="39"
+       x="53"
+       y="18" />
+    <rect
+       style="fill:#428bca;fill-opacity:1;stroke:none;stroke-width:2.3203125"
+       width="39"
+       height="15"
+       x="53"
+       y="42" />
+    <rect
+       style="fill:#428bca;fill-opacity:1;stroke:none;stroke-width:2.3203125"
+       width="39"
+       height="15"
+       x="33"
+       y="70" />
+    <rect
+       style="fill:#428bca;fill-opacity:1;stroke:none;stroke-width:2.3203125"
+       width="15"
+       height="39"
+       x="57"
+       y="70" />
+  </g>
+</svg>

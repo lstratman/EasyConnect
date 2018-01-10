@@ -6,23 +6,34 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Windows.Forms;
 using EasyTabs;
+using System.Threading.Tasks;
+using EasyConnect.Protocols;
+using EasyConnect.Properties;
+using System.Security.Cryptography;
+#if !APPX
+using System.IO;
+#endif
 
 namespace EasyConnect
 {
 	/// <summary>
 	/// Main class for this application.
 	/// </summary>
-	internal static class EasyConnect
+	static class EasyConnect
 	{
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
 		[STAThread]
-		private static void Main()
-		{
+#if APPX
+        static async Task Main()
+#else
+        static void Main()
+#endif
+        {
 			string[] arguments = Environment.GetCommandLineArgs();
-			string openHistory = arguments.FirstOrDefault((string s) => s.StartsWith("/openHistory:"));
-			string openBookmarks = arguments.FirstOrDefault((string s) => s.StartsWith("/openBookmarks:"));
+			string openHistory = arguments.FirstOrDefault((string s) => s.StartsWith("/openHistory:", StringComparison.CurrentCulture));
+			string openBookmarks = arguments.FirstOrDefault((string s) => s.StartsWith("/openBookmarks:", StringComparison.CurrentCulture));
 			Guid historyGuid = Guid.Empty;
 			Guid[] bookmarkGuids = null;
 
@@ -61,15 +72,158 @@ namespace EasyConnect
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			MainForm mainForm = new MainForm(bookmarkGuids)
-				                    {
-					                    OpenToHistory = historyGuid
-				                    };
+            bool encryptionSetup = false;
 
-			TitleBarTabsApplicationContext applicationContext = new TitleBarTabsApplicationContext();
-			applicationContext.Start(mainForm);
+#if !APPX
+            Task.Run(async () =>
+            {
+#endif
+                await Options.Init();
+                encryptionSetup = await SetupEncryption();
+#if !APPX
+            }).Wait();
+#endif
 
-			Application.Run(applicationContext);
+            if (!encryptionSetup)
+            {
+                return;
+            }
+
+            MainForm mainForm = new MainForm(bookmarkGuids)
+            {
+                OpenToHistory = historyGuid
+            };
+
+            TitleBarTabsApplicationContext applicationContext = new TitleBarTabsApplicationContext();
+            applicationContext.Start(mainForm);
+
+            Application.Run(applicationContext);
 		}
-	}
+
+        private static async Task<bool> SetupEncryption()
+        {
+            bool convertingToRsa = false;
+
+            // If the user hasn't formally selected an encryption type (either they're starting the application for the first time or are running a legacy
+            // version that explicitly used Rijndael), ask them if they want to use RSA
+            if (Options.Instance.EncryptionType == null)
+            {
+                string messageBoxText = @"Do you want to use an RSA key container to encrypt your passwords?
+
+The RSA encryption mode uses cryptographic keys associated with 
+your Windows user account to encrypt sensitive data without having 
+to enter an encryption password every time you start this 
+application. However, your bookmarks file will be tied uniquely to 
+this user account and you will be unable to share them between
+multiple users.";
+
+                if (Options.Instance.FirstLaunch)
+                    messageBoxText += @"
+
+The alternative is to derive an encryption key from a password that
+you will need to enter every time that this application starts.";
+
+                else
+                    messageBoxText += @"
+
+Since you've already encrypted your data with a password once, 
+you would need to enter it one more time to decrypt it before RSA 
+can be used.";
+
+                Options.Instance.EncryptionType = MessageBox.Show(messageBoxText, "Use RSA?", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes
+                                             ? EncryptionType.Rsa
+                                             : EncryptionType.Rijndael;
+
+                // Since they want to use RSA but already have connection data encrypted with Rijndael, we'll have to capture that password so that we can
+                // decrypt it using Rijndael and then re-encrypt it using the RSA keypair
+                convertingToRsa = Options.Instance.EncryptionType == EncryptionType.Rsa && !Options.Instance.FirstLaunch;
+            }
+
+            // If this is the first time that the user is running the application, pop up and information box informing them that they're going to enter a
+            // password used to encrypt sensitive connection details
+            if (Options.Instance.FirstLaunch)
+            {
+                if (Options.Instance.EncryptionType == EncryptionType.Rijndael)
+                    MessageBox.Show(Resources.FirstRunPasswordText, Resources.FirstRunPasswordTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+#if !APPX
+                Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EasyConnect"));
+#endif
+            }
+
+            if (Options.Instance.EncryptionType != null)
+                await Options.Instance.Save();
+
+            bool encryptionTypeSet = false;
+
+            while (true)
+            {
+                // Get the user's encryption password via the password dialog
+                if (!encryptionTypeSet && (Options.Instance.EncryptionType == EncryptionType.Rijndael || convertingToRsa))
+                {
+                    PasswordWindow passwordWindow = new PasswordWindow();
+                    passwordWindow.ShowDialog();
+
+                    ConnectionFactory.SetEncryptionType(EncryptionType.Rijndael, passwordWindow.Password);
+                }
+
+                else
+                    ConnectionFactory.SetEncryptionType(Options.Instance.EncryptionType.Value);
+
+                // Create the bookmark and history windows which will try to use the password to decrypt sensitive connection details; if it's unable to, an
+                // exception will be thrown that wraps a CryptographicException instance
+                try
+                {
+                    await Bookmarks.Init();
+                    await History.Init();
+                    await ConnectionFactory.GetDefaultProtocol();
+
+                    encryptionTypeSet = true;
+                    break;
+                }
+
+                catch (Exception e)
+                {
+                    if ((Options.Instance.EncryptionType == EncryptionType.Rijndael || convertingToRsa) && !ContainsCryptographicException(e))
+                        throw;
+
+                    // Tell the user that their password is incorrect and, if they click OK, repeat the process
+                    DialogResult result = MessageBox.Show(Resources.IncorrectPasswordText, Resources.ErrorTitle, MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+
+                    if (result != DialogResult.OK)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            // If we're converting over to RSA, we've already loaded and decrypted the sensitive data using 
+            if (convertingToRsa)
+            {
+                ConnectionFactory.SetEncryptionType(Options.Instance.EncryptionType.Value, null);
+
+                await Bookmarks.Instance.Save();
+                await History.Instance.Save();
+
+                await ConnectionFactory.SetDefaults(await ConnectionFactory.GetDefaults(await ConnectionFactory.GetDefaultProtocol()));
+            }
+
+            return true;
+        }
+
+        /// <summary>
+		/// Recursive method that checks to see if <paramref name="exception"/> or any of its <see cref="Exception.InnerException"/>s wrap a 
+		/// <see cref="CryptographicException"/> instance.
+		/// </summary>
+		/// <param name="exception">Exception that we're currently examining.</param>
+		/// <returns>True if <paramref name="exception"/> or any of its <see cref="Exception.InnerException"/>s wrap a <see cref="CryptographicException"/> 
+		/// instance, false otherwise.</returns>
+		private static bool ContainsCryptographicException(Exception exception)
+        {
+            if (exception is CryptographicException)
+                return true;
+
+            return exception.InnerException != null && ContainsCryptographicException(exception.InnerException);
+        }
+    }
 }

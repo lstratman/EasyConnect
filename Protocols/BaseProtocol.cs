@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EasyConnect.Protocols
@@ -74,9 +75,9 @@ namespace EasyConnect.Protocols
 		/// <see cref="GetOptionsForm()"/> with the exception of the hostname to use for the connection.
 		/// </summary>
 		/// <returns>Options form used to capture defaults to be used in connections for this protocol</returns>
-		public Form GetOptionsFormInDefaultsMode()
+		public async Task<Form> GetOptionsFormInDefaultsMode()
 		{
-			TConnection defaults = (TConnection) ConnectionFactory.GetDefaults(GetType());
+			TConnection defaults = (TConnection) await ConnectionFactory.GetDefaults(GetType());
 
 			return GetOptionsFormInDefaultsMode(defaults);
 		}

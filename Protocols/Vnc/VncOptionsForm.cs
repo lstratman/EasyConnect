@@ -63,7 +63,7 @@ namespace EasyConnect.Protocols.Vnc
 
 			// Initialize the values in the UI from the properties in the connection
 			_hostNameTextBox.Text = Connection.Host;
-			_portUpDown.Value = Connection.Port;
+			_portTextBox.Text = Connection.Port.ToString();
 
 			_displayUpDown.Value = Connection.Display;
 			_viewOnlyCheckbox.Checked = Connection.ViewOnly;
@@ -85,7 +85,7 @@ namespace EasyConnect.Protocols.Vnc
 		{
 			// Copy the values from the UI back into the connection object
 			Connection.Host = _hostNameTextBox.Text;
-			Connection.Port = Convert.ToInt32(_portUpDown.Value);
+			Connection.Port = Convert.ToInt32(_portTextBox.Text);
 			Connection.Display = Convert.ToInt32(_displayUpDown.Value);
 			Connection.ViewOnly = _viewOnlyCheckbox.Checked;
 			Connection.Password = _passwordTextBox.SecureText;

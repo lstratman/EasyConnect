@@ -39,7 +39,6 @@
             this._passwordLabel = new System.Windows.Forms.Label();
             this._generalLabel = new System.Windows.Forms.Label();
             this._hostPanel = new System.Windows.Forms.Panel();
-            this._portUpDown = new System.Windows.Forms.NumericUpDown();
             this._portLabel = new System.Windows.Forms.Label();
             this._hostNameLabel = new System.Windows.Forms.Label();
             this._hostNameTextBox = new System.Windows.Forms.TextBox();
@@ -54,10 +53,10 @@
             this._clipboardLabel = new System.Windows.Forms.Label();
             this._titleLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this._portTextBox = new System.Windows.Forms.TextBox();
             this._flowLayoutPanel.SuspendLayout();
             this._generalPanel.SuspendLayout();
             this._hostPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._portUpDown)).BeginInit();
             this._displayPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._displayUpDown)).BeginInit();
             this._behaviorPanel.SuspendLayout();
@@ -127,7 +126,7 @@
             // 
             // _passwordTextBox
             // 
-            this._passwordTextBox.Location = new System.Drawing.Point(159, 39);
+            this._passwordTextBox.Location = new System.Drawing.Point(106, 41);
             this._passwordTextBox.Name = "_passwordTextBox";
             this._passwordTextBox.PasswordChar = '*';
             this._passwordTextBox.SecureText = secureString1;
@@ -157,7 +156,7 @@
             // 
             // _hostPanel
             // 
-            this._hostPanel.Controls.Add(this._portUpDown);
+            this._hostPanel.Controls.Add(this._portTextBox);
             this._hostPanel.Controls.Add(this._portLabel);
             this._hostPanel.Controls.Add(this._hostNameLabel);
             this._hostPanel.Controls.Add(this._hostNameTextBox);
@@ -166,23 +165,6 @@
             this._hostPanel.Name = "_hostPanel";
             this._hostPanel.Size = new System.Drawing.Size(684, 99);
             this._hostPanel.TabIndex = 84;
-            // 
-            // _portUpDown
-            // 
-            this._portUpDown.Location = new System.Drawing.Point(159, 63);
-            this._portUpDown.Maximum = new decimal(new int[] {
-            32167,
-            0,
-            0,
-            0});
-            this._portUpDown.Name = "_portUpDown";
-            this._portUpDown.Size = new System.Drawing.Size(61, 20);
-            this._portUpDown.TabIndex = 56;
-            this._portUpDown.Value = new decimal(new int[] {
-            5900,
-            0,
-            0,
-            0});
             // 
             // _portLabel
             // 
@@ -199,14 +181,14 @@
             this._hostNameLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._hostNameLabel.Location = new System.Drawing.Point(31, 38);
             this._hostNameLabel.Name = "_hostNameLabel";
-            this._hostNameLabel.Size = new System.Drawing.Size(122, 20);
+            this._hostNameLabel.Size = new System.Drawing.Size(78, 20);
             this._hostNameLabel.TabIndex = 53;
             this._hostNameLabel.Text = "Host name:";
             this._hostNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // _hostNameTextBox
             // 
-            this._hostNameTextBox.Location = new System.Drawing.Point(159, 39);
+            this._hostNameTextBox.Location = new System.Drawing.Point(115, 39);
             this._hostNameTextBox.Name = "_hostNameTextBox";
             this._hostNameTextBox.Size = new System.Drawing.Size(154, 20);
             this._hostNameTextBox.TabIndex = 52;
@@ -236,7 +218,7 @@
             // _viewOnlyCheckbox
             // 
             this._viewOnlyCheckbox.AutoSize = true;
-            this._viewOnlyCheckbox.Location = new System.Drawing.Point(159, 63);
+            this._viewOnlyCheckbox.Location = new System.Drawing.Point(115, 68);
             this._viewOnlyCheckbox.Name = "_viewOnlyCheckbox";
             this._viewOnlyCheckbox.Size = new System.Drawing.Size(15, 14);
             this._viewOnlyCheckbox.TabIndex = 84;
@@ -254,7 +236,7 @@
             // 
             // _displayUpDown
             // 
-            this._displayUpDown.Location = new System.Drawing.Point(159, 37);
+            this._displayUpDown.Location = new System.Drawing.Point(115, 40);
             this._displayUpDown.Name = "_displayUpDown";
             this._displayUpDown.Size = new System.Drawing.Size(61, 20);
             this._displayUpDown.TabIndex = 81;
@@ -272,7 +254,7 @@
             // _clipboardCheckbox
             // 
             this._clipboardCheckbox.AutoSize = true;
-            this._clipboardCheckbox.Location = new System.Drawing.Point(159, 46);
+            this._clipboardCheckbox.Location = new System.Drawing.Point(152, 46);
             this._clipboardCheckbox.Name = "_clipboardCheckbox";
             this._clipboardCheckbox.Size = new System.Drawing.Size(15, 14);
             this._clipboardCheckbox.TabIndex = 82;
@@ -319,11 +301,19 @@
             this.panel1.Size = new System.Drawing.Size(667, 1);
             this.panel1.TabIndex = 90;
             // 
+            // _portTextBox
+            // 
+            this._portTextBox.Location = new System.Drawing.Point(115, 63);
+            this._portTextBox.Name = "_portTextBox";
+            this._portTextBox.Size = new System.Drawing.Size(63, 20);
+            this._portTextBox.TabIndex = 59;
+            this._portTextBox.Text = "5900";
+            // 
             // VncOptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(719, 460);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this._titleLabel);
@@ -338,7 +328,6 @@
             this._generalPanel.PerformLayout();
             this._hostPanel.ResumeLayout(false);
             this._hostPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._portUpDown)).EndInit();
             this._displayPanel.ResumeLayout(false);
             this._displayPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._displayUpDown)).EndInit();
@@ -360,7 +349,6 @@
         private System.Windows.Forms.TextBox _hostNameTextBox;
 		private System.Windows.Forms.Label _hostLabel;
         private System.Windows.Forms.Panel _displayPanel;
-        private System.Windows.Forms.NumericUpDown _portUpDown;
         private System.Windows.Forms.NumericUpDown _displayUpDown;
         private System.Windows.Forms.CheckBox _viewOnlyCheckbox;
         private System.Windows.Forms.Label _viewOnlyLabel;
@@ -375,5 +363,6 @@
         private System.Windows.Forms.CheckBox _clipboardCheckbox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label _clipboardLabel;
+        private System.Windows.Forms.TextBox _portTextBox;
     }
 }

@@ -8,9 +8,13 @@ using System.Security;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
+#if APPX
+using Windows.Storage;
+#endif
 
 namespace EasyConnect.Protocols
 {
@@ -20,10 +24,17 @@ namespace EasyConnect.Protocols
 	/// </summary>
 	public class ConnectionFactory
 	{
-		/// <summary>
-		/// A lookup associating each protocol type with an instantiated copy of that protocol class.
-		/// </summary>
-		protected static Dictionary<Type, IProtocol> _protocols = new Dictionary<Type, IProtocol>();
+#if !APPX
+        /// <summary>
+        /// Filename where history data is loaded from/saved to.
+        /// </summary>
+        private static string DefaultsFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EasyConnect", "Defaults.xml");
+#endif
+
+        /// <summary>
+        /// A lookup associating each protocol type with an instantiated copy of that protocol class.
+        /// </summary>
+        protected static Dictionary<Type, IProtocol> _protocols = new Dictionary<Type, IProtocol>();
 
 		/// <summary>
 		/// A lookup associating each protocol type with a default <see cref="IConnection"/> instance for that protocol.
@@ -259,23 +270,23 @@ namespace EasyConnect.Protocols
 		/// Sets the default protocol to assume when the user enters a URI manually without specifying a prefix.
 		/// </summary>
 		/// <param name="protocol">Connection protocol that we want to use by default.</param>
-		public static void SetDefaultProtocol(IProtocol protocol)
+		public static async Task SetDefaultProtocol(IProtocol protocol)
 		{
 			if (_defaults == null)
-				InitializeDefaults();
+				await InitializeDefaults();
 
 			_defaultProtocolPrefix = protocol.ProtocolPrefix;
-			SaveDefaults();
+			await SaveDefaults();
 		}
 
 		/// <summary>
 		/// Gets the default protocol to assume when the user enters a URI manually without specifying a prefix.
 		/// </summary>
 		/// <returns>Connection protocol that we want to use by default.</returns>
-		public static IProtocol GetDefaultProtocol()
+		public static async Task<IProtocol> GetDefaultProtocol()
 		{
 			if (_defaults == null)
-				InitializeDefaults();
+				await InitializeDefaults();
 
 			return _protocols.First(
 				pair => pair.Value.ProtocolPrefix == (String.IsNullOrEmpty(_defaultProtocolPrefix)
@@ -287,17 +298,42 @@ namespace EasyConnect.Protocols
 		/// Deserializes the defaults for each protocol type as well as the default protocol to assume when the user enters a URI manually without specifying
 		/// a prefix.
 		/// </summary>
-		protected static void InitializeDefaults()
+		protected static async Task InitializeDefaults()
 		{
-			_defaults = new Dictionary<Type, IConnection>();
+            _defaults = new Dictionary<Type, IConnection>();
 
-			if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Defaults.xml"))
+#if APPX
+            IStorageFile defaultsFile = (IStorageFile) await ApplicationData.Current.LocalFolder.TryGetItemAsync("Defaults.xml");
+
+            if (defaultsFile == null)
+            {
+                return;
+            }
+
+            string defaultsFileText = await FileIO.ReadTextAsync(defaultsFile);
+
+            using (StringReader defaultsFileTextReader = new StringReader(defaultsFileText))
+            using (XmlReader defaultsXmlReader = new XmlTextReader(defaultsFileTextReader))
+            {
+                defaultsXmlReader.MoveToContent();
+
+                _defaultProtocolPrefix = defaultsXmlReader.GetAttribute("defaultProtocolPrefix");
+
+                defaultsXmlReader.Read();
+
+                // The node name for each node specifies the protocol type
+                while (defaultsXmlReader.MoveToContent() == XmlNodeType.Element)
+                {
+                    IConnection defaults = Deserialize(defaultsXmlReader);
+                    IProtocol protocol = _protocols.First(pair => pair.Value.ConnectionType == defaults.GetType()).Value;
+
+                    _defaults[protocol.GetType()] = defaults;
+                }
+            }
+#else
+            if (File.Exists(DefaultsFileName))
 			{
-				using (
-					XmlReader reader =
-						new XmlTextReader(
-							new FileStream(
-								Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Defaults.xml", FileMode.Open)))
+				using (XmlReader reader = new XmlTextReader(new FileStream(DefaultsFileName, FileMode.Open, FileAccess.Read)))
 				{
 					reader.MoveToContent();
 
@@ -315,20 +351,36 @@ namespace EasyConnect.Protocols
 					}
 				}
 			}
-		}
+#endif
+        }
 
 		/// <summary>
 		/// Serializes the defaults for each protocol type as well as the default protocol to assume when the user enters a URI manually without specifying
 		/// a prefix.
 		/// </summary>
-		protected static void SaveDefaults()
+		protected static async Task SaveDefaults()
 		{
-			using (
-				XmlWriter writer =
-					new XmlTextWriter(
-						new FileStream(
-							Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\EasyConnect\\Defaults.xml", FileMode.Create),
-						Encoding.Unicode))
+#if APPX
+		    IStorageFile defaultsFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("Defaults.xml", CreationCollisionOption.ReplaceExisting);
+		    StringWriter defaultsFileText = new StringWriter();
+
+		    using (XmlWriter writer = new XmlTextWriter(defaultsFileText))
+		    {
+		        writer.WriteStartElement("Defaults");
+		        writer.WriteAttributeString("defaultProtocolPrefix", _defaultProtocolPrefix);
+
+		        foreach (IConnection connection in _defaults.Values)
+		        {
+		            XmlSerializer serializer = new XmlSerializer(connection.GetType());
+		            serializer.Serialize(writer, connection);
+		        }
+
+		        writer.WriteEndElement();
+		    }
+
+            await FileIO.WriteTextAsync(defaultsFile, defaultsFileText.ToString());
+#else
+            using (XmlWriter writer = new XmlTextWriter(new FileStream(DefaultsFileName, FileMode.Create), Encoding.Unicode))
 			{
 				writer.WriteStartElement("Defaults");
 				writer.WriteAttributeString("defaultProtocolPrefix", _defaultProtocolPrefix);
@@ -341,22 +393,23 @@ namespace EasyConnect.Protocols
 
 				writer.WriteEndElement();
 			}
-		}
+#endif
+        }
 
 		/// <summary>
 		/// Sets the defaults to use when creating a new connection for a particular protocol.
 		/// </summary>
 		/// <param name="defaults">Default connection data to use when creating a new connection for the protocol.</param>
-		public static void SetDefaults(IConnection defaults)
+		public static async Task SetDefaults(IConnection defaults)
 		{
 			if (_defaults == null)
-				InitializeDefaults();
+				await InitializeDefaults();
 
 			// Get the protocol for this connection type
 			IProtocol protocol = _protocols.First(pair => pair.Value.ConnectionType == defaults.GetType()).Value;
 
 			_defaults[protocol.GetType()] = defaults;
-			SaveDefaults();
+			await SaveDefaults();
 		}
 
 		/// <summary>
@@ -364,12 +417,12 @@ namespace EasyConnect.Protocols
 		/// </summary>
 		/// <param name="protocolType">Protocol type that we are to retrieve defaults for.</param>
 		/// <returns>Default connection data to use when creating a new connection for <paramref name="protocolType"/>.</returns>
-		public static IConnection GetDefaults(Type protocolType)
+		public static async Task<IConnection> GetDefaults(Type protocolType)
 		{
 			if (_defaults == null)
-				InitializeDefaults();
+				await InitializeDefaults();
 
-			return GetDefaults(_protocols[protocolType]);
+			return await GetDefaults(_protocols[protocolType]);
 		}
 
 		/// <summary>
@@ -377,10 +430,10 @@ namespace EasyConnect.Protocols
 		/// </summary>
 		/// <param name="protocol">Protocol that we are to retrieve defaults for.</param>
 		/// <returns>Default connection data to use when creating a new connection for <paramref name="protocol"/>.</returns>
-		public static IConnection GetDefaults(IProtocol protocol)
+		public static async Task<IConnection> GetDefaults(IProtocol protocol)
 		{
 			if (_defaults == null)
-				InitializeDefaults();
+				await InitializeDefaults();
 
 			return _defaults.ContainsKey(protocol.GetType())
 				       ? _defaults[protocol.GetType()]
@@ -427,18 +480,18 @@ namespace EasyConnect.Protocols
 		/// </summary>
 		/// <param name="uri">URI that the user has entered.</param>
 		/// <returns>The default connection data to use for the protocol corresponding to <paramref name="uri"/>.</returns>
-		public static IConnection GetConnection(string uri)
+		public static async Task<IConnection> GetConnection(string uri)
 		{
 			// Get the protocol for the URI
 			Regex uriCompontents = new Regex("^(?<prefix>(?<protocol>.+)://){0,1}(?<host>.+)$");
 			Match match = uriCompontents.Match(uri);
 			string protocolPrefix = match.Groups["protocol"].Success
 				                        ? match.Groups["protocol"].Value
-				                        : GetDefaultProtocol().ProtocolPrefix;
+				                        : (await GetDefaultProtocol()).ProtocolPrefix;
 
 			// Get the default connection data for the protocol
 			IProtocol protocol = _protocols.First(pair => pair.Value.ProtocolPrefix.ToLower() == protocolPrefix.ToLower()).Value;
-			IConnection connection = (IConnection) GetDefaults(protocol).Clone();
+			IConnection connection = (IConnection) (await GetDefaults(protocol)).Clone();
 
 			connection.Host = match.Groups["host"].Value;
 

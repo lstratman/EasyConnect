@@ -64,6 +64,7 @@
             this._passwordTextBox = new SecurePasswordTextBox.SecureTextBox();
             this._flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this._hostPanel = new System.Windows.Forms.Panel();
+            this._portTextBox = new System.Windows.Forms.TextBox();
             this._portLabel = new System.Windows.Forms.Label();
             this._adminChannelCheckBox = new System.Windows.Forms.CheckBox();
             this._adminChannelLabel = new System.Windows.Forms.Label();
@@ -75,6 +76,7 @@
             this._inheritedUsernameLabel = new System.Windows.Forms.Label();
             this._displayPanel = new System.Windows.Forms.Panel();
             this._resourcesPanel = new System.Windows.Forms.Panel();
+            this._smartCardsCheckBox = new System.Windows.Forms.CheckBox();
             this._experiencePanel = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
@@ -87,7 +89,6 @@
             this._useProxyCheckBox = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this._titleLabel = new System.Windows.Forms.Label();
-            this._portTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this._resolutionSlider)).BeginInit();
             this._flowLayoutPanel.SuspendLayout();
             this._hostPanel.SuspendLayout();
@@ -460,6 +461,13 @@
             this._hostPanel.Size = new System.Drawing.Size(684, 122);
             this._hostPanel.TabIndex = 84;
             // 
+            // _portTextBox
+            // 
+            this._portTextBox.Location = new System.Drawing.Point(168, 65);
+            this._portTextBox.Name = "_portTextBox";
+            this._portTextBox.Size = new System.Drawing.Size(63, 20);
+            this._portTextBox.TabIndex = 58;
+            // 
             // _portLabel
             // 
             this._portLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -567,6 +575,7 @@
             // 
             // _resourcesPanel
             // 
+            this._resourcesPanel.Controls.Add(this._smartCardsCheckBox);
             this._resourcesPanel.Controls.Add(this._remoteAudioRecordingLabel);
             this._resourcesPanel.Controls.Add(this._remoteAudioPlaybackLabel);
             this._resourcesPanel.Controls.Add(this._localResourcesLabel);
@@ -580,8 +589,19 @@
             this._resourcesPanel.Controls.Add(this._drivesCheckbox);
             this._resourcesPanel.Location = new System.Drawing.Point(18, 372);
             this._resourcesPanel.Name = "_resourcesPanel";
-            this._resourcesPanel.Size = new System.Drawing.Size(684, 193);
+            this._resourcesPanel.Size = new System.Drawing.Size(684, 218);
             this._resourcesPanel.TabIndex = 83;
+            // 
+            // _smartCardsCheckBox
+            // 
+            this._smartCardsCheckBox.AutoSize = true;
+            this._smartCardsCheckBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._smartCardsCheckBox.Location = new System.Drawing.Point(189, 186);
+            this._smartCardsCheckBox.Name = "_smartCardsCheckBox";
+            this._smartCardsCheckBox.Size = new System.Drawing.Size(99, 21);
+            this._smartCardsCheckBox.TabIndex = 71;
+            this._smartCardsCheckBox.Text = "Smart Cards";
+            this._smartCardsCheckBox.UseVisualStyleBackColor = true;
             // 
             // _experiencePanel
             // 
@@ -594,7 +614,7 @@
             this._experiencePanel.Controls.Add(this._menuAnimationCheckbox);
             this._experiencePanel.Controls.Add(this._fontSmoothingCheckbox);
             this._experiencePanel.Controls.Add(this._desktopCompositionCheckbox);
-            this._experiencePanel.Location = new System.Drawing.Point(18, 571);
+            this._experiencePanel.Location = new System.Drawing.Point(18, 596);
             this._experiencePanel.Name = "_experiencePanel";
             this._experiencePanel.Size = new System.Drawing.Size(684, 209);
             this._experiencePanel.TabIndex = 83;
@@ -609,7 +629,7 @@
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this._useProxyCheckBox);
-            this.panel2.Location = new System.Drawing.Point(18, 786);
+            this.panel2.Location = new System.Drawing.Point(18, 811);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(684, 150);
             this.panel2.TabIndex = 85;
@@ -709,19 +729,12 @@
             this._titleLabel.TabIndex = 83;
             this._titleLabel.Text = "Remote Desktop Options";
             // 
-            // _portTextBox
-            // 
-            this._portTextBox.Location = new System.Drawing.Point(168, 65);
-            this._portTextBox.Name = "_portTextBox";
-            this._portTextBox.Size = new System.Drawing.Size(63, 20);
-            this._portTextBox.TabIndex = 58;
-            // 
             // RdpOptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(721, 1013);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this._titleLabel);
@@ -809,5 +822,6 @@
 		private System.Windows.Forms.CheckBox _useProxyCheckBox;
         private System.Windows.Forms.Label _portLabel;
         private System.Windows.Forms.TextBox _portTextBox;
+        private System.Windows.Forms.CheckBox _smartCardsCheckBox;
     }
 }

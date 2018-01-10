@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Windows.Forms;
+using EasyConnect.Common;
 using Granados;
 using Poderosa.Boot;
 using Poderosa.Plugins;
@@ -87,30 +88,55 @@ namespace EasyConnect.Protocols.Ssh
 		    {
                 sshParameters.AuthenticationType = AuthenticationType.PublicKey;
 		        sshParameters.IdentityFileName = Connection.IdentityFile;
-		    }
+
+		        PoderosaProtocolService.AsyncSSHConnect(this, sshParameters);
+            }
 
 		    // Otherwise, set the auth type to Password
 		    else if (password != null && password.Length > 0)
 		    {
-		        sshParameters.AuthenticationType = AuthenticationType.Password;
-                
-                // TODO: add the ability for Poderosa to set this securely
-                IntPtr passwordPointer = IntPtr.Zero;
+		        SetSshPassword(sshParameters, password);
+		        PoderosaProtocolService.AsyncSSHConnect(this, sshParameters);
+            }
 
-                try
-		        {
-		            passwordPointer = Marshal.SecureStringToGlobalAllocUnicode(password);
-		            sshParameters.PasswordOrPassphrase = Marshal.PtrToStringUni(passwordPointer);
-		        }
+            else
+            {
+                UsernamePasswordWindow usernamePasswordWindow = new UsernamePasswordWindow
+                                                                {
+                                                                    Username = String.IsNullOrEmpty(Connection.InheritedUsername) ? Environment.UserName : Connection.InheritedUsername
+                                                                };
 
-		        finally
-		        {
-		            Marshal.ZeroFreeGlobalAllocUnicode(passwordPointer);
-		        }
-		    }
+                if (usernamePasswordWindow.ShowDialog() == DialogResult.OK)
+                {
+                    Connection.Username = usernamePasswordWindow.Username;
+                    Connection.Password = usernamePasswordWindow.Password;
 
-		    PoderosaProtocolService.AsyncSSHConnect(this, sshParameters);
+                    sshParameters.Account = usernamePasswordWindow.Username;
+                    SetSshPassword(sshParameters, usernamePasswordWindow.Password);
+
+                    PoderosaProtocolService.AsyncSSHConnect(this, sshParameters);
+                }
+            }
 		}
+
+	    protected void SetSshPassword(ISSHLoginParameter sshParameters, SecureString password)
+	    {
+	        sshParameters.AuthenticationType = AuthenticationType.Password;
+
+	        // TODO: add the ability for Poderosa to set this securely
+	        IntPtr passwordPointer = IntPtr.Zero;
+
+	        try
+	        {
+	            passwordPointer = Marshal.SecureStringToGlobalAllocUnicode(password);
+	            sshParameters.PasswordOrPassphrase = Marshal.PtrToStringUni(passwordPointer);
+	        }
+
+	        finally
+	        {
+	            Marshal.ZeroFreeGlobalAllocUnicode(passwordPointer);
+	        }
+        }
 
 	    protected override void OnConnected(object sender, EventArgs e)
 	    {

@@ -54,45 +54,59 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\EasyConnect.XML</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>6</LangVersion>
+    <NoWarn>CS1998</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\EasyConnect.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <DocumentationFile>bin\Debug\EasyConnect.XML</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DocumentationFile>bin\x86\Release\EasyConnect.XML</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>6</LangVersion>
+    <NoWarn>CS1998</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>EasyConnect.EasyConnect</StartupObject>
   </PropertyGroup>
-  <ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppX|AnyCPU'">
+    <OutputPath>bin\AppX\</OutputPath>
+    <DefineConstants>TRACE;APPX</DefineConstants>
+    <Optimize>true</Optimize>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppXDebug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\AppXDebug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;APPX</DefineConstants>
+    <DocumentationFile>bin\Debug\EasyConnect.XML</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.1</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(Configuration)' != 'AppX' And '$(Configuration)' != 'AppXDebug'">
     <Reference Include="AppLimit.NetSparkle.Net40">
       <HintPath>lib\AppLimit.NetSparkle.Net40.dll</HintPath>
     </Reference>
-    <Reference Include="EasyTabs, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EasyTabs.1.3.1.0\lib\net40\EasyTabs.dll</HintPath>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="EasyTabs, Version=1.3.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\EasyTabs.1.3.3.0\lib\net40\EasyTabs.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EasyTabs.1.3.1.0\lib\net40\Microsoft.WindowsAPICodePack.dll</HintPath>
+      <HintPath>packages\EasyTabs.1.3.3.0\lib\net40\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EasyTabs.1.3.1.0\lib\net40\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+      <HintPath>packages\EasyTabs.1.3.3.0\lib\net40\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
@@ -112,6 +126,7 @@
       <HintPath>lib\System.Drawing.Html.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Runtime.WindowsRuntime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Win32Interop.Dwmapi, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -138,6 +153,13 @@
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
   </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'AppX' Or '$(Configuration)' == 'AppXDebug'">
+    <Reference Include="Windows">
+      <HintPath>c:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral\Windows.winmd</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Runtime.WindowsRuntime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutBox.cs">
       <SubType>Form</SubType>
@@ -145,6 +167,7 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Bookmarks.cs" />
     <Compile Include="BookmarksWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -165,6 +188,8 @@
     <Compile Include="GlobalOptionsWindow.Designer.cs">
       <DependentUpon>GlobalOptionsWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="HistoricalConnection.cs" />
+    <Compile Include="History.cs" />
     <Compile Include="HistoryMethods.cs" />
     <Compile Include="HistoryWindow.cs">
       <SubType>Form</SubType>
@@ -172,6 +197,7 @@
     <Compile Include="HistoryWindow.designer.cs">
       <DependentUpon>HistoryWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="LegacyHistoricalConnection.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -193,12 +219,6 @@
     </Compile>
     <Compile Include="EasyConnect.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UsernamePasswordWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UsernamePasswordWindow.Designer.cs">
-      <DependentUpon>UsernamePasswordWindow.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -237,9 +257,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UsernamePasswordWindow.resx">
-      <DependentUpon>UsernamePasswordWindow.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -261,11 +278,16 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppxManifest.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="lib\AppLimit.NetSparkle.Net40.dll" />
     <Content Include="lib\System.Drawing.Html.dll" />
     <None Include="Resources\About.png" />
     <Content Include="Resources\ButtonPressedBackground.png" />
     <Content Include="Resources\Disconnected.ico" />
+    <Content Include="Resources\EasyConnect.svg" />
+    <Content Include="Resources\EasyConnectTile.svg" />
     <Content Include="Resources\ToolsActiveUpdate.png" />
     <Content Include="Resources\EasyConnect.ico" />
     <Content Include="Resources\FolderOpen.png" />
@@ -330,9 +352,16 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>copy /y "$(SolutionDir)Win32Interop\SystemHookCore\$(ConfigurationName)\SystemHookCore.dll" "$(TargetDir)"
-copy /y "$(SolutionDir)Protocols\Vnc\bin\$(ConfigurationName)\scvncctrl.dll" "$(TargetDir)"
+  <PropertyGroup Condition="'$(Configuration)' == 'AppX' Or '$(Configuration)' == 'AppXDebug'">
+    <PostBuildEvent>del "$(TargetDir)*.xml" 1&gt;:null 2&gt;&amp;1
+IF "$(Configuration)" == "AppX" del "$(TargetDir)*.pdb" 1&gt;:null 2&gt;&amp;1
+del "$(TargetDir)$(ProjectName).appx" 1&gt;:null 2&gt;&amp;1
+copy "$(SolutionDir)AppXManifest.xml" "$(TargetDir)" 1&gt;:null 2&gt;&amp;1
+xcopy "$(SolutionDir)AppX\Assets\*" "$(TargetDir)\Assets" /I /Q /Y 1&gt;:null 2&gt;&amp;1
+cd "$(TargetDir)"
+del resources*.pri
+"C:\Program Files (x86)\Windows Kits\10\bin\x86\makepri.exe" new /pr . /cf ..\..\priconfig.xml /in $(ProjectName)
+"C:\Program Files (x86)\Windows Kits\10\bin\x86\makeappx.exe" pack /d . /p $(ProjectName).appx /l
 Exit /b 0</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

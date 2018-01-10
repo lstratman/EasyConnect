@@ -54,6 +54,8 @@ namespace EasyConnect.Protocols
 
 			if (Guid == Guid.Empty)
 				Guid = Guid.NewGuid();
+
+            Notes = info.GetString("Notes");
 		}
 
 		/// <summary>
@@ -221,14 +223,20 @@ namespace EasyConnect.Protocols
 			set;
 		}
 
-		/// <summary>
-		/// Recursive method that searches parent <see cref="BookmarksFolder"/> instances for one that contains a value for 
-		/// <see cref="BookmarksFolder.Username"/> and returns that value.
-		/// </summary>
-		/// <param name="currentFolder">Current folder that we're looking at.</param>
-		/// <returns><see cref="BookmarksFolder.Username"/> value for <paramref name="currentFolder"/> if a value is present for that property, otherwise the
-		/// value for the nearest parent folder.</returns>
-		public string GetInheritedUsername(BookmarksFolder currentFolder)
+        public string Notes
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Recursive method that searches parent <see cref="BookmarksFolder"/> instances for one that contains a value for 
+        /// <see cref="BookmarksFolder.Username"/> and returns that value.
+        /// </summary>
+        /// <param name="currentFolder">Current folder that we're looking at.</param>
+        /// <returns><see cref="BookmarksFolder.Username"/> value for <paramref name="currentFolder"/> if a value is present for that property, otherwise the
+        /// value for the nearest parent folder.</returns>
+        public string GetInheritedUsername(BookmarksFolder currentFolder)
 		{
 			if (currentFolder == null)
 				return null;
@@ -273,6 +281,7 @@ namespace EasyConnect.Protocols
 			info.AddValue("Host", Host);
 			info.AddValue("Guid", Guid.ToString());
 			info.AddValue("Username", Username);
+            info.AddValue("Notes", Notes);
 		}
 
 		/// <summary>
@@ -284,7 +293,7 @@ namespace EasyConnect.Protocols
 			object clonedConnection = SerializationUtilities.Clone(this);
 
 			((BaseConnection) clonedConnection).ParentFolder = null;
-			((BaseConnection) clonedConnection).Guid = new Guid();
+		    ((BaseConnection) clonedConnection).Guid = Guid.NewGuid();
 
 			return clonedConnection;
 		}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<resources targetOsVersion="10.0.0" majorVersion="1">
+	<packaging>
+		<autoResourcePackage qualifier="Language"/>
+		<autoResourcePackage qualifier="Scale"/>
+		<autoResourcePackage qualifier="DXFeatureLevel"/>
+	</packaging>
+	<index root="\" startIndexAt="\">
+		<default>
+			<qualifier name="Language" value="en-US"/>
+			<qualifier name="Scale" value="100"/>
+		</default>
+		<indexer-config type="folder" foldernameAsQualifier="true" filenameAsQualifier="true" qualifierDelimiter="."/>
+		<indexer-config type="resw" convertDotsToSlashes="true" initialPath=""/>
+		<indexer-config type="resjson" initialPath=""/>
+		<indexer-config type="PRI"/>
+	</index>
+</resources>

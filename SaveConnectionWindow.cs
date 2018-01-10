@@ -11,14 +11,14 @@ namespace EasyConnect
 	public partial class SaveConnectionWindow : Form
 	{
 		/// <summary>
-		/// Constructor; initializes the bookmarks tree view by cloning the current folder structure from <see cref="MainForm.Bookmarks"/>.
+		/// Constructor; initializes the bookmarks tree view by cloning the current folder structure from <see cref="MainForm.BookmarksWindow"/>.
 		/// </summary>
 		/// <param name="applicationForm">Main application form associated with this window.</param>
 		public SaveConnectionWindow(MainForm applicationForm)
 		{
 			InitializeComponent();
 
-			bookmarksTreeView.Nodes.Add((TreeNode) applicationForm.Bookmarks.FoldersTreeView.Nodes[0].Clone());
+			bookmarksTreeView.Nodes.Add((TreeNode) applicationForm.BookmarksWindow.FoldersTreeView.Nodes[0].Clone());
 			bookmarksTreeView.SelectedNode = bookmarksTreeView.Nodes[0];
 		}
 

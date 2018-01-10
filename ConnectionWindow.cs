@@ -7,6 +7,8 @@ using System.Windows.Forms;
 using EasyConnect.Properties;
 using EasyConnect.Protocols;
 using Timer = System.Timers.Timer;
+using System.Configuration;
+using System.Threading.Tasks;
 
 namespace EasyConnect
 {
@@ -90,6 +92,8 @@ namespace EasyConnect
 
 		protected HtmlPanel _urlPanel;
 
+        protected bool _connectionFromOmniBar = false;
+
 		/// <summary>
 		/// Default constructor; initializes the UI for the OmniBar.
 		/// </summary>
@@ -146,9 +150,17 @@ namespace EasyConnect
 			_urlPanel.Click += _urlPanel_Click;
 			_urlPanelContainer.Controls.Add(_urlPanel);
 			urlTextBox.Visible = false;
-		}
 
-		void _urlPanel_Click(object sender, EventArgs e)
+#if APPX
+            _updatesMenuItem.Visible = false;
+            _toolsMenuSeparator2.Visible = false;
+#else
+            _updatesMenuItem.Visible = ConfigurationManager.AppSettings["checkForUpdates"] != "false";
+            _toolsMenuSeparator2.Visible = ConfigurationManager.AppSettings["checkForUpdates"] != "false";
+#endif
+        }
+
+        void _urlPanel_Click(object sender, EventArgs e)
 		{
 			_urlPanelContainer.Visible = false;
 			
@@ -236,7 +248,7 @@ namespace EasyConnect
 			get
 			{
 				if (_autoHideToolbar == null)
-					_autoHideToolbar = ParentTabs.Options.AutoHideToolbar;
+					_autoHideToolbar = Options.Instance.AutoHideToolbar;
 
 				return _autoHideToolbar.Value;
 			}
@@ -248,12 +260,12 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated (<see cref="urlTextBox"/> in this case).</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void urlTextBox_LostFocus(object sender, EventArgs e)
+		private async void urlTextBox_LostFocus(object sender, EventArgs e)
 		{
 			urlTextBox.Visible = false;
 			_urlPanelContainer.Visible = true;
 
-			if (!String.IsNullOrEmpty(urlTextBox.Text))
+			if (!String.IsNullOrEmpty(urlTextBox.Text) && !_connectionFromOmniBar)
 			{
 				Match urlMatch = Regex.Match(urlTextBox.Text, "^((?<protocol>.*)://){0,1}(?<hostName>.*)$");
 
@@ -261,20 +273,22 @@ namespace EasyConnect
 					@"<div style=""background-color: #FFFFFF; font-family: {2}; font-size: {3}pt; height: {4}px; color: #9999BF;"">{0}://<font color=""black"">{1}</font></div>",
 					urlMatch.Groups["protocol"].Success
 						? urlMatch.Groups["protocol"].Value
-						: ConnectionFactory.GetDefaultProtocol().ProtocolPrefix, urlMatch.Groups["hostName"].Value, urlTextBox.Font.FontFamily.GetName(0),
+						: (await ConnectionFactory.GetDefaultProtocol()).ProtocolPrefix, urlMatch.Groups["hostName"].Value, urlTextBox.Font.FontFamily.GetName(0),
 					urlTextBox.Font.SizeInPoints, _urlPanel.Height);
 
 				urlTextBox.Text = (urlMatch.Groups["protocol"].Success
 					                   ? urlMatch.Groups["protocol"].Value
-					                   : ConnectionFactory.GetDefaultProtocol().ProtocolPrefix) + "://" + urlMatch.Groups["hostName"];
+					                   : (await ConnectionFactory.GetDefaultProtocol()).ProtocolPrefix) + "://" + urlMatch.Groups["hostName"];
 			}
 
-			else
+			else if (!_connectionFromOmniBar)
 			{
 				_urlPanel.Text = "";
 			}
 
-			if (AutoHideToolbar && PointToClient(Cursor.Position).Y > toolbarBackground.Height)
+            _connectionFromOmniBar = false;
+
+            if (AutoHideToolbar && PointToClient(Cursor.Position).Y > toolbarBackground.Height)
 			{
 				_bookmarksMenu.Hide();
 				_toolsMenu.Hide();
@@ -305,13 +319,15 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originates.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void autoCompletePanel_Click(object sender, EventArgs e)
+		private async void autoCompletePanel_Click(object sender, EventArgs e)
 		{
 			_omniBarPanel.Visible = false;
 			_omniBarBorder.Visible = false;
 
 			_connection = _validAutoCompleteEntries[_omniBarPanel.Controls.IndexOf((HtmlPanel) sender) / 2];
-			Connect();
+            _connectionFromOmniBar = true;
+
+			await Connect();
 		}
 
 		/// <summary>
@@ -338,22 +354,25 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated, <see cref="urlTextBox"/> in this case.</param>
 		/// <param name="e">Key(s) that were pressed for this event.</param>
-		private void urlTextBox_KeyDown(object sender, KeyEventArgs e)
+		private async void urlTextBox_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.KeyCode == Keys.Enter)
 			{
-				if (_omniBarFocusIndex == -1)
-				{
-					IConnection newConnection = ConnectionFactory.GetConnection(urlTextBox.Text);
-					newConnection.Guid = Guid.NewGuid();
+                if (_omniBarFocusIndex == -1)
+                {
+                    IConnection newConnection = await ConnectionFactory.GetConnection(urlTextBox.Text);
+                    newConnection.Guid = Guid.NewGuid();
 
-					_connection = newConnection;
-				}
+                    _connection = newConnection;
+                }
 
-				else
-					_connection = _validAutoCompleteEntries[_omniBarFocusIndex];
+                else
+                {
+                    _connection = _validAutoCompleteEntries[_omniBarFocusIndex];
+                    _connectionFromOmniBar = true;
+                }
 
-				Connect();
+				await Connect();
 			}
 
 			else if (e.KeyCode == Keys.Up && _omniBarPanel.Visible)
@@ -414,7 +433,7 @@ namespace EasyConnect
 		/// <summary>
 		/// Opens a connection to <see cref="_connection"/>.
 		/// </summary>
-		public void Connect()
+		public async Task Connect()
 		{
 			// Set the top and height of the connection contain panel appropriately depending on if we're auto-hiding the toolbar
 			if (AutoHideToolbar && !_connectionContainerPanelSizeSet)
@@ -457,7 +476,7 @@ namespace EasyConnect
 				return;
 			}
 
-			ParentTabs.RegisterConnection(this, _connection);
+			await ParentTabs.RegisterConnection(this, _connection);
 			HideToolbar();
 		}
 
@@ -565,14 +584,13 @@ namespace EasyConnect
 				_bookmarksMenu.Items.RemoveAt(2);
 
 			// If the user has any bookmarks defined, add a separator between the first two entries and what will be the top-level bookmarks folders
-			if (ParentTabs.Bookmarks.RootFolder.ChildFolders.Count > 0 ||
-			    ParentTabs.Bookmarks.RootFolder.Bookmarks.Count > 0)
+			if (Bookmarks.Instance.RootFolder.ChildFolders.Count > 0 || Bookmarks.Instance.RootFolder.Bookmarks.Count > 0)
 				_bookmarksMenu.Items.Add(new ToolStripSeparator());
 
 			_menuItemConnections.Clear();
 
 			// Add the bookmarks folder structure and its descendants recursively
-			PopulateBookmarks(ParentTabs.Bookmarks.RootFolder, _bookmarksMenu.Items, true);
+			PopulateBookmarks(Bookmarks.Instance.RootFolder, _bookmarksMenu.Items, true);
 
 			_bookmarksMenu.DefaultDropDownDirection = ToolStripDropDownDirection.Left;
 			_bookmarksMenu.Show(
@@ -612,15 +630,7 @@ namespace EasyConnect
 			foreach (IConnection bookmark in currentFolder.Bookmarks.OrderBy(b => b.DisplayName))
 			{
 				ToolStripMenuItem bookmarkMenuItem = new ToolStripMenuItem(
-					bookmark.DisplayName, new Icon(ConnectionFactory.GetProtocol(bookmark).ProtocolIcon, 16, 16).ToBitmap(),
-					(object sender, EventArgs e) =>
-						{
-							if (_connectionForm != null)
-								_connectionForm.Close();
-
-							_connection = _menuItemConnections[(ToolStripMenuItem) sender];
-							Connect();
-						});
+					bookmark.DisplayName, new Icon(ConnectionFactory.GetProtocol(bookmark).ProtocolIcon, 16, 16).ToBitmap(), bookmarkMenuItem_Click);
 
 				_menuItemConnections[bookmarkMenuItem] = bookmark;
 				addItems.Add(bookmarkMenuItem);
@@ -631,13 +641,23 @@ namespace EasyConnect
 			return folderMenuItem;
 		}
 
+        private async void bookmarkMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_connectionForm != null)
+                _connectionForm.Close();
+
+            _connection = _menuItemConnections[(ToolStripMenuItem)sender];
+
+            await Connect();
+        }
+
 		/// <summary>
 		/// Handler method that's called when the user clicks on the "Bookmark this server" menu item.  Opens a dialog asking where the user wants to create
 		/// the bookmark and what they want to call it.
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void _bookmarkMenuItem_Click(object sender, EventArgs e)
+		private async void _bookmarkMenuItem_Click(object sender, EventArgs e)
 		{
 			if (_connection == null)
 				return;
@@ -650,14 +670,14 @@ namespace EasyConnect
 
 			// Split the folder path and then descend the nodes to find the destination folder that the user wants to save this bookmark to
 			string[] pathComponents = saveWindow.DestinationFolderPath.Split('/');
-			TreeNode currentNode = ParentTabs.Bookmarks.FoldersTreeView.Nodes[0];
+			TreeNode currentNode = ParentTabs.BookmarksWindow.FoldersTreeView.Nodes[0];
 
 			for (int i = 2; i < pathComponents.Length; i++)
 				currentNode = currentNode.Nodes[Convert.ToInt32(pathComponents[i])];
 
 			// If an existing connection matches the one that we're saving, remove it after creating the new bookmark
 			IConnection overwriteConnection =
-				ParentTabs.Bookmarks.TreeNodeFolders[currentNode].Bookmarks.SingleOrDefault(
+				ParentTabs.BookmarksWindow.TreeNodeFolders[currentNode].Bookmarks.SingleOrDefault(
 					b =>
 					(b.Name == saveWindow.ConnectionName && !String.IsNullOrEmpty(b.Name)) ||
 					(String.IsNullOrEmpty(b.Name) && b.Host == _connection.Host));
@@ -666,12 +686,12 @@ namespace EasyConnect
 			_connection.IsBookmark = true;
 
 			Text = _connection.DisplayName;
-			ParentTabs.Bookmarks.TreeNodeFolders[currentNode].Bookmarks.Add(_connection);
+			ParentTabs.BookmarksWindow.TreeNodeFolders[currentNode].Bookmarks.Add(_connection);
 
 			if (overwriteConnection != null)
-				ParentTabs.Bookmarks.TreeNodeFolders[currentNode].Bookmarks.Remove(overwriteConnection);
+				ParentTabs.BookmarksWindow.TreeNodeFolders[currentNode].Bookmarks.Remove(overwriteConnection);
 
-			ParentTabs.Bookmarks.Save();
+            await Bookmarks.Instance.Save();
 		}
 
 		/// <summary>
@@ -701,9 +721,9 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void _optionsMenuItem_Click(object sender, EventArgs e)
+		private async void _optionsMenuItem_Click(object sender, EventArgs e)
 		{
-			ParentTabs.OpenOptions();
+			await ParentTabs.OpenOptions();
 		}
 
 		/// <summary>
@@ -871,15 +891,15 @@ namespace EasyConnect
 			if (_autoCompleteEntries.Count == 0)
 			{
 				List<IConnection> bookmarks = new List<IConnection>();
-				GetAllBookmarks(ParentTabs.Bookmarks.RootFolder, bookmarks);
+				GetAllBookmarks(Bookmarks.Instance.RootFolder, bookmarks);
 				_autoCompleteEntries.AddRange(bookmarks);
 
 				// Exclude history entries that are from the user clicking a bookmark
-				if (ParentTabs.History.Connections != null)
+				if (History.Instance.Connections != null)
 				{
 					_autoCompleteEntries.AddRange(
-						ParentTabs.History.Connections.OrderByDescending(c => c.LastConnection).Distinct(
-							new EqualityComparer<HistoryWindow.HistoricalConnection>(
+                        History.Instance.Connections.OrderByDescending(c => c.LastConnection).Distinct(
+							new EqualityComparer<HistoricalConnection>(
 								(x, y) => x.Connection.Host == y.Connection.Host)).Where(
 									c => _autoCompleteEntries.FindIndex(a => a.Host == c.Connection.Host) == -1).Select
 							(c => c.Connection));
@@ -1073,5 +1093,10 @@ namespace EasyConnect
 			AboutBox aboutBox = new AboutBox();
 			aboutBox.ShowDialog(ParentTabs);
 		}
-	}
+
+        private void urlBackground_Resize(object sender, EventArgs e)
+        {
+            _urlPanel.AutoScroll = false;
+        }
+    }
 }

@@ -117,9 +117,6 @@ namespace Poderosa {
         [DllImport("kernel32.dll")]
         public static extern bool FlushFileBuffers(IntPtr handle);
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Ansi)] //WinExecはLPCSTRだった。"T"がない。
-        public static extern int WinExec(string command, int uCmdShow);
-
         [DllImport("gdi32.dll", CharSet = CharSet.Auto)]
         public static extern int EnumFontFamiliesEx(
             IntPtr hdc,                          // handle to DC
@@ -144,9 +141,6 @@ namespace Poderosa {
         public static extern bool ImmSetCompositionWindow(IntPtr hIMC, ref COMPOSITIONFORM form);
         [DllImport("imm32.dll")]
         public static extern bool ImmNotifyIME(IntPtr hIMC, int dwAction, int dwIndex, int dwValue);
-
-        [DllImport("shell32.dll", CharSet = CharSet.Auto)]
-        public static extern IntPtr ShellExecute(IntPtr hwnd, string verb, string file, string param, string dir, int cmd);
 
         [DllImport("msvcr71.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int _controlfp(int n, int mask);
