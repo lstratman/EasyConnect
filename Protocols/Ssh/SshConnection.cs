@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Poderosa.ConnectionParam;
+using System;
 using System.Drawing;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
@@ -19,6 +20,7 @@ namespace EasyConnect.Protocols.Ssh
 			BackgroundColor = Color.Black;
 			TextColor = Color.LightGray;
 			Font = new Font("Courier New", 10);
+            Encoding = EncodingType.UTF8;
 		}
 
 		/// <summary>
@@ -34,6 +36,11 @@ namespace EasyConnect.Protocols.Ssh
 			TextColor = Color.FromArgb(info.GetInt32("TextColor"));
 			FontFamily = info.GetString("FontFamily");
 			FontSize = info.GetSingle("FontSize");
+
+            if (!String.IsNullOrEmpty(info.GetString("Encoding")))
+            {
+                Encoding = (EncodingType)Enum.Parse(typeof(EncodingType), info.GetString("Encoding"));
+            }
 		}
 
 		/// <summary>
@@ -137,6 +144,12 @@ namespace EasyConnect.Protocols.Ssh
 			set;
 		}
 
+        public EncodingType Encoding
+        {
+            get;
+            set;
+        }
+
 		/// <summary>
 		/// Method required for <see cref="ISerializable"/>; serializes the connection data to <paramref name="info"/>.
 		/// </summary>
@@ -151,6 +164,7 @@ namespace EasyConnect.Protocols.Ssh
 			info.AddValue("BackgroundColor", BackgroundColor.ToArgb());
 			info.AddValue("FontFamily", FontFamily);
 			info.AddValue("FontSize", FontSize);
+            info.AddValue("Encoding", Encoding.ToString("G"));
 		}
 	}
 }

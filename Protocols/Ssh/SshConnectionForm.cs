@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using EasyConnect.Common;
 using Granados;
 using Poderosa.Boot;
+using Poderosa.ConnectionParam;
 using Poderosa.Plugins;
 using Poderosa.Preferences;
 using Poderosa.Protocols;
@@ -157,6 +158,7 @@ namespace EasyConnect.Protocols.Ssh
             renderProfile.FontSize = Connection.FontSize;
 
 	        session.TerminalSettings.BeginUpdate();
+            session.TerminalSettings.Encoding = Connection.Encoding;
 	        session.TerminalSettings.RenderProfile = renderProfile;
 	        session.TerminalSettings.EndUpdate();
 

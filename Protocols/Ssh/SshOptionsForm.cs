@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Poderosa.ConnectionParam;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Security;
@@ -20,6 +22,20 @@ namespace EasyConnect.Protocols.Ssh
 		/// Contains the previous width of <see cref="_flowLayoutPanel"/> prior to a resize operation.
 		/// </summary>
 		protected int _previousWidth;
+
+        private Dictionary<string, EncodingType> _encodingTypes = new Dictionary<string, EncodingType>
+        {
+            {"Big-5", EncodingType.BIG5},
+            {"EUC-CN", EncodingType.EUC_CN},
+            {"EUC-JP", EncodingType.EUC_JP},
+            {"EUC-KR", EncodingType.EUC_KR},
+            {"GB 2312", EncodingType.GB2312},
+            {"ISO 8859-1", EncodingType.ISO8859_1},
+            {"OEM 850", EncodingType.OEM850},
+            {"Shift JIS", EncodingType.SHIFT_JIS},
+            {"UTF-8", EncodingType.UTF8},
+            {"UTF-8 Latin", EncodingType.UTF8_Latin}
+        };
 
 		/// <summary>
 		/// Default constructor.
@@ -80,6 +96,7 @@ namespace EasyConnect.Protocols.Ssh
 			Connection.TextColor = _textColorPanel.BackColor;
 			Connection.IdentityFile = _identityFileTextbox.Text;
 			Connection.Font = _font;
+            Connection.Encoding = _encodingTypes[_encodingDropdown.Text];
 		}
 
 		/// <summary>
@@ -98,6 +115,7 @@ namespace EasyConnect.Protocols.Ssh
 			_userNameTextBox.Text = Connection.Username;
 			_hostNameTextBox.Text = Connection.Host;
 			_identityFileTextbox.Text = Connection.IdentityFile;
+            _encodingDropdown.Text = _encodingTypes.Single(p => p.Value == Connection.Encoding).Key;
 			_passwordTextBox.SecureText = Connection.Password == null
 				                              ? new SecureString()
 				                              : Connection.Password.Copy();

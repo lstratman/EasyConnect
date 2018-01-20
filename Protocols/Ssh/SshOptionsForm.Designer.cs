@@ -69,6 +69,8 @@
             this._backgroundColorLabel = new System.Windows.Forms.Label();
             this._openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this._identityInfoTooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.encodingLabel = new System.Windows.Forms.Label();
+            this._encodingDropdown = new System.Windows.Forms.ComboBox();
             this.panel2.SuspendLayout();
             this._flowLayoutPanel.SuspendLayout();
             this._hostPanel.SuspendLayout();
@@ -149,7 +151,7 @@
             this.panel2.Controls.Add(this._pasteLabel);
             this.panel2.Controls.Add(this._shortcutsLabel);
             this.panel2.Controls.Add(this._copyLabel);
-            this.panel2.Location = new System.Drawing.Point(18, 325);
+            this.panel2.Location = new System.Drawing.Point(18, 355);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(684, 98);
             this.panel2.TabIndex = 88;
@@ -208,19 +210,21 @@
             this._flowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this._flowLayoutPanel.Name = "_flowLayoutPanel";
             this._flowLayoutPanel.Padding = new System.Windows.Forms.Padding(15, 0, 15, 15);
-            this._flowLayoutPanel.Size = new System.Drawing.Size(721, 442);
+            this._flowLayoutPanel.Size = new System.Drawing.Size(721, 477);
             this._flowLayoutPanel.TabIndex = 87;
             this._flowLayoutPanel.WrapContents = false;
             this._flowLayoutPanel.Resize += new System.EventHandler(this._flowLayoutPanel_Resize);
             // 
             // _hostPanel
             // 
+            this._hostPanel.Controls.Add(this.encodingLabel);
+            this._hostPanel.Controls.Add(this._encodingDropdown);
             this._hostPanel.Controls.Add(this._hostNameLabel);
             this._hostPanel.Controls.Add(this._hostNameTextBox);
             this._hostPanel.Controls.Add(this._hostLabel);
             this._hostPanel.Location = new System.Drawing.Point(18, 3);
             this._hostPanel.Name = "_hostPanel";
-            this._hostPanel.Size = new System.Drawing.Size(684, 68);
+            this._hostPanel.Size = new System.Drawing.Size(684, 98);
             this._hostPanel.TabIndex = 84;
             // 
             // _hostNameLabel
@@ -265,7 +269,7 @@
             this._generalPanel.Controls.Add(this._userNameTextBox);
             this._generalPanel.Controls.Add(this._passwordLabel);
             this._generalPanel.Controls.Add(this._generalLabel);
-            this._generalPanel.Location = new System.Drawing.Point(18, 77);
+            this._generalPanel.Location = new System.Drawing.Point(18, 107);
             this._generalPanel.Name = "_generalPanel";
             this._generalPanel.Size = new System.Drawing.Size(684, 120);
             this._generalPanel.TabIndex = 83;
@@ -391,7 +395,7 @@
             this._displayPanel.Controls.Add(this._backgroundColorPanel);
             this._displayPanel.Controls.Add(this._displayLabel);
             this._displayPanel.Controls.Add(this._backgroundColorLabel);
-            this._displayPanel.Location = new System.Drawing.Point(18, 203);
+            this._displayPanel.Location = new System.Drawing.Point(18, 233);
             this._displayPanel.Name = "_displayPanel";
             this._displayPanel.Size = new System.Drawing.Size(684, 116);
             this._displayPanel.TabIndex = 86;
@@ -452,13 +456,43 @@
             // 
             this._openFileDialog.Filter = "Identity files (id_rsa, id_dsa)|id_rsa;id_dsa|All files (*.*)|*.*";
             // 
+            // encodingLabel
+            // 
+            this.encodingLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.encodingLabel.Location = new System.Drawing.Point(31, 64);
+            this.encodingLabel.Name = "encodingLabel";
+            this.encodingLabel.Size = new System.Drawing.Size(73, 20);
+            this.encodingLabel.TabIndex = 59;
+            this.encodingLabel.Text = "Encoding:";
+            this.encodingLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // _encodingDropdown
+            // 
+            this._encodingDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this._encodingDropdown.FormattingEnabled = true;
+            this._encodingDropdown.Items.AddRange(new object[] {
+            "Big-5",
+            "EUC-CN",
+            "EUC-JP",
+            "EUC-KR",
+            "GB 2312",
+            "ISO 8859-1",
+            "OEM 850",
+            "Shift JIS",
+            "UTF-8",
+            "UTF-8 Latin"});
+            this._encodingDropdown.Location = new System.Drawing.Point(114, 65);
+            this._encodingDropdown.Name = "_encodingDropdown";
+            this._encodingDropdown.Size = new System.Drawing.Size(154, 21);
+            this._encodingDropdown.TabIndex = 60;
+            // 
             // SshOptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(724, 503);
+            this.ClientSize = new System.Drawing.Size(724, 538);
             this.Controls.Add(this._titleLabel);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this._flowLayoutPanel);
@@ -521,6 +555,7 @@
 		private System.Windows.Forms.OpenFileDialog _openFileDialog;
 		private System.Windows.Forms.LinkLabel _identityInfoLink;
 		private System.Windows.Forms.ToolTip _identityInfoTooltip;
-
-	}
+        private System.Windows.Forms.Label encodingLabel;
+        private System.Windows.Forms.ComboBox _encodingDropdown;
+    }
 }
