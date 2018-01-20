@@ -70,8 +70,6 @@ namespace EasyConnect.Protocols.Ssh
         /// </summary>
         public override void Connect()
 		{
-            _terminal.Font = Connection.Font;
-
 		    ISSHLoginParameter sshParameters = PoderosaProtocolService.CreateDefaultSSHParameter();
 		    ITCPParameter tcpParameters = (ITCPParameter) sshParameters.GetAdapter(typeof(ITCPParameter));
 
@@ -155,6 +153,8 @@ namespace EasyConnect.Protocols.Ssh
 
 	        renderProfile.BackColor = Connection.BackgroundColor;
 	        renderProfile.ForeColor = Connection.TextColor;
+            renderProfile.FontName = Connection.FontFamily;
+            renderProfile.FontSize = Connection.FontSize;
 
 	        session.TerminalSettings.BeginUpdate();
 	        session.TerminalSettings.RenderProfile = renderProfile;

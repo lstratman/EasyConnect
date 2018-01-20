@@ -121,8 +121,6 @@ namespace EasyConnect.Protocols.PowerShell
 		/// </summary>
 		public override void Connect()
 		{
-		    _terminal.Font = Connection.Font;
-
 			_progressBar.Value = 0;
 			_progressLabel.Text = "";
 
@@ -145,6 +143,8 @@ namespace EasyConnect.Protocols.PowerShell
 
 			    renderProfile.BackColor = Connection.BackgroundColor;
 			    renderProfile.ForeColor = Connection.TextColor;
+                renderProfile.FontName = Connection.FontFamily;
+                renderProfile.FontSize = Connection.FontSize;
 
                 session.TerminalSettings.BeginUpdate();
 			    session.TerminalSettings.RenderProfile = renderProfile;
