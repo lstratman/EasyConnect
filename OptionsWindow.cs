@@ -285,7 +285,10 @@ namespace EasyConnect
 
         private void urlBackground_Resize(object sender, EventArgs e)
         {
-            _urlPanel.AutoScroll = false;
+            if (_urlPanel != null)
+            {
+                _urlPanel.AutoScroll = false;
+            }
         }
     }
 }
