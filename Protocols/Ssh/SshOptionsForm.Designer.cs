@@ -46,6 +46,8 @@
             this._fontLabel = new System.Windows.Forms.Label();
             this._flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this._hostPanel = new System.Windows.Forms.Panel();
+            this.encodingLabel = new System.Windows.Forms.Label();
+            this._encodingDropdown = new System.Windows.Forms.ComboBox();
             this._hostNameLabel = new System.Windows.Forms.Label();
             this._hostNameTextBox = new System.Windows.Forms.TextBox();
             this._hostLabel = new System.Windows.Forms.Label();
@@ -69,8 +71,8 @@
             this._backgroundColorLabel = new System.Windows.Forms.Label();
             this._openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this._identityInfoTooltip = new System.Windows.Forms.ToolTip(this.components);
-            this.encodingLabel = new System.Windows.Forms.Label();
-            this._encodingDropdown = new System.Windows.Forms.ComboBox();
+            this._portTextBox = new System.Windows.Forms.TextBox();
+            this._portLabel = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             this._flowLayoutPanel.SuspendLayout();
             this._hostPanel.SuspendLayout();
@@ -151,7 +153,7 @@
             this.panel2.Controls.Add(this._pasteLabel);
             this.panel2.Controls.Add(this._shortcutsLabel);
             this.panel2.Controls.Add(this._copyLabel);
-            this.panel2.Location = new System.Drawing.Point(18, 355);
+            this.panel2.Location = new System.Drawing.Point(18, 380);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(684, 98);
             this.panel2.TabIndex = 88;
@@ -210,13 +212,15 @@
             this._flowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this._flowLayoutPanel.Name = "_flowLayoutPanel";
             this._flowLayoutPanel.Padding = new System.Windows.Forms.Padding(15, 0, 15, 15);
-            this._flowLayoutPanel.Size = new System.Drawing.Size(721, 477);
+            this._flowLayoutPanel.Size = new System.Drawing.Size(721, 525);
             this._flowLayoutPanel.TabIndex = 87;
             this._flowLayoutPanel.WrapContents = false;
             this._flowLayoutPanel.Resize += new System.EventHandler(this._flowLayoutPanel_Resize);
             // 
             // _hostPanel
             // 
+            this._hostPanel.Controls.Add(this._portTextBox);
+            this._hostPanel.Controls.Add(this._portLabel);
             this._hostPanel.Controls.Add(this.encodingLabel);
             this._hostPanel.Controls.Add(this._encodingDropdown);
             this._hostPanel.Controls.Add(this._hostNameLabel);
@@ -224,8 +228,38 @@
             this._hostPanel.Controls.Add(this._hostLabel);
             this._hostPanel.Location = new System.Drawing.Point(18, 3);
             this._hostPanel.Name = "_hostPanel";
-            this._hostPanel.Size = new System.Drawing.Size(684, 98);
+            this._hostPanel.Size = new System.Drawing.Size(684, 123);
             this._hostPanel.TabIndex = 84;
+            // 
+            // encodingLabel
+            // 
+            this.encodingLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.encodingLabel.Location = new System.Drawing.Point(30, 89);
+            this.encodingLabel.Name = "encodingLabel";
+            this.encodingLabel.Size = new System.Drawing.Size(73, 20);
+            this.encodingLabel.TabIndex = 59;
+            this.encodingLabel.Text = "Encoding:";
+            this.encodingLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // _encodingDropdown
+            // 
+            this._encodingDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this._encodingDropdown.FormattingEnabled = true;
+            this._encodingDropdown.Items.AddRange(new object[] {
+            "Big-5",
+            "EUC-CN",
+            "EUC-JP",
+            "EUC-KR",
+            "GB 2312",
+            "ISO 8859-1",
+            "OEM 850",
+            "Shift JIS",
+            "UTF-8",
+            "UTF-8 Latin"});
+            this._encodingDropdown.Location = new System.Drawing.Point(114, 90);
+            this._encodingDropdown.Name = "_encodingDropdown";
+            this._encodingDropdown.Size = new System.Drawing.Size(154, 21);
+            this._encodingDropdown.TabIndex = 60;
             // 
             // _hostNameLabel
             // 
@@ -269,7 +303,7 @@
             this._generalPanel.Controls.Add(this._userNameTextBox);
             this._generalPanel.Controls.Add(this._passwordLabel);
             this._generalPanel.Controls.Add(this._generalLabel);
-            this._generalPanel.Location = new System.Drawing.Point(18, 107);
+            this._generalPanel.Location = new System.Drawing.Point(18, 132);
             this._generalPanel.Name = "_generalPanel";
             this._generalPanel.Size = new System.Drawing.Size(684, 120);
             this._generalPanel.TabIndex = 83;
@@ -395,7 +429,7 @@
             this._displayPanel.Controls.Add(this._backgroundColorPanel);
             this._displayPanel.Controls.Add(this._displayLabel);
             this._displayPanel.Controls.Add(this._backgroundColorLabel);
-            this._displayPanel.Location = new System.Drawing.Point(18, 233);
+            this._displayPanel.Location = new System.Drawing.Point(18, 258);
             this._displayPanel.Name = "_displayPanel";
             this._displayPanel.Size = new System.Drawing.Size(684, 116);
             this._displayPanel.TabIndex = 86;
@@ -456,35 +490,23 @@
             // 
             this._openFileDialog.Filter = "Identity files (id_rsa, id_dsa)|id_rsa;id_dsa|All files (*.*)|*.*";
             // 
-            // encodingLabel
+            // _portTextBox
             // 
-            this.encodingLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.encodingLabel.Location = new System.Drawing.Point(31, 64);
-            this.encodingLabel.Name = "encodingLabel";
-            this.encodingLabel.Size = new System.Drawing.Size(73, 20);
-            this.encodingLabel.TabIndex = 59;
-            this.encodingLabel.Text = "Encoding:";
-            this.encodingLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this._portTextBox.Location = new System.Drawing.Point(114, 65);
+            this._portTextBox.Name = "_portTextBox";
+            this._portTextBox.Size = new System.Drawing.Size(63, 20);
+            this._portTextBox.TabIndex = 62;
+            this._portTextBox.Text = "22";
             // 
-            // _encodingDropdown
+            // _portLabel
             // 
-            this._encodingDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this._encodingDropdown.FormattingEnabled = true;
-            this._encodingDropdown.Items.AddRange(new object[] {
-            "Big-5",
-            "EUC-CN",
-            "EUC-JP",
-            "EUC-KR",
-            "GB 2312",
-            "ISO 8859-1",
-            "OEM 850",
-            "Shift JIS",
-            "UTF-8",
-            "UTF-8 Latin"});
-            this._encodingDropdown.Location = new System.Drawing.Point(114, 65);
-            this._encodingDropdown.Name = "_encodingDropdown";
-            this._encodingDropdown.Size = new System.Drawing.Size(154, 21);
-            this._encodingDropdown.TabIndex = 60;
+            this._portLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._portLabel.Location = new System.Drawing.Point(30, 63);
+            this._portLabel.Name = "_portLabel";
+            this._portLabel.Size = new System.Drawing.Size(122, 20);
+            this._portLabel.TabIndex = 61;
+            this._portLabel.Text = "Port:";
+            this._portLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // SshOptionsForm
             // 
@@ -492,7 +514,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(724, 538);
+            this.ClientSize = new System.Drawing.Size(724, 586);
             this.Controls.Add(this._titleLabel);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this._flowLayoutPanel);
@@ -557,5 +579,7 @@
 		private System.Windows.Forms.ToolTip _identityInfoTooltip;
         private System.Windows.Forms.Label encodingLabel;
         private System.Windows.Forms.ComboBox _encodingDropdown;
+        private System.Windows.Forms.TextBox _portTextBox;
+        private System.Windows.Forms.Label _portLabel;
     }
 }

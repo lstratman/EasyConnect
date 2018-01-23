@@ -97,6 +97,7 @@ namespace EasyConnect.Protocols.Ssh
 			Connection.IdentityFile = _identityFileTextbox.Text;
 			Connection.Font = _font;
             Connection.Encoding = _encodingTypes[_encodingDropdown.Text];
+            Connection.Port = Convert.ToInt32(_portTextBox.Text);
 		}
 
 		/// <summary>
@@ -116,6 +117,7 @@ namespace EasyConnect.Protocols.Ssh
 			_hostNameTextBox.Text = Connection.Host;
 			_identityFileTextbox.Text = Connection.IdentityFile;
             _encodingDropdown.Text = _encodingTypes.Single(p => p.Value == Connection.Encoding).Key;
+            _portTextBox.Text = Connection.Port.ToString();
 			_passwordTextBox.SecureText = Connection.Password == null
 				                              ? new SecureString()
 				                              : Connection.Password.Copy();

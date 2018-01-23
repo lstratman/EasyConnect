@@ -75,8 +75,7 @@ namespace EasyConnect.Protocols.Ssh
 		    ITCPParameter tcpParameters = (ITCPParameter) sshParameters.GetAdapter(typeof(ITCPParameter));
 
 		    tcpParameters.Destination = Connection.Host;
-            // TODO: allow user to specify this
-		    tcpParameters.Port = 22;
+		    tcpParameters.Port = Connection.Port;
 
             sshParameters.Account = Connection.InheritedUsername;
 

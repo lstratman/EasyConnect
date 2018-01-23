@@ -21,6 +21,7 @@ namespace EasyConnect.Protocols.Ssh
 			TextColor = Color.LightGray;
 			Font = new Font("Courier New", 10);
             Encoding = EncodingType.UTF8;
+            Port = 22;
 		}
 
 		/// <summary>
@@ -40,6 +41,11 @@ namespace EasyConnect.Protocols.Ssh
             if (!String.IsNullOrEmpty(info.GetString("Encoding")))
             {
                 Encoding = (EncodingType)Enum.Parse(typeof(EncodingType), info.GetString("Encoding"));
+            }
+
+            if (!String.IsNullOrEmpty(info.GetString("Port")))
+            {
+                Port = Convert.ToInt32(info.GetString("Port"));
             }
 		}
 
@@ -150,6 +156,12 @@ namespace EasyConnect.Protocols.Ssh
             set;
         }
 
+        public int Port
+        {
+            get;
+            set;
+        }
+
 		/// <summary>
 		/// Method required for <see cref="ISerializable"/>; serializes the connection data to <paramref name="info"/>.
 		/// </summary>
@@ -165,6 +177,7 @@ namespace EasyConnect.Protocols.Ssh
 			info.AddValue("FontFamily", FontFamily);
 			info.AddValue("FontSize", FontSize);
             info.AddValue("Encoding", Encoding.ToString("G"));
+            info.AddValue("Port", Port);
 		}
 	}
 }
