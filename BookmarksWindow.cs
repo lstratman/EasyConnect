@@ -119,6 +119,8 @@ namespace EasyConnect
 
         protected HtmlPanel _urlPanel = null;
 
+        protected bool _renamingBookmarkItem = false;
+
 		/// <summary>
 		/// Constructor; deserializes the bookmarks folder structure, adds the various folder nodes to <see cref="_bookmarksFoldersTreeView"/>, and gets the
 		/// icons for each protocol.
@@ -273,7 +275,7 @@ namespace EasyConnect
 			if (keyData == (Keys.Control | Keys.C))
 			{
 				// If the user has the tree view focused currently, then copy the currently selected folder in the tree
-				if (_bookmarksFoldersTreeView.Focused && _bookmarksFoldersTreeView.SelectedNode != null)
+				if (_bookmarksFoldersTreeView.Focused && _bookmarksFoldersTreeView.SelectedNode != null && !_renamingBookmarkItem)
 				{
 					_contextMenuItem = _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode];
 					_copyFolderMenuItem_Click(null, null);
@@ -291,7 +293,7 @@ namespace EasyConnect
 			else if (keyData == (Keys.Control | Keys.V))
 			{
 				// Paste whatever is in the list of cut or copied objects into the currently selected folder in the tree
-				if (_bookmarksFoldersTreeView.SelectedNode != null)
+				if (_bookmarksFoldersTreeView.SelectedNode != null && !_renamingBookmarkItem)
 				{
 					_contextMenuItem = _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode];
 					_pasteFolderMenuItem_Click(null, null);
@@ -302,7 +304,7 @@ namespace EasyConnect
 			else if (keyData == (Keys.Control | Keys.X))
 			{
 				// If the user has the tree view focused currently, then cut the currently selected folder in the tree
-				if (_bookmarksFoldersTreeView.Focused && _bookmarksFoldersTreeView.SelectedNode != null)
+				if (_bookmarksFoldersTreeView.Focused && _bookmarksFoldersTreeView.SelectedNode != null && !_renamingBookmarkItem)
 				{
 					_contextMenuItem = _folderTreeNodes[_bookmarksFoldersTreeView.SelectedNode];
 					_cutFolderMenuItem_Click(null, null);
@@ -846,7 +848,7 @@ namespace EasyConnect
 			SortTreeView();
             await Bookmarks.Instance.Save();
 			newNode.BeginEdit();
-		}
+        }
 
 		/// <summary>
 		/// Handler method that's called when the user finishes renaming a folder in the tree view.  We set the <see cref="BookmarksFolder.Name"/> property
@@ -856,6 +858,8 @@ namespace EasyConnect
 		/// <param name="e">Arguments associated with this event.</param>
 		private async void _bookmarksTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
 		{
+            _renamingBookmarkItem = false;
+
 			if (e.CancelEdit || String.IsNullOrEmpty(e.Label))
 				return;
 
@@ -873,11 +877,15 @@ namespace EasyConnect
 		/// <param name="e">Arguments associated with this event.</param>
 		private void _renameFolderMenuItem_Click(object sender, EventArgs e)
 		{
-			if (_bookmarksFoldersTreeView.Focused)
-				_bookmarksFoldersTreeView.SelectedNode.BeginEdit();
+            if (_bookmarksFoldersTreeView.Focused)
+            {
+                _bookmarksFoldersTreeView.SelectedNode.BeginEdit();
+            }
 
-			else
-				_listViewFolders.Single(kvp => kvp.Value == _contextMenuItem as BookmarksFolder).Key.BeginEdit();
+            else
+            {
+                _listViewFolders.Single(kvp => kvp.Value == _contextMenuItem as BookmarksFolder).Key.BeginEdit();
+            }
 		}
 
 		/// <summary>
@@ -923,6 +931,8 @@ namespace EasyConnect
 		/// <param name="e">Item being edited and its new label.</param>
 		private async void _bookmarksListView_AfterLabelEdit(object sender, LabelEditEventArgs e)
 		{
+            _renamingBookmarkItem = false;
+
 			if (e.CancelEdit || String.IsNullOrEmpty(e.Label))
 				return;
 
@@ -983,7 +993,7 @@ namespace EasyConnect
 		private void renameToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			_bookmarksListView.SelectedItems[0].BeginEdit();
-		}
+        }
 
 		/// <summary>
 		/// Handler method that's called when the "Open bookmark in new window..." menu item in the context menu that appears when the user right-clicks on a
@@ -1078,9 +1088,9 @@ namespace EasyConnect
 		/// <param name="targetFolder">Target folder that we're pasting items into.</param>
 		private async Task PasteItems(BookmarksFolder targetFolder)
 		{
-			_deferSort = true;
+            List<object> source = _cutItems.Union(_copiedItems).ToList();
 
-			List<object> source = _cutItems.Union(_copiedItems).ToList();
+            _deferSort = true;
 
 			// Make sure that the source items aren't from folder that we're trying to paste into
 			if ((source[0] is BookmarksFolder && ((BookmarksFolder) source[0]).ParentFolder == targetFolder) ||
@@ -1831,6 +1841,16 @@ namespace EasyConnect
         private void urlBackground_Resize(object sender, EventArgs e)
         {
             _urlPanel.AutoScroll = false;
+        }
+
+        private void _bookmarksListView_BeforeLabelEdit(object sender, LabelEditEventArgs e)
+        {
+            _renamingBookmarkItem = true;
+        }
+
+        private void _bookmarksFoldersTreeView_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
+        {
+            _renamingBookmarkItem = true;
         }
     }
 }

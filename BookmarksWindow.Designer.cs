@@ -182,6 +182,7 @@ namespace EasyConnect
             this._bookmarksFoldersTreeView.ShowRootLines = false;
             this._bookmarksFoldersTreeView.Size = new System.Drawing.Size(233, 416);
             this._bookmarksFoldersTreeView.TabIndex = 0;
+            this._bookmarksFoldersTreeView.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this._bookmarksFoldersTreeView_BeforeLabelEdit);
             this._bookmarksFoldersTreeView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this._bookmarksTreeView_AfterLabelEdit);
             this._bookmarksFoldersTreeView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this._bookmarksFoldersTreeView_ItemDrag);
             this._bookmarksFoldersTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this._bookmarksTreeView_AfterSelect);
@@ -222,6 +223,7 @@ namespace EasyConnect
             this._bookmarksListView.UseCompatibleStateImageBehavior = false;
             this._bookmarksListView.View = System.Windows.Forms.View.Details;
             this._bookmarksListView.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this._bookmarksListView_AfterLabelEdit);
+            this._bookmarksListView.BeforeLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this._bookmarksListView_BeforeLabelEdit);
             this._bookmarksListView.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this._bookmarksListView_DrawColumnHeader);
             this._bookmarksListView.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this._bookmarksListView_DrawItem);
             this._bookmarksListView.DrawSubItem += new System.Windows.Forms.DrawListViewSubItemEventHandler(this._bookmarksListView_DrawSubItem);
