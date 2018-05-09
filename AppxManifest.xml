@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap2="http://schemas.microsoft.com/appx/manifest/uap/windows10/2" xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3" xmlns:uap4="http://schemas.microsoft.com/appx/manifest/uap/windows10/4" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" xmlns:rescap3="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities/3" xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" xmlns:desktop2="http://schemas.microsoft.com/appx/manifest/desktop/windows10/2" xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10" xmlns:wincap3="http://schemas.microsoft.com/appx/manifest/foundation/windows10/windowscapabilities/3" IgnorableNamespaces="uap4 wincap3 rescap3 desktop2 com">
-  <Identity Name="40487LukeStratman.EasyConnect" ProcessorArchitecture="x64" Publisher="CN=A801895E-1076-4329-B981-365F428B85D4" Version="2.1.1.0" />
+  <Identity Name="40487LukeStratman.EasyConnect" ProcessorArchitecture="x64" Publisher="CN=A801895E-1076-4329-B981-365F428B85D4" Version="2.1.2.0" />
   <Properties>
     <DisplayName>EasyConnect</DisplayName>
     <PublisherDisplayName>Luke Stratman</PublisherDisplayName>
