@@ -79,8 +79,9 @@
 			<Component Id="SecurePasswordTextBoxAssemblyComponent" Guid="9371568A-2804-4074-BE52-EC4E19C4BEFB">
 				<File Id="SecurePasswordTextBoxAssembly" Name="SecurePasswordTextBox.dll" Source="$(var.EasyConnect.TargetDir)SecurePasswordTextBox.dll"/>
 			</Component>
-			<Component Id="SystemDrawingHtmlAssemblyComponent" Guid="D84D05BB-2EA8-4999-8B7E-D0AD2E57441E">
-				<File Id="SystemDrawingHtmlAssembly" Name="System.Drawing.Html.dll" Source="$(var.EasyConnect.TargetDir)System.Drawing.Html.dll"/>
+			<Component Id="HtmlRendererAssemblyComponent" Guid="7E07DB43-D200-4435-8699-D6F392FE701E">
+				<File Id="HtmlRendererAssembly" Name="HtmlRenderer.dll" Source="$(var.EasyConnect.TargetDir)HtmlRenderer.dll"/>
+        <File Id="HtmlRendererWinFormsAssembly" Name="HtmlRenderer.WinForms.dll" Source="$(var.EasyConnect.TargetDir)HtmlRenderer.WinForms.dll"/>
 			</Component>
 			<Component Id="EasyTabsComponent" Guid="99CFCC2A-BBC5-47A5-BFBA-E7164413A52D">
 				<File Id="EasyTabsAssembly" Name="EasyTabs.dll" Source="$(var.EasyConnect.TargetDir)EasyTabs.dll"/>

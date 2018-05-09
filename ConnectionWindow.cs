@@ -9,6 +9,7 @@ using EasyConnect.Protocols;
 using Timer = System.Timers.Timer;
 using System.Configuration;
 using System.Threading.Tasks;
+using TheArtOfDev.HtmlRenderer.WinForms;
 
 namespace EasyConnect
 {

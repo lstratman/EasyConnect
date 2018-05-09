@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using EasyConnect.Properties;
 using System.Configuration;
+using TheArtOfDev.HtmlRenderer.WinForms;
 
 namespace EasyConnect
 {
@@ -48,7 +49,7 @@ namespace EasyConnect
                 Width = _urlPanelContainer.Width,
                 Height = _urlPanelContainer.Height,
                 Left = 0,
-                Top = 1,
+                Top = 0,
                 Font = urlTextBox.Font,
                 Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
             };
