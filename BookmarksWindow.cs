@@ -17,6 +17,7 @@ using System.Configuration;
 using System.Threading.Tasks;
 using EasyConnect.Common;
 using TheArtOfDev.HtmlRenderer.WinForms;
+using Svg;
 
 namespace EasyConnect
 {
@@ -131,6 +132,10 @@ namespace EasyConnect
 		{
 			InitializeComponent();
 
+            _treeViewImageList.Images.Add(LoadSvg(Encoding.UTF8.GetString(AppResources.Folder), 24, 24));
+            _treeViewImageList.Images.Add(LoadSvg(Encoding.UTF8.GetString(AppResources.FolderOpen), 24, 24));
+            _bookmarksFoldersTreeView.SelectedImageIndex = 1;
+
             _toolsMenu.Renderer = new EasyConnectToolStripRender();
 
             _listViewNotesDoubleClickTimer.Tick += _listViewNotesDoubleClickTimer_Tick;
@@ -153,12 +158,14 @@ namespace EasyConnect
 
 			_bookmarksFoldersTreeView.Nodes[0].Expand();
 
+            _listViewImageList.Images.Add(ExpandImage(LoadSvg(Encoding.UTF8.GetString(AppResources.Folder), 24, 24), 32, 32));
+
 			foreach (IProtocol protocol in ConnectionFactory.GetProtocols())
 			{
 				// Get the icon for each protocol type and add an entry for it to the "Add bookmark" menu item
-				Icon icon = new Icon(protocol.ProtocolIcon, 16, 16);
+				Icon icon = new Icon(protocol.ProtocolIcon, 24, 24);
 
-				_listViewImageList.Images.Add(icon);
+				_listViewImageList.Images.Add(ExpandImage(icon.ToBitmap(), 32, 32));
 				_connectionTypeIcons[protocol.ConnectionType] = _listViewImageList.Images.Count - 1;
 
 				IProtocol currentProtocol = protocol;
@@ -195,6 +202,27 @@ namespace EasyConnect
             _updatesMenuItem.Visible = ConfigurationManager.AppSettings["checkForUpdates"] != "false";
             _toolsMenuSeparator2.Visible = ConfigurationManager.AppSettings["checkForUpdates"] != "false";
 #endif
+        }
+
+        protected Image ExpandImage(Image source, int width, int height)
+        {
+            Image finalImage = new Bitmap(width, height);
+
+            using (Graphics graphics = Graphics.FromImage(finalImage))
+            {
+                graphics.FillRectangle(new SolidBrush(Color.Transparent), new Rectangle(0, 0, width, height));
+                graphics.DrawImage(source, (width - source.Width) / 2, (height - source.Height) / 2);
+            }
+
+            return finalImage;
+        }
+
+        protected Image LoadSvg(string svgXml, int width, int height)
+        {
+            XmlDocument xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(svgXml);
+
+            return SvgDocument.Open(xmlDocument).Draw(width, height);
         }
 
         private void _listViewNotesDoubleClickTimer_Tick(object sender, EventArgs e)
@@ -454,6 +482,8 @@ namespace EasyConnect
 				if (sortListView)
 					_bookmarksListView.BeginInvoke(new Action(_bookmarksListView.Sort));
 			}
+
+            SetBookmarksListViewHeight();
 		}
 
 		/// <summary>
@@ -524,6 +554,8 @@ namespace EasyConnect
 			// Sort the list view if necessary
 			if (IsHandleCreated && sortListView && !_deferSort)
 				_bookmarksListView.BeginInvoke(new Action(_bookmarksListView.Sort));
+
+            SetBookmarksListViewHeight();
 		}
 
 		/// <summary>
@@ -594,7 +626,14 @@ namespace EasyConnect
 				_listViewConnections[item] = bookmark;
 				_bookmarksListView.Items.Add(item);
 			}
+
+            SetBookmarksListViewHeight();
 		}
+
+        protected void SetBookmarksListViewHeight()
+        {
+            _bookmarksListView.Height = 27 + (_bookmarksListView.Items.Count * 33);
+        }
 
 		/// <summary>
 		/// Handler method that is called when the user double-clicks on an item in <see cref="_bookmarksListView"/>.  Opens the folder in the list view if
@@ -728,6 +767,8 @@ namespace EasyConnect
 			_bookmarksListView.BeginInvoke(new Action(_bookmarksListView.Sort));
 
 			await Bookmarks.Instance.Save();
+
+            SetBookmarksListViewHeight();
 		}
 
 		/// <summary>
@@ -908,6 +949,8 @@ namespace EasyConnect
 			_deferSort = false;
 
             await Bookmarks.Instance.Save();
+
+            SetBookmarksListViewHeight();
 		}
 
 		/// <summary>
@@ -1151,6 +1194,8 @@ namespace EasyConnect
 			_deferSort = false;
 
             await Bookmarks.Instance.Save();
+
+            SetBookmarksListViewHeight();
 		}
 
 		/// <summary>
@@ -1852,6 +1897,18 @@ namespace EasyConnect
         private void _bookmarksFoldersTreeView_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
             _renamingBookmarkItem = true;
+        }
+
+        private void _bookmarksFoldersTreeView_DrawNode(object sender, DrawTreeNodeEventArgs e)
+        {
+            if (e.Node == null) 
+                return;
+
+            bool selected = (e.State & TreeNodeStates.Selected) == TreeNodeStates.Selected;
+            Font font = e.Node.NodeFont ?? e.Node.TreeView.Font;
+
+            e.Graphics.FillRectangle(new SolidBrush(_bookmarksFoldersTreeView.BackColor), e.Bounds);
+            TextRenderer.DrawText(e.Graphics, e.Node.Text, font, new Rectangle(e.Bounds.X, e.Bounds.Y + 3, e.Bounds.Width, e.Bounds.Height), selected ? Color.FromArgb(66, 133, 244) : e.Node.ForeColor, TextFormatFlags.GlyphOverhangPadding);
         }
     }
 }

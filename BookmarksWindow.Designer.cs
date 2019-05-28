@@ -143,17 +143,18 @@ namespace EasyConnect
             this._splitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._splitContainer.BackColor = System.Drawing.Color.Transparent;
+            this._splitContainer.BackColor = System.Drawing.Color.Gainsboro;
             this._splitContainer.Location = new System.Drawing.Point(0, 36);
             this._splitContainer.Name = "_splitContainer";
             // 
             // _splitContainer.Panel1
             // 
-            this._splitContainer.Panel1.BackColor = System.Drawing.Color.White;
+            this._splitContainer.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
             this._splitContainer.Panel1.Controls.Add(this._bookmarksFoldersTreeView);
             // 
             // _splitContainer.Panel2
             // 
+            this._splitContainer.Panel2.AutoScroll = true;
             this._splitContainer.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
             this._splitContainer.Panel2.Controls.Add(this._bookmarksListView);
             this._splitContainer.Size = new System.Drawing.Size(975, 440);
@@ -166,9 +167,11 @@ namespace EasyConnect
             this._bookmarksFoldersTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._bookmarksFoldersTreeView.BackColor = System.Drawing.Color.White;
+            this._bookmarksFoldersTreeView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
             this._bookmarksFoldersTreeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this._bookmarksFoldersTreeView.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._bookmarksFoldersTreeView.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
+            this._bookmarksFoldersTreeView.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._bookmarksFoldersTreeView.HideSelection = false;
             this._bookmarksFoldersTreeView.ImageIndex = 0;
             this._bookmarksFoldersTreeView.ImageList = this._treeViewImageList;
             this._bookmarksFoldersTreeView.LabelEdit = true;
@@ -178,12 +181,14 @@ namespace EasyConnect
             treeNode1.Text = "Bookmarks";
             this._bookmarksFoldersTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1});
-            this._bookmarksFoldersTreeView.SelectedImageIndex = 1;
+            this._bookmarksFoldersTreeView.SelectedImageIndex = 0;
+            this._bookmarksFoldersTreeView.ShowLines = false;
             this._bookmarksFoldersTreeView.ShowRootLines = false;
             this._bookmarksFoldersTreeView.Size = new System.Drawing.Size(233, 416);
             this._bookmarksFoldersTreeView.TabIndex = 0;
             this._bookmarksFoldersTreeView.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this._bookmarksFoldersTreeView_BeforeLabelEdit);
             this._bookmarksFoldersTreeView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this._bookmarksTreeView_AfterLabelEdit);
+            this._bookmarksFoldersTreeView.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(this._bookmarksFoldersTreeView_DrawNode);
             this._bookmarksFoldersTreeView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this._bookmarksFoldersTreeView_ItemDrag);
             this._bookmarksFoldersTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this._bookmarksTreeView_AfterSelect);
             this._bookmarksFoldersTreeView.DragDrop += new System.Windows.Forms.DragEventHandler(this._bookmarks_DragDrop);
@@ -193,16 +198,14 @@ namespace EasyConnect
             // 
             // _treeViewImageList
             // 
-            this._treeViewImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("_treeViewImageList.ImageStream")));
+            this._treeViewImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this._treeViewImageList.ImageSize = new System.Drawing.Size(24, 24);
             this._treeViewImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this._treeViewImageList.Images.SetKeyName(0, "Folder.png");
-            this._treeViewImageList.Images.SetKeyName(1, "FolderOpen.png");
             // 
             // _bookmarksListView
             // 
             this._bookmarksListView.AllowDrop = true;
-            this._bookmarksListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this._bookmarksListView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._bookmarksListView.BackColor = System.Drawing.Color.White;
             this._bookmarksListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -214,10 +217,10 @@ namespace EasyConnect
             this._bookmarksListView.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._bookmarksListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this._bookmarksListView.LabelEdit = true;
-            this._bookmarksListView.Location = new System.Drawing.Point(3, 2);
+            this._bookmarksListView.Location = new System.Drawing.Point(68, 27);
             this._bookmarksListView.Name = "_bookmarksListView";
             this._bookmarksListView.OwnerDraw = true;
-            this._bookmarksListView.Size = new System.Drawing.Size(711, 436);
+            this._bookmarksListView.Size = new System.Drawing.Size(592, 343);
             this._bookmarksListView.SmallImageList = this._listViewImageList;
             this._bookmarksListView.TabIndex = 0;
             this._bookmarksListView.UseCompatibleStateImageBehavior = false;
@@ -403,9 +406,9 @@ namespace EasyConnect
             // 
             // _listViewImageList
             // 
-            this._listViewImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("_listViewImageList.ImageStream")));
+            this._listViewImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this._listViewImageList.ImageSize = new System.Drawing.Size(32, 32);
             this._listViewImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this._listViewImageList.Images.SetKeyName(0, "Folder.png");
             // 
             // _bookmarkContextMenu
             // 

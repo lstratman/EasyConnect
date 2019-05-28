@@ -118,6 +118,9 @@
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="SecurePasswordTextBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Svg, Version=2.4.3.29446, Culture=neutral, PublicKeyToken=12a0bac221edeae2, processorArchitecture=MSIL">
+      <HintPath>packages\Svg.2.4.3\lib\Svg.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -129,6 +132,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.WindowsRuntime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Win32Interop.Dwmapi, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -226,6 +230,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BookmarksWindow.resx">
       <DependentUpon>BookmarksWindow.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ConnectionWindow.resx">
       <DependentUpon>ConnectionWindow.cs</DependentUpon>
@@ -250,6 +255,10 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="AppResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="SaveConnectionWindow.resx">
       <DependentUpon>SaveConnectionWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -272,6 +281,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="AppResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SaveConnectionWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -289,6 +303,8 @@
     <Content Include="Resources\Disconnected.ico" />
     <Content Include="Resources\EasyConnect.svg" />
     <Content Include="Resources\EasyConnectTile.svg" />
+    <Content Include="Resources\Folder.svg" />
+    <Content Include="Resources\FolderOpen.svg" />
     <Content Include="Resources\ToolsActiveUpdate.png" />
     <Content Include="Resources\EasyConnect.ico" />
     <Content Include="Resources\FolderOpen.png" />
