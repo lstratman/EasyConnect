@@ -298,6 +298,8 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="lib\AppLimit.NetSparkle.Net40.dll" />
+    <Content Include="Resources\TreeViewNodeExpandable.png" />
+    <Content Include="Resources\TreeViewNodeExpanded.png" />
     <None Include="Resources\About.png" />
     <Content Include="Resources\ButtonPressedBackground.png" />
     <Content Include="Resources\Disconnected.ico" />

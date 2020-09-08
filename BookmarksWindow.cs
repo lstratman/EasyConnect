@@ -1910,6 +1910,21 @@ namespace EasyConnect
 
             e.Graphics.FillRectangle(new SolidBrush(_bookmarksFoldersTreeView.BackColor), e.Bounds);
             TextRenderer.DrawText(e.Graphics, e.Node.Text, font, new Rectangle(e.Bounds.X, e.Bounds.Y + 3, e.Bounds.Width, e.Bounds.Height), selected ? Color.FromArgb(51, 103, 214) : e.Node.ForeColor, TextFormatFlags.GlyphOverhangPadding);
+
+			if (e.Node.Parent != null && (e.Node.IsExpanded || (e.Node.Nodes != null && e.Node.Nodes.Count > 0)))
+			{
+				e.Graphics.FillRectangle(new SolidBrush(_bookmarksFoldersTreeView.BackColor), new RectangleF(e.Bounds.X - 50, e.Bounds.Y, 20, 20));
+
+				if (e.Node.IsExpanded)
+                {
+					e.Graphics.DrawImage(Resources.TreeViewNodeExpanded, new Point(e.Bounds.X - 50, e.Bounds.Y + 10));
+                }
+
+				else
+                {
+					e.Graphics.DrawImage(Resources.TreeViewNodeExpandable, new Point(e.Bounds.X - 47, e.Bounds.Y + 7));
+				}
+			}
         }
     }
 }
