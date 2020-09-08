@@ -157,6 +157,7 @@ namespace EasyConnect
             this._splitContainer.Panel2.AutoScroll = true;
             this._splitContainer.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
             this._splitContainer.Panel2.Controls.Add(this._bookmarksListView);
+            this._splitContainer.Panel2.Margin = new System.Windows.Forms.Padding(0, 0, 0, 32);
             this._splitContainer.Size = new System.Drawing.Size(975, 440);
             this._splitContainer.SplitterDistance = 257;
             this._splitContainer.TabIndex = 0;
@@ -220,6 +221,7 @@ namespace EasyConnect
             this._bookmarksListView.Location = new System.Drawing.Point(68, 27);
             this._bookmarksListView.Name = "_bookmarksListView";
             this._bookmarksListView.OwnerDraw = true;
+            this._bookmarksListView.Scrollable = false;
             this._bookmarksListView.Size = new System.Drawing.Size(592, 343);
             this._bookmarksListView.SmallImageList = this._listViewImageList;
             this._bookmarksListView.TabIndex = 0;
