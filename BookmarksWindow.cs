@@ -396,6 +396,7 @@ namespace EasyConnect
 					{
 						// Create a new TreeNode for this child and add it to the parent
 						folderTreeNode = new TreeNode(currentFolder.Name);
+						folderTreeNode.ForeColor = _bookmarksFoldersTreeView.ForeColor;
 						parentTreeNode.Nodes.Add(folderTreeNode);
 
 						// Add this tree node to the lookup
@@ -632,7 +633,7 @@ namespace EasyConnect
 
         protected void SetBookmarksListViewHeight()
         {
-            _bookmarksListView.Height = 27 + (_bookmarksListView.Items.Count * 33);
+            //_bookmarksListView.Height = 27 + (_bookmarksListView.Items.Count * 33);
         }
 
 		/// <summary>
@@ -1908,7 +1909,7 @@ namespace EasyConnect
             Font font = e.Node.NodeFont ?? e.Node.TreeView.Font;
 
             e.Graphics.FillRectangle(new SolidBrush(_bookmarksFoldersTreeView.BackColor), e.Bounds);
-            TextRenderer.DrawText(e.Graphics, e.Node.Text, font, new Rectangle(e.Bounds.X, e.Bounds.Y + 3, e.Bounds.Width, e.Bounds.Height), selected ? Color.FromArgb(66, 133, 244) : e.Node.ForeColor, TextFormatFlags.GlyphOverhangPadding);
+            TextRenderer.DrawText(e.Graphics, e.Node.Text, font, new Rectangle(e.Bounds.X, e.Bounds.Y + 3, e.Bounds.Width, e.Bounds.Height), selected ? Color.FromArgb(51, 103, 214) : e.Node.ForeColor, TextFormatFlags.GlyphOverhangPadding);
         }
     }
 }

@@ -91,6 +91,15 @@ namespace EasyConnect
             this._exportBookMarkMenuitem = new System.Windows.Forms.ToolStripMenuItem();
             this._importBookmarkMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._listViewImageList = new System.Windows.Forms.ImageList(this.components);
+            this.panelBackground = new System.Windows.Forms.Panel();
+            this.panelBottomRight = new System.Windows.Forms.PictureBox();
+            this.panelBottom = new System.Windows.Forms.PictureBox();
+            this.panelBottomLeft = new System.Windows.Forms.PictureBox();
+            this.panelRight = new System.Windows.Forms.PictureBox();
+            this.panelLeft = new System.Windows.Forms.PictureBox();
+            this.panelTopRight = new System.Windows.Forms.PictureBox();
+            this.panelTop = new System.Windows.Forms.PictureBox();
+            this.panelTopLeft = new System.Windows.Forms.PictureBox();
             this._bookmarkContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._openBookmarkNewTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._openBookmarkNewWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -124,11 +133,21 @@ namespace EasyConnect
             this._toolsMenuSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this._aboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.headerPanel = new System.Windows.Forms.Panel();
+            this.headerText = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
             this._splitContainer.Panel2.SuspendLayout();
             this._splitContainer.SuspendLayout();
             this._folderContextMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.panelBottomRight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelBottom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelBottomLeft)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelRight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelLeft)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelTopRight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelTop)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelTopLeft)).BeginInit();
             this._bookmarkContextMenu.SuspendLayout();
             this.toolbarBackground.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._toolsButton)).BeginInit();
@@ -136,6 +155,7 @@ namespace EasyConnect
             this.urlBackground.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._iconPictureBox)).BeginInit();
             this._toolsMenu.SuspendLayout();
+            this.headerPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // _splitContainer
@@ -143,22 +163,31 @@ namespace EasyConnect
             this._splitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._splitContainer.BackColor = System.Drawing.Color.Gainsboro;
-            this._splitContainer.Location = new System.Drawing.Point(0, 36);
+            this._splitContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this._splitContainer.Location = new System.Drawing.Point(0, 98);
             this._splitContainer.Name = "_splitContainer";
             // 
             // _splitContainer.Panel1
             // 
-            this._splitContainer.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
+            this._splitContainer.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this._splitContainer.Panel1.Controls.Add(this._bookmarksFoldersTreeView);
             // 
             // _splitContainer.Panel2
             // 
             this._splitContainer.Panel2.AutoScroll = true;
-            this._splitContainer.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
+            this._splitContainer.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this._splitContainer.Panel2.Controls.Add(this._bookmarksListView);
+            this._splitContainer.Panel2.Controls.Add(this.panelBackground);
+            this._splitContainer.Panel2.Controls.Add(this.panelBottomRight);
+            this._splitContainer.Panel2.Controls.Add(this.panelBottom);
+            this._splitContainer.Panel2.Controls.Add(this.panelBottomLeft);
+            this._splitContainer.Panel2.Controls.Add(this.panelRight);
+            this._splitContainer.Panel2.Controls.Add(this.panelLeft);
+            this._splitContainer.Panel2.Controls.Add(this.panelTopRight);
+            this._splitContainer.Panel2.Controls.Add(this.panelTop);
+            this._splitContainer.Panel2.Controls.Add(this.panelTopLeft);
             this._splitContainer.Panel2.Margin = new System.Windows.Forms.Padding(0, 0, 0, 32);
-            this._splitContainer.Size = new System.Drawing.Size(975, 440);
+            this._splitContainer.Size = new System.Drawing.Size(975, 378);
             this._splitContainer.SplitterDistance = 257;
             this._splitContainer.TabIndex = 0;
             // 
@@ -168,16 +197,18 @@ namespace EasyConnect
             this._bookmarksFoldersTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._bookmarksFoldersTreeView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
+            this._bookmarksFoldersTreeView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this._bookmarksFoldersTreeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this._bookmarksFoldersTreeView.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
             this._bookmarksFoldersTreeView.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._bookmarksFoldersTreeView.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(99)))), ((int)(((byte)(104)))));
             this._bookmarksFoldersTreeView.HideSelection = false;
             this._bookmarksFoldersTreeView.ImageIndex = 0;
             this._bookmarksFoldersTreeView.ImageList = this._treeViewImageList;
             this._bookmarksFoldersTreeView.LabelEdit = true;
             this._bookmarksFoldersTreeView.Location = new System.Drawing.Point(12, 12);
             this._bookmarksFoldersTreeView.Name = "_bookmarksFoldersTreeView";
+            treeNode1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(99)))), ((int)(((byte)(104)))));
             treeNode1.Name = "root";
             treeNode1.Text = "Bookmarks";
             this._bookmarksFoldersTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
@@ -185,7 +216,7 @@ namespace EasyConnect
             this._bookmarksFoldersTreeView.SelectedImageIndex = 0;
             this._bookmarksFoldersTreeView.ShowLines = false;
             this._bookmarksFoldersTreeView.ShowRootLines = false;
-            this._bookmarksFoldersTreeView.Size = new System.Drawing.Size(233, 416);
+            this._bookmarksFoldersTreeView.Size = new System.Drawing.Size(233, 354);
             this._bookmarksFoldersTreeView.TabIndex = 0;
             this._bookmarksFoldersTreeView.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this._bookmarksFoldersTreeView_BeforeLabelEdit);
             this._bookmarksFoldersTreeView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this._bookmarksTreeView_AfterLabelEdit);
@@ -206,7 +237,8 @@ namespace EasyConnect
             // _bookmarksListView
             // 
             this._bookmarksListView.AllowDrop = true;
-            this._bookmarksListView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this._bookmarksListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._bookmarksListView.BackColor = System.Drawing.Color.White;
             this._bookmarksListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -217,12 +249,12 @@ namespace EasyConnect
             this._bookmarksListView.ContextMenuStrip = this._folderContextMenu;
             this._bookmarksListView.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._bookmarksListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this._bookmarksListView.HideSelection = false;
             this._bookmarksListView.LabelEdit = true;
             this._bookmarksListView.Location = new System.Drawing.Point(68, 27);
             this._bookmarksListView.Name = "_bookmarksListView";
             this._bookmarksListView.OwnerDraw = true;
-            this._bookmarksListView.Scrollable = false;
-            this._bookmarksListView.Size = new System.Drawing.Size(592, 343);
+            this._bookmarksListView.Size = new System.Drawing.Size(592, 321);
             this._bookmarksListView.SmallImageList = this._listViewImageList;
             this._bookmarksListView.TabIndex = 0;
             this._bookmarksListView.UseCompatibleStateImageBehavior = false;
@@ -243,7 +275,7 @@ namespace EasyConnect
             // _bookmarkNameColumnHeader
             // 
             this._bookmarkNameColumnHeader.Text = "Name";
-            this._bookmarkNameColumnHeader.Width = 139;
+            this._bookmarkNameColumnHeader.Width = 200;
             // 
             // _bookmarkUriColumnHeader
             // 
@@ -411,6 +443,107 @@ namespace EasyConnect
             this._listViewImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
             this._listViewImageList.ImageSize = new System.Drawing.Size(32, 32);
             this._listViewImageList.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // panelBackground
+            // 
+            this.panelBackground.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelBackground.BackColor = System.Drawing.Color.White;
+            this.panelBackground.Location = new System.Drawing.Point(68, 27);
+            this.panelBackground.Name = "panelBackground";
+            this.panelBackground.Size = new System.Drawing.Size(592, 321);
+            this.panelBackground.TabIndex = 9;
+            // 
+            // panelBottomRight
+            // 
+            this.panelBottomRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelBottomRight.Image = global::EasyConnect.Properties.Resources.PanelBottomRight;
+            this.panelBottomRight.Location = new System.Drawing.Point(660, 348);
+            this.panelBottomRight.Name = "panelBottomRight";
+            this.panelBottomRight.Size = new System.Drawing.Size(9, 9);
+            this.panelBottomRight.TabIndex = 8;
+            this.panelBottomRight.TabStop = false;
+            // 
+            // panelBottom
+            // 
+            this.panelBottom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelBottom.BackgroundImage = global::EasyConnect.Properties.Resources.PanelBottom;
+            this.panelBottom.Location = new System.Drawing.Point(68, 348);
+            this.panelBottom.Name = "panelBottom";
+            this.panelBottom.Size = new System.Drawing.Size(592, 9);
+            this.panelBottom.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.panelBottom.TabIndex = 7;
+            this.panelBottom.TabStop = false;
+            // 
+            // panelBottomLeft
+            // 
+            this.panelBottomLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.panelBottomLeft.Image = global::EasyConnect.Properties.Resources.PanelBottomLeft;
+            this.panelBottomLeft.Location = new System.Drawing.Point(59, 348);
+            this.panelBottomLeft.Name = "panelBottomLeft";
+            this.panelBottomLeft.Size = new System.Drawing.Size(9, 9);
+            this.panelBottomLeft.TabIndex = 6;
+            this.panelBottomLeft.TabStop = false;
+            // 
+            // panelRight
+            // 
+            this.panelRight.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelRight.BackgroundImage = global::EasyConnect.Properties.Resources.PanelRight;
+            this.panelRight.Location = new System.Drawing.Point(660, 27);
+            this.panelRight.Name = "panelRight";
+            this.panelRight.Size = new System.Drawing.Size(9, 321);
+            this.panelRight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.panelRight.TabIndex = 5;
+            this.panelRight.TabStop = false;
+            // 
+            // panelLeft
+            // 
+            this.panelLeft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.panelLeft.BackgroundImage = global::EasyConnect.Properties.Resources.PanelLeft;
+            this.panelLeft.Location = new System.Drawing.Point(59, 27);
+            this.panelLeft.Name = "panelLeft";
+            this.panelLeft.Size = new System.Drawing.Size(9, 321);
+            this.panelLeft.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.panelLeft.TabIndex = 4;
+            this.panelLeft.TabStop = false;
+            // 
+            // panelTopRight
+            // 
+            this.panelTopRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelTopRight.Image = global::EasyConnect.Properties.Resources.PanelTopRight;
+            this.panelTopRight.Location = new System.Drawing.Point(660, 18);
+            this.panelTopRight.Margin = new System.Windows.Forms.Padding(0);
+            this.panelTopRight.Name = "panelTopRight";
+            this.panelTopRight.Size = new System.Drawing.Size(9, 9);
+            this.panelTopRight.TabIndex = 3;
+            this.panelTopRight.TabStop = false;
+            // 
+            // panelTop
+            // 
+            this.panelTop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelTop.BackgroundImage = global::EasyConnect.Properties.Resources.PanelTop;
+            this.panelTop.Location = new System.Drawing.Point(68, 18);
+            this.panelTop.Margin = new System.Windows.Forms.Padding(0);
+            this.panelTop.Name = "panelTop";
+            this.panelTop.Size = new System.Drawing.Size(592, 9);
+            this.panelTop.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.panelTop.TabIndex = 2;
+            this.panelTop.TabStop = false;
+            // 
+            // panelTopLeft
+            // 
+            this.panelTopLeft.Image = global::EasyConnect.Properties.Resources.PanelTopLeft;
+            this.panelTopLeft.Location = new System.Drawing.Point(59, 18);
+            this.panelTopLeft.Margin = new System.Windows.Forms.Padding(0);
+            this.panelTopLeft.Name = "panelTopLeft";
+            this.panelTopLeft.Size = new System.Drawing.Size(9, 9);
+            this.panelTopLeft.TabIndex = 1;
+            this.panelTopLeft.TabStop = false;
             // 
             // _bookmarkContextMenu
             // 
@@ -695,10 +828,34 @@ namespace EasyConnect
             this._exitMenuItem.Text = "Exit";
             this._exitMenuItem.Click += new System.EventHandler(this._exitMenuItem_Click);
             // 
+            // headerPanel
+            // 
+            this.headerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.headerPanel.BackgroundImage = global::EasyConnect.Properties.Resources.HeaderPanelBackground;
+            this.headerPanel.Controls.Add(this.headerText);
+            this.headerPanel.Location = new System.Drawing.Point(0, 37);
+            this.headerPanel.Name = "headerPanel";
+            this.headerPanel.Size = new System.Drawing.Size(975, 62);
+            this.headerPanel.TabIndex = 7;
+            // 
+            // headerText
+            // 
+            this.headerText.AutoSize = true;
+            this.headerText.BackColor = System.Drawing.Color.Transparent;
+            this.headerText.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.headerText.ForeColor = System.Drawing.Color.White;
+            this.headerText.Location = new System.Drawing.Point(12, 17);
+            this.headerText.Name = "headerText";
+            this.headerText.Size = new System.Drawing.Size(91, 21);
+            this.headerText.TabIndex = 0;
+            this.headerText.Text = "Bookmarks";
+            // 
             // BookmarksWindow
             // 
             this.BackColor = System.Drawing.Color.Silver;
             this.ClientSize = new System.Drawing.Size(975, 473);
+            this.Controls.Add(this.headerPanel);
             this.Controls.Add(this.toolbarBackground);
             this.Controls.Add(this._splitContainer);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -709,6 +866,14 @@ namespace EasyConnect
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).EndInit();
             this._splitContainer.ResumeLayout(false);
             this._folderContextMenu.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.panelBottomRight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelBottom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelBottomLeft)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelRight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelLeft)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelTopRight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelTop)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelTopLeft)).EndInit();
             this._bookmarkContextMenu.ResumeLayout(false);
             this.toolbarBackground.ResumeLayout(false);
             this.toolbarBackground.PerformLayout();
@@ -717,6 +882,8 @@ namespace EasyConnect
             this.urlBackground.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._iconPictureBox)).EndInit();
             this._toolsMenu.ResumeLayout(false);
+            this.headerPanel.ResumeLayout(false);
+            this.headerPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -754,5 +921,16 @@ namespace EasyConnect
         private ToolStripMenuItem _exitMenuItem;
         private ToolStripMenuItem _optionsMenuItem;
         private ToolStripSeparator _toolsMenuSeparator1;
+        private PictureBox panelTopLeft;
+        private PictureBox panelTop;
+        private PictureBox panelTopRight;
+        private PictureBox panelLeft;
+        private PictureBox panelRight;
+        private PictureBox panelBottomRight;
+        private PictureBox panelBottom;
+        private PictureBox panelBottomLeft;
+        private Panel panelBackground;
+        private Panel headerPanel;
+        private Label headerText;
     }
 }
