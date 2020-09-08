@@ -164,7 +164,7 @@ namespace EasyConnect
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._splitContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this._splitContainer.Location = new System.Drawing.Point(0, 98);
+            this._splitContainer.Location = new System.Drawing.Point(0, 97);
             this._splitContainer.Name = "_splitContainer";
             // 
             // _splitContainer.Panel1
@@ -187,7 +187,7 @@ namespace EasyConnect
             this._splitContainer.Panel2.Controls.Add(this.panelTop);
             this._splitContainer.Panel2.Controls.Add(this.panelTopLeft);
             this._splitContainer.Panel2.Margin = new System.Windows.Forms.Padding(0, 0, 0, 32);
-            this._splitContainer.Size = new System.Drawing.Size(975, 378);
+            this._splitContainer.Size = new System.Drawing.Size(975, 379);
             this._splitContainer.SplitterDistance = 257;
             this._splitContainer.TabIndex = 0;
             // 
@@ -216,7 +216,7 @@ namespace EasyConnect
             this._bookmarksFoldersTreeView.SelectedImageIndex = 0;
             this._bookmarksFoldersTreeView.ShowLines = false;
             this._bookmarksFoldersTreeView.ShowRootLines = false;
-            this._bookmarksFoldersTreeView.Size = new System.Drawing.Size(233, 354);
+            this._bookmarksFoldersTreeView.Size = new System.Drawing.Size(233, 355);
             this._bookmarksFoldersTreeView.TabIndex = 0;
             this._bookmarksFoldersTreeView.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this._bookmarksFoldersTreeView_BeforeLabelEdit);
             this._bookmarksFoldersTreeView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this._bookmarksTreeView_AfterLabelEdit);
@@ -254,7 +254,7 @@ namespace EasyConnect
             this._bookmarksListView.Location = new System.Drawing.Point(68, 27);
             this._bookmarksListView.Name = "_bookmarksListView";
             this._bookmarksListView.OwnerDraw = true;
-            this._bookmarksListView.Size = new System.Drawing.Size(592, 321);
+            this._bookmarksListView.Size = new System.Drawing.Size(592, 322);
             this._bookmarksListView.SmallImageList = this._listViewImageList;
             this._bookmarksListView.TabIndex = 0;
             this._bookmarksListView.UseCompatibleStateImageBehavior = false;
@@ -452,14 +452,14 @@ namespace EasyConnect
             this.panelBackground.BackColor = System.Drawing.Color.White;
             this.panelBackground.Location = new System.Drawing.Point(68, 27);
             this.panelBackground.Name = "panelBackground";
-            this.panelBackground.Size = new System.Drawing.Size(592, 321);
+            this.panelBackground.Size = new System.Drawing.Size(592, 322);
             this.panelBackground.TabIndex = 9;
             // 
             // panelBottomRight
             // 
             this.panelBottomRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.panelBottomRight.Image = global::EasyConnect.Properties.Resources.PanelBottomRight;
-            this.panelBottomRight.Location = new System.Drawing.Point(660, 348);
+            this.panelBottomRight.Location = new System.Drawing.Point(660, 349);
             this.panelBottomRight.Name = "panelBottomRight";
             this.panelBottomRight.Size = new System.Drawing.Size(9, 9);
             this.panelBottomRight.TabIndex = 8;
@@ -470,7 +470,7 @@ namespace EasyConnect
             this.panelBottom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelBottom.BackgroundImage = global::EasyConnect.Properties.Resources.PanelBottom;
-            this.panelBottom.Location = new System.Drawing.Point(68, 348);
+            this.panelBottom.Location = new System.Drawing.Point(68, 349);
             this.panelBottom.Name = "panelBottom";
             this.panelBottom.Size = new System.Drawing.Size(592, 9);
             this.panelBottom.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -481,7 +481,7 @@ namespace EasyConnect
             // 
             this.panelBottomLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panelBottomLeft.Image = global::EasyConnect.Properties.Resources.PanelBottomLeft;
-            this.panelBottomLeft.Location = new System.Drawing.Point(59, 348);
+            this.panelBottomLeft.Location = new System.Drawing.Point(59, 349);
             this.panelBottomLeft.Name = "panelBottomLeft";
             this.panelBottomLeft.Size = new System.Drawing.Size(9, 9);
             this.panelBottomLeft.TabIndex = 6;
@@ -494,7 +494,7 @@ namespace EasyConnect
             this.panelRight.BackgroundImage = global::EasyConnect.Properties.Resources.PanelRight;
             this.panelRight.Location = new System.Drawing.Point(660, 27);
             this.panelRight.Name = "panelRight";
-            this.panelRight.Size = new System.Drawing.Size(9, 321);
+            this.panelRight.Size = new System.Drawing.Size(9, 322);
             this.panelRight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.panelRight.TabIndex = 5;
             this.panelRight.TabStop = false;
@@ -506,7 +506,7 @@ namespace EasyConnect
             this.panelLeft.BackgroundImage = global::EasyConnect.Properties.Resources.PanelLeft;
             this.panelLeft.Location = new System.Drawing.Point(59, 27);
             this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(9, 321);
+            this.panelLeft.Size = new System.Drawing.Size(9, 322);
             this.panelLeft.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.panelLeft.TabIndex = 4;
             this.panelLeft.TabStop = false;
@@ -834,7 +834,7 @@ namespace EasyConnect
             | System.Windows.Forms.AnchorStyles.Right)));
             this.headerPanel.BackgroundImage = global::EasyConnect.Properties.Resources.HeaderPanelBackground;
             this.headerPanel.Controls.Add(this.headerText);
-            this.headerPanel.Location = new System.Drawing.Point(0, 37);
+            this.headerPanel.Location = new System.Drawing.Point(0, 36);
             this.headerPanel.Name = "headerPanel";
             this.headerPanel.Size = new System.Drawing.Size(975, 62);
             this.headerPanel.TabIndex = 7;
