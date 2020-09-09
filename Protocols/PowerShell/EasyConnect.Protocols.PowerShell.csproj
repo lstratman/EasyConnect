@@ -101,6 +101,10 @@
     <Compile Include="StreamSocket.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\EasyConnect.Common.csproj">
+      <Project>{ABF68708-BDC0-4D29-A523-00EC942449B2}</Project>
+      <Name>EasyConnect.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\lib\TerminalControl\TerminalControl.csproj">
       <Project>{60be1158-c079-4603-8bc4-1658133e8ee5}</Project>
       <Name>TerminalControl</Name>
