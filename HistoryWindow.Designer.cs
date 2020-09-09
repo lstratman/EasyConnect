@@ -57,6 +57,9 @@
             this._toolsMenuSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this._aboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.headerPanel = new System.Windows.Forms.Panel();
+            this.headerText = new System.Windows.Forms.Label();
+            this.materialCard1 = new MaterialCard();
             this.historyContextMenu.SuspendLayout();
             this.toolbarBackground.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._toolsButton)).BeginInit();
@@ -64,6 +67,7 @@
             this.urlBackground.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._iconPictureBox)).BeginInit();
             this._toolsMenu.SuspendLayout();
+            this.headerPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // historyImageList
@@ -107,9 +111,10 @@
             this._hostHeader});
             this._historyListView.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._historyListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this._historyListView.Location = new System.Drawing.Point(0, 36);
+            this._historyListView.HideSelection = false;
+            this._historyListView.Location = new System.Drawing.Point(28, 120);
             this._historyListView.Name = "_historyListView";
-            this._historyListView.Size = new System.Drawing.Size(760, 444);
+            this._historyListView.Size = new System.Drawing.Size(706, 334);
             this._historyListView.SmallImageList = this.historyImageList;
             this._historyListView.TabIndex = 1;
             this._historyListView.UseCompatibleStateImageBehavior = false;
@@ -311,13 +316,50 @@
             this._exitMenuItem.Text = "Exit";
             this._exitMenuItem.Click += new System.EventHandler(this._exitMenuItem_Click);
             // 
+            // headerPanel
+            // 
+            this.headerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(103)))), ((int)(((byte)(214)))));
+            this.headerPanel.Controls.Add(this.headerText);
+            this.headerPanel.Location = new System.Drawing.Point(0, 36);
+            this.headerPanel.Name = "headerPanel";
+            this.headerPanel.Size = new System.Drawing.Size(760, 56);
+            this.headerPanel.TabIndex = 8;
+            // 
+            // headerText
+            // 
+            this.headerText.AutoSize = true;
+            this.headerText.BackColor = System.Drawing.Color.Transparent;
+            this.headerText.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.headerText.ForeColor = System.Drawing.Color.White;
+            this.headerText.Location = new System.Drawing.Point(12, 17);
+            this.headerText.Name = "headerText";
+            this.headerText.Size = new System.Drawing.Size(64, 21);
+            this.headerText.TabIndex = 0;
+            this.headerText.Text = "History";
+            // 
+            // materialCard1
+            // 
+            this.materialCard1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.materialCard1.BackColor = System.Drawing.Color.White;
+            this.materialCard1.Location = new System.Drawing.Point(18, 110);
+            this.materialCard1.Name = "materialCard1";
+            this.materialCard1.Size = new System.Drawing.Size(726, 354);
+            this.materialCard1.TabIndex = 9;
+            // 
             // HistoryWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.ClientSize = new System.Drawing.Size(760, 480);
-            this.Controls.Add(this.toolbarBackground);
             this.Controls.Add(this._historyListView);
+            this.Controls.Add(this.materialCard1);
+            this.Controls.Add(this.headerPanel);
+            this.Controls.Add(this.toolbarBackground);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "HistoryWindow";
@@ -331,6 +373,8 @@
             this.urlBackground.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._iconPictureBox)).EndInit();
             this._toolsMenu.ResumeLayout(false);
+            this.headerPanel.ResumeLayout(false);
+            this.headerPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -364,5 +408,8 @@
         private System.Windows.Forms.ToolStripSeparator _toolsMenuSeparator2;
         private System.Windows.Forms.ToolStripMenuItem _aboutMenuItem;
         private System.Windows.Forms.ToolStripMenuItem _exitMenuItem;
+        private System.Windows.Forms.Panel headerPanel;
+        private System.Windows.Forms.Label headerText;
+        private MaterialCard materialCard1;
     }
 }
