@@ -1,4 +1,4 @@
-﻿namespace EasyConnect
+﻿namespace EasyConnect.Common
 {
     partial class MaterialCard
     {
@@ -41,7 +41,7 @@
             // 
             // _topLeftPanel
             // 
-            this._topLeftPanel.BackgroundImage = global::EasyConnect.Properties.Resources.PanelTopLeft;
+            this._topLeftPanel.BackgroundImage = global::EasyConnect.Common.Properties.Resources.PanelTopLeft;
             this._topLeftPanel.Location = new System.Drawing.Point(0, 0);
             this._topLeftPanel.Name = "_topLeftPanel";
             this._topLeftPanel.Size = new System.Drawing.Size(11, 11);
@@ -50,7 +50,7 @@
             // _topRightPanel
             // 
             this._topRightPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._topRightPanel.BackgroundImage = global::EasyConnect.Properties.Resources.PanelTopRight;
+            this._topRightPanel.BackgroundImage = global::EasyConnect.Common.Properties.Resources.PanelTopRight;
             this._topRightPanel.Location = new System.Drawing.Point(289, 0);
             this._topRightPanel.Name = "_topRightPanel";
             this._topRightPanel.Size = new System.Drawing.Size(11, 11);
@@ -60,7 +60,7 @@
             // 
             this._panelTop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._panelTop.BackgroundImage = global::EasyConnect.Properties.Resources.PanelTop;
+            this._panelTop.BackgroundImage = global::EasyConnect.Common.Properties.Resources.PanelTop;
             this._panelTop.Location = new System.Drawing.Point(11, 0);
             this._panelTop.Name = "_panelTop";
             this._panelTop.Size = new System.Drawing.Size(278, 11);
@@ -70,7 +70,7 @@
             // 
             this._panelBottom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._panelBottom.BackgroundImage = global::EasyConnect.Properties.Resources.PanelBottom;
+            this._panelBottom.BackgroundImage = global::EasyConnect.Common.Properties.Resources.PanelBottom;
             this._panelBottom.Location = new System.Drawing.Point(11, 289);
             this._panelBottom.Name = "_panelBottom";
             this._panelBottom.Size = new System.Drawing.Size(278, 11);
@@ -79,7 +79,7 @@
             // _panelBottomRight
             // 
             this._panelBottomRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this._panelBottomRight.BackgroundImage = global::EasyConnect.Properties.Resources.PanelBottomRight;
+            this._panelBottomRight.BackgroundImage = global::EasyConnect.Common.Properties.Resources.PanelBottomRight;
             this._panelBottomRight.Location = new System.Drawing.Point(289, 289);
             this._panelBottomRight.Name = "_panelBottomRight";
             this._panelBottomRight.Size = new System.Drawing.Size(11, 11);
@@ -88,7 +88,7 @@
             // _panelBottomLeft
             // 
             this._panelBottomLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this._panelBottomLeft.BackgroundImage = global::EasyConnect.Properties.Resources.PanelBottomLeft;
+            this._panelBottomLeft.BackgroundImage = global::EasyConnect.Common.Properties.Resources.PanelBottomLeft;
             this._panelBottomLeft.Location = new System.Drawing.Point(0, 289);
             this._panelBottomLeft.Name = "_panelBottomLeft";
             this._panelBottomLeft.Size = new System.Drawing.Size(11, 11);

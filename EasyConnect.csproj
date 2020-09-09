@@ -225,12 +225,6 @@
     </Compile>
     <Compile Include="EasyConnect.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MaterialCard.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MaterialCard.Designer.cs">
-      <DependentUpon>MaterialCard.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -249,9 +243,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MaterialCard.resx">
-      <DependentUpon>MaterialCard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OptionsWindow.resx">
       <DependentUpon>OptionsWindow.cs</DependentUpon>
@@ -317,14 +308,6 @@
     <Content Include="Resources\Folder.svg" />
     <Content Include="Resources\FolderOpen.svg" />
     <Content Include="Resources\HeaderPanelBackground.png" />
-    <Content Include="Resources\PanelBottom.png" />
-    <Content Include="Resources\PanelBottomLeft.png" />
-    <Content Include="Resources\PanelBottomRight.png" />
-    <Content Include="Resources\PanelLeft.png" />
-    <Content Include="Resources\PanelRight.png" />
-    <Content Include="Resources\PanelTop.png" />
-    <Content Include="Resources\PanelTopLeft.png" />
-    <Content Include="Resources\PanelTopRight.png" />
     <Content Include="Resources\ToolsActiveUpdate.png" />
     <Content Include="Resources\EasyConnect.ico" />
     <Content Include="Resources\FolderOpen.png" />

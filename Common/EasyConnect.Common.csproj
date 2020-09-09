@@ -69,7 +69,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MaterialCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MaterialCard.Designer.cs">
+      <DependentUpon>MaterialCard.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SerializationUtilities.cs" />
     <Compile Include="UsernamePasswordWindow.cs">
       <SubType>Form</SubType>
@@ -79,9 +90,26 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="MaterialCard.resx">
+      <DependentUpon>MaterialCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="UsernamePasswordWindow.resx">
       <DependentUpon>UsernamePasswordWindow.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\PanelBottom.png" />
+    <Content Include="Resources\PanelBottomLeft.png" />
+    <Content Include="Resources\PanelBottomRight.png" />
+    <Content Include="Resources\PanelLeft.png" />
+    <Content Include="Resources\PanelRight.png" />
+    <Content Include="Resources\PanelTop.png" />
+    <Content Include="Resources\PanelTopLeft.png" />
+    <Content Include="Resources\PanelTopRight.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

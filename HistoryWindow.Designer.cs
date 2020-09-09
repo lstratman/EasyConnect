@@ -59,7 +59,7 @@
             this._exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.headerPanel = new System.Windows.Forms.Panel();
             this.headerText = new System.Windows.Forms.Label();
-            this.materialCard1 = new MaterialCard();
+            this.materialCard1 = new Common.MaterialCard();
             this.historyContextMenu.SuspendLayout();
             this.toolbarBackground.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._toolsButton)).BeginInit();
@@ -410,6 +410,6 @@
         private System.Windows.Forms.ToolStripMenuItem _exitMenuItem;
         private System.Windows.Forms.Panel headerPanel;
         private System.Windows.Forms.Label headerText;
-        private MaterialCard materialCard1;
+        private Common.MaterialCard materialCard1;
     }
 }

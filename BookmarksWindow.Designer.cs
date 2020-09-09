@@ -91,7 +91,7 @@ namespace EasyConnect
             this._exportBookMarkMenuitem = new System.Windows.Forms.ToolStripMenuItem();
             this._importBookmarkMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._listViewImageList = new System.Windows.Forms.ImageList(this.components);
-            this._bookmarksCard = new MaterialCard();
+            this._bookmarksCard = new Common.MaterialCard();
             this.panelBackground = new System.Windows.Forms.Panel();
             this._bookmarkContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._openBookmarkNewTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -815,6 +815,6 @@ namespace EasyConnect
         private Panel panelBackground;
         private Panel headerPanel;
         private Label headerText;
-        private MaterialCard _bookmarksCard;
+        private Common.MaterialCard _bookmarksCard;
     }
 }

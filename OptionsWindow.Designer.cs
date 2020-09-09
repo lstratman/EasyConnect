@@ -81,10 +81,10 @@ namespace EasyConnect
             | System.Windows.Forms.AnchorStyles.Left)));
             this._sidebarFlowLayoutPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this._sidebarFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this._sidebarFlowLayoutPanel.Location = new System.Drawing.Point(16, 103);
+            this._sidebarFlowLayoutPanel.Location = new System.Drawing.Point(16, 113);
             this._sidebarFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this._sidebarFlowLayoutPanel.Name = "_sidebarFlowLayoutPanel";
-            this._sidebarFlowLayoutPanel.Size = new System.Drawing.Size(434, 582);
+            this._sidebarFlowLayoutPanel.Size = new System.Drawing.Size(434, 572);
             this._sidebarFlowLayoutPanel.TabIndex = 2;
             // 
             // _containerPanel
