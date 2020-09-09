@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using EasyConnect.Properties;
 using System.Configuration;
 using TheArtOfDev.HtmlRenderer.WinForms;
+using EasyConnect.Protocols;
 
 namespace EasyConnect
 {
@@ -30,6 +31,9 @@ namespace EasyConnect
 		protected List<Form> _optionsForms = new List<Form>();
 
         protected HtmlPanel _urlPanel;
+
+		protected Color _focusedColor = Color.FromArgb(51, 103, 214);
+		protected Color _unFocusedColor = Color.FromArgb(95, 99, 104);
 
 		/// <summary>
 		/// Constructor; initializes <see cref="_applicationForm"/>.
@@ -96,28 +100,52 @@ namespace EasyConnect
 			{
 				foreach (Form form in OptionsForms)
 				{
+					Icon icon = Resources.Tools;
+
+					if (form is IOptionsForm)
+                    {
+						icon = ConnectionFactory.GetProtocol((form as IOptionsForm).Connection).ProtocolIcon;
+                    }
+
+					PictureBox formIcon = new PictureBox
+					{
+						Image = new Icon(icon, 16, 16).ToBitmap(),
+						Width = 16,
+						Height = 16,
+						Location = new Point(0, 7)
+					};
+
 					Label formLabel = new Label
 						                  {
-											  BackColor = Color.White,
 							                  TextAlign = ContentAlignment.MiddleLeft,
 							                  Padding = new Padding(0, 0, 0, 0),
 							                  Size = new Size(233, 29),
-							                  Text = "       " + form.Text,
-							                  Font = new Font("Segoe UI", 10.0f),
-							                  Margin = new Padding(0),
-							                  Location = new Point(0, 0),
-							                  ForeColor = Color.FromArgb(0, 0, 0),
+							                  Text = form.Text,
+							                  Font = new Font("Segoe UI Semibold", 10.0f),
+							                  Location = new Point(43, 0),
+							                  ForeColor = _unFocusedColor,
 											  Cursor = Cursors.Hand
 						                  };
 
+					Panel formLabelPanel = new Panel
+					{
+						Size = new Size(300, 29),
+						Margin = new Padding(0, 0, 0, 10)
+					};
+
+					formLabelPanel.Controls.Add(formIcon);
+					formLabelPanel.Controls.Add(formLabel);
+
+					formLabelPanel.Click += (o, args) => ShowOptionsForm(formLabel);
+					formIcon.Click += (o, args) => ShowOptionsForm(formLabel);
 					formLabel.Click += (o, args) => ShowOptionsForm(formLabel);
 
 					_optionsFormLabels[formLabel] = form;
-					_sidebarFlowLayoutPanel.Controls.Add(formLabel);
+					_sidebarFlowLayoutPanel.Controls.Add(formLabelPanel);
 				}
 
 				// Show the global options form
-				ShowOptionsForm((Label) _sidebarFlowLayoutPanel.Controls[1]);
+				ShowOptionsForm((Label) _sidebarFlowLayoutPanel.Controls[0].Controls[1]);
 			}
 		}
 
@@ -127,7 +155,7 @@ namespace EasyConnect
 		/// <param name="navigationLabel"></param>
 		private void ShowOptionsForm(Label navigationLabel)
 		{
-			if (navigationLabel.Image != null)
+			if (navigationLabel.ForeColor == _focusedColor)
 				return;
 
 			// Get and show the corresponding option form
@@ -143,19 +171,14 @@ namespace EasyConnect
 
 			optionsForm.Show();
 
-			// Set the background image for the label to the "focused" image
-			foreach (Label label in _sidebarFlowLayoutPanel.Controls.Cast<Label>().Where(c => c.Name != "_optionsLabel"))
-			{
-				label.Image = null;
-				label.ForeColor = Color.FromArgb(0, 0, 0);
-                label.Font = new Font("Segoe UI", 10.0f);
+            // Set the background image for the label to the "focused" image
+            foreach (Label label in _optionsFormLabels.Keys)
+            {
+                label.ForeColor = _unFocusedColor;
                 label.Cursor = Cursors.Hand;
-			}
+            }
 
-			navigationLabel.Image = Resources.SelectedOptionCategoryBackground;
-			navigationLabel.ImageAlign = ContentAlignment.MiddleCenter;
-			navigationLabel.ForeColor = Color.FromArgb(66, 139, 202);
-            navigationLabel.Font = new Font("Segoe UI", 10.0f, FontStyle.Bold);
+            navigationLabel.ForeColor = _focusedColor;
             navigationLabel.Cursor = Cursors.Default;
 		}
 
