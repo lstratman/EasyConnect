@@ -5,6 +5,8 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Threading;
 using System.Windows.Forms;
+using Win32Interop.Enums;
+using Win32Interop.Methods;
 
 namespace EasyConnect.Protocols.Vnc
 {
@@ -13,13 +15,31 @@ namespace EasyConnect.Protocols.Vnc
 	/// </summary>
 	public partial class VncConnectionForm : BaseConnectionForm<VncConnection>
 	{
-        /// <summary>
+		[DllImport("user32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AddClipboardFormatListener(IntPtr hwnd);
+
+		/// <summary>
 		/// Default constructor.
 		/// </summary>
 		public VncConnectionForm()
 		{
 			InitializeComponent();
+			AddClipboardFormatListener(Handle);
 		}
+
+        protected override void WndProc(ref Message m)
+        {
+			if (m.Msg == (int)WM.WM_CLIPBOARDUPDATE)
+            {
+				if (Connection != null && Connection.ShareClipboard && _vncConnection.IsConnected)
+                {
+					_vncConnection.FillServerClipboard();
+                }
+            }
+
+            base.WndProc(ref m);
+        }
 
         /// <summary>
         /// Control instance that hosts the actual VNC display UI.
@@ -50,10 +70,16 @@ namespace EasyConnect.Protocols.Vnc
 			_vncConnection.GetPassword = GetPassword;
 			_vncConnection.Width = ClientSize.Width;
 			_vncConnection.Height = ClientSize.Height;
-			//_vncConnection.AllowClipboardSharingFromServer = Connection.ShareClipboard;
-			//_vncConnection.AllowClipboardSharingToServer = Connection.ShareClipboard;
 
-			_vncConnection.Connect(Connection.Host, Connection.Display, Connection.ViewOnly, true);
+			try
+			{
+				_vncConnection.Connect(Connection.Host, Connection.Display, Connection.ViewOnly, true);
+			}
+
+			catch (Exception e)
+            {
+				OnConnectionLost(this, new ErrorEventArgs(e));
+			}
 		}
 
         /// <summary>
@@ -76,8 +102,15 @@ namespace EasyConnect.Protocols.Vnc
 	    {
 	        if (_vncConnection.IsConnected)
 	        {
-				_vncConnection.Disconnect();
-                _vncConnection.Dispose();
+				try
+				{
+					_vncConnection.Disconnect();
+					_vncConnection.Dispose();
+				}
+
+				catch (Exception)
+                {
+                }
 	        }
         }
 
