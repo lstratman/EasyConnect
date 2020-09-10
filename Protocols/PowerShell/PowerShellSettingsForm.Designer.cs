@@ -1,6 +1,6 @@
 ﻿namespace EasyConnect.Protocols.PowerShell
 {
-	partial class PowerShellOptionsForm
+	partial class PowerShellSettingsForm
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -29,10 +29,10 @@
 		private void InitializeComponent()
 		{
             System.Security.SecureString secureString1 = new System.Security.SecureString();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PowerShellOptionsForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PowerShellSettingsForm));
             this._colorDialog = new System.Windows.Forms.ColorDialog();
             this._fontDialog = new System.Windows.Forms.FontDialog();
-            this._optionsCard = new EasyConnect.Common.MaterialCard();
+            this._settingsCard = new EasyConnect.Common.MaterialCard();
             this._fontBrowseButton = new System.Windows.Forms.Button();
             this._fontTextBox = new System.Windows.Forms.TextBox();
             this._fontLabel = new System.Windows.Forms.Label();
@@ -46,22 +46,22 @@
             this._hostNameTextBox = new System.Windows.Forms.TextBox();
             this._textColorLabel = new System.Windows.Forms.Label();
             this._hostNameLabel = new System.Windows.Forms.Label();
-            this._optionsLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this._settingsLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this._divider1 = new System.Windows.Forms.Panel();
             this._divider2 = new System.Windows.Forms.Panel();
+            this._inheritedPasswordTextBox = new System.Windows.Forms.TextBox();
             this._divider3 = new System.Windows.Forms.Panel();
             this._divider4 = new System.Windows.Forms.Panel();
             this._divider5 = new System.Windows.Forms.Panel();
             this._shortcutsLabel = new System.Windows.Forms.Label();
             this._shortcutsLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this._shortcutsCard = new EasyConnect.Common.MaterialCard();
-            this._inheritedPasswordTextBox = new System.Windows.Forms.TextBox();
-            this._optionsLayoutPanel.SuspendLayout();
+            this._settingsLayoutPanel.SuspendLayout();
             this._shortcutsLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,13 +70,13 @@
             this._fontDialog.Color = System.Drawing.SystemColors.ControlText;
             this._fontDialog.FixedPitchOnly = true;
             // 
-            // _optionsCard
+            // _settingsCard
             // 
-            this._optionsCard.BackColor = System.Drawing.Color.White;
-            this._optionsCard.Location = new System.Drawing.Point(12, 22);
-            this._optionsCard.Name = "_optionsCard";
-            this._optionsCard.Size = new System.Drawing.Size(692, 373);
-            this._optionsCard.TabIndex = 87;
+            this._settingsCard.BackColor = System.Drawing.Color.White;
+            this._settingsCard.Location = new System.Drawing.Point(12, 22);
+            this._settingsCard.Name = "_settingsCard";
+            this._settingsCard.Size = new System.Drawing.Size(692, 373);
+            this._settingsCard.TabIndex = 87;
             // 
             // _fontBrowseButton
             // 
@@ -222,32 +222,32 @@
             this._hostNameLabel.Text = "Host name";
             this._hostNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // _optionsLayoutPanel
+            // _settingsLayoutPanel
             // 
-            this._optionsLayoutPanel.BackColor = System.Drawing.Color.White;
-            this._optionsLayoutPanel.Controls.Add(this._hostNameLabel);
-            this._optionsLayoutPanel.Controls.Add(this._hostNameTextBox);
-            this._optionsLayoutPanel.Controls.Add(this._divider1);
-            this._optionsLayoutPanel.Controls.Add(this._userNameLabel);
-            this._optionsLayoutPanel.Controls.Add(this._userNameTextBox);
-            this._optionsLayoutPanel.Controls.Add(this._divider2);
-            this._optionsLayoutPanel.Controls.Add(this._passwordLabel);
-            this._optionsLayoutPanel.Controls.Add(this._passwordTextBox);
-            this._optionsLayoutPanel.Controls.Add(this._inheritedPasswordTextBox);
-            this._optionsLayoutPanel.Controls.Add(this._divider3);
-            this._optionsLayoutPanel.Controls.Add(this._textColorLabel);
-            this._optionsLayoutPanel.Controls.Add(this._textColorPanel);
-            this._optionsLayoutPanel.Controls.Add(this._divider4);
-            this._optionsLayoutPanel.Controls.Add(this._backgroundColorLabel);
-            this._optionsLayoutPanel.Controls.Add(this._backgroundColorPanel);
-            this._optionsLayoutPanel.Controls.Add(this._divider5);
-            this._optionsLayoutPanel.Controls.Add(this._fontLabel);
-            this._optionsLayoutPanel.Controls.Add(this._fontTextBox);
-            this._optionsLayoutPanel.Controls.Add(this._fontBrowseButton);
-            this._optionsLayoutPanel.Location = new System.Drawing.Point(17, 31);
-            this._optionsLayoutPanel.Name = "_optionsLayoutPanel";
-            this._optionsLayoutPanel.Size = new System.Drawing.Size(682, 351);
-            this._optionsLayoutPanel.TabIndex = 112;
+            this._settingsLayoutPanel.BackColor = System.Drawing.Color.White;
+            this._settingsLayoutPanel.Controls.Add(this._hostNameLabel);
+            this._settingsLayoutPanel.Controls.Add(this._hostNameTextBox);
+            this._settingsLayoutPanel.Controls.Add(this._divider1);
+            this._settingsLayoutPanel.Controls.Add(this._userNameLabel);
+            this._settingsLayoutPanel.Controls.Add(this._userNameTextBox);
+            this._settingsLayoutPanel.Controls.Add(this._divider2);
+            this._settingsLayoutPanel.Controls.Add(this._passwordLabel);
+            this._settingsLayoutPanel.Controls.Add(this._passwordTextBox);
+            this._settingsLayoutPanel.Controls.Add(this._inheritedPasswordTextBox);
+            this._settingsLayoutPanel.Controls.Add(this._divider3);
+            this._settingsLayoutPanel.Controls.Add(this._textColorLabel);
+            this._settingsLayoutPanel.Controls.Add(this._textColorPanel);
+            this._settingsLayoutPanel.Controls.Add(this._divider4);
+            this._settingsLayoutPanel.Controls.Add(this._backgroundColorLabel);
+            this._settingsLayoutPanel.Controls.Add(this._backgroundColorPanel);
+            this._settingsLayoutPanel.Controls.Add(this._divider5);
+            this._settingsLayoutPanel.Controls.Add(this._fontLabel);
+            this._settingsLayoutPanel.Controls.Add(this._fontTextBox);
+            this._settingsLayoutPanel.Controls.Add(this._fontBrowseButton);
+            this._settingsLayoutPanel.Location = new System.Drawing.Point(17, 31);
+            this._settingsLayoutPanel.Name = "_settingsLayoutPanel";
+            this._settingsLayoutPanel.Size = new System.Drawing.Size(682, 351);
+            this._settingsLayoutPanel.TabIndex = 112;
             // 
             // _divider1
             // 
@@ -266,6 +266,19 @@
             this._divider2.Name = "_divider2";
             this._divider2.Size = new System.Drawing.Size(682, 1);
             this._divider2.TabIndex = 101;
+            // 
+            // _inheritedPasswordTextBox
+            // 
+            this._inheritedPasswordTextBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._inheritedPasswordTextBox.ForeColor = System.Drawing.Color.LightGray;
+            this._inheritedPasswordTextBox.Location = new System.Drawing.Point(3, 188);
+            this._inheritedPasswordTextBox.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
+            this._inheritedPasswordTextBox.Name = "_inheritedPasswordTextBox";
+            this._inheritedPasswordTextBox.Size = new System.Drawing.Size(154, 25);
+            this._inheritedPasswordTextBox.TabIndex = 113;
+            this._inheritedPasswordTextBox.Text = "Inheriting password";
+            this._inheritedPasswordTextBox.Visible = false;
+            this._inheritedPasswordTextBox.Enter += new System.EventHandler(this._inheritedPasswordTextBox_Enter);
             // 
             // _divider3
             // 
@@ -317,30 +330,6 @@
             this._shortcutsLayoutPanel.Size = new System.Drawing.Size(682, 116);
             this._shortcutsLayoutPanel.TabIndex = 118;
             // 
-            // label3
-            // 
-            this.label3.BackColor = System.Drawing.Color.White;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(19, 75);
-            this.label3.Margin = new System.Windows.Forms.Padding(19, 15, 3, 18);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(486, 20);
-            this.label3.TabIndex = 107;
-            this.label3.Text = "Copy";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label4
-            // 
-            this.label4.BackColor = System.Drawing.Color.White;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(511, 79);
-            this.label4.Margin = new System.Windows.Forms.Padding(3, 19, 3, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(155, 19);
-            this.label4.TabIndex = 110;
-            this.label4.Text = "Mouse select";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
             // label5
             // 
             this.label5.BackColor = System.Drawing.Color.White;
@@ -374,6 +363,30 @@
             this.panel1.Size = new System.Drawing.Size(682, 1);
             this.panel1.TabIndex = 119;
             // 
+            // label3
+            // 
+            this.label3.BackColor = System.Drawing.Color.White;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(19, 75);
+            this.label3.Margin = new System.Windows.Forms.Padding(19, 15, 3, 18);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(486, 20);
+            this.label3.TabIndex = 107;
+            this.label3.Text = "Copy";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label4
+            // 
+            this.label4.BackColor = System.Drawing.Color.White;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(511, 79);
+            this.label4.Margin = new System.Windows.Forms.Padding(3, 19, 3, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(155, 19);
+            this.label4.TabIndex = 110;
+            this.label4.Text = "Mouse select";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
             // _shortcutsCard
             // 
             this._shortcutsCard.BackColor = System.Drawing.Color.White;
@@ -382,20 +395,7 @@
             this._shortcutsCard.Size = new System.Drawing.Size(692, 135);
             this._shortcutsCard.TabIndex = 119;
             // 
-            // _inheritedPasswordTextBox
-            // 
-            this._inheritedPasswordTextBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._inheritedPasswordTextBox.ForeColor = System.Drawing.Color.LightGray;
-            this._inheritedPasswordTextBox.Location = new System.Drawing.Point(3, 188);
-            this._inheritedPasswordTextBox.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
-            this._inheritedPasswordTextBox.Name = "_inheritedPasswordTextBox";
-            this._inheritedPasswordTextBox.Size = new System.Drawing.Size(154, 25);
-            this._inheritedPasswordTextBox.TabIndex = 113;
-            this._inheritedPasswordTextBox.Text = "Inheriting password";
-            this._inheritedPasswordTextBox.Visible = false;
-            this._inheritedPasswordTextBox.Enter += new System.EventHandler(this._inheritedPasswordTextBox_Enter);
-            // 
-            // PowerShellOptionsForm
+            // PowerShellSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -405,15 +405,15 @@
             this.Controls.Add(this._shortcutsLayoutPanel);
             this.Controls.Add(this._shortcutsCard);
             this.Controls.Add(this._shortcutsLabel);
-            this.Controls.Add(this._optionsLayoutPanel);
-            this.Controls.Add(this._optionsCard);
+            this.Controls.Add(this._settingsLayoutPanel);
+            this.Controls.Add(this._settingsCard);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "PowerShellOptionsForm";
+            this.Name = "PowerShellSettingsForm";
             this.Text = "PowerShell";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PowerShellOptionsForm_FormClosing);
-            this.Load += new System.EventHandler(this.PowerShellOptionsForm_Load);
-            this._optionsLayoutPanel.ResumeLayout(false);
-            this._optionsLayoutPanel.PerformLayout();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PowerShellSettingsForm_FormClosing);
+            this.Load += new System.EventHandler(this.PowerShellSettingsForm_Load);
+            this._settingsLayoutPanel.ResumeLayout(false);
+            this._settingsLayoutPanel.PerformLayout();
             this._shortcutsLayoutPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -423,7 +423,7 @@
 		#endregion
 		private System.Windows.Forms.ColorDialog _colorDialog;
 		private System.Windows.Forms.FontDialog _fontDialog;
-        private Common.MaterialCard _optionsCard;
+        private Common.MaterialCard _settingsCard;
         private System.Windows.Forms.Button _fontBrowseButton;
         private System.Windows.Forms.TextBox _fontTextBox;
         private System.Windows.Forms.Label _fontLabel;
@@ -437,7 +437,7 @@
         private System.Windows.Forms.TextBox _hostNameTextBox;
         private System.Windows.Forms.Label _textColorLabel;
         private System.Windows.Forms.Label _hostNameLabel;
-        private System.Windows.Forms.FlowLayoutPanel _optionsLayoutPanel;
+        private System.Windows.Forms.FlowLayoutPanel _settingsLayoutPanel;
         private System.Windows.Forms.Panel _divider1;
         private System.Windows.Forms.Panel _divider2;
         private System.Windows.Forms.Panel _divider3;

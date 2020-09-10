@@ -9,9 +9,9 @@ using System.Windows.Forms;
 namespace EasyConnect.Protocols.Ssh
 {
 	/// <summary>
-	/// Form that captures options for a particular <see cref="SshConnection"/> instance or defaults for the <see cref="SshProtocol"/> protocol.
+	/// Form that captures settings for a particular <see cref="SshConnection"/> instance or defaults for the <see cref="SshProtocol"/> protocol.
 	/// </summary>
-	public partial class SshOptionsForm : Form, IOptionsForm<SshConnection>
+	public partial class SshSettingsForm : Form, ISettingsForm<SshConnection>
 	{
 		/// <summary>
 		/// Font to be used when displaying the connection prompt.
@@ -40,7 +40,7 @@ namespace EasyConnect.Protocols.Ssh
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
-		public SshOptionsForm()
+		public SshSettingsForm()
 		{
 			InitializeComponent();
 
@@ -50,7 +50,7 @@ namespace EasyConnect.Protocols.Ssh
 		/// <summary>
 		/// Connection instance that we're capturing option data for.
 		/// </summary>
-		IConnection IOptionsForm.Connection
+		IConnection ISettingsForm.Connection
 		{
 			get
 			{
@@ -73,7 +73,7 @@ namespace EasyConnect.Protocols.Ssh
 		}
 
 		/// <summary>
-		/// Flag indicating if the options should be for a specific connection or should be for the defaults for the protocol (i.e. should not capture 
+		/// Flag indicating if the settings should be for a specific connection or should be for the defaults for the protocol (i.e. should not capture 
 		/// hostname).
 		/// </summary>
 		public bool DefaultsMode
@@ -87,7 +87,7 @@ namespace EasyConnect.Protocols.Ssh
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void SshOptionsForm_FormClosing(object sender, FormClosingEventArgs e)
+		private void SshSettingsForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			Connection.Username = _userNameTextBox.Text;
 			Connection.Host = _hostNameTextBox.Text;
@@ -105,9 +105,9 @@ namespace EasyConnect.Protocols.Ssh
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void SshOptionsForm_Load(object sender, EventArgs e)
+		private void SshSettingsForm_Load(object sender, EventArgs e)
 		{
-			Text = "Options for " + Connection.DisplayName;
+			Text = "Settings for " + Connection.DisplayName;
 
 			_font = Connection.Font;
 			_backgroundColorPanel.BackColor = Connection.BackgroundColor;

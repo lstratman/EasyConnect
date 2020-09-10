@@ -43,23 +43,23 @@ namespace EasyConnect.Protocols
 		}
 
 		/// <summary>
-		/// Gets an options form used to capture configuration data for a connection for this protocol.
+		/// Gets an settings form used to capture configuration data for a connection for this protocol.
 		/// </summary>
 		/// <returns>Form used to capture configuration data for a connection for this protocol.</returns>
-		Form GetOptionsForm();
+		Form GetSettingsForm();
 
 		/// <summary>
-		/// Gets an options form used to capture configuration data for <paramref name="connection"/>.
+		/// Gets an settings form used to capture configuration data for <paramref name="connection"/>.
 		/// </summary>
 		/// <returns>Form used to capture configuration data for <paramref name="connection"/>.</returns>
-		Form GetOptionsForm(IConnection connection);
+		Form GetSettingsForm(IConnection connection);
 
 		/// <summary>
-		/// Gets an options form used to capture defaults to be used in connections for this protocol.  Typically returns a UI identical to 
-		/// <see cref="GetOptionsForm()"/> with the exception of the hostname to use for the connection.
+		/// Gets an settings form used to capture defaults to be used in connections for this protocol.  Typically returns a UI identical to 
+		/// <see cref="GetSettingsForm()"/> with the exception of the hostname to use for the connection.
 		/// </summary>
-		/// <returns>Options form used to capture defaults to be used in connections for this protocol</returns>
-		Task<Form> GetOptionsFormInDefaultsMode();
+		/// <returns>Settings form used to capture defaults to be used in connections for this protocol</returns>
+		Task<Form> GetSettingsFormInDefaultsMode();
 
 		/// <summary>
 		/// Creates the form that will house the UI for establishing and displaying <paramref name="connection"/>.

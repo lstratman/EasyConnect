@@ -5,7 +5,7 @@ namespace EasyConnect.Protocols.Rdp
 	/// <summary>
 	/// Protocol class for the Microsoft Remote Desktop (RDP) protocol.
 	/// </summary>
-	public class RdpProtocol : BaseProtocol<RdpConnection, RdpOptionsForm, RdpConnectionForm>
+	public class RdpProtocol : BaseProtocol<RdpConnection, RdpSettingsForm, RdpConnectionForm>
 	{
 		/// <summary>
 		/// Prefix used to identify this protocol in URIs.

@@ -11,7 +11,7 @@ using EasyConnect.Protocols;
 namespace EasyConnect
 {
 	/// <summary>
-	/// UI that allows the user to edit the global options associated with the application and the defaults for each connection protocol.
+	/// UI that allows the user to edit the global settings associated with the application and the defaults for each connection protocol.
 	/// </summary>
 	public partial class SettingsWindow : Form
 	{
@@ -26,7 +26,7 @@ namespace EasyConnect
 		protected Dictionary<Label, Form> _settingsFormLabels = new Dictionary<Label, Form>();
 
 		/// <summary>
-		/// List of all of the child settings forms; one for the global options and one for each connection protocol.
+		/// List of all of the child settings forms; one for the global settings and one for each connection protocol.
 		/// </summary>
 		protected List<Form> _settingsForms = new List<Form>();
 
@@ -74,7 +74,7 @@ namespace EasyConnect
         }
 
         /// <summary>
-        /// List of all of the child settings forms; one for the global options and one for each connection protocol.
+        /// List of all of the child settings forms; one for the global settings and one for each connection protocol.
         /// </summary>
         public List<Form> SettingsForms
 		{
@@ -103,9 +103,9 @@ namespace EasyConnect
 				{
 					Icon icon = Resources.Tools;
 
-					if (form is IOptionsForm)
+					if (form is ISettingsForm)
                     {
-						icon = ConnectionFactory.GetProtocol((form as IOptionsForm).Connection).ProtocolIcon;
+						icon = ConnectionFactory.GetProtocol((form as ISettingsForm).Connection).ProtocolIcon;
                     }
 
 					PictureBox formIcon = new PictureBox

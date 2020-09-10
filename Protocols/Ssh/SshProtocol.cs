@@ -5,7 +5,7 @@ namespace EasyConnect.Protocols.Ssh
 	/// <summary>
 	/// Protocol class for the Secure Shell (SSH) protocol.
 	/// </summary>
-	public class SshProtocol : BaseProtocol<SshConnection, SshOptionsForm, SshConnectionForm>
+	public class SshProtocol : BaseProtocol<SshConnection, SshSettingsForm, SshConnectionForm>
 	{
 		/// <summary>
 		/// Prefix used to identify this protocol in URIs.

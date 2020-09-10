@@ -10,9 +10,9 @@ using Win32Interop.Structs;
 namespace EasyConnect.Protocols.Rdp
 {
 	/// <summary>
-	/// Form that captures options for a particular <see cref="RdpConnection"/> instance or defaults for the <see cref="RdpProtocol"/> protocol.
+	/// Form that captures settings for a particular <see cref="RdpConnection"/> instance or defaults for the <see cref="RdpProtocol"/> protocol.
 	/// </summary>
-	public partial class RdpOptionsForm : Form, IOptionsForm<RdpConnection>
+	public partial class RdpSettingsForm : Form, ISettingsForm<RdpConnection>
 	{
 		/// <summary>
 		/// Contains the previous width of <see cref="_flowLayoutPanel"/> prior to a resize operation.
@@ -27,7 +27,7 @@ namespace EasyConnect.Protocols.Rdp
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
-		public RdpOptionsForm()
+		public RdpSettingsForm()
 		{
 			InitializeComponent();
 
@@ -46,7 +46,7 @@ namespace EasyConnect.Protocols.Rdp
 		/// <summary>
 		/// Connection instance that we're capturing option data for.
 		/// </summary>
-		IConnection IOptionsForm.Connection
+		IConnection ISettingsForm.Connection
 		{
 			get
 			{
@@ -60,7 +60,7 @@ namespace EasyConnect.Protocols.Rdp
 		}
 
 		/// <summary>
-		/// Flag indicating if the options should be for a specific connection or should be for the defaults for the protocol (i.e. should not capture 
+		/// Flag indicating if the settings should be for a specific connection or should be for the defaults for the protocol (i.e. should not capture 
 		/// hostname).
 		/// </summary>
 		public bool DefaultsMode
@@ -74,9 +74,9 @@ namespace EasyConnect.Protocols.Rdp
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void RdpOptionsForm_Load(object sender, EventArgs e)
+		private void RdpSettingsForm_Load(object sender, EventArgs e)
 		{
-			Text = "Options for " + Connection.DisplayName;
+			Text = "Settings for " + Connection.DisplayName;
 
 			_hostNameTextBox.Text = Connection.Host;
 			_userNameTextBox.Text = Connection.Username;
@@ -169,7 +169,7 @@ namespace EasyConnect.Protocols.Rdp
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void RdpOptionsForm_FormClosing(object sender, CancelEventArgs e)
+		private void RdpSettingsForm_FormClosing(object sender, CancelEventArgs e)
 		{
 			Connection.Host = _hostNameTextBox.Text;
 			Connection.Username = _userNameTextBox.Text;

@@ -210,7 +210,7 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Options.cs" />
+    <Compile Include="GlobalSettings.cs" />
     <Compile Include="SettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>

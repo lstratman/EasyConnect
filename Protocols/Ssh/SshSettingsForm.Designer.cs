@@ -1,6 +1,6 @@
 ﻿namespace EasyConnect.Protocols.Ssh
 {
-    partial class SshOptionsForm
+    partial class SshSettingsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,9 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.Security.SecureString secureString1 = new System.Security.SecureString();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SshOptionsForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SshSettingsForm));
             this._titleLabel = new System.Windows.Forms.Label();
             this._fontDialog = new System.Windows.Forms.FontDialog();
             this._colorDialog = new System.Windows.Forms.ColorDialog();
@@ -46,6 +45,8 @@
             this._fontLabel = new System.Windows.Forms.Label();
             this._flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this._hostPanel = new System.Windows.Forms.Panel();
+            this._portTextBox = new System.Windows.Forms.TextBox();
+            this._portLabel = new System.Windows.Forms.Label();
             this.encodingLabel = new System.Windows.Forms.Label();
             this._encodingDropdown = new System.Windows.Forms.ComboBox();
             this._hostNameLabel = new System.Windows.Forms.Label();
@@ -70,9 +71,7 @@
             this._displayLabel = new System.Windows.Forms.Label();
             this._backgroundColorLabel = new System.Windows.Forms.Label();
             this._openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this._identityInfoTooltip = new System.Windows.Forms.ToolTip(this.components);
-            this._portTextBox = new System.Windows.Forms.TextBox();
-            this._portLabel = new System.Windows.Forms.Label();
+            this._identityInfoTooltip = new System.Windows.Forms.ToolTip();
             this.panel2.SuspendLayout();
             this._flowLayoutPanel.SuspendLayout();
             this._hostPanel.SuspendLayout();
@@ -230,6 +229,24 @@
             this._hostPanel.Name = "_hostPanel";
             this._hostPanel.Size = new System.Drawing.Size(684, 123);
             this._hostPanel.TabIndex = 84;
+            // 
+            // _portTextBox
+            // 
+            this._portTextBox.Location = new System.Drawing.Point(114, 65);
+            this._portTextBox.Name = "_portTextBox";
+            this._portTextBox.Size = new System.Drawing.Size(63, 20);
+            this._portTextBox.TabIndex = 62;
+            this._portTextBox.Text = "22";
+            // 
+            // _portLabel
+            // 
+            this._portLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._portLabel.Location = new System.Drawing.Point(30, 63);
+            this._portLabel.Name = "_portLabel";
+            this._portLabel.Size = new System.Drawing.Size(122, 20);
+            this._portLabel.TabIndex = 61;
+            this._portLabel.Text = "Port:";
+            this._portLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // encodingLabel
             // 
@@ -490,25 +507,7 @@
             // 
             this._openFileDialog.Filter = "Identity files (id_rsa, id_dsa)|id_rsa;id_dsa|All files (*.*)|*.*";
             // 
-            // _portTextBox
-            // 
-            this._portTextBox.Location = new System.Drawing.Point(114, 65);
-            this._portTextBox.Name = "_portTextBox";
-            this._portTextBox.Size = new System.Drawing.Size(63, 20);
-            this._portTextBox.TabIndex = 62;
-            this._portTextBox.Text = "22";
-            // 
-            // _portLabel
-            // 
-            this._portLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._portLabel.Location = new System.Drawing.Point(30, 63);
-            this._portLabel.Name = "_portLabel";
-            this._portLabel.Size = new System.Drawing.Size(122, 20);
-            this._portLabel.TabIndex = 61;
-            this._portLabel.Text = "Port:";
-            this._portLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // SshOptionsForm
+            // SshSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -519,10 +518,10 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this._flowLayoutPanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "SshOptionsForm";
-            this.Text = "Secure Shell Options";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SshOptionsForm_FormClosing);
-            this.Load += new System.EventHandler(this.SshOptionsForm_Load);
+            this.Name = "SshSettingsForm";
+            this.Text = "Secure Shell";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SshSettingsForm_FormClosing);
+            this.Load += new System.EventHandler(this.SshSettingsForm_Load);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this._flowLayoutPanel.ResumeLayout(false);

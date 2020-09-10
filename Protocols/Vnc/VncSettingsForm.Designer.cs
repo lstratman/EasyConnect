@@ -1,6 +1,6 @@
 ﻿namespace EasyConnect.Protocols.Vnc
 {
-    partial class VncOptionsForm
+    partial class VncSettingsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.Security.SecureString secureString1 = new System.Security.SecureString();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VncOptionsForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VncSettingsForm));
             this._displayLabel = new System.Windows.Forms.Label();
             this._displayNumberLabel = new System.Windows.Forms.Label();
             this._flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
@@ -39,6 +39,7 @@
             this._passwordLabel = new System.Windows.Forms.Label();
             this._generalLabel = new System.Windows.Forms.Label();
             this._hostPanel = new System.Windows.Forms.Panel();
+            this._portTextBox = new System.Windows.Forms.TextBox();
             this._portLabel = new System.Windows.Forms.Label();
             this._hostNameLabel = new System.Windows.Forms.Label();
             this._hostNameTextBox = new System.Windows.Forms.TextBox();
@@ -53,7 +54,6 @@
             this._clipboardLabel = new System.Windows.Forms.Label();
             this._titleLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this._portTextBox = new System.Windows.Forms.TextBox();
             this._flowLayoutPanel.SuspendLayout();
             this._generalPanel.SuspendLayout();
             this._hostPanel.SuspendLayout();
@@ -165,6 +165,14 @@
             this._hostPanel.Name = "_hostPanel";
             this._hostPanel.Size = new System.Drawing.Size(684, 99);
             this._hostPanel.TabIndex = 84;
+            // 
+            // _portTextBox
+            // 
+            this._portTextBox.Location = new System.Drawing.Point(115, 63);
+            this._portTextBox.Name = "_portTextBox";
+            this._portTextBox.Size = new System.Drawing.Size(63, 20);
+            this._portTextBox.TabIndex = 59;
+            this._portTextBox.Text = "5900";
             // 
             // _portLabel
             // 
@@ -301,15 +309,7 @@
             this.panel1.Size = new System.Drawing.Size(667, 1);
             this.panel1.TabIndex = 90;
             // 
-            // _portTextBox
-            // 
-            this._portTextBox.Location = new System.Drawing.Point(115, 63);
-            this._portTextBox.Name = "_portTextBox";
-            this._portTextBox.Size = new System.Drawing.Size(63, 20);
-            this._portTextBox.TabIndex = 59;
-            this._portTextBox.Text = "5900";
-            // 
-            // VncOptionsForm
+            // VncSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -319,10 +319,10 @@
             this.Controls.Add(this._titleLabel);
             this.Controls.Add(this._flowLayoutPanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "VncOptionsForm";
-            this.Text = "VNC Options";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VncOptionsForm_FormClosing);
-            this.Load += new System.EventHandler(this.VncOptionsForm_Load);
+            this.Name = "VncSettingsForm";
+            this.Text = "VNC";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VncSettingsForm_FormClosing);
+            this.Load += new System.EventHandler(this.VncSettingsForm_Load);
             this._flowLayoutPanel.ResumeLayout(false);
             this._generalPanel.ResumeLayout(false);
             this._generalPanel.PerformLayout();

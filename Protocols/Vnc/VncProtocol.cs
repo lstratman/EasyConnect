@@ -5,7 +5,7 @@ namespace EasyConnect.Protocols.Vnc
 	/// <summary>
 	/// Protocol class for the VNC protocol.
 	/// </summary>
-	public class VncProtocol : BaseProtocol<VncConnection, VncOptionsForm, VncConnectionForm>
+	public class VncProtocol : BaseProtocol<VncConnection, VncSettingsForm, VncConnectionForm>
 	{
 		/// <summary>
 		/// Prefix used to identify this protocol in URIs.

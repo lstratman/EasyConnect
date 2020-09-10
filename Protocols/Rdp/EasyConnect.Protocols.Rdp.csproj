@@ -89,11 +89,11 @@
     <Compile Include="RdpConnectionForm.Designer.cs">
       <DependentUpon>RdpConnectionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="RdpOptionsForm.cs">
+    <Compile Include="RdpSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RdpOptionsForm.Designer.cs">
-      <DependentUpon>RdpOptionsForm.cs</DependentUpon>
+    <Compile Include="RdpSettingsForm.Designer.cs">
+      <DependentUpon>RdpSettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="RdpProtocol.cs" />
     <Compile Include="RecordingMode.cs" />
@@ -117,8 +117,8 @@
     <EmbeddedResource Include="RdpConnectionForm.resx">
       <DependentUpon>RdpConnectionForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RdpOptionsForm.resx">
-      <DependentUpon>RdpOptionsForm.cs</DependentUpon>
+    <EmbeddedResource Include="RdpSettingsForm.resx">
+      <DependentUpon>RdpSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

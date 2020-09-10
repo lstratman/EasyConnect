@@ -15,11 +15,11 @@ namespace EasyConnect
 	/// <see cref="ConnectionWindow"/> instances.
 	/// </summary>
 	[Serializable]
-	public class Options
+	public class GlobalSettings
 	{
-        private static readonly string OptionsFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EasyConnect", "Options.xml");
+        private static readonly string SettingsFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EasyConnect", "Options.xml");
 
-        private Options()
+        private GlobalSettings()
         {
         }
 
@@ -48,7 +48,7 @@ namespace EasyConnect
 			set;
 		}
 
-        public static Options Instance
+        public static GlobalSettings Instance
         {
             get;
             private set;
@@ -67,7 +67,7 @@ namespace EasyConnect
 		/// <returns></returns>
 		public static async Task Init()
 		{
-		    Instance = new Options();
+		    Instance = new GlobalSettings();
 
 #if APPX
             IStorageFile optionsFile = (IStorageFile) await ApplicationData.Current.LocalFolder.TryGetItemAsync("Options.xml");
@@ -109,20 +109,20 @@ namespace EasyConnect
                 Instance = (Options)serializer.Deserialize(optionsXmlReader);
             }
 #else
-            // If the options file doesn't exist yet (first time the application is being run), just create a new instance of the class
-			if (!File.Exists(OptionsFileName))
+            // If the settings file doesn't exist yet (first time the application is being run), just create a new instance of the class
+			if (!File.Exists(SettingsFileName))
             {
-				Instance = new Options();
+				Instance = new GlobalSettings();
                 Instance.FirstLaunch = true;
 
                 return;
             }
 
-            using (FileStream fileStream = new FileStream(OptionsFileName, FileMode.Open, FileAccess.Read))
+            using (FileStream fileStream = new FileStream(SettingsFileName, FileMode.Open, FileAccess.Read))
 			using (XmlReader reader = new XmlTextReader(fileStream))
 			{
-				XmlSerializer serializer = new XmlSerializer(typeof (Options));
-				Instance = (Options) serializer.Deserialize(reader);
+				XmlSerializer serializer = new XmlSerializer(typeof (GlobalSettings));
+				Instance = (GlobalSettings) serializer.Deserialize(reader);
 			}
 #endif
         }
@@ -142,7 +142,7 @@ namespace EasyConnect
 
             await FileIO.WriteTextAsync(optionsFile, optionsFileText.ToString());
 #else
-            using (FileStream fileStream = new FileStream(OptionsFileName, FileMode.Create, FileAccess.Write))
+            using (FileStream fileStream = new FileStream(SettingsFileName, FileMode.Create, FileAccess.Write))
 				serializer.Serialize(fileStream, this);
 #endif
         }

@@ -89,7 +89,7 @@ namespace EasyConnect
 		/// <summary>
 		/// Application-level (not connection protocol defaults) that the user has set.
 		/// </summary>
-		protected Options _options;
+		protected GlobalSettings _settings;
 
 		/// <summary>
 		/// Encryption type that was previously selected by the user.
@@ -401,22 +401,22 @@ namespace EasyConnect
 		}
 
 		/// <summary>
-		/// Opens an <see cref="SettingsWindow"/> instance when the user clicks on the "Options" menu item from a <see cref="ConnectionWindow"/>.
+		/// Opens an <see cref="SettingsWindow"/> instance when the user clicks on the "Settings" menu item from a <see cref="ConnectionWindow"/>.
 		/// </summary>
-		public async Task OpenOptions()
+		public async Task OpenSettings()
 		{
 			TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content is SettingsWindow);
 
-			// Focus on the options tab if a window is already open
+			// Focus on the settings tab if a window is already open
 			if (tab != null)
 			{
 				SelectedTab = tab;
 				return;
 			}
 
-			_previousEncryptionType = Options.Instance.EncryptionType ?? EncryptionType.Rijndael;
+			_previousEncryptionType = GlobalSettings.Instance.EncryptionType ?? EncryptionType.Rijndael;
 
-			// Create the options window and then add entries for each protocol type to the window
+			// Create the settings window and then add entries for each protocol type to the window
 			SettingsWindow settingsWindow = new SettingsWindow(this);
 			GlobalSettingsWindow globalSettingsWindow = new GlobalSettingsWindow();
 
@@ -425,7 +425,7 @@ namespace EasyConnect
 
 			foreach (IProtocol protocol in ConnectionFactory.GetProtocols())
 			{
-				Form settingsForm = await protocol.GetOptionsFormInDefaultsMode();
+				Form settingsForm = await protocol.GetSettingsFormInDefaultsMode();
 
 			    settingsForm.Closed += settingsForm_Closed;
 				settingsWindow.SettingsForms.Add(settingsForm);
@@ -436,19 +436,19 @@ namespace EasyConnect
 
 	    private async void settingsForm_Closed(object sender, EventArgs e)
 	    {
-	        await ConnectionFactory.SetDefaults(((IOptionsForm)sender).Connection);
+	        await ConnectionFactory.SetDefaults(((ISettingsForm)sender).Connection);
         }
 
 		/// <summary>
-		/// Handler method that's closed when the user closes the global options window.  Sets the encryption type and the password that the user selected.
+		/// Handler method that's closed when the user closes the global settings window.  Sets the encryption type and the password that the user selected.
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
 		private async void globalSettingsWindow_Closed(object sender, EventArgs e)
 		{
-			if (_previousEncryptionType != Options.Instance.EncryptionType)
+			if (_previousEncryptionType != GlobalSettings.Instance.EncryptionType)
 				// ReSharper disable PossibleInvalidOperationException
-				await SetEncryptionType(Options.Instance.EncryptionType.Value, (sender as GlobalSettingsWindow).EncryptionPassword);
+				await SetEncryptionType(GlobalSettings.Instance.EncryptionType.Value, (sender as GlobalSettingsWindow).EncryptionPassword);
 			// ReSharper restore PossibleInvalidOperationException
 		}
 

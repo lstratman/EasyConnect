@@ -16,18 +16,18 @@ namespace EasyConnect
 	/// <summary>
 	/// Container window for connection protocols.  Implements a toolbar with the URI text box, OmniBar, and bookmarks button and has a container where the UI
 	/// for the various connection protocols will be displayed (created from 
-	/// <see cref="BaseProtocol{TConnection,TOptionsForm,TConnectionForm}.CreateConnectionForm"/>.
+	/// <see cref="BaseProtocol{TConnection,TSettingsForm,TConnectionForm}.CreateConnectionForm"/>.
 	/// </summary>
 	public partial class ConnectionWindow : Form
 	{
 		/// <summary>
 		/// Number of times that <see cref="_animationTimer"/> has fired, which is used to control the showing/hiding animation of the toolbar when 
-		/// <see cref="Options.AutoHideToolbar"/> is true.
+		/// <see cref="GlobalSettings.AutoHideToolbar"/> is true.
 		/// </summary>
 		protected int _animationTicks = 0;
 
 		/// <summary>
-		/// Timer that is used to animate the showing/hiding of the toolbar when <see cref="Options.AutoHideToolbar"/> is true.
+		/// Timer that is used to animate the showing/hiding of the toolbar when <see cref="GlobalSettings.AutoHideToolbar"/> is true.
 		/// </summary>
 		protected Timer _animationTimer = null;
 
@@ -57,7 +57,7 @@ namespace EasyConnect
 		protected bool _connectionContainerPanelSizeSet = false;
 
 		/// <summary>
-		/// UI for the connection created from <see cref="BaseProtocol{TConnection,TOptionsForm,TConnectionForm}.CreateConnectionForm"/>.
+		/// UI for the connection created from <see cref="BaseProtocol{TConnection,TSettingsForm,TConnectionForm}.CreateConnectionForm"/>.
 		/// </summary>
 		protected BaseConnectionForm _connectionForm = null;
 
@@ -242,14 +242,14 @@ namespace EasyConnect
 		}
 
 		/// <summary>
-		/// Returns the value of <see cref="Options.AutoHideToolbar"/>.
+		/// Returns the value of <see cref="GlobalSettings.AutoHideToolbar"/>.
 		/// </summary>
 		protected bool AutoHideToolbar
 		{
 			get
 			{
 				if (_autoHideToolbar == null)
-					_autoHideToolbar = Options.Instance.AutoHideToolbar;
+					_autoHideToolbar = GlobalSettings.Instance.AutoHideToolbar;
 
 				return _autoHideToolbar.Value;
 			}
@@ -717,14 +717,14 @@ namespace EasyConnect
 		}
 
 		/// <summary>
-		/// Handler method that's called when the user clicks the "Options" menu item under the tools menu.  Creates the options tab if one doesn't exist 
+		/// Handler method that's called when the user clicks the "Settings" menu item under the tools menu.  Creates the settings tab if one doesn't exist 
 		/// already and then switches to it.
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private async void _optionsMenuItem_Click(object sender, EventArgs e)
+		private async void _settingsMenuItem_Click(object sender, EventArgs e)
 		{
-			await ParentTabs.OpenOptions();
+			await ParentTabs.OpenSettings();
 		}
 
 		/// <summary>

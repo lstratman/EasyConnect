@@ -7,9 +7,9 @@ using System.Windows.Forms;
 namespace EasyConnect.Protocols.PowerShell
 {
 	/// <summary>
-	/// Form that captures options for a particular <see cref="PowerShellConnection"/> instance or defaults for the <see cref="PowerShellProtocol"/> protocol.
+	/// Form that captures settings for a particular <see cref="PowerShellConnection"/> instance or defaults for the <see cref="PowerShellProtocol"/> protocol.
 	/// </summary>
-	public partial class PowerShellOptionsForm : Form, IOptionsForm<PowerShellConnection>
+	public partial class PowerShellSettingsForm : Form, ISettingsForm<PowerShellConnection>
 	{
 		/// <summary>
 		/// Font to be used when displaying the connection prompt.
@@ -24,7 +24,7 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
-		public PowerShellOptionsForm()
+		public PowerShellSettingsForm()
 		{
 			InitializeComponent();
 		}
@@ -32,7 +32,7 @@ namespace EasyConnect.Protocols.PowerShell
 		/// <summary>
 		/// Connection instance that we're capturing option data for.
 		/// </summary>
-		IConnection IOptionsForm.Connection
+		IConnection ISettingsForm.Connection
 		{
 			get
 			{
@@ -55,7 +55,7 @@ namespace EasyConnect.Protocols.PowerShell
 		}
 
 		/// <summary>
-		/// Flag indicating if the options should be for a specific connection or should be for the defaults for the protocol (i.e. should not capture 
+		/// Flag indicating if the settings should be for a specific connection or should be for the defaults for the protocol (i.e. should not capture 
 		/// hostname).
 		/// </summary>
 		public bool DefaultsMode
@@ -69,7 +69,7 @@ namespace EasyConnect.Protocols.PowerShell
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void PowerShellOptionsForm_FormClosing(object sender, FormClosingEventArgs e)
+		private void PowerShellSettingsForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			Connection.Username = _userNameTextBox.ForeColor == Color.LightGray ? "" : _userNameTextBox.Text;
 			Connection.Host = _hostNameTextBox.Text;
@@ -84,9 +84,9 @@ namespace EasyConnect.Protocols.PowerShell
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void PowerShellOptionsForm_Load(object sender, EventArgs e)
+		private void PowerShellSettingsForm_Load(object sender, EventArgs e)
 		{
-			Text = "Options for " + Connection.DisplayName;
+			Text = "Settings for " + Connection.DisplayName;
 
 			_font = Connection.Font;
 			_backgroundColorPanel.BackColor = Connection.BackgroundColor;
@@ -105,8 +105,8 @@ namespace EasyConnect.Protocols.PowerShell
 				_hostNameTextBox.Visible = false;
 				_divider1.Visible = false;
 
-				_optionsCard.Height -= 60;
-				_optionsLayoutPanel.Height -= 60;
+				_settingsCard.Height -= 60;
+				_settingsLayoutPanel.Height -= 60;
 				_shortcutsLabel.Location = new Point(_shortcutsLabel.Location.X, _shortcutsLabel.Location.Y - 60);
 				_shortcutsCard.Location = new Point(_shortcutsCard.Location.X, _shortcutsCard.Location.Y - 60);
 				_shortcutsLayoutPanel.Location = new Point(_shortcutsLayoutPanel.Location.X, _shortcutsLayoutPanel.Location.Y - 60);

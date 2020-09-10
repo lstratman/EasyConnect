@@ -83,11 +83,11 @@
     <Compile Include="SshConnectionForm.Designer.cs">
       <DependentUpon>SshConnectionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SshOptionsForm.cs">
+    <Compile Include="SshSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SshOptionsForm.Designer.cs">
-      <DependentUpon>SshOptionsForm.cs</DependentUpon>
+    <Compile Include="SshSettingsForm.Designer.cs">
+      <DependentUpon>SshSettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SshProtocol.cs" />
   </ItemGroup>
@@ -113,8 +113,8 @@
     <EmbeddedResource Include="SshConnectionForm.resx">
       <DependentUpon>SshConnectionForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SshOptionsForm.resx">
-      <DependentUpon>SshOptionsForm.cs</DependentUpon>
+    <EmbeddedResource Include="SshSettingsForm.resx">
+      <DependentUpon>SshSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -5,14 +5,14 @@ using System.Windows.Forms;
 namespace EasyConnect.Protocols.Vnc
 {
 	/// <summary>
-	/// Form that captures options for a particular <see cref="VncConnection"/> instance or defaults for the <see cref="VncProtocol"/> protocol.
+	/// Form that captures settings for a particular <see cref="VncConnection"/> instance or defaults for the <see cref="VncProtocol"/> protocol.
 	/// </summary>
-	public partial class VncOptionsForm : Form, IOptionsForm<VncConnection>
+	public partial class VncSettingsForm : Form, ISettingsForm<VncConnection>
 	{
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
-		public VncOptionsForm()
+		public VncSettingsForm()
 		{
 			InitializeComponent();
 		}
@@ -20,7 +20,7 @@ namespace EasyConnect.Protocols.Vnc
 		/// <summary>
 		/// Connection instance that we're capturing option data for.
 		/// </summary>
-		IConnection IOptionsForm.Connection
+		IConnection ISettingsForm.Connection
 		{
 			get
 			{
@@ -43,7 +43,7 @@ namespace EasyConnect.Protocols.Vnc
 		}
 
 		/// <summary>
-		/// Flag indicating if the options should be for a specific connection or should be for the defaults for the protocol (i.e. should not capture 
+		/// Flag indicating if the settings should be for a specific connection or should be for the defaults for the protocol (i.e. should not capture 
 		/// hostname).
 		/// </summary>
 		public bool DefaultsMode
@@ -57,9 +57,9 @@ namespace EasyConnect.Protocols.Vnc
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void VncOptionsForm_Load(object sender, EventArgs e)
+		private void VncSettingsForm_Load(object sender, EventArgs e)
 		{
-			Text = "Options for " + Connection.DisplayName;
+			Text = "Settings for " + Connection.DisplayName;
 
 			// Initialize the values in the UI from the properties in the connection
 			_hostNameTextBox.Text = Connection.Host;
@@ -81,7 +81,7 @@ namespace EasyConnect.Protocols.Vnc
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void VncOptionsForm_FormClosing(object sender, FormClosingEventArgs e)
+		private void VncSettingsForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			// Copy the values from the UI back into the connection object
 			Connection.Host = _hostNameTextBox.Text;

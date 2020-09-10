@@ -89,11 +89,11 @@
     <Compile Include="VncConnectionForm.Designer.cs">
       <DependentUpon>VncConnectionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="VncOptionsForm.cs">
+    <Compile Include="VncSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="VncOptionsForm.Designer.cs">
-      <DependentUpon>VncOptionsForm.cs</DependentUpon>
+    <Compile Include="VncSettingsForm.Designer.cs">
+      <DependentUpon>VncSettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="VncProtocol.cs" />
   </ItemGroup>
@@ -115,8 +115,8 @@
     <EmbeddedResource Include="VncConnectionForm.resx">
       <DependentUpon>VncConnectionForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="VncOptionsForm.resx">
-      <DependentUpon>VncOptionsForm.cs</DependentUpon>
+    <EmbeddedResource Include="VncSettingsForm.resx">
+      <DependentUpon>VncSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

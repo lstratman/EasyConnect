@@ -128,7 +128,7 @@
             this._optionsMenuItem.Name = "_optionsMenuItem";
             this._optionsMenuItem.Size = new System.Drawing.Size(172, 22);
             this._optionsMenuItem.Text = "Options";
-            this._optionsMenuItem.Click += new System.EventHandler(this._optionsMenuItem_Click);
+            this._optionsMenuItem.Click += new System.EventHandler(this._settingsMenuItem_Click);
             // 
             // toolStripSeparator2
             // 

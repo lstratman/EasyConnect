@@ -45,7 +45,7 @@ namespace EasyConnect
 		}
 
 		/// <summary>
-		/// Handler method that's called when the form is closing; sets the properties for various options and then saves them.
+		/// Handler method that's called when the form is closing; sets the properties for various settings and then saves them.
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
@@ -56,14 +56,14 @@ namespace EasyConnect
 
 			await ConnectionFactory.SetDefaultProtocol((IProtocol) _defaultProtocolDropdown.SelectedItem);
 
-            Options.Instance.AutoHideToolbar = _autoHideCheckbox.Checked;
-            Options.Instance.EncryptionType = (EncryptionType) Enum.Parse(typeof (EncryptionType), ((ListItem) _encryptionTypeDropdown.SelectedItem).Value);
-            Options.Instance.EnableAeroPeek = _enableAeroPeekCheckbox.Checked;
+            GlobalSettings.Instance.AutoHideToolbar = _autoHideCheckbox.Checked;
+            GlobalSettings.Instance.EncryptionType = (EncryptionType) Enum.Parse(typeof (EncryptionType), ((ListItem) _encryptionTypeDropdown.SelectedItem).Value);
+            GlobalSettings.Instance.EnableAeroPeek = _enableAeroPeekCheckbox.Checked;
 
 			if (_parentTabs.AeroPeekEnabled != _enableAeroPeekCheckbox.Checked)
 				_parentTabs.AeroPeekEnabled = _enableAeroPeekCheckbox.Checked;
 			
-			await Options.Instance.Save();
+			await GlobalSettings.Instance.Save();
 		}
 
 		/// <summary>
@@ -74,7 +74,7 @@ namespace EasyConnect
 		private void GlobalSettingsWindow_Shown(object sender, EventArgs e)
 		{
 			_parentTabs = Parent.TopLevelControl as MainForm;
-			_autoHideCheckbox.Checked = Options.Instance.AutoHideToolbar;
+			_autoHideCheckbox.Checked = GlobalSettings.Instance.AutoHideToolbar;
 
 			List<ListItem> items = new List<ListItem>
 				                       {
@@ -92,7 +92,7 @@ namespace EasyConnect
 
 			_encryptionTypeDropdown.Items.AddRange(items.Cast<object>().ToArray());
 			// ReSharper disable PossibleInvalidOperationException
-			_encryptionTypeDropdown.SelectedItem = items.First(i => i.Value == Options.Instance.EncryptionType.Value.ToString("G"));
+			_encryptionTypeDropdown.SelectedItem = items.First(i => i.Value == GlobalSettings.Instance.EncryptionType.Value.ToString("G"));
 			// ReSharper restore PossibleInvalidOperationException
 		}
 
@@ -109,7 +109,7 @@ namespace EasyConnect
 				_encryptionPassword = null;
 
 				// ReSharper disable PossibleInvalidOperationException
-			else if ((_encryptionTypeDropdown.SelectedItem as ListItem).Value != Options.Instance.EncryptionType.Value.ToString("G"))
+			else if ((_encryptionTypeDropdown.SelectedItem as ListItem).Value != GlobalSettings.Instance.EncryptionType.Value.ToString("G"))
 				// ReSharper restore PossibleInvalidOperationException
 			{
 				PasswordWindow passwordWindow = new PasswordWindow();

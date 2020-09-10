@@ -1,6 +1,6 @@
 ﻿namespace EasyConnect.Protocols.Rdp
 {
-	partial class RdpOptionsForm
+	partial class RdpSettingsForm
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -30,7 +30,7 @@
 		{
             System.Security.SecureString secureString1 = new System.Security.SecureString();
             System.Security.SecureString secureString2 = new System.Security.SecureString();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RdpOptionsForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RdpSettingsForm));
             this._resolutionSliderLabel = new System.Windows.Forms.Label();
             this._bitmapCachingCheckbox = new System.Windows.Forms.CheckBox();
             this._visualStylesCheckbox = new System.Windows.Forms.CheckBox();
@@ -729,7 +729,7 @@
             this._titleLabel.TabIndex = 83;
             this._titleLabel.Text = "Remote Desktop Options";
             // 
-            // RdpOptionsForm
+            // RdpSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -740,10 +740,10 @@
             this.Controls.Add(this._titleLabel);
             this.Controls.Add(this._flowLayoutPanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "RdpOptionsForm";
-            this.Text = "Remote Desktop Options";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RdpOptionsForm_FormClosing);
-            this.Load += new System.EventHandler(this.RdpOptionsForm_Load);
+            this.Name = "RdpSettingsForm";
+            this.Text = "Remote Desktop";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RdpSettingsForm_FormClosing);
+            this.Load += new System.EventHandler(this.RdpSettingsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this._resolutionSlider)).EndInit();
             this._flowLayoutPanel.ResumeLayout(false);
             this._hostPanel.ResumeLayout(false);

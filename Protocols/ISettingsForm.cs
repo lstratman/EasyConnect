@@ -3,10 +3,10 @@
 	/// <summary>
 	/// Interface implemented by all forms containing a UI for capturing option data for a connection.
 	/// </summary>
-	public interface IOptionsForm
+	public interface ISettingsForm
 	{
 		/// <summary>
-		/// Connection for which the options are being captured.
+		/// Connection for which the settings are being captured.
 		/// </summary>
 		IConnection Connection
 		{
@@ -15,7 +15,7 @@
 		}
 
 		/// <summary>
-		/// Whether the form should be displayed in defaults mode (i.e. capturing default options for a protocol instead of options for a specific connection).
+		/// Whether the form should be displayed in defaults mode (i.e. capturing default settings for a protocol instead of settings for a specific connection).
 		/// </summary>
 		bool DefaultsMode
 		{
@@ -27,12 +27,12 @@
 	/// <summary>
 	/// Interface implemented by all forms containing a UI for capturing option data for a connection.  Contains a strongly typed connection property.
 	/// </summary>
-	/// <typeparam name="TConnection">Type of connection for which options are being captured.</typeparam>
-	public interface IOptionsForm<TConnection> : IOptionsForm
+	/// <typeparam name="TConnection">Type of connection for which settings are being captured.</typeparam>
+	public interface ISettingsForm<TConnection> : ISettingsForm
 		where TConnection : IConnection
 	{
 		/// <summary>
-		/// Connection for which options data is being captured.
+		/// Connection for which settings data is being captured.
 		/// </summary>
 		new TConnection Connection
 		{

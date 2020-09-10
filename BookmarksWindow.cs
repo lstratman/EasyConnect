@@ -100,9 +100,9 @@ namespace EasyConnect
 		protected bool _setContextMenuItem = true;
 
 		/// <summary>
-		/// Flag set to indicate that we should display the options for a <see cref="IConnection"/> instance in <see cref="_bookmarksListView"/> when they
+		/// Flag set to indicate that we should display the settings for a <see cref="IConnection"/> instance in <see cref="_bookmarksListView"/> when they
 		/// finish editing the item's label; this is done when a new bookmark is created as we first ask the user to name the bookmark and, when that's
-		/// complete, allow the user to edit the options for the connection.
+		/// complete, allow the user to edit the settings for the connection.
 		/// </summary>
 		protected bool _showSettingsAfterItemLabelEdit = false;
 
@@ -706,31 +706,31 @@ namespace EasyConnect
 
 		/// <summary>
 		/// Handler method that's called when the user clicks the "Edit" menu item in the context menu that appears when the user right-clicks on a bookmark
-		/// in the list view.  Opens the options window for the connection's protocol type.
+		/// in the list view.  Opens the settings window for the connection's protocol type.
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
 		private void _editBookmarkMenuItem_Click(object sender, EventArgs e)
 		{
 			ListViewItem selectedItem = _bookmarksListView.SelectedItems[0];
-			TitleBarTab optionsTab = new TitleBarTab(ParentTabs)
+			TitleBarTab settingsTab = new TitleBarTab(ParentTabs)
 				                         {
 					                         Content = new SettingsWindow(ParentTabs)
 						                                   {
 							                                   SettingsForms = new List<Form>
 								                                                  {
-									                                                  ConnectionFactory.CreateOptionsForm(_listViewConnections[selectedItem])
+									                                                  ConnectionFactory.CreateSettingsForm(_listViewConnections[selectedItem])
 								                                                  },
 							                                   Text = "Settings for " + _listViewConnections[selectedItem].DisplayName
 						                                   }
 				                         };
 
 			// When the settings form is closed, update the second column in the list view with the updated host for the connection
-			optionsTab.Content.FormClosed += (o, args) => selectedItem.SubItems[1].Text = _listViewConnections[selectedItem].Host;
+			settingsTab.Content.FormClosed += (o, args) => selectedItem.SubItems[1].Text = _listViewConnections[selectedItem].Host;
 
-			ParentTabs.Tabs.Add(optionsTab);
-			ParentTabs.ResizeTabContents(optionsTab);
-			ParentTabs.SelectedTab = optionsTab;
+			ParentTabs.Tabs.Add(settingsTab);
+			ParentTabs.ResizeTabContents(settingsTab);
+			ParentTabs.SelectedTab = settingsTab;
 		}
 
 		/// <summary>
@@ -1004,25 +1004,25 @@ namespace EasyConnect
 
 			if (_showSettingsAfterItemLabelEdit)
 			{
-				// Open the options window for the new bookmark if its name was set for the first time
+				// Open the settings window for the new bookmark if its name was set for the first time
 				ListViewItem selectedItem = _bookmarksListView.SelectedItems[0];
-				TitleBarTab optionsTab = new TitleBarTab(ParentTabs)
+				TitleBarTab settingsTab = new TitleBarTab(ParentTabs)
 					                         {
 						                         Content = new SettingsWindow(ParentTabs)
 							                                   {
 								                                   SettingsForms = new List<Form>
 									                                                  {
-										                                                  ConnectionFactory.CreateOptionsForm(_listViewConnections[selectedItem])
+										                                                  ConnectionFactory.CreateSettingsForm(_listViewConnections[selectedItem])
 									                                                  }
 							                                   }
 					                         };
 
-				// When the options window is closed, update the value in the host column to what was supplied by the user
-				optionsTab.Content.FormClosed += (o, args) => selectedItem.SubItems[1].Text = _listViewConnections[selectedItem].Host;
+				// When the settings window is closed, update the value in the host column to what was supplied by the user
+				settingsTab.Content.FormClosed += (o, args) => selectedItem.SubItems[1].Text = _listViewConnections[selectedItem].Host;
 
-				ParentTabs.Tabs.Add(optionsTab);
-				ParentTabs.ResizeTabContents(optionsTab);
-				ParentTabs.SelectedTab = optionsTab;
+				ParentTabs.Tabs.Add(settingsTab);
+				ParentTabs.ResizeTabContents(settingsTab);
+				ParentTabs.SelectedTab = settingsTab;
 
 				_showSettingsAfterItemLabelEdit = false;
 			}
@@ -1862,14 +1862,14 @@ namespace EasyConnect
         }
 
         /// <summary>
-		/// Handler method that's called when the user clicks the "Options" menu item under the tools menu.  Creates the options tab if one doesn't exist 
+		/// Handler method that's called when the user clicks the "Settings" menu item under the tools menu.  Creates the settings tab if one doesn't exist 
 		/// already and then switches to it.
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
 		private async void _settingsMenuItem_Click(object sender, EventArgs e)
         {
-            await ParentTabs.OpenOptions();
+            await ParentTabs.OpenSettings();
         }
 
         private void _toolsMenu_VisibleChanged(object sender, EventArgs e)

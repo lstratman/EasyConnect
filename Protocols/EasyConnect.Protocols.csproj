@@ -120,7 +120,7 @@
     <Compile Include="EncryptionType.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="IConnectionForm.cs" />
-    <Compile Include="IOptionsForm.cs" />
+    <Compile Include="ISettingsForm.cs" />
     <Compile Include="IProtocol.cs" />
     <Compile Include="ErrorMessageDisplayForm.cs">
       <SubType>Form</SubType>

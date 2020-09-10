@@ -512,11 +512,11 @@ namespace EasyConnect.Protocols
 		/// <summary>
 		/// Opens the UI to enter data for establishing <paramref name="connection"/> (i.e. host, username, password, etc.).
 		/// </summary>
-		/// <param name="connection">Connection that we want the options UI for.</param>
+		/// <param name="connection">Connection that we want the settings UI for.</param>
 		/// <returns>The UI to enter data for establishing <paramref name="connection"/> (i.e. host, username, password, etc.).</returns>
-		public static Form CreateOptionsForm(IConnection connection)
+		public static Form CreateSettingsForm(IConnection connection)
 		{
-			return _protocols.First(pair => pair.Value.ConnectionType.Name == connection.GetType().Name).Value.GetOptionsForm(connection);
+			return _protocols.First(pair => pair.Value.ConnectionType.Name == connection.GetType().Name).Value.GetSettingsForm(connection);
 		}
 	}
 }

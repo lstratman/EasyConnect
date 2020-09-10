@@ -6,15 +6,15 @@ using System.Windows.Forms;
 namespace EasyConnect.Protocols
 {
 	/// <summary>
-	/// Base class that will be implemented by all connection protocol classes, which wrap the connection type, options form for the protocol, and connection
+	/// Base class that will be implemented by all connection protocol classes, which wrap the connection type, settings form for the protocol, and connection
 	/// form.
 	/// </summary>
 	/// <typeparam name="TConnection">Type of the connection that will be established by this protocol.</typeparam>
-	/// <typeparam name="TOptionsForm">Options form that should be displayed to capture configuration data for a connection for this protocol.</typeparam>
+	/// <typeparam name="TSettingsForm">Settings form that should be displayed to capture configuration data for a connection for this protocol.</typeparam>
 	/// <typeparam name="TConnectionForm">UI class used to establish and display a connection for this protocol.</typeparam>
-	public abstract class BaseProtocol<TConnection, TOptionsForm, TConnectionForm> : IProtocol
+	public abstract class BaseProtocol<TConnection, TSettingsForm, TConnectionForm> : IProtocol
 		where TConnection : IConnection
-		where TOptionsForm : Form, IOptionsForm<TConnection>, new()
+		where TSettingsForm : Form, ISettingsForm<TConnection>, new()
 		where TConnectionForm : BaseConnectionForm, IConnectionForm<TConnection>, new()
 	{
 		/// <summary>
@@ -53,33 +53,33 @@ namespace EasyConnect.Protocols
 		}
 
 		/// <summary>
-		/// Gets an options form used to capture configuration data for a connection for this protocol.
+		/// Gets an settings form used to capture configuration data for a connection for this protocol.
 		/// </summary>
 		/// <returns>Form used to capture configuration data for a connection for this protocol.</returns>
-		public virtual Form GetOptionsForm()
+		public virtual Form GetSettingsForm()
 		{
-			return new TOptionsForm();
+			return new TSettingsForm();
 		}
 
 		/// <summary>
-		/// Gets an options form used to capture configuration data for <paramref name="connection"/>.
+		/// Gets an settings form used to capture configuration data for <paramref name="connection"/>.
 		/// </summary>
 		/// <returns>Form used to capture configuration data for <paramref name="connection"/>.</returns>
-		public Form GetOptionsForm(IConnection connection)
+		public Form GetSettingsForm(IConnection connection)
 		{
-			return GetOptionsForm((TConnection) connection);
+			return GetSettingsForm((TConnection) connection);
 		}
 
 		/// <summary>
-		/// Gets an options form used to capture defaults to be used in connections for this protocol.  Typically returns a UI identical to 
-		/// <see cref="GetOptionsForm()"/> with the exception of the hostname to use for the connection.
+		/// Gets an settings form used to capture defaults to be used in connections for this protocol.  Typically returns a UI identical to 
+		/// <see cref="GetSettingsForm()"/> with the exception of the hostname to use for the connection.
 		/// </summary>
-		/// <returns>Options form used to capture defaults to be used in connections for this protocol</returns>
-		public async Task<Form> GetOptionsFormInDefaultsMode()
+		/// <returns>Settings form used to capture defaults to be used in connections for this protocol</returns>
+		public async Task<Form> GetSettingsFormInDefaultsMode()
 		{
 			TConnection defaults = (TConnection) await ConnectionFactory.GetDefaults(GetType());
 
-			return GetOptionsFormInDefaultsMode(defaults);
+			return GetSettingsFormInDefaultsMode(defaults);
 		}
 
 		/// <summary>
@@ -108,26 +108,26 @@ namespace EasyConnect.Protocols
 		}
 
 		/// <summary>
-		/// Gets an options form used to capture configuration data for <paramref name="connection"/>.
+		/// Gets an settings form used to capture configuration data for <paramref name="connection"/>.
 		/// </summary>
 		/// <returns>Form used to capture configuration data for <paramref name="connection"/>.</returns>
-		public virtual Form GetOptionsForm(TConnection connection)
+		public virtual Form GetSettingsForm(TConnection connection)
 		{
-			return new TOptionsForm
+			return new TSettingsForm
 				       {
 					       Connection = connection
 				       };
 		}
 
 		/// <summary>
-		/// Gets an options form used to capture defaults to be used in connections for this protocol.  Typically returns a UI identical to 
-		/// <see cref="GetOptionsForm()"/> with the exception of the hostname to use for the connection.
+		/// Gets an settings form used to capture defaults to be used in connections for this protocol.  Typically returns a UI identical to 
+		/// <see cref="GetSettingsForm()"/> with the exception of the hostname to use for the connection.
 		/// </summary>
 		/// <param name="connection">Defaults data that has already been captured or initialized for this protocol.</param>
-		/// <returns>Options form used to capture defaults to be used in connections for this protocol</returns>
-		public virtual Form GetOptionsFormInDefaultsMode(TConnection connection)
+		/// <returns>Settings form used to capture defaults to be used in connections for this protocol</returns>
+		public virtual Form GetSettingsFormInDefaultsMode(TConnection connection)
 		{
-			return new TOptionsForm
+			return new TSettingsForm
 				       {
 					       Connection = connection,
 					       DefaultsMode = true

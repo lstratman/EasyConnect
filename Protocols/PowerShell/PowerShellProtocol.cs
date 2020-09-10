@@ -5,7 +5,7 @@ namespace EasyConnect.Protocols.PowerShell
 	/// <summary>
 	/// Protocol class for the PowerShell protocol.
 	/// </summary>
-	public class PowerShellProtocol : BaseProtocol<PowerShellConnection, PowerShellOptionsForm, PowerShellConnectionForm>
+	public class PowerShellProtocol : BaseProtocol<PowerShellConnection, PowerShellSettingsForm, PowerShellConnectionForm>
 	{
 		/// <summary>
 		/// Prefix used to identify this protocol in URIs.

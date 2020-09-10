@@ -161,14 +161,14 @@ namespace EasyConnect
 		private void propertiesMenuItem_Click(object sender, EventArgs e)
 		{
 			// Get the settings form for the connection type and open it in a new tab
-			Form settingsWindow = ConnectionFactory.CreateOptionsForm(_connections[_historyListView.SelectedItems[0]].Connection);
-			TitleBarTab optionsTab = new TitleBarTab(_applicationForm)
+			Form settingsWindow = ConnectionFactory.CreateSettingsForm(_connections[_historyListView.SelectedItems[0]].Connection);
+			TitleBarTab settingsTab = new TitleBarTab(_applicationForm)
 				                         {
 					                         Content = settingsWindow
 				                         };
 
-			_applicationForm.Tabs.Add(optionsTab);
-			_applicationForm.SelectedTab = optionsTab;
+			_applicationForm.Tabs.Add(settingsTab);
+			_applicationForm.SelectedTab = settingsTab;
 		}
 
 		/// <summary>
@@ -313,14 +313,14 @@ namespace EasyConnect
         }
 
         /// <summary>
-		/// Handler method that's called when the user clicks the "Options" menu item under the tools menu.  Creates the options tab if one doesn't exist 
+		/// Handler method that's called when the user clicks the "Settings" menu item under the tools menu.  Creates the settings tab if one doesn't exist 
 		/// already and then switches to it.
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
 		private async void _settingsMenuItem_Click(object sender, EventArgs e)
         {
-            await ParentTabs.OpenOptions();
+            await ParentTabs.OpenSettings();
         }
 
         private void _toolsMenu_VisibleChanged(object sender, EventArgs e)

@@ -78,7 +78,7 @@ namespace EasyConnect
             Task.Run(async () =>
             {
 #endif
-                await Options.Init();
+                await GlobalSettings.Init();
                 encryptionSetup = await SetupEncryption();
 #if !APPX
             }).Wait();
@@ -106,7 +106,7 @@ namespace EasyConnect
 
             // If the user hasn't formally selected an encryption type (either they're starting the application for the first time or are running a legacy
             // version that explicitly used Rijndael), ask them if they want to use RSA
-            if (Options.Instance.EncryptionType == null)
+            if (GlobalSettings.Instance.EncryptionType == null)
             {
                 string messageBoxText = @"Do you want to use an RSA key container to encrypt your passwords?
 
@@ -117,7 +117,7 @@ application. However, your bookmarks file will be tied uniquely to
 this user account and you will be unable to share them between
 multiple users.";
 
-                if (Options.Instance.FirstLaunch)
+                if (GlobalSettings.Instance.FirstLaunch)
                     messageBoxText += @"
 
 The alternative is to derive an encryption key from a password that
@@ -130,20 +130,20 @@ Since you've already encrypted your data with a password once,
 you would need to enter it one more time to decrypt it before RSA 
 can be used.";
 
-                Options.Instance.EncryptionType = MessageBox.Show(messageBoxText, "Use RSA?", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes
+                GlobalSettings.Instance.EncryptionType = MessageBox.Show(messageBoxText, "Use RSA?", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes
                                              ? EncryptionType.Rsa
                                              : EncryptionType.Rijndael;
 
                 // Since they want to use RSA but already have connection data encrypted with Rijndael, we'll have to capture that password so that we can
                 // decrypt it using Rijndael and then re-encrypt it using the RSA keypair
-                convertingToRsa = Options.Instance.EncryptionType == EncryptionType.Rsa && !Options.Instance.FirstLaunch;
+                convertingToRsa = GlobalSettings.Instance.EncryptionType == EncryptionType.Rsa && !GlobalSettings.Instance.FirstLaunch;
             }
 
             // If this is the first time that the user is running the application, pop up and information box informing them that they're going to enter a
             // password used to encrypt sensitive connection details
-            if (Options.Instance.FirstLaunch)
+            if (GlobalSettings.Instance.FirstLaunch)
             {
-                if (Options.Instance.EncryptionType == EncryptionType.Rijndael)
+                if (GlobalSettings.Instance.EncryptionType == EncryptionType.Rijndael)
                     MessageBox.Show(Resources.FirstRunPasswordText, Resources.FirstRunPasswordTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 #if !APPX
@@ -151,15 +151,15 @@ can be used.";
 #endif
             }
 
-            if (Options.Instance.EncryptionType != null)
-                await Options.Instance.Save();
+            if (GlobalSettings.Instance.EncryptionType != null)
+                await GlobalSettings.Instance.Save();
 
             bool encryptionTypeSet = false;
 
             while (true)
             {
                 // Get the user's encryption password via the password dialog
-                if (!encryptionTypeSet && (Options.Instance.EncryptionType == EncryptionType.Rijndael || convertingToRsa))
+                if (!encryptionTypeSet && (GlobalSettings.Instance.EncryptionType == EncryptionType.Rijndael || convertingToRsa))
                 {
                     PasswordWindow passwordWindow = new PasswordWindow();
                     passwordWindow.ShowDialog();
@@ -168,7 +168,7 @@ can be used.";
                 }
 
                 else
-                    ConnectionFactory.SetEncryptionType(Options.Instance.EncryptionType.Value);
+                    ConnectionFactory.SetEncryptionType(GlobalSettings.Instance.EncryptionType.Value);
 
                 // Create the bookmark and history windows which will try to use the password to decrypt sensitive connection details; if it's unable to, an
                 // exception will be thrown that wraps a CryptographicException instance
@@ -184,7 +184,7 @@ can be used.";
 
                 catch (Exception e)
                 {
-                    if ((Options.Instance.EncryptionType == EncryptionType.Rijndael || convertingToRsa) && !ContainsCryptographicException(e))
+                    if ((GlobalSettings.Instance.EncryptionType == EncryptionType.Rijndael || convertingToRsa) && !ContainsCryptographicException(e))
                         throw;
 
                     // Tell the user that their password is incorrect and, if they click OK, repeat the process
@@ -200,7 +200,7 @@ can be used.";
             // If we're converting over to RSA, we've already loaded and decrypted the sensitive data using 
             if (convertingToRsa)
             {
-                ConnectionFactory.SetEncryptionType(Options.Instance.EncryptionType.Value, null);
+                ConnectionFactory.SetEncryptionType(GlobalSettings.Instance.EncryptionType.Value, null);
 
                 await Bookmarks.Instance.Save();
                 await History.Instance.Save();
