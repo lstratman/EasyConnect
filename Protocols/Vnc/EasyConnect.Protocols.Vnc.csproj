@@ -56,12 +56,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="RemoteViewing, Version=0.9.1.0, Culture=neutral, PublicKeyToken=af024afb4750c24a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Quamotion.RemoteViewing.1.0.7\lib\net40\RemoteViewing.dll</HintPath>
-    </Reference>
-    <Reference Include="RemoteViewing.Windows.Forms, Version=0.9.1.0, Culture=neutral, PublicKeyToken=af024afb4750c24a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Quamotion.RemoteViewing.Windows.Forms.1.0.7\lib\net40\RemoteViewing.Windows.Forms.dll</HintPath>
-    </Reference>
     <Reference Include="SecurePasswordTextBox">
       <HintPath>..\..\lib\SecurePasswordTextBox.dll</HintPath>
     </Reference>
@@ -74,6 +68,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="VncSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=61974755c7bfea7c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\VncSharp.1.0.7.0\lib\VncSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources.Designer.cs">

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VncConnectionForm));
-            this._vncConnection = new RemoteViewing.Windows.Forms.VncControl();
+            this._vncConnection = new VncSharp.RemoteDesktop();
             this.SuspendLayout();
             // 
             // _vncConnection
@@ -55,7 +55,7 @@
 
         #endregion
 
-        private RemoteViewing.Windows.Forms.VncControl _vncConnection;
+        private VncSharp.RemoteDesktop _vncConnection;
 
     }
 }

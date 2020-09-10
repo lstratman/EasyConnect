@@ -5,8 +5,6 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Threading;
 using System.Windows.Forms;
-using RemoteViewing.Vnc;
-using RemoteViewing.Windows.Forms;
 
 namespace EasyConnect.Protocols.Vnc
 {
@@ -45,43 +43,25 @@ namespace EasyConnect.Protocols.Vnc
 
 		    ParentForm.Closing += VncConnectionForm_FormClosing;
 
-            VncClientConnectOptions connectionOptions = new VncClientConnectOptions()
-            {
-                PasswordRequiredCallback = GetPassword
-            };
-
             // Establish the actual connection
-            _vncConnection.Connected += OnConnected;
-			_vncConnection.ConnectionFailed += OnConnectionLost;
-		    _vncConnection.AllowInput = !Connection.ViewOnly;
-		    _vncConnection.AllowRemoteCursor = false;
-		    _vncConnection.AllowClipboardSharingFromServer = Connection.ShareClipboard;
-		    _vncConnection.AllowClipboardSharingToServer = Connection.ShareClipboard;
+            _vncConnection.ConnectComplete += OnConnected;
+			_vncConnection.ConnectionLost += OnConnectionLost;
+			_vncConnection.VncPort = Connection.Port;
+			_vncConnection.GetPassword = GetPassword;
+			_vncConnection.Width = ClientSize.Width;
+			_vncConnection.Height = ClientSize.Height;
+			//_vncConnection.AllowClipboardSharingFromServer = Connection.ShareClipboard;
+			//_vncConnection.AllowClipboardSharingToServer = Connection.ShareClipboard;
 
-            // Spin the connection process up on a different thread to avoid blocking the UI.
-            Thread connectionThread = new Thread(
-				() =>
-				{
-					try
-					{
-						_vncConnection.Client.Connect(Connection.Host, Connection.Port + Connection.Display, connectionOptions);
-					}
-
-					catch (Exception e)
-					{
-                        Invoke(new Action(() => OnConnectionLost(this, new ErrorEventArgs(e))));
-					}
-				});
-
-			connectionThread.Start();
+			_vncConnection.Connect(Connection.Host, Connection.Display, Connection.ViewOnly, true);
 		}
 
-		/// <summary>
-		/// Decrypts the password (if any) associated with the connection (<see cref="BaseConnection.InheritedPassword"/> and provides it to 
-		/// <see cref="_vncConnection"/> for use in the connection process.
-		/// </summary>
-		/// <returns>The decrypted contents, if any, of <see cref="BaseConnection.InheritedPassword"/>.</returns>
-		private char[] GetPassword(VncClient client)
+        /// <summary>
+        /// Decrypts the password (if any) associated with the connection (<see cref="BaseConnection.InheritedPassword"/> and provides it to 
+        /// <see cref="_vncConnection"/> for use in the connection process.
+        /// </summary>
+        /// <returns>The decrypted contents, if any, of <see cref="BaseConnection.InheritedPassword"/>.</returns>
+        private string GetPassword()
 		{
 			string password = null;
 			SecureString inheritedPassword = Connection.InheritedPassword;
@@ -89,14 +69,14 @@ namespace EasyConnect.Protocols.Vnc
 		    if (inheritedPassword != null && inheritedPassword.Length > 0)
 		        password = Marshal.PtrToStringAnsi(Marshal.SecureStringToGlobalAllocAnsi(inheritedPassword));
 
-			return password.ToCharArray();
+			return password;
 		}
 
 	    private void VncConnectionForm_FormClosing(object sender, CancelEventArgs e)
 	    {
-	        if (_vncConnection.Client.IsConnected)
+	        if (_vncConnection.IsConnected)
 	        {
-	            _vncConnection.Client.Close();
+				_vncConnection.Disconnect();
                 _vncConnection.Dispose();
 	        }
         }
@@ -104,9 +84,6 @@ namespace EasyConnect.Protocols.Vnc
 	    protected override void OnConnected(object sender, EventArgs e)
 	    {
 	        base.OnConnected(sender, e);
-
-            _vncConnection.Width = _vncConnection.Client.Framebuffer.Width;
-	        _vncConnection.Height = _vncConnection.Client.Framebuffer.Height;
 
             _vncConnection.Left = Math.Max(ClientSize.Width - _vncConnection.Width, 0) / 2;
 	        _vncConnection.Top = Math.Max(ClientSize.Height - _vncConnection.Height, 0) / 2;
