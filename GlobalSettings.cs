@@ -15,6 +15,7 @@ namespace EasyConnect
 	/// <see cref="ConnectionWindow"/> instances.
 	/// </summary>
 	[Serializable]
+	[XmlRoot(ElementName = "Options")]
 	public class GlobalSettings
 	{
         private static readonly string SettingsFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EasyConnect", "Options.xml");
