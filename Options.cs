@@ -11,7 +11,7 @@ using Windows.Storage;
 namespace EasyConnect
 {
 	/// <summary>
-	/// Global options for the application, currently just includes the flag indicating whether the toolbar should be automatically hidden in 
+	/// Global settings for the application, currently just includes the flag indicating whether the toolbar should be automatically hidden in 
 	/// <see cref="ConnectionWindow"/> instances.
 	/// </summary>
 	[Serializable]

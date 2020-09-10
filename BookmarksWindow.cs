@@ -104,7 +104,7 @@ namespace EasyConnect
 		/// finish editing the item's label; this is done when a new bookmark is created as we first ask the user to name the bookmark and, when that's
 		/// complete, allow the user to edit the options for the connection.
 		/// </summary>
-		protected bool _showOptionsAfterItemLabelEdit = false;
+		protected bool _showSettingsAfterItemLabelEdit = false;
 
 		/// <summary>
 		/// If the user is dragging to a location in <see cref="_bookmarksFoldersTreeView"/>, this is the target that they are dropping on.
@@ -717,15 +717,15 @@ namespace EasyConnect
 				                         {
 					                         Content = new SettingsWindow(ParentTabs)
 						                                   {
-							                                   OptionsForms = new List<Form>
+							                                   SettingsForms = new List<Form>
 								                                                  {
 									                                                  ConnectionFactory.CreateOptionsForm(_listViewConnections[selectedItem])
 								                                                  },
-							                                   Text = "Options for " + _listViewConnections[selectedItem].DisplayName
+							                                   Text = "Settings for " + _listViewConnections[selectedItem].DisplayName
 						                                   }
 				                         };
 
-			// When the options form is closed, update the second column in the list view with the updated host for the connection
+			// When the settings form is closed, update the second column in the list view with the updated host for the connection
 			optionsTab.Content.FormClosed += (o, args) => selectedItem.SubItems[1].Text = _listViewConnections[selectedItem].Host;
 
 			ParentTabs.Tabs.Add(optionsTab);
@@ -852,8 +852,8 @@ namespace EasyConnect
 			(_contextMenuItem as BookmarksFolder).Bookmarks.Add(connection);
 			_deferSort = false;
 
-			// Set the flag so that once the user is finished renaming the connection, we open the options for it
-			_showOptionsAfterItemLabelEdit = true;
+			// Set the flag so that once the user is finished renaming the connection, we open the settings for it
+			_showSettingsAfterItemLabelEdit = true;
 
 			ListViewItem newListItem = _listViewConnections.First(pair => pair.Value == connection).Key;
 			_bookmarksListView.SelectedIndices.Clear();
@@ -1002,7 +1002,7 @@ namespace EasyConnect
 
             await Bookmarks.Instance.Save();
 
-			if (_showOptionsAfterItemLabelEdit)
+			if (_showSettingsAfterItemLabelEdit)
 			{
 				// Open the options window for the new bookmark if its name was set for the first time
 				ListViewItem selectedItem = _bookmarksListView.SelectedItems[0];
@@ -1010,7 +1010,7 @@ namespace EasyConnect
 					                         {
 						                         Content = new SettingsWindow(ParentTabs)
 							                                   {
-								                                   OptionsForms = new List<Form>
+								                                   SettingsForms = new List<Form>
 									                                                  {
 										                                                  ConnectionFactory.CreateOptionsForm(_listViewConnections[selectedItem])
 									                                                  }
@@ -1024,7 +1024,7 @@ namespace EasyConnect
 				ParentTabs.ResizeTabContents(optionsTab);
 				ParentTabs.SelectedTab = optionsTab;
 
-				_showOptionsAfterItemLabelEdit = false;
+				_showSettingsAfterItemLabelEdit = false;
 			}
 
 			_bookmarksListView.BeginInvoke(new Action(_bookmarksListView.Sort));

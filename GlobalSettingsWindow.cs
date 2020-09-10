@@ -8,7 +8,7 @@ using EasyConnect.Protocols;
 namespace EasyConnect
 {
 	/// <summary>
-	/// Displays the global options for the application:  the default protocol and whether they want the toolbar to auto-hide.
+	/// Displays the global settings for the application:  the default protocol and whether they want the toolbar to auto-hide.
 	/// </summary>
 	public partial class GlobalSettingsWindow : Form
 	{

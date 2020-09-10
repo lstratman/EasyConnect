@@ -23,12 +23,12 @@ namespace EasyConnect
 		/// <summary>
 		/// Lookup that associates each left navigation label with the child form that it belongs to.
 		/// </summary>
-		protected Dictionary<Label, Form> _optionsFormLabels = new Dictionary<Label, Form>();
+		protected Dictionary<Label, Form> _settingsFormLabels = new Dictionary<Label, Form>();
 
 		/// <summary>
-		/// List of all of the child options forms; one for the global options and one for each connection protocol.
+		/// List of all of the child settings forms; one for the global options and one for each connection protocol.
 		/// </summary>
-		protected List<Form> _optionsForms = new List<Form>();
+		protected List<Form> _settingsForms = new List<Form>();
 
         protected HtmlPanel _urlPanel;
 
@@ -74,32 +74,32 @@ namespace EasyConnect
         }
 
         /// <summary>
-        /// List of all of the child options forms; one for the global options and one for each connection protocol.
+        /// List of all of the child settings forms; one for the global options and one for each connection protocol.
         /// </summary>
-        public List<Form> OptionsForms
+        public List<Form> SettingsForms
 		{
 			get
 			{
-				return _optionsForms;
+				return _settingsForms;
 			}
 
 			set
 			{
-				_optionsForms = value;
+				_settingsForms = value;
 			}
 		}
 
 		/// <summary>
-		/// Handler method that's called when the form loads initially.  Takes all of the entries in <see cref="OptionsForms"/> and creates left navigation
-		/// labels that, when clicked will display that option form.
+		/// Handler method that's called when the form loads initially.  Takes all of the entries in <see cref="SettingsForms"/> and creates left navigation
+		/// labels that, when clicked will display that settings form.
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
 		private void SettingsWindow_Load(object sender, EventArgs e)
 		{
-			if (OptionsForms.Count > 0)
+			if (SettingsForms.Count > 0)
 			{
-				foreach (Form form in OptionsForms)
+				foreach (Form form in SettingsForms)
 				{
 					Icon icon = Resources.Tools;
 
@@ -137,16 +137,16 @@ namespace EasyConnect
 					formLabelPanel.Controls.Add(formIcon);
 					formLabelPanel.Controls.Add(formLabel);
 
-					formLabelPanel.Click += (o, args) => ShowOptionsForm(formLabel);
-					formIcon.Click += (o, args) => ShowOptionsForm(formLabel);
-					formLabel.Click += (o, args) => ShowOptionsForm(formLabel);
+					formLabelPanel.Click += (o, args) => ShowSettingsForm(formLabel);
+					formIcon.Click += (o, args) => ShowSettingsForm(formLabel);
+					formLabel.Click += (o, args) => ShowSettingsForm(formLabel);
 
-					_optionsFormLabels[formLabel] = form;
+					_settingsFormLabels[formLabel] = form;
 					_sidebarFlowLayoutPanel.Controls.Add(formLabelPanel);
 				}
 
-				// Show the global options form
-				ShowOptionsForm((Label) _sidebarFlowLayoutPanel.Controls[0].Controls[1]);
+				// Show the global settings form
+				ShowSettingsForm((Label) _sidebarFlowLayoutPanel.Controls[0].Controls[1]);
 			}
 		}
 
@@ -154,26 +154,26 @@ namespace EasyConnect
 		/// Called when a left navigation label is clicked and opens the option form associated with that label.
 		/// </summary>
 		/// <param name="navigationLabel"></param>
-		private void ShowOptionsForm(Label navigationLabel)
+		private void ShowSettingsForm(Label navigationLabel)
 		{
 			if (navigationLabel.ForeColor == _focusedColor)
 				return;
 
 			// Get and show the corresponding option form
-			Form optionsForm = _optionsFormLabels[navigationLabel];
+			Form settingsForm = _settingsFormLabels[navigationLabel];
 
-			optionsForm.FormBorderStyle = FormBorderStyle.None;
-			optionsForm.TopLevel = false;
-			optionsForm.Dock = DockStyle.Fill;
+			settingsForm.FormBorderStyle = FormBorderStyle.None;
+			settingsForm.TopLevel = false;
+			settingsForm.Dock = DockStyle.Fill;
 
 			_containerPanel.Controls.Clear();
-			_containerPanel.Controls.Add(optionsForm);
-			_containerPanel.AutoScrollMinSize = optionsForm.Size;
+			_containerPanel.Controls.Add(settingsForm);
+			_containerPanel.AutoScrollMinSize = settingsForm.Size;
 
-			optionsForm.Show();
+			settingsForm.Show();
 
             // Set the background image for the label to the "focused" image
-            foreach (Label label in _optionsFormLabels.Keys)
+            foreach (Label label in _settingsFormLabels.Keys)
             {
                 label.ForeColor = _unFocusedColor;
                 label.Cursor = Cursors.Hand;
@@ -195,14 +195,14 @@ namespace EasyConnect
         }
 
         /// <summary>
-        /// Handler method that's called when the window starts to close.  Calls <see cref="Form.Close"/> on each item in <see cref="OptionsForms"/>, which
+        /// Handler method that's called when the window starts to close.  Calls <see cref="Form.Close"/> on each item in <see cref="SettingsForms"/>, which
         /// will cause each window to save its data.
         /// </summary>
         /// <param name="sender">Object from which this event originated.</param>
         /// <param name="e">Arguments associated with this event.</param>
         private void SettingsWindow_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			foreach (Form form in OptionsForms)
+			foreach (Form form in SettingsForms)
 				form.Close();
 		}
 

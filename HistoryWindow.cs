@@ -154,13 +154,13 @@ namespace EasyConnect
 
 		/// <summary>
 		/// Handler method that's called when the user clicks on the "Properties..." menu item in the context menu that appears when the user right-clicks on
-		/// a history entry; opens up the options for the connection in a new tab.
+		/// a history entry; opens up the settings for the connection in a new tab.
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Argument associated with this event.</param>
 		private void propertiesMenuItem_Click(object sender, EventArgs e)
 		{
-			// Get the options form for the connection type and open it in a new tab
+			// Get the settings form for the connection type and open it in a new tab
 			Form settingsWindow = ConnectionFactory.CreateOptionsForm(_connections[_historyListView.SelectedItems[0]].Connection);
 			TitleBarTab optionsTab = new TitleBarTab(_applicationForm)
 				                         {

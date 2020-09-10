@@ -421,20 +421,20 @@ namespace EasyConnect
 			GlobalSettingsWindow globalSettingsWindow = new GlobalSettingsWindow();
 
 			globalSettingsWindow.Closed += globalSettingsWindow_Closed;
-			settingsWindow.OptionsForms.Add(globalSettingsWindow);
+			settingsWindow.SettingsForms.Add(globalSettingsWindow);
 
 			foreach (IProtocol protocol in ConnectionFactory.GetProtocols())
 			{
-				Form optionsForm = await protocol.GetOptionsFormInDefaultsMode();
+				Form settingsForm = await protocol.GetOptionsFormInDefaultsMode();
 
-			    optionsForm.Closed += optionsForm_Closed;
-				settingsWindow.OptionsForms.Add(optionsForm);
+			    settingsForm.Closed += settingsForm_Closed;
+				settingsWindow.SettingsForms.Add(settingsForm);
 			}
 
 			ShowInEmptyTab(settingsWindow);
 		}
 
-	    private async void optionsForm_Closed(object sender, EventArgs e)
+	    private async void settingsForm_Closed(object sender, EventArgs e)
 	    {
 	        await ConnectionFactory.SetDefaults(((IOptionsForm)sender).Connection);
         }
