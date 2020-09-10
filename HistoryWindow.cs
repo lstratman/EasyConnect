@@ -318,7 +318,7 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private async void _optionsMenuItem_Click(object sender, EventArgs e)
+		private async void _settingsMenuItem_Click(object sender, EventArgs e)
         {
             await ParentTabs.OpenOptions();
         }
