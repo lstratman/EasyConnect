@@ -13,7 +13,7 @@ namespace EasyConnect
 	/// <summary>
 	/// UI that allows the user to edit the global options associated with the application and the defaults for each connection protocol.
 	/// </summary>
-	public partial class OptionsWindow : Form
+	public partial class SettingsWindow : Form
 	{
 		/// <summary>
 		/// Main application form instance associated with this window.
@@ -39,7 +39,7 @@ namespace EasyConnect
 		/// Constructor; initializes <see cref="_applicationForm"/>.
 		/// </summary>
 		/// <param name="applicationForm">Main application form instance associated with this window.</param>
-		public OptionsWindow(MainForm applicationForm)
+		public SettingsWindow(MainForm applicationForm)
 		{
 			_applicationForm = applicationForm;
 			InitializeComponent();
@@ -55,12 +55,13 @@ namespace EasyConnect
                 Left = 0,
                 Top = 0,
                 Font = urlTextBox.Font,
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
-            };
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
+				BackColor = Color.FromArgb(241, 243, 244)
+			};
 
             _urlPanelContainer.Controls.Add(_urlPanel);
             _urlPanel.Text = String.Format(
-                    @"<span style=""background-color: #FFFFFF; font-family: {2}; font-size: {1}pt; height: {0}px; color: #9999BF"">easyconnect://<font color=""black"">options</font></span>",
+					@"<span style=""background-color: #F1F3F4; font-family: {2}; font-size: {1}pt; height: {0}px; color: #707172"">easyconnect://<font color=""black"">settings</font></span>",
                     _urlPanel.Height, urlTextBox.Font.SizeInPoints, urlTextBox.Font.FontFamily.GetName(0));
 
 #if APPX
@@ -94,7 +95,7 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void OptionsWindow_Load(object sender, EventArgs e)
+		private void SettingsWindow_Load(object sender, EventArgs e)
 		{
 			if (OptionsForms.Count > 0)
 			{
@@ -199,7 +200,7 @@ namespace EasyConnect
         /// </summary>
         /// <param name="sender">Object from which this event originated.</param>
         /// <param name="e">Arguments associated with this event.</param>
-        private void OptionsWindow_FormClosing(object sender, FormClosingEventArgs e)
+        private void SettingsWindow_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			foreach (Form form in OptionsForms)
 				form.Close();
@@ -314,5 +315,10 @@ namespace EasyConnect
                 _urlPanel.AutoScroll = false;
             }
         }
-    }
+
+		private void _toolsButton_MouseDown(object sender, MouseEventArgs e)
+		{
+			_toolsButton.BackgroundImage = Resources.ButtonPressedBackground;
+		}
+	}
 }

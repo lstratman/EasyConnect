@@ -401,11 +401,11 @@ namespace EasyConnect
 		}
 
 		/// <summary>
-		/// Opens an <see cref="OptionsWindow"/> instance when the user clicks on the "Options" menu item from a <see cref="ConnectionWindow"/>.
+		/// Opens an <see cref="SettingsWindow"/> instance when the user clicks on the "Options" menu item from a <see cref="ConnectionWindow"/>.
 		/// </summary>
 		public async Task OpenOptions()
 		{
-			TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content is OptionsWindow);
+			TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content is SettingsWindow);
 
 			// Focus on the options tab if a window is already open
 			if (tab != null)
@@ -417,21 +417,21 @@ namespace EasyConnect
 			_previousEncryptionType = Options.Instance.EncryptionType ?? EncryptionType.Rijndael;
 
 			// Create the options window and then add entries for each protocol type to the window
-			OptionsWindow optionsWindow = new OptionsWindow(this);
-			GlobalOptionsWindow globalOptionsWindow = new GlobalOptionsWindow();
+			SettingsWindow settingsWindow = new SettingsWindow(this);
+			GlobalSettingsWindow globalSettingsWindow = new GlobalSettingsWindow();
 
-			globalOptionsWindow.Closed += globalOptionsWindow_Closed;
-			optionsWindow.OptionsForms.Add(globalOptionsWindow);
+			globalSettingsWindow.Closed += globalSettingsWindow_Closed;
+			settingsWindow.OptionsForms.Add(globalSettingsWindow);
 
 			foreach (IProtocol protocol in ConnectionFactory.GetProtocols())
 			{
 				Form optionsForm = await protocol.GetOptionsFormInDefaultsMode();
 
 			    optionsForm.Closed += optionsForm_Closed;
-				optionsWindow.OptionsForms.Add(optionsForm);
+				settingsWindow.OptionsForms.Add(optionsForm);
 			}
 
-			ShowInEmptyTab(optionsWindow);
+			ShowInEmptyTab(settingsWindow);
 		}
 
 	    private async void optionsForm_Closed(object sender, EventArgs e)
@@ -444,11 +444,11 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private async void globalOptionsWindow_Closed(object sender, EventArgs e)
+		private async void globalSettingsWindow_Closed(object sender, EventArgs e)
 		{
 			if (_previousEncryptionType != Options.Instance.EncryptionType)
 				// ReSharper disable PossibleInvalidOperationException
-				await SetEncryptionType(Options.Instance.EncryptionType.Value, (sender as GlobalOptionsWindow).EncryptionPassword);
+				await SetEncryptionType(Options.Instance.EncryptionType.Value, (sender as GlobalSettingsWindow).EncryptionPassword);
 			// ReSharper restore PossibleInvalidOperationException
 		}
 

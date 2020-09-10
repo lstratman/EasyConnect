@@ -188,11 +188,11 @@
     </Compile>
     <Compile Include="EasyConnectColorTable.cs" />
     <Compile Include="EasyConnectToolStripRender.cs" />
-    <Compile Include="GlobalOptionsWindow.cs">
+    <Compile Include="GlobalSettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GlobalOptionsWindow.Designer.cs">
-      <DependentUpon>GlobalOptionsWindow.cs</DependentUpon>
+    <Compile Include="GlobalSettingsWindow.Designer.cs">
+      <DependentUpon>GlobalSettingsWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="HistoricalConnection.cs" />
     <Compile Include="History.cs" />
@@ -211,11 +211,11 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Options.cs" />
-    <Compile Include="OptionsWindow.cs">
+    <Compile Include="SettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OptionsWindow.Designer.cs">
-      <DependentUpon>OptionsWindow.cs</DependentUpon>
+    <Compile Include="SettingsWindow.Designer.cs">
+      <DependentUpon>SettingsWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="PasswordWindow.cs">
       <SubType>Form</SubType>
@@ -235,8 +235,8 @@
     <EmbeddedResource Include="ConnectionWindow.resx">
       <DependentUpon>ConnectionWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GlobalOptionsWindow.resx">
-      <DependentUpon>GlobalOptionsWindow.cs</DependentUpon>
+    <EmbeddedResource Include="GlobalSettingsWindow.resx">
+      <DependentUpon>GlobalSettingsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HistoryWindow.resx">
       <DependentUpon>HistoryWindow.cs</DependentUpon>
@@ -244,8 +244,8 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="OptionsWindow.resx">
-      <DependentUpon>OptionsWindow.cs</DependentUpon>
+    <EmbeddedResource Include="SettingsWindow.resx">
+      <DependentUpon>SettingsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PasswordWindow.resx">
       <DependentUpon>PasswordWindow.cs</DependentUpon>

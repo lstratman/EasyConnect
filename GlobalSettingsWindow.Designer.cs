@@ -1,6 +1,6 @@
 ﻿namespace EasyConnect
 {
-    partial class GlobalOptionsWindow
+    partial class GlobalSettingsWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@
         {
             this._defaultProtocolLabel = new System.Windows.Forms.Label();
             this._defaultProtocolDropdown = new System.Windows.Forms.ComboBox();
-            this._card = new Common.MaterialCard();
+            this._card = new EasyConnect.Common.MaterialCard();
             this._divider1 = new System.Windows.Forms.Panel();
             this._divider2 = new System.Windows.Forms.Panel();
             this._divider3 = new System.Windows.Forms.Panel();
@@ -165,7 +165,7 @@
             this._enableAeroPeekCheckbox.TabIndex = 85;
             this._enableAeroPeekCheckbox.UseVisualStyleBackColor = true;
             // 
-            // GlobalOptionsWindow
+            // GlobalSettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -184,11 +184,11 @@
             this.Controls.Add(this._defaultProtocolLabel);
             this.Controls.Add(this._defaultProtocolDropdown);
             this.Controls.Add(this._card);
-            this.Name = "GlobalOptionsWindow";
-            this.Text = "Global Options";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GlobalOptionsWindow_FormClosing);
-            this.Load += new System.EventHandler(this.GlobalOptionsWindow_Load);
-            this.Shown += new System.EventHandler(this.GlobalOptionsWindow_Shown);
+            this.Name = "GlobalSettingsWindow";
+            this.Text = "Global Settings";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GlobalSettingsWindow_FormClosing);
+            this.Load += new System.EventHandler(this.GlobalSettingsWindow_Load);
+            this.Shown += new System.EventHandler(this.GlobalSettingsWindow_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

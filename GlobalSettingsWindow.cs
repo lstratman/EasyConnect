@@ -10,7 +10,7 @@ namespace EasyConnect
 	/// <summary>
 	/// Displays the global options for the application:  the default protocol and whether they want the toolbar to auto-hide.
 	/// </summary>
-	public partial class GlobalOptionsWindow : Form
+	public partial class GlobalSettingsWindow : Form
 	{
 		/// <summary>
 		/// If the user selected an encryption type of <see cref="EncryptionType.Rijndael"/>, this is the encryption key to use with that method.
@@ -25,7 +25,7 @@ namespace EasyConnect
 		/// <summary>
 		/// Default constructor; populates the protocol dropdown.
 		/// </summary>
-		public GlobalOptionsWindow()
+		public GlobalSettingsWindow()
 		{
 			InitializeComponent();
 
@@ -49,7 +49,7 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private async void GlobalOptionsWindow_FormClosing(object sender, FormClosingEventArgs e)
+		private async void GlobalSettingsWindow_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			if (_parentTabs == null)
 				return;
@@ -71,7 +71,7 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private void GlobalOptionsWindow_Shown(object sender, EventArgs e)
+		private void GlobalSettingsWindow_Shown(object sender, EventArgs e)
 		{
 			_parentTabs = Parent.TopLevelControl as MainForm;
 			_autoHideCheckbox.Checked = Options.Instance.AutoHideToolbar;
@@ -143,7 +143,7 @@ namespace EasyConnect
 			}
 		}
 
-        private async void GlobalOptionsWindow_Load(object sender, EventArgs e)
+        private async void GlobalSettingsWindow_Load(object sender, EventArgs e)
         {
             _defaultProtocolDropdown.SelectedItem = await ConnectionFactory.GetDefaultProtocol();
         }

@@ -161,10 +161,10 @@ namespace EasyConnect
 		private void propertiesMenuItem_Click(object sender, EventArgs e)
 		{
 			// Get the options form for the connection type and open it in a new tab
-			Form optionsWindow = ConnectionFactory.CreateOptionsForm(_connections[_historyListView.SelectedItems[0]].Connection);
+			Form settingsWindow = ConnectionFactory.CreateOptionsForm(_connections[_historyListView.SelectedItems[0]].Connection);
 			TitleBarTab optionsTab = new TitleBarTab(_applicationForm)
 				                         {
-					                         Content = optionsWindow
+					                         Content = settingsWindow
 				                         };
 
 			_applicationForm.Tabs.Add(optionsTab);

@@ -715,7 +715,7 @@ namespace EasyConnect
 			ListViewItem selectedItem = _bookmarksListView.SelectedItems[0];
 			TitleBarTab optionsTab = new TitleBarTab(ParentTabs)
 				                         {
-					                         Content = new OptionsWindow(ParentTabs)
+					                         Content = new SettingsWindow(ParentTabs)
 						                                   {
 							                                   OptionsForms = new List<Form>
 								                                                  {
@@ -1008,7 +1008,7 @@ namespace EasyConnect
 				ListViewItem selectedItem = _bookmarksListView.SelectedItems[0];
 				TitleBarTab optionsTab = new TitleBarTab(ParentTabs)
 					                         {
-						                         Content = new OptionsWindow(ParentTabs)
+						                         Content = new SettingsWindow(ParentTabs)
 							                                   {
 								                                   OptionsForms = new List<Form>
 									                                                  {
