@@ -231,10 +231,10 @@ namespace EasyConnect
             this._bookmarksListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this._bookmarksListView.HideSelection = false;
             this._bookmarksListView.LabelEdit = true;
-            this._bookmarksListView.Location = new System.Drawing.Point(36, 35);
+            this._bookmarksListView.Location = new System.Drawing.Point(34, 28);
             this._bookmarksListView.Name = "_bookmarksListView";
             this._bookmarksListView.OwnerDraw = true;
-            this._bookmarksListView.Size = new System.Drawing.Size(641, 307);
+            this._bookmarksListView.Size = new System.Drawing.Size(654, 323);
             this._bookmarksListView.SmallImageList = this._listViewImageList;
             this._bookmarksListView.TabIndex = 0;
             this._bookmarksListView.UseCompatibleStateImageBehavior = false;
@@ -269,6 +269,7 @@ namespace EasyConnect
             // 
             // _folderContextMenu
             // 
+            this._folderContextMenu.BackColor = System.Drawing.Color.White;
             this._folderContextMenu.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._folderContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._folderOpenAllMenuItem,
@@ -429,10 +430,10 @@ namespace EasyConnect
             this._bookmarksCard.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._bookmarksCard.BackColor = System.Drawing.Color.Transparent;
-            this._bookmarksCard.Location = new System.Drawing.Point(24, 24);
+            this._bookmarksCard.BackColor = System.Drawing.Color.White;
+            this._bookmarksCard.Location = new System.Drawing.Point(24, 18);
             this._bookmarksCard.Name = "_bookmarksCard";
-            this._bookmarksCard.Size = new System.Drawing.Size(665, 330);
+            this._bookmarksCard.Size = new System.Drawing.Size(674, 343);
             this._bookmarksCard.TabIndex = 10;
             // 
             // panelBackground
@@ -448,6 +449,7 @@ namespace EasyConnect
             // 
             // _bookmarkContextMenu
             // 
+            this._bookmarkContextMenu.BackColor = System.Drawing.Color.White;
             this._bookmarkContextMenu.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._bookmarkContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._openBookmarkNewTabMenuItem,

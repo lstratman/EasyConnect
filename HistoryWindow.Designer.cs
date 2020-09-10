@@ -38,13 +38,6 @@
             this._timeHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this._nameHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this._hostHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.toolbarBackground = new System.Windows.Forms.Panel();
-            this._urlPanelContainer = new System.Windows.Forms.Panel();
-            this._toolsButton = new System.Windows.Forms.PictureBox();
-            this.urlTextBox = new System.Windows.Forms.TextBox();
-            this.urlBorder = new System.Windows.Forms.Panel();
-            this.urlBackground = new System.Windows.Forms.Panel();
-            this._iconPictureBox = new System.Windows.Forms.PictureBox();
             this._toolsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._newTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._newWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,15 +52,24 @@
             this._exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.headerPanel = new System.Windows.Forms.Panel();
             this.headerText = new System.Windows.Forms.Label();
-            this.materialCard1 = new Common.MaterialCard();
+            this.materialCard1 = new EasyConnect.Common.MaterialCard();
+            this.toolbarBackground = new System.Windows.Forms.Panel();
+            this._urlPanelContainer = new System.Windows.Forms.Panel();
+            this.urlTextBox = new System.Windows.Forms.TextBox();
+            this.urlBackground = new System.Windows.Forms.Panel();
+            this._iconPictureBox = new System.Windows.Forms.PictureBox();
+            this.urlBackgroundRight = new System.Windows.Forms.PictureBox();
+            this.urlBackgroundLeft = new System.Windows.Forms.PictureBox();
+            this._toolsButton = new System.Windows.Forms.PictureBox();
             this.historyContextMenu.SuspendLayout();
-            this.toolbarBackground.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._toolsButton)).BeginInit();
-            this.urlBorder.SuspendLayout();
-            this.urlBackground.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._iconPictureBox)).BeginInit();
             this._toolsMenu.SuspendLayout();
             this.headerPanel.SuspendLayout();
+            this.toolbarBackground.SuspendLayout();
+            this.urlBackground.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._iconPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.urlBackgroundRight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.urlBackgroundLeft)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._toolsButton)).BeginInit();
             this.SuspendLayout();
             // 
             // historyImageList
@@ -78,23 +80,25 @@
             // 
             // historyContextMenu
             // 
+            this.historyContextMenu.BackColor = System.Drawing.Color.White;
             this.historyContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.propertiesMenuItem,
             this.connectMenuItem});
             this.historyContextMenu.Name = "historyContextMenu";
-            this.historyContextMenu.Size = new System.Drawing.Size(137, 48);
+            this.historyContextMenu.ShowImageMargin = false;
+            this.historyContextMenu.Size = new System.Drawing.Size(156, 70);
             // 
             // propertiesMenuItem
             // 
             this.propertiesMenuItem.Name = "propertiesMenuItem";
-            this.propertiesMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.propertiesMenuItem.Size = new System.Drawing.Size(180, 22);
             this.propertiesMenuItem.Text = "Properties...";
             this.propertiesMenuItem.Click += new System.EventHandler(this.propertiesMenuItem_Click);
             // 
             // connectMenuItem
             // 
             this.connectMenuItem.Name = "connectMenuItem";
-            this.connectMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.connectMenuItem.Size = new System.Drawing.Size(180, 22);
             this.connectMenuItem.Text = "Connect";
             this.connectMenuItem.Click += new System.EventHandler(this.connectMenuItem_Click);
             // 
@@ -112,9 +116,9 @@
             this._historyListView.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._historyListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this._historyListView.HideSelection = false;
-            this._historyListView.Location = new System.Drawing.Point(28, 120);
+            this._historyListView.Location = new System.Drawing.Point(28, 124);
             this._historyListView.Name = "_historyListView";
-            this._historyListView.Size = new System.Drawing.Size(706, 334);
+            this._historyListView.Size = new System.Drawing.Size(706, 330);
             this._historyListView.SmallImageList = this.historyImageList;
             this._historyListView.TabIndex = 1;
             this._historyListView.UseCompatibleStateImageBehavior = false;
@@ -134,95 +138,9 @@
             // 
             this._hostHeader.Text = "Host";
             // 
-            // toolbarBackground
-            // 
-            this.toolbarBackground.BackgroundImage = global::EasyConnect.Properties.Resources.ToolbarBackground;
-            this.toolbarBackground.Controls.Add(this._urlPanelContainer);
-            this.toolbarBackground.Controls.Add(this._toolsButton);
-            this.toolbarBackground.Controls.Add(this.urlTextBox);
-            this.toolbarBackground.Controls.Add(this.urlBorder);
-            this.toolbarBackground.Dock = System.Windows.Forms.DockStyle.Top;
-            this.toolbarBackground.Location = new System.Drawing.Point(0, 0);
-            this.toolbarBackground.Name = "toolbarBackground";
-            this.toolbarBackground.Size = new System.Drawing.Size(760, 36);
-            this.toolbarBackground.TabIndex = 7;
-            // 
-            // _urlPanelContainer
-            // 
-            this._urlPanelContainer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this._urlPanelContainer.BackColor = System.Drawing.Color.White;
-            this._urlPanelContainer.Location = new System.Drawing.Point(34, 8);
-            this._urlPanelContainer.Name = "_urlPanelContainer";
-            this._urlPanelContainer.Size = new System.Drawing.Size(682, 19);
-            this._urlPanelContainer.TabIndex = 0;
-            // 
-            // _toolsButton
-            // 
-            this._toolsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._toolsButton.BackColor = System.Drawing.Color.Transparent;
-            this._toolsButton.Image = global::EasyConnect.Properties.Resources.ToolsActive;
-            this._toolsButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this._toolsButton.Location = new System.Drawing.Point(727, 5);
-            this._toolsButton.Margin = new System.Windows.Forms.Padding(4, 4, 3, 3);
-            this._toolsButton.Name = "_toolsButton";
-            this._toolsButton.Size = new System.Drawing.Size(27, 27);
-            this._toolsButton.TabIndex = 5;
-            this._toolsButton.TabStop = false;
-            this._toolsButton.Click += new System.EventHandler(this._toolsButton_Click);
-            this._toolsButton.MouseEnter += new System.EventHandler(this._toolsButton_MouseEnter);
-            this._toolsButton.MouseLeave += new System.EventHandler(this._toolsButton_MouseLeave);
-            // 
-            // urlTextBox
-            // 
-            this.urlTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.urlTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.urlTextBox.Font = new System.Drawing.Font("Tahoma", 11.25F);
-            this.urlTextBox.Location = new System.Drawing.Point(34, 8);
-            this.urlTextBox.Margin = new System.Windows.Forms.Padding(9);
-            this.urlTextBox.Name = "urlTextBox";
-            this.urlTextBox.Size = new System.Drawing.Size(647, 19);
-            this.urlTextBox.TabIndex = 0;
-            this.urlTextBox.WordWrap = false;
-            // 
-            // urlBorder
-            // 
-            this.urlBorder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.urlBorder.BackColor = System.Drawing.Color.Silver;
-            this.urlBorder.Controls.Add(this.urlBackground);
-            this.urlBorder.ForeColor = System.Drawing.Color.Silver;
-            this.urlBorder.Location = new System.Drawing.Point(5, 5);
-            this.urlBorder.Name = "urlBorder";
-            this.urlBorder.Size = new System.Drawing.Size(715, 26);
-            this.urlBorder.TabIndex = 1;
-            // 
-            // urlBackground
-            // 
-            this.urlBackground.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.urlBackground.BackColor = System.Drawing.Color.White;
-            this.urlBackground.Controls.Add(this._iconPictureBox);
-            this.urlBackground.ForeColor = System.Drawing.Color.Silver;
-            this.urlBackground.Location = new System.Drawing.Point(1, 1);
-            this.urlBackground.Name = "urlBackground";
-            this.urlBackground.Size = new System.Drawing.Size(713, 24);
-            this.urlBackground.TabIndex = 2;
-            this.urlBackground.Resize += new System.EventHandler(this.urlBackground_Resize);
-            // 
-            // _iconPictureBox
-            // 
-            this._iconPictureBox.InitialImage = null;
-            this._iconPictureBox.Location = new System.Drawing.Point(4, 4);
-            this._iconPictureBox.Name = "_iconPictureBox";
-            this._iconPictureBox.Size = new System.Drawing.Size(16, 16);
-            this._iconPictureBox.TabIndex = 0;
-            this._iconPictureBox.TabStop = false;
-            // 
             // _toolsMenu
             // 
-            this._toolsMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this._toolsMenu.BackColor = System.Drawing.Color.White;
             this._toolsMenu.DropShadowEnabled = false;
             this._toolsMenu.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._toolsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -238,7 +156,6 @@
             this._aboutMenuItem,
             this._exitMenuItem});
             this._toolsMenu.Name = "_toolsMenu";
-            this._toolsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this._toolsMenu.ShowImageMargin = false;
             this._toolsMenu.Size = new System.Drawing.Size(173, 182);
             this._toolsMenu.VisibleChanged += new System.EventHandler(this._toolsMenu_VisibleChanged);
@@ -322,7 +239,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(103)))), ((int)(((byte)(214)))));
             this.headerPanel.Controls.Add(this.headerText);
-            this.headerPanel.Location = new System.Drawing.Point(0, 36);
+            this.headerPanel.Location = new System.Drawing.Point(0, 40);
             this.headerPanel.Name = "headerPanel";
             this.headerPanel.Size = new System.Drawing.Size(760, 56);
             this.headerPanel.TabIndex = 8;
@@ -345,10 +262,108 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.materialCard1.BackColor = System.Drawing.Color.White;
-            this.materialCard1.Location = new System.Drawing.Point(18, 110);
+            this.materialCard1.Location = new System.Drawing.Point(18, 114);
             this.materialCard1.Name = "materialCard1";
-            this.materialCard1.Size = new System.Drawing.Size(726, 354);
+            this.materialCard1.Size = new System.Drawing.Size(726, 350);
             this.materialCard1.TabIndex = 9;
+            // 
+            // toolbarBackground
+            // 
+            this.toolbarBackground.BackColor = System.Drawing.Color.White;
+            this.toolbarBackground.Controls.Add(this._urlPanelContainer);
+            this.toolbarBackground.Controls.Add(this.urlTextBox);
+            this.toolbarBackground.Controls.Add(this.urlBackground);
+            this.toolbarBackground.Controls.Add(this._toolsButton);
+            this.toolbarBackground.Dock = System.Windows.Forms.DockStyle.Top;
+            this.toolbarBackground.Location = new System.Drawing.Point(0, 0);
+            this.toolbarBackground.Name = "toolbarBackground";
+            this.toolbarBackground.Size = new System.Drawing.Size(760, 40);
+            this.toolbarBackground.TabIndex = 10;
+            // 
+            // _urlPanelContainer
+            // 
+            this._urlPanelContainer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._urlPanelContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(244)))));
+            this._urlPanelContainer.Location = new System.Drawing.Point(41, 9);
+            this._urlPanelContainer.Name = "_urlPanelContainer";
+            this._urlPanelContainer.Size = new System.Drawing.Size(656, 20);
+            this._urlPanelContainer.TabIndex = 0;
+            // 
+            // urlTextBox
+            // 
+            this.urlTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.urlTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(244)))));
+            this.urlTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.urlTextBox.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.urlTextBox.Location = new System.Drawing.Point(41, 10);
+            this.urlTextBox.Margin = new System.Windows.Forms.Padding(9);
+            this.urlTextBox.Name = "urlTextBox";
+            this.urlTextBox.Size = new System.Drawing.Size(657, 20);
+            this.urlTextBox.TabIndex = 0;
+            this.urlTextBox.WordWrap = false;
+            // 
+            // urlBackground
+            // 
+            this.urlBackground.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.urlBackground.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(244)))));
+            this.urlBackground.Controls.Add(this._iconPictureBox);
+            this.urlBackground.Controls.Add(this.urlBackgroundRight);
+            this.urlBackground.Controls.Add(this.urlBackgroundLeft);
+            this.urlBackground.ForeColor = System.Drawing.Color.Silver;
+            this.urlBackground.Location = new System.Drawing.Point(5, 6);
+            this.urlBackground.Name = "urlBackground";
+            this.urlBackground.Size = new System.Drawing.Size(712, 28);
+            this.urlBackground.TabIndex = 2;
+            this.urlBackground.Resize += new System.EventHandler(this.urlBackground_Resize);
+            // 
+            // _iconPictureBox
+            // 
+            this._iconPictureBox.InitialImage = null;
+            this._iconPictureBox.Location = new System.Drawing.Point(11, 6);
+            this._iconPictureBox.Name = "_iconPictureBox";
+            this._iconPictureBox.Size = new System.Drawing.Size(16, 16);
+            this._iconPictureBox.TabIndex = 0;
+            this._iconPictureBox.TabStop = false;
+            // 
+            // urlBackgroundRight
+            // 
+            this.urlBackgroundRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.urlBackgroundRight.Image = global::EasyConnect.Properties.Resources.UrlBoxRight;
+            this.urlBackgroundRight.Location = new System.Drawing.Point(700, 0);
+            this.urlBackgroundRight.Name = "urlBackgroundRight";
+            this.urlBackgroundRight.Size = new System.Drawing.Size(12, 28);
+            this.urlBackgroundRight.TabIndex = 2;
+            this.urlBackgroundRight.TabStop = false;
+            // 
+            // urlBackgroundLeft
+            // 
+            this.urlBackgroundLeft.Image = global::EasyConnect.Properties.Resources.UrlBoxLeft;
+            this.urlBackgroundLeft.Location = new System.Drawing.Point(0, 0);
+            this.urlBackgroundLeft.Name = "urlBackgroundLeft";
+            this.urlBackgroundLeft.Size = new System.Drawing.Size(12, 28);
+            this.urlBackgroundLeft.TabIndex = 1;
+            this.urlBackgroundLeft.TabStop = false;
+            // 
+            // _toolsButton
+            // 
+            this._toolsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._toolsButton.BackColor = System.Drawing.Color.Transparent;
+            this._toolsButton.Image = global::EasyConnect.Properties.Resources.ToolsActive;
+            this._toolsButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this._toolsButton.Location = new System.Drawing.Point(726, 6);
+            this._toolsButton.Margin = new System.Windows.Forms.Padding(4, 4, 3, 3);
+            this._toolsButton.Name = "_toolsButton";
+            this._toolsButton.Size = new System.Drawing.Size(28, 28);
+            this._toolsButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this._toolsButton.TabIndex = 5;
+            this._toolsButton.TabStop = false;
+            this._toolsButton.Click += new System.EventHandler(this._toolsButton_Click);
+            this._toolsButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this._toolsButton_MouseDown);
+            this._toolsButton.MouseEnter += new System.EventHandler(this._toolsButton_MouseEnter);
+            this._toolsButton.MouseLeave += new System.EventHandler(this._toolsButton_MouseLeave);
             // 
             // HistoryWindow
             // 
@@ -356,25 +371,26 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.ClientSize = new System.Drawing.Size(760, 480);
+            this.Controls.Add(this.toolbarBackground);
             this.Controls.Add(this._historyListView);
             this.Controls.Add(this.materialCard1);
             this.Controls.Add(this.headerPanel);
-            this.Controls.Add(this.toolbarBackground);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "HistoryWindow";
             this.Text = "History";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HistoryWindow_FormClosing);
             this.historyContextMenu.ResumeLayout(false);
-            this.toolbarBackground.ResumeLayout(false);
-            this.toolbarBackground.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._toolsButton)).EndInit();
-            this.urlBorder.ResumeLayout(false);
-            this.urlBackground.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this._iconPictureBox)).EndInit();
             this._toolsMenu.ResumeLayout(false);
             this.headerPanel.ResumeLayout(false);
             this.headerPanel.PerformLayout();
+            this.toolbarBackground.ResumeLayout(false);
+            this.toolbarBackground.PerformLayout();
+            this.urlBackground.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this._iconPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.urlBackgroundRight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.urlBackgroundLeft)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._toolsButton)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -389,13 +405,6 @@
         private System.Windows.Forms.ColumnHeader _timeHeader;
         private System.Windows.Forms.ColumnHeader _nameHeader;
         private System.Windows.Forms.ColumnHeader _hostHeader;
-        private System.Windows.Forms.Panel toolbarBackground;
-        private System.Windows.Forms.Panel _urlPanelContainer;
-        private System.Windows.Forms.PictureBox _toolsButton;
-        private System.Windows.Forms.TextBox urlTextBox;
-        private System.Windows.Forms.Panel urlBorder;
-        private System.Windows.Forms.Panel urlBackground;
-        private System.Windows.Forms.PictureBox _iconPictureBox;
         private System.Windows.Forms.ContextMenuStrip _toolsMenu;
         private System.Windows.Forms.ToolStripMenuItem _newTabMenuItem;
         private System.Windows.Forms.ToolStripMenuItem _newWindowMenuItem;
@@ -411,5 +420,13 @@
         private System.Windows.Forms.Panel headerPanel;
         private System.Windows.Forms.Label headerText;
         private Common.MaterialCard materialCard1;
+        private System.Windows.Forms.Panel toolbarBackground;
+        private System.Windows.Forms.Panel _urlPanelContainer;
+        private System.Windows.Forms.TextBox urlTextBox;
+        private System.Windows.Forms.Panel urlBackground;
+        private System.Windows.Forms.PictureBox _iconPictureBox;
+        private System.Windows.Forms.PictureBox urlBackgroundRight;
+        private System.Windows.Forms.PictureBox urlBackgroundLeft;
+        private System.Windows.Forms.PictureBox _toolsButton;
     }
 }

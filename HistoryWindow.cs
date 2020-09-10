@@ -75,12 +75,13 @@ namespace EasyConnect
                 Left = 0,
                 Top = 0,
                 Font = urlTextBox.Font,
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
+                BackColor = Color.FromArgb(241, 243, 244)
             };
 
             _urlPanelContainer.Controls.Add(_urlPanel);
             _urlPanel.Text = String.Format(
-                    @"<span style=""background-color: #FFFFFF; font-family: {2}; font-size: {1}pt; height: {0}px; color: #9999BF"">easyconnect://<font color=""black"">history</font></span>",
+                    @"<span style=""background-color: #F1F3F4; font-family: {2}; font-size: {1}pt; height: {0}px; color: #707172"">easyconnect://<font color=""black"">history</font></span>",
                     _urlPanel.Height, urlTextBox.Font.SizeInPoints, urlTextBox.Font.FontFamily.GetName(0));
 
 #if APPX
@@ -373,6 +374,11 @@ namespace EasyConnect
         private void HistoryWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             History.Instance.Connections.CollectionModified -= Connections_CollectionModified;
+        }
+
+        private void _toolsButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            _toolsButton.BackgroundImage = Resources.ButtonPressedBackground;
         }
     }
 }
