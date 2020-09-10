@@ -325,5 +325,25 @@ namespace EasyConnect.Properties {
                 return ResourceManager.GetString("UnableToEstablishConnection", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap UrlBoxLeft {
+            get {
+                object obj = ResourceManager.GetObject("UrlBoxLeft", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap UrlBoxRight {
+            get {
+                object obj = ResourceManager.GetObject("UrlBoxRight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace EasyConnect
 	/// <summary>
 	/// Main class for this application.
 	/// </summary>
-	static class EasyConnect
+	static class Program
 	{
 		/// <summary>
 		/// The main entry point for the application.

@@ -187,12 +187,13 @@ namespace EasyConnect
                 Left = 0,
                 Top = 0,
                 Font = urlTextBox.Font,
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
+				BackColor = Color.FromArgb(241, 243, 244)
             };
 
             _urlPanelContainer.Controls.Add(_urlPanel);
             _urlPanel.Text = String.Format(
-                    @"<span style=""background-color: #FFFFFF; font-family: {2}; font-size: {1}pt; height: {0}px; color: #9999BF"">easyconnect://<font color=""black"">bookmarks</font></span>",
+					@"<span style=""background-color: #F1F3F4; font-family: {2}; font-size: {1}pt; height: {0}px; color: #707172"">easyconnect://<font color=""black"">bookmarks</font></span>",
                     _urlPanel.Height, urlTextBox.Font.SizeInPoints, urlTextBox.Font.FontFamily.GetName(0));
 
 #if APPX
@@ -1866,7 +1867,7 @@ namespace EasyConnect
 		/// </summary>
 		/// <param name="sender">Object from which this event originated.</param>
 		/// <param name="e">Arguments associated with this event.</param>
-		private async void _optionsMenuItem_Click(object sender, EventArgs e)
+		private async void _settingsMenuItem_Click(object sender, EventArgs e)
         {
             await ParentTabs.OpenOptions();
         }
@@ -1926,5 +1927,10 @@ namespace EasyConnect
 				}
 			}
         }
+
+        private void _toolsButton_MouseDown(object sender, MouseEventArgs e)
+        {
+			_toolsButton.BackgroundImage = Resources.ButtonPressedBackground;
+		}
     }
 }

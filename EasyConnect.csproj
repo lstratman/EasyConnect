@@ -71,7 +71,7 @@
     <NoWarn>CS1998</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>EasyConnect.EasyConnect</StartupObject>
+    <StartupObject>EasyConnect.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppX|AnyCPU'">
     <OutputPath>bin\AppX\</OutputPath>
@@ -223,7 +223,7 @@
     <Compile Include="PasswordWindow.Designer.cs">
       <DependentUpon>PasswordWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="EasyConnect.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
@@ -300,6 +300,8 @@
     <Content Include="lib\AppLimit.NetSparkle.Net40.dll" />
     <Content Include="Resources\TreeViewNodeExpandable.png" />
     <Content Include="Resources\TreeViewNodeExpanded.png" />
+    <Content Include="Resources\UrlBoxLeft.png" />
+    <Content Include="Resources\UrlBoxRight.png" />
     <None Include="Resources\About.png" />
     <Content Include="Resources\ButtonPressedBackground.png" />
     <Content Include="Resources\Disconnected.ico" />
