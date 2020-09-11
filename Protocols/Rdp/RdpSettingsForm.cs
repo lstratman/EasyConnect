@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Security;
 using System.Windows.Forms;
@@ -15,11 +16,6 @@ namespace EasyConnect.Protocols.Rdp
 	public partial class RdpSettingsForm : Form, ISettingsForm<RdpConnection>
 	{
 		/// <summary>
-		/// Contains the previous width of <see cref="_flowLayoutPanel"/> prior to a resize operation.
-		/// </summary>
-		protected int _previousWidth;
-
-		/// <summary>
 		/// List of all possible desktop resolutions.
 		/// </summary>
 		protected List<DEVMODE> _resolutions = new List<DEVMODE>();
@@ -30,8 +26,6 @@ namespace EasyConnect.Protocols.Rdp
 		public RdpSettingsForm()
 		{
 			InitializeComponent();
-
-			_previousWidth = _flowLayoutPanel.Width;
 		}
 
 		/// <summary>
@@ -85,10 +79,16 @@ namespace EasyConnect.Protocols.Rdp
 				                               : Connection.Password.Copy());
 
 			if (String.IsNullOrEmpty(Connection.Username) && !String.IsNullOrEmpty(Connection.InheritedUsername))
-				_inheritedUsernameLabel.Text = "Inheriting " + Connection.InheritedUsername + " from parent folders";
+			{
+				_userNameTextBox.ForeColor = Color.LightGray;
+				_userNameTextBox.Text = "Inheriting " + Connection.InheritedUsername;
+			}
 
 			if ((Connection.Password == null || Connection.Password.Length == 0) && Connection.InheritedPassword != null && Connection.InheritedPassword.Length > 0)
-				_inheritedPasswordLabel.Text = "Inheriting a password from parent folders";
+			{
+				_inheritedPasswordTextBox.Visible = true;
+				_passwordTextBox.Visible = false;
+			}
 
 			// Enumerate the desktop display modes and add them to the resolutions slider
 			DEVMODE devMode = new DEVMODE();
@@ -159,9 +159,17 @@ namespace EasyConnect.Protocols.Rdp
 
 		    _portTextBox.Text = Connection.Port.ToString();
 
-            // Hide the host panel if we're in defaults mode
+			// Hide the host panel if we're in defaults mode
 			if (DefaultsMode)
-				_hostPanel.Visible = false;
+			{
+				_hostNameLabel.Visible = false;
+				_hostNameTextBox.Visible = false;
+				_divider1.Visible = false;
+
+				_settingsCard.Height -= 60;
+				_settingsLayoutPanel.Height -= 60;
+				_rootLayoutPanel.Height -= 60;
+			}
 		}
 
 		/// <summary>
@@ -172,7 +180,7 @@ namespace EasyConnect.Protocols.Rdp
 		private void RdpSettingsForm_FormClosing(object sender, CancelEventArgs e)
 		{
 			Connection.Host = _hostNameTextBox.Text;
-			Connection.Username = _userNameTextBox.Text;
+			Connection.Username = _userNameTextBox.ForeColor == Color.LightGray ? "" : _userNameTextBox.Text;
 			Connection.Password = _passwordTextBox.SecureText;
 			Connection.DesktopWidth = _resolutionSlider.Value != _resolutionSlider.Maximum
 				                          ? Convert.ToInt32(_resolutions[_resolutionSlider.Value].dmPelsWidth)
@@ -242,52 +250,48 @@ namespace EasyConnect.Protocols.Rdp
 				                                 _resolutions[_resolutionSlider.Value].dmPelsHeight.ToString() + " pixels");
 		}
 
-		/// <summary>
-		/// Handler method that's called when the size of <see cref="_flowLayoutPanel"/> changes.  Resizes each child <see cref="Panel"/> instance accordingly.
-		/// </summary>
-		/// <param name="sender">Object from which this event originated, <see cref="_flowLayoutPanel"/> in this case.</param>
-		/// <param name="e">Arguments associated with this event.</param>
-		private void _flowLayoutPanel_Resize(object sender, EventArgs e)
+		private void _userNameTextBox_Leave(object sender, EventArgs e)
 		{
-			foreach (Panel panel in _flowLayoutPanel.Controls.Cast<Panel>())
-				panel.Width += _flowLayoutPanel.Width - _previousWidth;
-
-			_previousWidth = _flowLayoutPanel.Width;
+			if (String.IsNullOrEmpty(_userNameTextBox.Text) && !String.IsNullOrEmpty(Connection.InheritedUsername))
+			{
+				_userNameTextBox.ForeColor = Color.LightGray;
+				_userNameTextBox.Text = "Inheriting " + Connection.InheritedUsername;
+			}
 		}
 
-		/// <summary>
-		/// Handler method that's called when the contents of <see cref="_userNameTextBox"/> change.  If the textbox is empty, display 
-		/// <see cref="_inheritedUsernameLabel"/>, hide it otherwise.
-		/// </summary>
-		/// <param name="sender">Object from which this event originated, <see cref="_userNameTextBox"/> in this case.</param>
-		/// <param name="e">Arguments associated with the event.</param>
-		private void _userNameTextBox_TextChanged(object sender, EventArgs e)
+		private void _userNameTextBox_Enter(object sender, EventArgs e)
 		{
-			_inheritedUsernameLabel.Text = String.IsNullOrEmpty(_userNameTextBox.Text) &&
-			                               !String.IsNullOrEmpty(Connection.GetInheritedUsername(Connection.ParentFolder))
-				                               ? "Inheriting " + Connection.InheritedUsername + " from parent folders"
-				                               : "";
+			if (_userNameTextBox.ForeColor == Color.LightGray)
+			{
+				_userNameTextBox.ForeColor = Color.Black;
+				_userNameTextBox.Text = "";
+			}
 		}
 
-		/// <summary>
-		/// Handler method that's called when the contents of <see cref="_passwordTextBox"/> change.  If the textbox is empty, display 
-		/// <see cref="_inheritedPasswordLabel"/>, hide it otherwise.
-		/// </summary>
-		/// <param name="sender">Object from which this event originated, <see cref="_passwordTextBox"/> in this case.</param>
-		/// <param name="e">Arguments associated with the event.</param>
-		private void _passwordTextBox_TextChanged(object sender, EventArgs e)
+		private void _inheritedPasswordTextBox_Enter(object sender, EventArgs e)
 		{
-			if (_passwordTextBox.SecureText != null && _passwordTextBox.SecureText.Length > 0)
-				_inheritedPasswordLabel.Text = "";
+			_inheritedPasswordTextBox.Visible = false;
+			_passwordTextBox.Visible = true;
+			_passwordTextBox.Focus();
+		}
 
-			else
+		private void _passwordTextBox_Leave(object sender, EventArgs e)
+		{
+			if (_passwordTextBox.Focused)
+			{
+				return;
+			}
+
+			if (_passwordTextBox.SecureText == null || _passwordTextBox.SecureText.Length == 0)
 			{
 				SecureString inheritedPassword = Connection.GetInheritedPassword(Connection.ParentFolder);
 
-				_inheritedPasswordLabel.Text = inheritedPassword != null && inheritedPassword.Length > 0
-					                               ? "Inheriting a password from parent folders"
-					                               : "";
+				if (inheritedPassword != null && inheritedPassword.Length > 0)
+				{
+					_passwordTextBox.Visible = false;
+					_inheritedPasswordTextBox.Visible = true;
+				}
 			}
 		}
-    }
+	}
 }

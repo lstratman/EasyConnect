@@ -17,11 +17,6 @@ namespace EasyConnect.Protocols.PowerShell
 		protected Font _font;
 
 		/// <summary>
-		/// Contains the previous width of <see cref="_flowLayoutPanel"/> prior to a resize operation.
-		/// </summary>
-		protected int _previousWidth;
-
-		/// <summary>
 		/// Default constructor.
 		/// </summary>
 		public PowerShellSettingsForm()

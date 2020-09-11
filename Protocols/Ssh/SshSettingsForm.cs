@@ -82,7 +82,7 @@ namespace EasyConnect.Protocols.Ssh
 		/// <param name="e">Arguments associated with this event.</param>
 		private void SshSettingsForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			Connection.Username = _userNameTextBox.Text;
+			Connection.Username = _userNameTextBox.ForeColor == Color.LightGray ? "" : _userNameTextBox.Text;
 			Connection.Host = _hostNameTextBox.Text;
 			Connection.Password = _passwordTextBox.SecureText;
 			Connection.BackgroundColor = _backgroundColorPanel.BackColor;

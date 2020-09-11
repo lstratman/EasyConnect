@@ -168,8 +168,6 @@ namespace EasyConnect
 
 			_containerPanel.Controls.Clear();
 			_containerPanel.Controls.Add(settingsForm);
-			_containerPanel.AutoScrollMinSize = settingsForm.Size;
-
 			settingsForm.Show();
 
             // Set the background image for the label to the "focused" image
