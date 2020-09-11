@@ -112,12 +112,13 @@ namespace EasyConnect
 					                              {
 						                              AutoScroll = false,
 						                              Width = _omniBarPanel.Width,
-						                              Height = 30,
+						                              Height = 36,
 						                              Left = 0
 					                              };
 
 				autoCompletePanel.Top = i * autoCompletePanel.Height;
 				autoCompletePanel.Font = urlTextBox.Font;
+				autoCompletePanel.Cursor = Cursors.Arrow;
 				autoCompletePanel.MouseEnter += autoCompletePanel_MouseEnter;
 				autoCompletePanel.MouseLeave += autoCompletePanel_MouseLeave;
 				autoCompletePanel.Click += autoCompletePanel_Click;
@@ -128,7 +129,8 @@ namespace EasyConnect
 						                                    Width = 16,
 						                                    Height = 16,
 						                                    Left = 5,
-						                                    Top = autoCompletePanel.Top + 7
+						                                    Top = autoCompletePanel.Top + 9,
+															BackColor = Color.Transparent
 					                                    };
 
 				_omniBarPanel.Controls.Add(autoCompletePictureBox);
@@ -146,7 +148,8 @@ namespace EasyConnect
 					            Left = 0,
 								Top = 0,
 					            Font = urlTextBox.Font,
-								Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
+								Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
+								BackColor = Color.FromArgb(242, 242, 243)
 				            };
 			_urlPanel.Click += _urlPanel_Click;
 			_urlPanelContainer.Controls.Add(_urlPanel);
@@ -271,7 +274,7 @@ namespace EasyConnect
 				Match urlMatch = Regex.Match(urlTextBox.Text, "^((?<protocol>.*)://){0,1}(?<hostName>.*)$");
 
 				_urlPanel.Text = String.Format(
-					@"<div style=""background-color: #FFFFFF; font-family: {2}; font-size: {3}pt; height: {4}px; color: #9999BF;"">{0}://<font color=""black"">{1}</font></div>",
+					@"<div style=""background-color: #F1F3F4; font-family: {2}; font-size: {3}pt; height: {4}px; color: #707172;"">{0}://<font color=""black"">{1}</font></div>",
 					urlMatch.Groups["protocol"].Success
 						? urlMatch.Groups["protocol"].Value
 						: (await ConnectionFactory.GetDefaultProtocol()).ProtocolPrefix, urlMatch.Groups["hostName"].Value, urlTextBox.Font.FontFamily.GetName(0),
@@ -418,7 +421,6 @@ namespace EasyConnect
 		protected void FocusOmniBarItem(HtmlPanel omniBarItem)
 		{
 			omniBarItem.Text = _fontColorRegex.Replace(_backgroundColorRegex.Replace(omniBarItem.Text, "background-color: #3D9DFD;"), "; color: #9DCDFD;");
-			(omniBarItem.Parent.Controls[omniBarItem.Parent.Controls.IndexOf(omniBarItem) - 1] as PictureBox).BackColor = Color.FromArgb(61, 157, 253);
 		}
 
 		/// <summary>
@@ -427,8 +429,7 @@ namespace EasyConnect
 		/// <param name="omniBarItem">Item that we are to remove focus from.</param>
 		protected void UnfocusOmniBarItem(HtmlPanel omniBarItem)
 		{
-			omniBarItem.Text = _fontColorRegex.Replace(_backgroundColorRegex.Replace(omniBarItem.Text, "background-color: #FFFFFF;"), "; color: #9999BF;");
-			(omniBarItem.Parent.Controls[omniBarItem.Parent.Controls.IndexOf(omniBarItem) - 1] as PictureBox).BackColor = Color.White;
+			omniBarItem.Text = _fontColorRegex.Replace(_backgroundColorRegex.Replace(omniBarItem.Text, "background-color: #F1F3F4;"), "; color: #9999BF;");
 		}
 
 		/// <summary>
@@ -440,11 +441,21 @@ namespace EasyConnect
 			if (AutoHideToolbar && !_connectionContainerPanelSizeSet)
 			{
 				_connectionContainerPanel.Top = 5;
-				_connectionContainerPanel.Height += 31;
+				_connectionContainerPanel.Height += 36;
 			}
 
+			if (!AutoHideToolbar)
+            {
+				_toolbarBorder.Visible = true;
+			}
+
+			else
+            {
+				_toolbarBorder.Visible = false;
+            }
+
 			_urlPanel.Text = String.Format(
-				@"<div style=""background-color: #FFFFFF; font-family: {2}; font-size: {3}pt; height: {4}px; color: #9999BF;"">{0}://<font color=""black"">{1}</font></div>",
+				@"<div style=""background-color: #F1F3F4; font-family: {2}; font-size: {3}pt; height: {4}px; color: #707172;"">{0}://<font color=""black"">{1}</font></div>",
 				ConnectionFactory.GetProtocol(_connection).ProtocolPrefix, _connection.Host, urlTextBox.Font.FontFamily.GetName(0), urlTextBox.Font.SizeInPoints,
 				_urlPanel.Height);
 
@@ -485,6 +496,7 @@ namespace EasyConnect
 		{
 			Icon = ConnectionFactory.GetProtocol(_connection).ProtocolIcon;
 			_iconPictureBox.Image = new Icon(Icon, 16, 16).ToBitmap();
+			_toolbarBorder.Visible = false;
 
 			ParentTabs.RedrawTabs();
 		}
@@ -492,6 +504,7 @@ namespace EasyConnect
 		private void _connectionForm_ConnectionLost(object sender, EventArgs e)
 		{
 			_iconPictureBox.Image = new Icon(Resources.EasyConnect, 16, 16).ToBitmap();
+			_toolbarBorder.Visible = !AutoHideToolbar;
 
 			Icon = Resources.Disconnected;
 			ParentTabs.RedrawTabs();
@@ -617,7 +630,8 @@ namespace EasyConnect
 			{
 				folderMenuItem = new ToolStripMenuItem(currentFolder.Name, Resources.Folder)
 					                 {
-						                 DropDownDirection = ToolStripDropDownDirection.Left
+						                 DropDownDirection = ToolStripDropDownDirection.Left,
+										 BackColor = Color.White
 					                 };
 
 				addLocation = folderMenuItem.DropDownItems;
@@ -631,7 +645,10 @@ namespace EasyConnect
 			foreach (IConnection bookmark in currentFolder.Bookmarks.OrderBy(b => b.DisplayName))
 			{
 				ToolStripMenuItem bookmarkMenuItem = new ToolStripMenuItem(
-					bookmark.DisplayName, new Icon(ConnectionFactory.GetProtocol(bookmark).ProtocolIcon, 16, 16).ToBitmap(), bookmarkMenuItem_Click);
+					bookmark.DisplayName, new Icon(ConnectionFactory.GetProtocol(bookmark).ProtocolIcon, 16, 16).ToBitmap(), bookmarkMenuItem_Click)
+				{
+					BackColor = Color.White
+				};
 
 				_menuItemConnections[bookmarkMenuItem] = bookmark;
 				addItems.Add(bookmarkMenuItem);
@@ -782,8 +799,13 @@ namespace EasyConnect
 			_animationTimer.Elapsed += (sender, args) =>
 				{
 					// After six ticks, exit the animation process
-					if (_animationTicks >= 6 || !toolbarBackground.IsHandleCreated)
+					if (_animationTicks >= 7 || !toolbarBackground.IsHandleCreated)
 					{
+						if (!IsConnected)
+						{
+							_toolbarBorder.Visible = true;
+						}
+
 						_animationTimer.Enabled = false;
 						return;
 					}
@@ -794,9 +816,6 @@ namespace EasyConnect
 							() =>
 								{
 									toolbarBackground.Height += 5;
-
-									if (toolbarBackground.Height == 35)
-										toolbarBackground.Height = 36;
 								}));
 					_animationTicks++;
 				};
@@ -815,12 +834,14 @@ namespace EasyConnect
 			if (!_toolbarShown || !AutoHideToolbar || !IsHandleCreated || (_animationTimer != null && _animationTimer.Enabled) || _connectionForm == null)
 				return;
 
+			_toolbarBorder.Visible = false;
+
 			_animationTicks = 0;
 			_animationTimer = new Timer(20);
 			_animationTimer.Elapsed += (sender, args) =>
 				{
 					// After six ticks, exit the animation process
-					if (_animationTicks >= 6 || !toolbarBackground.IsHandleCreated)
+					if (_animationTicks >= 7 || !toolbarBackground.IsHandleCreated)
 					{
 						_animationTimer.Enabled = false;
 						return;
@@ -832,9 +853,6 @@ namespace EasyConnect
 							() =>
 								{
 									toolbarBackground.Height -= 5;
-
-									if (toolbarBackground.Height == 6)
-										toolbarBackground.Height = 5;
 								}));
 					_animationTicks++;
 				};
@@ -928,7 +946,7 @@ namespace EasyConnect
 					// Set the text of the auto-complete item to "{Protocol}://{URI} - {DisplayName}" and bold the matching portions of the text
 					autoCompletePanel.Text =
 						String.Format(
-							@"<div style=""background-color: #FFFFFF; padding-left: 29px; padding-top: 5px; padding-bottom: 5px; padding-right: 5px; font-family: {3}; font-size: {4}pt; height: 30px; color: #9999BF;""><font color=""green"">{0}://{1}</font>{2}</div>",
+							@"<div style=""background-color: #FFFFFF; padding-left: 29px; padding-top: 6px; padding-right: 5px; font-family: {3}; font-size: {4}pt; height: 30px; color: #9999BF;""><font color=""green"">{0}://{1}</font>{2}</div>",
 							ConnectionFactory.GetProtocol(connection).ProtocolPrefix,
 							Regex.Replace(connection.Host, urlTextBox.Text, "<b>$0</b>", RegexOptions.IgnoreCase), connection.DisplayName == connection.Host
 								                                                                                       ? ""
@@ -940,14 +958,13 @@ namespace EasyConnect
 							urlTextBox.Font.FontFamily.GetName(0), urlTextBox.Font.SizeInPoints);
 
 					autoCompletePictureBox.Image = new Icon(ConnectionFactory.GetProtocol(connection).ProtocolIcon, 16, 16).ToBitmap();
-					autoCompletePictureBox.BackColor = Color.White;
 
 					// If the user was focused on this item, highlight it
 					if (connection == currentlyFocusedItem)
 						FocusOmniBarItem(autoCompletePanel);
 				}
 
-				_omniBarPanel.Height = _validAutoCompleteEntries.Count * 30 - 1;
+				_omniBarPanel.Height = _validAutoCompleteEntries.Count * 36 - 1;
 				_omniBarBorder.Height = _omniBarPanel.Height + 2;
 				_omniBarPanel.Visible = true;
 				_omniBarBorder.Visible = true;
@@ -988,7 +1005,7 @@ namespace EasyConnect
 			if (_omniBarFocusIndex != -1 && (sender as HtmlPanel) == (_omniBarPanel.Controls[_omniBarFocusIndex * 2 + 1] as HtmlPanel))
 				return;
 
-			(sender as HtmlPanel).Text = _backgroundColorRegex.Replace((sender as HtmlPanel).Text, "background-color: #CDE5FE;");
+			(sender as HtmlPanel).Text = _backgroundColorRegex.Replace((sender as HtmlPanel).Text, "background-color: #E8E8E9;");
 		}
 
 		/// <summary>

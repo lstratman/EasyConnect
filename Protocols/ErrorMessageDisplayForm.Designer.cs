@@ -37,9 +37,10 @@ namespace EasyConnect.Protocols
             // 
             // _okButton
             // 
+            this._okButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._okButton.Location = new System.Drawing.Point(286, 196);
             this._okButton.Name = "_okButton";
-            this._okButton.Size = new System.Drawing.Size(75, 23);
+            this._okButton.Size = new System.Drawing.Size(76, 28);
             this._okButton.TabIndex = 0;
             this._okButton.Text = "OK";
             this._okButton.UseVisualStyleBackColor = true;
@@ -47,6 +48,7 @@ namespace EasyConnect.Protocols
             // 
             // _errorMessageTextBox
             // 
+            this._errorMessageTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this._errorMessageTextBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._errorMessageTextBox.Location = new System.Drawing.Point(13, 13);
             this._errorMessageTextBox.Multiline = true;
@@ -60,7 +62,8 @@ namespace EasyConnect.Protocols
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(372, 231);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.ClientSize = new System.Drawing.Size(372, 236);
             this.Controls.Add(this._errorMessageTextBox);
             this.Controls.Add(this._okButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

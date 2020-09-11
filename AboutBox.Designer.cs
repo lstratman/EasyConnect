@@ -60,14 +60,13 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.32076F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.301887F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel.Size = new System.Drawing.Size(417, 265);
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 48.67924F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.83019F));
+            this.tableLayoutPanel.Size = new System.Drawing.Size(462, 265);
             this.tableLayoutPanel.TabIndex = 0;
             // 
             // logoPictureBox
             // 
-            this.logoPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.logoPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("logoPictureBox.Image")));
             this.logoPictureBox.Location = new System.Drawing.Point(3, 3);
             this.logoPictureBox.Name = "logoPictureBox";
@@ -80,26 +79,28 @@
             // _productNameLabel
             // 
             this._productNameLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._productNameLabel.Location = new System.Drawing.Point(143, 0);
+            this._productNameLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._productNameLabel.Location = new System.Drawing.Point(158, 0);
             this._productNameLabel.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this._productNameLabel.MaximumSize = new System.Drawing.Size(0, 17);
             this._productNameLabel.Name = "_productNameLabel";
-            this._productNameLabel.Size = new System.Drawing.Size(271, 17);
+            this._productNameLabel.Size = new System.Drawing.Size(301, 17);
             this._productNameLabel.TabIndex = 19;
             this._productNameLabel.Text = "Product Name";
             this._productNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // _descriptionTextBox
             // 
-            this._descriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
+            this._descriptionTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this._descriptionTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._descriptionTextBox.Location = new System.Drawing.Point(143, 107);
+            this._descriptionTextBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._descriptionTextBox.Location = new System.Drawing.Point(158, 105);
             this._descriptionTextBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             this._descriptionTextBox.Multiline = true;
             this._descriptionTextBox.Name = "_descriptionTextBox";
             this._descriptionTextBox.ReadOnly = true;
             this._descriptionTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this._descriptionTextBox.Size = new System.Drawing.Size(271, 127);
+            this._descriptionTextBox.Size = new System.Drawing.Size(301, 121);
             this._descriptionTextBox.TabIndex = 23;
             this._descriptionTextBox.TabStop = false;
             this._descriptionTextBox.Text = "Description";
@@ -108,9 +109,11 @@
             // 
             this._okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this._okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this._okButton.Location = new System.Drawing.Point(339, 240);
+            this._okButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._okButton.Location = new System.Drawing.Point(384, 236);
+            this._okButton.Margin = new System.Windows.Forms.Padding(0, 0, 2, 1);
             this._okButton.Name = "_okButton";
-            this._okButton.Size = new System.Drawing.Size(75, 22);
+            this._okButton.Size = new System.Drawing.Size(76, 28);
             this._okButton.TabIndex = 24;
             this._okButton.Text = "&OK";
             this._okButton.Click += new System.EventHandler(this._okButton_Click);
@@ -118,11 +121,12 @@
             // _copyrightLabel
             // 
             this._copyrightLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._copyrightLabel.Location = new System.Drawing.Point(143, 26);
+            this._copyrightLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._copyrightLabel.Location = new System.Drawing.Point(158, 26);
             this._copyrightLabel.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this._copyrightLabel.MaximumSize = new System.Drawing.Size(0, 17);
             this._copyrightLabel.Name = "_copyrightLabel";
-            this._copyrightLabel.Size = new System.Drawing.Size(271, 17);
+            this._copyrightLabel.Size = new System.Drawing.Size(301, 17);
             this._copyrightLabel.TabIndex = 21;
             this._copyrightLabel.Text = "Copyright";
             this._copyrightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -130,11 +134,12 @@
             // _versionLabel
             // 
             this._versionLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._versionLabel.Location = new System.Drawing.Point(143, 52);
+            this._versionLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._versionLabel.Location = new System.Drawing.Point(158, 52);
             this._versionLabel.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this._versionLabel.MaximumSize = new System.Drawing.Size(0, 17);
             this._versionLabel.Name = "_versionLabel";
-            this._versionLabel.Size = new System.Drawing.Size(271, 17);
+            this._versionLabel.Size = new System.Drawing.Size(301, 17);
             this._versionLabel.TabIndex = 0;
             this._versionLabel.Text = "Version";
             this._versionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -142,11 +147,12 @@
             // _linkLabel
             // 
             this._linkLabel.AutoSize = true;
+            this._linkLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._linkLabel.LinkArea = new System.Windows.Forms.LinkArea(0, 7);
-            this._linkLabel.Location = new System.Drawing.Point(143, 82);
+            this._linkLabel.Location = new System.Drawing.Point(158, 81);
             this._linkLabel.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this._linkLabel.Name = "_linkLabel";
-            this._linkLabel.Size = new System.Drawing.Size(250, 17);
+            this._linkLabel.Size = new System.Drawing.Size(298, 21);
             this._linkLabel.TabIndex = 25;
             this._linkLabel.TabStop = true;
             this._linkLabel.Text = "Website (http://lstratman.github.io/EasyConnect/)";
@@ -158,8 +164,8 @@
             this.AcceptButton = this._okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
-            this.ClientSize = new System.Drawing.Size(435, 283);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.ClientSize = new System.Drawing.Size(480, 283);
             this.Controls.Add(this.tableLayoutPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
