@@ -18,11 +18,6 @@ namespace EasyConnect.Protocols.Ssh
 		/// </summary>
 		protected Font _font;
 
-		/// <summary>
-		/// Contains the previous width of <see cref="_flowLayoutPanel"/> prior to a resize operation.
-		/// </summary>
-		protected int _previousWidth;
-
         private Dictionary<string, EncodingType> _encodingTypes = new Dictionary<string, EncodingType>
         {
             {"Big-5", EncodingType.BIG5},
@@ -43,8 +38,6 @@ namespace EasyConnect.Protocols.Ssh
 		public SshSettingsForm()
 		{
 			InitializeComponent();
-
-			_previousWidth = _flowLayoutPanel.Width;
 		}
 
 		/// <summary>
@@ -94,7 +87,7 @@ namespace EasyConnect.Protocols.Ssh
 			Connection.Password = _passwordTextBox.SecureText;
 			Connection.BackgroundColor = _backgroundColorPanel.BackColor;
 			Connection.TextColor = _textColorPanel.BackColor;
-			Connection.IdentityFile = _identityFileTextbox.Text;
+			Connection.IdentityFile = _identityFileTextBox.Text;
 			Connection.Font = _font;
             Connection.Encoding = _encodingTypes[_encodingDropdown.Text];
             Connection.Port = Convert.ToInt32(_portTextBox.Text);
@@ -115,7 +108,7 @@ namespace EasyConnect.Protocols.Ssh
 			_fontTextBox.Text = Connection.Font.FontFamily.GetName(0);
 			_userNameTextBox.Text = Connection.Username;
 			_hostNameTextBox.Text = Connection.Host;
-			_identityFileTextbox.Text = Connection.IdentityFile;
+			_identityFileTextBox.Text = Connection.IdentityFile;
             _encodingDropdown.Text = _encodingTypes.Single(p => p.Value == Connection.Encoding).Key;
             _portTextBox.Text = Connection.Port.ToString();
 			_passwordTextBox.SecureText = Connection.Password == null
@@ -124,26 +117,26 @@ namespace EasyConnect.Protocols.Ssh
 
 			// Hide the host panel if we're in defaults mode
 			if (DefaultsMode)
-				_hostPanel.Visible = false;
+			{
+				_hostNameLabel.Visible = false;
+				_hostNameTextBox.Visible = false;
+				_divider1.Visible = false;
+
+				_settingsCard.Height -= 60;
+				_settingsLayoutPanel.Height -= 60;
+			}
 
 			if (String.IsNullOrEmpty(Connection.Username) && !String.IsNullOrEmpty(Connection.InheritedUsername))
-				_inheritedUsernameLabel.Text = "Inheriting " + Connection.InheritedUsername + " from parent folders";
+			{
+				_userNameTextBox.ForeColor = Color.LightGray;
+				_userNameTextBox.Text = "Inheriting " + Connection.InheritedUsername;
+			}
 
 			if ((Connection.Password == null || Connection.Password.Length == 0) && Connection.InheritedPassword != null && Connection.InheritedPassword.Length > 0)
-				_inheritedPasswordLabel.Text = "Inheriting a password from parent folders";
-		}
-
-		/// <summary>
-		/// Handler method that's called when the size of <see cref="_flowLayoutPanel"/> changes.  Resizes each child <see cref="Panel"/> instance accordingly.
-		/// </summary>
-		/// <param name="sender">Object from which this event originated, <see cref="_flowLayoutPanel"/> in this case.</param>
-		/// <param name="e">Arguments associated with this event.</param>
-		private void _flowLayoutPanel_Resize(object sender, EventArgs e)
-		{
-			foreach (Panel panel in _flowLayoutPanel.Controls.Cast<Panel>())
-				panel.Width += _flowLayoutPanel.Width - _previousWidth;
-
-			_previousWidth = _flowLayoutPanel.Width;
+			{
+				_inheritedPasswordTextBox.Visible = true;
+				_passwordTextBox.Visible = false;
+			}
 		}
 
 		/// <summary>
@@ -199,53 +192,62 @@ namespace EasyConnect.Protocols.Ssh
 
 		/// <summary>
 		/// Handler method that's called when the <see cref="_identityFileBrowseButton"/> is clicked.  Displays a file selection dialog and saves the resulting 
-		/// file path to <see cref="_identityFileTextbox"/>.
+		/// file path to <see cref="_identityFileTextBox"/>.
 		/// </summary>
 		/// <param name="sender">Object from which this event originated, <see cref="_identityFileBrowseButton"/> in this case.</param>
 		/// <param name="e">Arguments associated with this event.</param>
 		private void _identityFileBrowseButton_Click(object sender, EventArgs e)
 		{
-			if (!String.IsNullOrEmpty(_identityFileTextbox.Text))
-				_openFileDialog.FileName = _identityFileTextbox.Text;
+			if (!String.IsNullOrEmpty(_identityFileTextBox.Text))
+				_openFileDialog.FileName = _identityFileTextBox.Text;
 
 			DialogResult result = _openFileDialog.ShowDialog();
 
 			if (result == DialogResult.OK)
-				_identityFileTextbox.Text = _openFileDialog.FileName;
+				_identityFileTextBox.Text = _openFileDialog.FileName;
 		}
 
-		/// <summary>
-		/// Handler method that's called when the contents of <see cref="_userNameTextBox"/> change.  If the textbox is empty, display 
-		/// <see cref="_inheritedUsernameLabel"/>, hide it otherwise.
-		/// </summary>
-		/// <param name="sender">Object from which this event originated, <see cref="_userNameTextBox"/> in this case.</param>
-		/// <param name="e">Arguments associated with the event.</param>
-		private void _userNameTextBox_TextChanged(object sender, EventArgs e)
+		private void _userNameTextBox_Leave(object sender, EventArgs e)
 		{
-			_inheritedUsernameLabel.Text = String.IsNullOrEmpty(_userNameTextBox.Text) &&
-			                               !String.IsNullOrEmpty(Connection.GetInheritedUsername(Connection.ParentFolder))
-				                               ? "Inheriting " + Connection.InheritedUsername + " from parent folders"
-				                               : "";
+			if (String.IsNullOrEmpty(_userNameTextBox.Text) && !String.IsNullOrEmpty(Connection.InheritedUsername))
+			{
+				_userNameTextBox.ForeColor = Color.LightGray;
+				_userNameTextBox.Text = "Inheriting " + Connection.InheritedUsername;
+			}
 		}
 
-		/// <summary>
-		/// Handler method that's called when the contents of <see cref="_passwordTextBox"/> change.  If the textbox is empty, display 
-		/// <see cref="_inheritedPasswordLabel"/>, hide it otherwise.
-		/// </summary>
-		/// <param name="sender">Object from which this event originated, <see cref="_passwordTextBox"/> in this case.</param>
-		/// <param name="e">Arguments associated with the event.</param>
-		private void _passwordTextBox_TextChanged(object sender, EventArgs e)
+		private void _userNameTextBox_Enter(object sender, EventArgs e)
 		{
-			if (_passwordTextBox.SecureText != null && _passwordTextBox.SecureText.Length > 0)
-				_inheritedPasswordLabel.Text = "";
+			if (_userNameTextBox.ForeColor == Color.LightGray)
+			{
+				_userNameTextBox.ForeColor = Color.Black;
+				_userNameTextBox.Text = "";
+			}
+		}
 
-			else
+		private void _inheritedPasswordTextBox_Enter(object sender, EventArgs e)
+		{
+			_inheritedPasswordTextBox.Visible = false;
+			_passwordTextBox.Visible = true;
+			_passwordTextBox.Focus();
+		}
+
+		private void _passwordTextBox_Leave(object sender, EventArgs e)
+		{
+			if (_passwordTextBox.Focused)
+			{
+				return;
+			}
+
+			if (_passwordTextBox.SecureText == null || _passwordTextBox.SecureText.Length == 0)
 			{
 				SecureString inheritedPassword = Connection.GetInheritedPassword(Connection.ParentFolder);
 
-				_inheritedPasswordLabel.Text = inheritedPassword != null && inheritedPassword.Length > 0
-					                               ? "Inheriting a password from parent folders"
-					                               : "";
+				if (inheritedPassword != null && inheritedPassword.Length > 0)
+				{
+					_passwordTextBox.Visible = false;
+					_inheritedPasswordTextBox.Visible = true;
+				}
 			}
 		}
 	}
