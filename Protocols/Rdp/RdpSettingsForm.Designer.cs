@@ -151,7 +151,7 @@
             this._bitmapCachingCheckbox.Margin = new System.Windows.Forms.Padding(3, 19, 3, 3);
             this._bitmapCachingCheckbox.Name = "_bitmapCachingCheckbox";
             this._bitmapCachingCheckbox.Size = new System.Drawing.Size(15, 14);
-            this._bitmapCachingCheckbox.TabIndex = 79;
+            this._bitmapCachingCheckbox.TabIndex = 6;
             this._bitmapCachingCheckbox.UseVisualStyleBackColor = true;
             // 
             // _visualStylesCheckbox
@@ -162,7 +162,7 @@
             this._visualStylesCheckbox.Margin = new System.Windows.Forms.Padding(3, 19, 3, 3);
             this._visualStylesCheckbox.Name = "_visualStylesCheckbox";
             this._visualStylesCheckbox.Size = new System.Drawing.Size(15, 14);
-            this._visualStylesCheckbox.TabIndex = 78;
+            this._visualStylesCheckbox.TabIndex = 5;
             this._visualStylesCheckbox.UseVisualStyleBackColor = true;
             // 
             // _menuAnimationCheckbox
@@ -173,7 +173,7 @@
             this._menuAnimationCheckbox.Margin = new System.Windows.Forms.Padding(3, 19, 3, 3);
             this._menuAnimationCheckbox.Name = "_menuAnimationCheckbox";
             this._menuAnimationCheckbox.Size = new System.Drawing.Size(15, 14);
-            this._menuAnimationCheckbox.TabIndex = 77;
+            this._menuAnimationCheckbox.TabIndex = 4;
             this._menuAnimationCheckbox.UseVisualStyleBackColor = true;
             // 
             // _windowContentsWhileDraggingCheckbox
@@ -184,7 +184,7 @@
             this._windowContentsWhileDraggingCheckbox.Margin = new System.Windows.Forms.Padding(3, 19, 3, 3);
             this._windowContentsWhileDraggingCheckbox.Name = "_windowContentsWhileDraggingCheckbox";
             this._windowContentsWhileDraggingCheckbox.Size = new System.Drawing.Size(15, 14);
-            this._windowContentsWhileDraggingCheckbox.TabIndex = 76;
+            this._windowContentsWhileDraggingCheckbox.TabIndex = 3;
             this._windowContentsWhileDraggingCheckbox.UseVisualStyleBackColor = true;
             // 
             // _desktopCompositionCheckbox
@@ -195,7 +195,7 @@
             this._desktopCompositionCheckbox.Margin = new System.Windows.Forms.Padding(3, 19, 3, 3);
             this._desktopCompositionCheckbox.Name = "_desktopCompositionCheckbox";
             this._desktopCompositionCheckbox.Size = new System.Drawing.Size(15, 14);
-            this._desktopCompositionCheckbox.TabIndex = 75;
+            this._desktopCompositionCheckbox.TabIndex = 2;
             this._desktopCompositionCheckbox.UseVisualStyleBackColor = true;
             // 
             // _fontSmoothingCheckbox
@@ -206,7 +206,7 @@
             this._fontSmoothingCheckbox.Margin = new System.Windows.Forms.Padding(3, 19, 3, 3);
             this._fontSmoothingCheckbox.Name = "_fontSmoothingCheckbox";
             this._fontSmoothingCheckbox.Size = new System.Drawing.Size(15, 14);
-            this._fontSmoothingCheckbox.TabIndex = 74;
+            this._fontSmoothingCheckbox.TabIndex = 1;
             this._fontSmoothingCheckbox.UseVisualStyleBackColor = true;
             // 
             // _desktopBackgroundCheckbox
@@ -217,7 +217,7 @@
             this._desktopBackgroundCheckbox.Margin = new System.Windows.Forms.Padding(3, 19, 3, 3);
             this._desktopBackgroundCheckbox.Name = "_desktopBackgroundCheckbox";
             this._desktopBackgroundCheckbox.Size = new System.Drawing.Size(15, 14);
-            this._desktopBackgroundCheckbox.TabIndex = 73;
+            this._desktopBackgroundCheckbox.TabIndex = 0;
             this._desktopBackgroundCheckbox.UseVisualStyleBackColor = true;
             // 
             // _drivesCheckbox
@@ -228,7 +228,7 @@
             this._drivesCheckbox.Margin = new System.Windows.Forms.Padding(3, 19, 3, 3);
             this._drivesCheckbox.Name = "_drivesCheckbox";
             this._drivesCheckbox.Size = new System.Drawing.Size(15, 14);
-            this._drivesCheckbox.TabIndex = 70;
+            this._drivesCheckbox.TabIndex = 5;
             this._drivesCheckbox.UseVisualStyleBackColor = true;
             // 
             // _clipboardCheckbox
@@ -239,7 +239,7 @@
             this._clipboardCheckbox.Margin = new System.Windows.Forms.Padding(3, 19, 3, 3);
             this._clipboardCheckbox.Name = "_clipboardCheckbox";
             this._clipboardCheckbox.Size = new System.Drawing.Size(15, 14);
-            this._clipboardCheckbox.TabIndex = 69;
+            this._clipboardCheckbox.TabIndex = 4;
             this._clipboardCheckbox.UseVisualStyleBackColor = true;
             // 
             // _printersCheckbox
@@ -250,7 +250,7 @@
             this._printersCheckbox.Margin = new System.Windows.Forms.Padding(3, 19, 3, 3);
             this._printersCheckbox.Name = "_printersCheckbox";
             this._printersCheckbox.Size = new System.Drawing.Size(15, 14);
-            this._printersCheckbox.TabIndex = 68;
+            this._printersCheckbox.TabIndex = 3;
             this._printersCheckbox.UseVisualStyleBackColor = true;
             // 
             // _windowsKeyDropdown
@@ -265,7 +265,7 @@
             this._windowsKeyDropdown.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
             this._windowsKeyDropdown.Name = "_windowsKeyDropdown";
             this._windowsKeyDropdown.Size = new System.Drawing.Size(184, 25);
-            this._windowsKeyDropdown.TabIndex = 66;
+            this._windowsKeyDropdown.TabIndex = 2;
             // 
             // _audioRecordingDropdown
             // 
@@ -279,7 +279,7 @@
             this._audioRecordingDropdown.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
             this._audioRecordingDropdown.Name = "_audioRecordingDropdown";
             this._audioRecordingDropdown.Size = new System.Drawing.Size(184, 25);
-            this._audioRecordingDropdown.TabIndex = 64;
+            this._audioRecordingDropdown.TabIndex = 1;
             // 
             // _audioPlaybackDropdown
             // 
@@ -294,7 +294,7 @@
             this._audioPlaybackDropdown.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
             this._audioPlaybackDropdown.Name = "_audioPlaybackDropdown";
             this._audioPlaybackDropdown.Size = new System.Drawing.Size(184, 25);
-            this._audioPlaybackDropdown.TabIndex = 63;
+            this._audioPlaybackDropdown.TabIndex = 0;
             // 
             // _colorDepthDropdown
             // 
@@ -310,14 +310,14 @@
             this._colorDepthDropdown.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
             this._colorDepthDropdown.Name = "_colorDepthDropdown";
             this._colorDepthDropdown.Size = new System.Drawing.Size(184, 25);
-            this._colorDepthDropdown.TabIndex = 58;
+            this._colorDepthDropdown.TabIndex = 0;
             // 
             // _resolutionSlider
             // 
             this._resolutionSlider.Location = new System.Drawing.Point(3, 3);
             this._resolutionSlider.Name = "_resolutionSlider";
             this._resolutionSlider.Size = new System.Drawing.Size(240, 45);
-            this._resolutionSlider.TabIndex = 57;
+            this._resolutionSlider.TabIndex = 0;
             this._resolutionSlider.ValueChanged += new System.EventHandler(this._resolutionSlider_ValueChanged);
             // 
             // _smartCardsCheckBox
@@ -328,7 +328,7 @@
             this._smartCardsCheckBox.Margin = new System.Windows.Forms.Padding(3, 19, 3, 3);
             this._smartCardsCheckBox.Name = "_smartCardsCheckBox";
             this._smartCardsCheckBox.Size = new System.Drawing.Size(15, 14);
-            this._smartCardsCheckBox.TabIndex = 71;
+            this._smartCardsCheckBox.TabIndex = 6;
             this._smartCardsCheckBox.UseVisualStyleBackColor = true;
             // 
             // _proxyHostNameTextBox
@@ -338,7 +338,7 @@
             this._proxyHostNameTextBox.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
             this._proxyHostNameTextBox.Name = "_proxyHostNameTextBox";
             this._proxyHostNameTextBox.Size = new System.Drawing.Size(154, 25);
-            this._proxyHostNameTextBox.TabIndex = 82;
+            this._proxyHostNameTextBox.TabIndex = 1;
             // 
             // _proxyUserNameTextBox
             // 
@@ -347,7 +347,7 @@
             this._proxyUserNameTextBox.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
             this._proxyUserNameTextBox.Name = "_proxyUserNameTextBox";
             this._proxyUserNameTextBox.Size = new System.Drawing.Size(154, 25);
-            this._proxyUserNameTextBox.TabIndex = 82;
+            this._proxyUserNameTextBox.TabIndex = 2;
             // 
             // _proxyPasswordTextBox
             // 
@@ -358,7 +358,7 @@
             this._proxyPasswordTextBox.PasswordChar = '*';
             this._proxyPasswordTextBox.SecureText = secureString1;
             this._proxyPasswordTextBox.Size = new System.Drawing.Size(154, 25);
-            this._proxyPasswordTextBox.TabIndex = 85;
+            this._proxyPasswordTextBox.TabIndex = 3;
             // 
             // _useProxyCheckBox
             // 
@@ -368,7 +368,7 @@
             this._useProxyCheckBox.Margin = new System.Windows.Forms.Padding(3, 19, 3, 3);
             this._useProxyCheckBox.Name = "_useProxyCheckBox";
             this._useProxyCheckBox.Size = new System.Drawing.Size(15, 14);
-            this._useProxyCheckBox.TabIndex = 68;
+            this._useProxyCheckBox.TabIndex = 0;
             this._useProxyCheckBox.UseVisualStyleBackColor = true;
             // 
             // _adminChannelCheckBox
@@ -450,7 +450,7 @@
             this._hostNameTextBox.Margin = new System.Windows.Forms.Padding(3, 12, 3, 0);
             this._hostNameTextBox.Name = "_hostNameTextBox";
             this._hostNameTextBox.Size = new System.Drawing.Size(154, 25);
-            this._hostNameTextBox.TabIndex = 98;
+            this._hostNameTextBox.TabIndex = 0;
             // 
             // _divider1
             // 
@@ -479,7 +479,7 @@
             this._userNameTextBox.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
             this._userNameTextBox.Name = "_userNameTextBox";
             this._userNameTextBox.Size = new System.Drawing.Size(154, 25);
-            this._userNameTextBox.TabIndex = 95;
+            this._userNameTextBox.TabIndex = 1;
             this._userNameTextBox.Enter += new System.EventHandler(this._userNameTextBox_Enter);
             this._userNameTextBox.Leave += new System.EventHandler(this._userNameTextBox_Leave);
             // 
@@ -513,7 +513,7 @@
             this._passwordTextBox.PasswordChar = '*';
             this._passwordTextBox.SecureText = secureString2;
             this._passwordTextBox.Size = new System.Drawing.Size(154, 25);
-            this._passwordTextBox.TabIndex = 109;
+            this._passwordTextBox.TabIndex = 2;
             this._passwordTextBox.Leave += new System.EventHandler(this._passwordTextBox_Leave);
             // 
             // _inheritedPasswordTextBox
@@ -524,7 +524,7 @@
             this._inheritedPasswordTextBox.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
             this._inheritedPasswordTextBox.Name = "_inheritedPasswordTextBox";
             this._inheritedPasswordTextBox.Size = new System.Drawing.Size(154, 25);
-            this._inheritedPasswordTextBox.TabIndex = 113;
+            this._inheritedPasswordTextBox.TabIndex = 3;
             this._inheritedPasswordTextBox.Text = "Inheriting password";
             this._inheritedPasswordTextBox.Visible = false;
             this._inheritedPasswordTextBox.Enter += new System.EventHandler(this._inheritedPasswordTextBox_Enter);
@@ -556,7 +556,7 @@
             this._portTextBox.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
             this._portTextBox.Name = "_portTextBox";
             this._portTextBox.Size = new System.Drawing.Size(154, 25);
-            this._portTextBox.TabIndex = 114;
+            this._portTextBox.TabIndex = 4;
             // 
             // _divider4
             // 

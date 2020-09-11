@@ -178,7 +178,7 @@
             this._hostNameTextBox.Margin = new System.Windows.Forms.Padding(3, 12, 3, 0);
             this._hostNameTextBox.Name = "_hostNameTextBox";
             this._hostNameTextBox.Size = new System.Drawing.Size(154, 25);
-            this._hostNameTextBox.TabIndex = 98;
+            this._hostNameTextBox.TabIndex = 0;
             // 
             // _divider1
             // 
@@ -207,7 +207,7 @@
             this._userNameTextBox.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
             this._userNameTextBox.Name = "_userNameTextBox";
             this._userNameTextBox.Size = new System.Drawing.Size(154, 25);
-            this._userNameTextBox.TabIndex = 95;
+            this._userNameTextBox.TabIndex = 3;
             this._userNameTextBox.Enter += new System.EventHandler(this._userNameTextBox_Enter);
             this._userNameTextBox.Leave += new System.EventHandler(this._userNameTextBox_Leave);
             // 
@@ -241,7 +241,7 @@
             this._passwordTextBox.PasswordChar = '*';
             this._passwordTextBox.SecureText = secureString1;
             this._passwordTextBox.Size = new System.Drawing.Size(154, 25);
-            this._passwordTextBox.TabIndex = 109;
+            this._passwordTextBox.TabIndex = 4;
             this._passwordTextBox.Leave += new System.EventHandler(this._passwordTextBox_Leave);
             // 
             // _inheritedPasswordTextBox
@@ -252,7 +252,7 @@
             this._inheritedPasswordTextBox.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
             this._inheritedPasswordTextBox.Name = "_inheritedPasswordTextBox";
             this._inheritedPasswordTextBox.Size = new System.Drawing.Size(154, 25);
-            this._inheritedPasswordTextBox.TabIndex = 113;
+            this._inheritedPasswordTextBox.TabIndex = 5;
             this._inheritedPasswordTextBox.Text = "Inheriting password";
             this._inheritedPasswordTextBox.Visible = false;
             this._inheritedPasswordTextBox.Enter += new System.EventHandler(this._inheritedPasswordTextBox_Enter);
@@ -286,7 +286,7 @@
             this._textColorPanel.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
             this._textColorPanel.Name = "_textColorPanel";
             this._textColorPanel.Size = new System.Drawing.Size(35, 25);
-            this._textColorPanel.TabIndex = 103;
+            this._textColorPanel.TabIndex = 7;
             this._textColorPanel.Click += new System.EventHandler(this._textColorPanel_Click);
             // 
             // _divider4
@@ -318,7 +318,7 @@
             this._backgroundColorPanel.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
             this._backgroundColorPanel.Name = "_backgroundColorPanel";
             this._backgroundColorPanel.Size = new System.Drawing.Size(35, 25);
-            this._backgroundColorPanel.TabIndex = 101;
+            this._backgroundColorPanel.TabIndex = 8;
             this._backgroundColorPanel.Click += new System.EventHandler(this._backgroundColorPanel_Click);
             // 
             // _divider5
@@ -417,7 +417,7 @@
             this._portTextBox.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
             this._portTextBox.Name = "_portTextBox";
             this._portTextBox.Size = new System.Drawing.Size(154, 25);
-            this._portTextBox.TabIndex = 115;
+            this._portTextBox.TabIndex = 1;
             // 
             // panel2
             // 
@@ -462,7 +462,7 @@
             this._encodingDropdown.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
             this._encodingDropdown.Name = "_encodingDropdown";
             this._encodingDropdown.Size = new System.Drawing.Size(154, 25);
-            this._encodingDropdown.TabIndex = 117;
+            this._encodingDropdown.TabIndex = 2;
             this._encodingDropdown.ValueMember = "Value";
             // 
             // _identityFileLabel
@@ -492,7 +492,7 @@
             this._identityFileBrowseButton.Margin = new System.Windows.Forms.Padding(1, 14, 3, 3);
             this._identityFileBrowseButton.Name = "_identityFileBrowseButton";
             this._identityFileBrowseButton.Size = new System.Drawing.Size(26, 27);
-            this._identityFileBrowseButton.TabIndex = 120;
+            this._identityFileBrowseButton.TabIndex = 6;
             this._identityFileBrowseButton.Text = "...";
             this._identityFileBrowseButton.UseVisualStyleBackColor = true;
             this._identityFileBrowseButton.Click += new System.EventHandler(this._identityFileBrowseButton_Click);

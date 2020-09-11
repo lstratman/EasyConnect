@@ -152,7 +152,7 @@
             this._hostNameTextBox.Margin = new System.Windows.Forms.Padding(3, 12, 3, 0);
             this._hostNameTextBox.Name = "_hostNameTextBox";
             this._hostNameTextBox.Size = new System.Drawing.Size(154, 25);
-            this._hostNameTextBox.TabIndex = 98;
+            this._hostNameTextBox.TabIndex = 0;
             // 
             // _divider1
             // 
@@ -181,7 +181,7 @@
             this._userNameTextBox.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
             this._userNameTextBox.Name = "_userNameTextBox";
             this._userNameTextBox.Size = new System.Drawing.Size(154, 25);
-            this._userNameTextBox.TabIndex = 95;
+            this._userNameTextBox.TabIndex = 1;
             this._userNameTextBox.Enter += new System.EventHandler(this._userNameTextBox_Enter);
             this._userNameTextBox.Leave += new System.EventHandler(this._userNameTextBox_Leave);
             // 
@@ -215,7 +215,7 @@
             this._passwordTextBox.PasswordChar = '*';
             this._passwordTextBox.SecureText = secureString1;
             this._passwordTextBox.Size = new System.Drawing.Size(154, 25);
-            this._passwordTextBox.TabIndex = 109;
+            this._passwordTextBox.TabIndex = 2;
             this._passwordTextBox.Leave += new System.EventHandler(this._passwordTextBox_Leave);
             // 
             // _inheritedPasswordTextBox
@@ -226,7 +226,7 @@
             this._inheritedPasswordTextBox.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
             this._inheritedPasswordTextBox.Name = "_inheritedPasswordTextBox";
             this._inheritedPasswordTextBox.Size = new System.Drawing.Size(154, 25);
-            this._inheritedPasswordTextBox.TabIndex = 113;
+            this._inheritedPasswordTextBox.TabIndex = 3;
             this._inheritedPasswordTextBox.Text = "Inheriting password";
             this._inheritedPasswordTextBox.Visible = false;
             this._inheritedPasswordTextBox.Enter += new System.EventHandler(this._inheritedPasswordTextBox_Enter);
@@ -260,7 +260,7 @@
             this._textColorPanel.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
             this._textColorPanel.Name = "_textColorPanel";
             this._textColorPanel.Size = new System.Drawing.Size(35, 25);
-            this._textColorPanel.TabIndex = 103;
+            this._textColorPanel.TabIndex = 4;
             this._textColorPanel.Click += new System.EventHandler(this._textColorPanel_Click);
             // 
             // _divider4
@@ -292,7 +292,7 @@
             this._backgroundColorPanel.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
             this._backgroundColorPanel.Name = "_backgroundColorPanel";
             this._backgroundColorPanel.Size = new System.Drawing.Size(35, 25);
-            this._backgroundColorPanel.TabIndex = 101;
+            this._backgroundColorPanel.TabIndex = 5;
             this._backgroundColorPanel.Click += new System.EventHandler(this._backgroundColorPanel_Click);
             // 
             // _divider5
