@@ -1678,8 +1678,9 @@ namespace EasyConnect
 
             _notesTextBox = new TextBox();
 
-            _notesTextBox.Location = new Point(e.Bounds.Left + 6, e.Bounds.Top + 4);
+            _notesTextBox.Location = new Point(e.Bounds.Left + _bookmarksListView.Location.X + 3, e.Bounds.Top + _bookmarksListView.Location.Y + 7);
             _notesTextBox.Size = new Size(e.Bounds.Width - 6, e.Bounds.Height + 2);
+			_notesTextBox.Font = new Font("Segoe UI", (float)9.75);
             _notesTextBox.Text = _itemEditingNotes.SubItems[2].Text;
             _notesTextBox.LostFocus += NotesTextBox_LostFocus;
             _notesTextBox.KeyDown += NotesTextBox_KeyDown;
