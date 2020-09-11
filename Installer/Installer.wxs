@@ -117,8 +117,7 @@
 		<ComponentGroup Id="VncPluginComponents" Directory="INSTALLFOLDER">
 			<Component Id="VncPluginAssemblyComponent" Guid="D39F04E9-B216-4EDB-A041-FFEB65AB0AE5">
 				<File Id="VncPluginAssembly" Name="$(var.EasyConnect.Protocols.Vnc.TargetFileName)" Source="$(var.EasyConnect.Protocols.Vnc.TargetPath)"/>
-				<File Id="RemoteViewingAssembly" Name="RemoteViewing.dll" Source="$(var.EasyConnect.Protocols.Vnc.TargetDir)RemoteViewing.dll"/>
-			  <File Id="RemoteViewingWindowsFormsAssembly" Name="RemoteViewing.Windows.Forms.dll" Source="$(var.EasyConnect.Protocols.Vnc.TargetDir)RemoteViewing.Windows.Forms.dll"/>
+				<File Id="VncSharpAssembly" Name="VncSharp.dll" Source="$(var.EasyConnect.Protocols.Vnc.TargetDir)VncSharp.dll"/>
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="SshPluginComponents" Directory="INSTALLFOLDER">
