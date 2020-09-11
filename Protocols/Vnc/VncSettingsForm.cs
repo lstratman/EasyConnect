@@ -73,7 +73,22 @@ namespace EasyConnect.Protocols.Vnc
 				_passwordTextBox.SecureText = Connection.Password;
 
 			if ((Connection.Password == null || Connection.Password.Length == 0) && Connection.InheritedPassword != null && Connection.InheritedPassword.Length > 0)
-				_inheritedPasswordLabel.Text = "Inheriting a password from parent folders";
+			{
+				_inheritedPasswordTextBox.Visible = true;
+				_passwordTextBox.Visible = false;
+			}
+
+			// Hide the host panel if we're in defaults mode
+			if (DefaultsMode)
+			{
+				_hostNameLabel.Visible = false;
+				_hostNameTextBox.Visible = false;
+				_divider1.Visible = false;
+
+				_settingsCard.Height -= 60;
+				_settingsLayoutPanel.Height -= 60;
+				_rootLayoutPanel.Height -= 60;
+			}
 		}
 
 		/// <summary>
@@ -92,24 +107,29 @@ namespace EasyConnect.Protocols.Vnc
 		    Connection.ShareClipboard = _clipboardCheckbox.Checked;
 		}
 
-		/// <summary>
-		/// Handler method that's called when the contents of <see cref="_passwordTextBox"/> change.  If the textbox is empty, display 
-		/// <see cref="_inheritedPasswordLabel"/>, hide it otherwise.
-		/// </summary>
-		/// <param name="sender">Object from which this event originated, <see cref="_passwordTextBox"/> in this case.</param>
-		/// <param name="e">Arguments associated with the event.</param>
-		private void _passwordTextBox_TextChanged(object sender, EventArgs e)
+		private void _inheritedPasswordTextBox_Enter(object sender, EventArgs e)
 		{
-			if (_passwordTextBox.SecureText != null && _passwordTextBox.SecureText.Length > 0)
-				_inheritedPasswordLabel.Text = "";
+			_inheritedPasswordTextBox.Visible = false;
+			_passwordTextBox.Visible = true;
+			_passwordTextBox.Focus();
+		}
 
-			else
+		private void _passwordTextBox_Leave(object sender, EventArgs e)
+		{
+			if (_passwordTextBox.Focused)
+			{
+				return;
+			}
+
+			if (_passwordTextBox.SecureText == null || _passwordTextBox.SecureText.Length == 0)
 			{
 				SecureString inheritedPassword = Connection.GetInheritedPassword(Connection.ParentFolder);
 
-				_inheritedPasswordLabel.Text = inheritedPassword != null && inheritedPassword.Length > 0
-					                               ? "Inheriting a password from parent folders"
-					                               : "";
+				if (inheritedPassword != null && inheritedPassword.Length > 0)
+				{
+					_passwordTextBox.Visible = false;
+					_inheritedPasswordTextBox.Visible = true;
+				}
 			}
 		}
 	}
