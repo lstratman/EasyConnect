@@ -107,9 +107,6 @@ namespace EasyConnect.Protocols.PowerShell
 
 				_settingsCard.Height -= 60;
 				_settingsLayoutPanel.Height -= 60;
-				_shortcutsLabel.Location = new Point(_shortcutsLabel.Location.X, _shortcutsLabel.Location.Y - 60);
-				_shortcutsCard.Location = new Point(_shortcutsCard.Location.X, _shortcutsCard.Location.Y - 60);
-				_shortcutsLayoutPanel.Location = new Point(_shortcutsLayoutPanel.Location.X, _shortcutsLayoutPanel.Location.Y - 60);
 			}
 
 			if (String.IsNullOrEmpty(Connection.Username) && !String.IsNullOrEmpty(Connection.InheritedUsername))

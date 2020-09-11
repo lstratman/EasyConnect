@@ -46,7 +46,7 @@
             // 
             this._defaultProtocolLabel.BackColor = System.Drawing.Color.White;
             this._defaultProtocolLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._defaultProtocolLabel.Location = new System.Drawing.Point(36, 45);
+            this._defaultProtocolLabel.Location = new System.Drawing.Point(39, 42);
             this._defaultProtocolLabel.Name = "_defaultProtocolLabel";
             this._defaultProtocolLabel.Size = new System.Drawing.Size(174, 20);
             this._defaultProtocolLabel.TabIndex = 65;
@@ -61,7 +61,7 @@
             this._defaultProtocolDropdown.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._defaultProtocolDropdown.ForeColor = System.Drawing.SystemColors.ControlText;
             this._defaultProtocolDropdown.FormattingEnabled = true;
-            this._defaultProtocolDropdown.Location = new System.Drawing.Point(499, 44);
+            this._defaultProtocolDropdown.Location = new System.Drawing.Point(502, 41);
             this._defaultProtocolDropdown.Name = "_defaultProtocolDropdown";
             this._defaultProtocolDropdown.Size = new System.Drawing.Size(182, 25);
             this._defaultProtocolDropdown.TabIndex = 68;
@@ -69,7 +69,7 @@
             // _card
             // 
             this._card.BackColor = System.Drawing.Color.White;
-            this._card.Location = new System.Drawing.Point(12, 22);
+            this._card.Location = new System.Drawing.Point(15, 19);
             this._card.Name = "_card";
             this._card.Size = new System.Drawing.Size(692, 249);
             this._card.TabIndex = 77;
@@ -77,7 +77,7 @@
             // _divider1
             // 
             this._divider1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this._divider1.Location = new System.Drawing.Point(17, 86);
+            this._divider1.Location = new System.Drawing.Point(20, 83);
             this._divider1.Name = "_divider1";
             this._divider1.Size = new System.Drawing.Size(682, 1);
             this._divider1.TabIndex = 78;
@@ -85,7 +85,7 @@
             // _divider2
             // 
             this._divider2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this._divider2.Location = new System.Drawing.Point(17, 146);
+            this._divider2.Location = new System.Drawing.Point(20, 143);
             this._divider2.Name = "_divider2";
             this._divider2.Size = new System.Drawing.Size(682, 1);
             this._divider2.TabIndex = 79;
@@ -93,7 +93,7 @@
             // _divider3
             // 
             this._divider3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this._divider3.Location = new System.Drawing.Point(17, 206);
+            this._divider3.Location = new System.Drawing.Point(20, 203);
             this._divider3.Name = "_divider3";
             this._divider3.Size = new System.Drawing.Size(682, 1);
             this._divider3.TabIndex = 80;
@@ -102,7 +102,7 @@
             // 
             this._autoHideLabel.BackColor = System.Drawing.Color.White;
             this._autoHideLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._autoHideLabel.Location = new System.Drawing.Point(36, 105);
+            this._autoHideLabel.Location = new System.Drawing.Point(39, 102);
             this._autoHideLabel.Name = "_autoHideLabel";
             this._autoHideLabel.Size = new System.Drawing.Size(198, 20);
             this._autoHideLabel.TabIndex = 82;
@@ -113,7 +113,7 @@
             // 
             this._autoHideCheckbox.AutoSize = true;
             this._autoHideCheckbox.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._autoHideCheckbox.Location = new System.Drawing.Point(666, 111);
+            this._autoHideCheckbox.Location = new System.Drawing.Point(669, 108);
             this._autoHideCheckbox.Name = "_autoHideCheckbox";
             this._autoHideCheckbox.Size = new System.Drawing.Size(15, 14);
             this._autoHideCheckbox.TabIndex = 81;
@@ -123,7 +123,7 @@
             // 
             this._encryptionTypeLabel.BackColor = System.Drawing.Color.White;
             this._encryptionTypeLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._encryptionTypeLabel.Location = new System.Drawing.Point(36, 166);
+            this._encryptionTypeLabel.Location = new System.Drawing.Point(39, 163);
             this._encryptionTypeLabel.Name = "_encryptionTypeLabel";
             this._encryptionTypeLabel.Size = new System.Drawing.Size(173, 20);
             this._encryptionTypeLabel.TabIndex = 84;
@@ -138,7 +138,7 @@
             this._encryptionTypeDropdown.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._encryptionTypeDropdown.ForeColor = System.Drawing.SystemColors.ControlText;
             this._encryptionTypeDropdown.FormattingEnabled = true;
-            this._encryptionTypeDropdown.Location = new System.Drawing.Point(499, 165);
+            this._encryptionTypeDropdown.Location = new System.Drawing.Point(502, 162);
             this._encryptionTypeDropdown.Name = "_encryptionTypeDropdown";
             this._encryptionTypeDropdown.Size = new System.Drawing.Size(182, 25);
             this._encryptionTypeDropdown.TabIndex = 83;
@@ -148,7 +148,7 @@
             // 
             this._enableAeroPeekLabel.BackColor = System.Drawing.Color.White;
             this._enableAeroPeekLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._enableAeroPeekLabel.Location = new System.Drawing.Point(36, 226);
+            this._enableAeroPeekLabel.Location = new System.Drawing.Point(39, 223);
             this._enableAeroPeekLabel.Name = "_enableAeroPeekLabel";
             this._enableAeroPeekLabel.Size = new System.Drawing.Size(174, 20);
             this._enableAeroPeekLabel.TabIndex = 86;
@@ -159,7 +159,7 @@
             // 
             this._enableAeroPeekCheckbox.AutoSize = true;
             this._enableAeroPeekCheckbox.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._enableAeroPeekCheckbox.Location = new System.Drawing.Point(666, 230);
+            this._enableAeroPeekCheckbox.Location = new System.Drawing.Point(669, 227);
             this._enableAeroPeekCheckbox.Name = "_enableAeroPeekCheckbox";
             this._enableAeroPeekCheckbox.Size = new System.Drawing.Size(15, 14);
             this._enableAeroPeekCheckbox.TabIndex = 85;

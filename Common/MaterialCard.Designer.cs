@@ -28,9 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MaterialCard));
-            this._topLeftPanel = new System.Windows.Forms.Panel();
-            this._topRightPanel = new System.Windows.Forms.Panel();
+            this._panelTopLeft = new System.Windows.Forms.Panel();
+            this._panelTopRight = new System.Windows.Forms.Panel();
             this._panelTop = new System.Windows.Forms.Panel();
             this._panelBottom = new System.Windows.Forms.Panel();
             this._panelBottomRight = new System.Windows.Forms.Panel();
@@ -39,22 +38,22 @@
             this._panelRight = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
-            // _topLeftPanel
+            // _panelTopLeft
             // 
-            this._topLeftPanel.BackgroundImage = global::EasyConnect.Common.Properties.Resources.PanelTopLeft;
-            this._topLeftPanel.Location = new System.Drawing.Point(0, 0);
-            this._topLeftPanel.Name = "_topLeftPanel";
-            this._topLeftPanel.Size = new System.Drawing.Size(11, 11);
-            this._topLeftPanel.TabIndex = 0;
+            this._panelTopLeft.BackgroundImage = global::EasyConnect.Common.Properties.Resources.PanelTopLeft;
+            this._panelTopLeft.Location = new System.Drawing.Point(0, 0);
+            this._panelTopLeft.Name = "_panelTopLeft";
+            this._panelTopLeft.Size = new System.Drawing.Size(11, 11);
+            this._panelTopLeft.TabIndex = 0;
             // 
-            // _topRightPanel
+            // _panelTopRight
             // 
-            this._topRightPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._topRightPanel.BackgroundImage = global::EasyConnect.Common.Properties.Resources.PanelTopRight;
-            this._topRightPanel.Location = new System.Drawing.Point(289, 0);
-            this._topRightPanel.Name = "_topRightPanel";
-            this._topRightPanel.Size = new System.Drawing.Size(11, 11);
-            this._topRightPanel.TabIndex = 1;
+            this._panelTopRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._panelTopRight.BackgroundImage = global::EasyConnect.Common.Properties.Resources.PanelTopRight;
+            this._panelTopRight.Location = new System.Drawing.Point(289, 0);
+            this._panelTopRight.Name = "_panelTopRight";
+            this._panelTopRight.Size = new System.Drawing.Size(11, 11);
+            this._panelTopRight.TabIndex = 1;
             // 
             // _panelTop
             // 
@@ -63,7 +62,7 @@
             this._panelTop.BackgroundImage = global::EasyConnect.Common.Properties.Resources.PanelTop;
             this._panelTop.Location = new System.Drawing.Point(11, 0);
             this._panelTop.Name = "_panelTop";
-            this._panelTop.Size = new System.Drawing.Size(278, 11);
+            this._panelTop.Size = new System.Drawing.Size(278, 5);
             this._panelTop.TabIndex = 2;
             // 
             // _panelBottom
@@ -71,9 +70,9 @@
             this._panelBottom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._panelBottom.BackgroundImage = global::EasyConnect.Common.Properties.Resources.PanelBottom;
-            this._panelBottom.Location = new System.Drawing.Point(11, 289);
+            this._panelBottom.Location = new System.Drawing.Point(11, 295);
             this._panelBottom.Name = "_panelBottom";
-            this._panelBottom.Size = new System.Drawing.Size(278, 11);
+            this._panelBottom.Size = new System.Drawing.Size(278, 5);
             this._panelBottom.TabIndex = 5;
             // 
             // _panelBottomRight
@@ -98,20 +97,20 @@
             // 
             this._panelLeft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this._panelLeft.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_panelLeft.BackgroundImage")));
+            this._panelLeft.BackgroundImage = global::EasyConnect.Common.Properties.Resources.PanelLeft;
             this._panelLeft.Location = new System.Drawing.Point(0, 11);
             this._panelLeft.Name = "_panelLeft";
-            this._panelLeft.Size = new System.Drawing.Size(11, 278);
+            this._panelLeft.Size = new System.Drawing.Size(5, 278);
             this._panelLeft.TabIndex = 6;
             // 
             // _panelRight
             // 
             this._panelRight.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._panelRight.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("_panelRight.BackgroundImage")));
-            this._panelRight.Location = new System.Drawing.Point(289, 11);
+            this._panelRight.BackgroundImage = global::EasyConnect.Common.Properties.Resources.PanelRight;
+            this._panelRight.Location = new System.Drawing.Point(296, 11);
             this._panelRight.Name = "_panelRight";
-            this._panelRight.Size = new System.Drawing.Size(11, 278);
+            this._panelRight.Size = new System.Drawing.Size(5, 278);
             this._panelRight.TabIndex = 7;
             // 
             // MaterialCard
@@ -125,18 +124,19 @@
             this.Controls.Add(this._panelBottomRight);
             this.Controls.Add(this._panelTop);
             this.Controls.Add(this._panelBottomLeft);
-            this.Controls.Add(this._topRightPanel);
-            this.Controls.Add(this._topLeftPanel);
+            this.Controls.Add(this._panelTopRight);
+            this.Controls.Add(this._panelTopLeft);
             this.Name = "MaterialCard";
             this.Size = new System.Drawing.Size(300, 300);
+            this.Resize += new System.EventHandler(this.MaterialCard_Resize);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel _topLeftPanel;
-        private System.Windows.Forms.Panel _topRightPanel;
+        private System.Windows.Forms.Panel _panelTopLeft;
+        private System.Windows.Forms.Panel _panelTopRight;
         private System.Windows.Forms.Panel _panelTop;
         private System.Windows.Forms.Panel _panelBottom;
         private System.Windows.Forms.Panel _panelBottomRight;
