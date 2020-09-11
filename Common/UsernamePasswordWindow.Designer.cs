@@ -39,19 +39,21 @@
             // 
             // _passwordTextBox
             // 
-            this._passwordTextBox.Location = new System.Drawing.Point(90, 38);
+            this._passwordTextBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._passwordTextBox.Location = new System.Drawing.Point(90, 46);
             this._passwordTextBox.Name = "_passwordTextBox";
             this._passwordTextBox.PasswordChar = '*';
             this._passwordTextBox.SecureText = secureString1;
-            this._passwordTextBox.Size = new System.Drawing.Size(156, 20);
+            this._passwordTextBox.Size = new System.Drawing.Size(156, 25);
             this._passwordTextBox.TabIndex = 2;
             this._passwordTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this._passwordTextBox_KeyDown);
             // 
             // okButton
             // 
-            this.okButton.Location = new System.Drawing.Point(90, 65);
+            this.okButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.okButton.Location = new System.Drawing.Point(89, 79);
             this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(75, 23);
+            this.okButton.Size = new System.Drawing.Size(76, 28);
             this.okButton.TabIndex = 3;
             this.okButton.Text = "OK";
             this.okButton.UseVisualStyleBackColor = true;
@@ -59,9 +61,10 @@
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(171, 65);
+            this.cancelButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cancelButton.Location = new System.Drawing.Point(171, 79);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.Size = new System.Drawing.Size(76, 28);
             this.cancelButton.TabIndex = 4;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -71,17 +74,19 @@
             // 
             this._passwordLabel.AutoSize = true;
             this._passwordLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._passwordLabel.Location = new System.Drawing.Point(19, 38);
+            this._passwordLabel.Location = new System.Drawing.Point(19, 49);
             this._passwordLabel.Name = "_passwordLabel";
             this._passwordLabel.Size = new System.Drawing.Size(67, 17);
             this._passwordLabel.TabIndex = 7;
             this._passwordLabel.Text = "Password:";
+            this._passwordLabel.Click += new System.EventHandler(this._passwordLabel_Click);
             // 
             // _usernameTextBox
             // 
-            this._usernameTextBox.Location = new System.Drawing.Point(90, 12);
+            this._usernameTextBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._usernameTextBox.Location = new System.Drawing.Point(90, 13);
             this._usernameTextBox.Name = "_usernameTextBox";
-            this._usernameTextBox.Size = new System.Drawing.Size(156, 20);
+            this._usernameTextBox.Size = new System.Drawing.Size(156, 25);
             this._usernameTextBox.TabIndex = 1;
             this._usernameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this._usernameTextBox_KeyDown);
             // 
@@ -89,7 +94,7 @@
             // 
             this._usernameLabel.AutoSize = true;
             this._usernameLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._usernameLabel.Location = new System.Drawing.Point(16, 12);
+            this._usernameLabel.Location = new System.Drawing.Point(16, 16);
             this._usernameLabel.Name = "_usernameLabel";
             this._usernameLabel.Size = new System.Drawing.Size(70, 17);
             this._usernameLabel.TabIndex = 9;
@@ -99,7 +104,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(262, 103);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.ClientSize = new System.Drawing.Size(262, 120);
             this.ControlBox = false;
             this.Controls.Add(this._usernameLabel);
             this.Controls.Add(this._usernameTextBox);

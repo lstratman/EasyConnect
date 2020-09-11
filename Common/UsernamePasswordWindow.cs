@@ -106,5 +106,10 @@ namespace EasyConnect.Common
 		{
 			_usernameTextBox.Focus();
 		}
-	}
+
+        private void _passwordLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
 }
