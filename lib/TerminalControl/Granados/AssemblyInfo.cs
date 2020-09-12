@@ -19,7 +19,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCulture("")]
 
 
-[assembly: AssemblyVersion("2.1.2.0")]
+[assembly: AssemblyVersion("3.0.0.0")]
 
 [assembly: AssemblyDelaySign(false)]
 

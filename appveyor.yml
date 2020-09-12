@@ -1,0 +1,14 @@
+version: 3.0.0.{build}
+configuration: Release
+platform: Any CPU
+before_build:
+- ps: .\SetAssemblyVersion.ps1 ${env:APPVEYOR_BUILD_VERSION}
+build:
+  project: EasyConnect.sln
+  verbosity: minimal
+after_build:
+- cmd: 7z a EasyConnect.zip %APPVEYOR_BUILD_FOLDER%\bin\%CONFIGURATION%\*.*
+artifacts:
+- path: Installer\bin\$(configuration)\EasyConnect.msi
+  name: EasyConnect.msi
+- path: EasyConnect.zip
