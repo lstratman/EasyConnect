@@ -8,7 +8,7 @@ build:
   verbosity: minimal
 after_build:
 - cmd: 7z a EasyConnect.zip %APPVEYOR_BUILD_FOLDER%\bin\%CONFIGURATION%\*.*
+- cmd: copy Installer\bin\%CONFIGURATION%\EasyConnect.msi .
 artifacts:
-- path: Installer\bin\$(configuration)\EasyConnect.msi
-  name: EasyConnect.msi
+- path: EasyConnect.msi
 - path: EasyConnect.zip
