@@ -59,14 +59,14 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EasyTabs, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EasyTabs.2.0.0-beta3\lib\net40\EasyTabs.dll</HintPath>
+    <Reference Include="EasyTabs, Version=2.0.0.32, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EasyTabs.2.0.0-beta4\lib\net40\EasyTabs.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EasyTabs.2.0.0-beta3\lib\net40\Microsoft.WindowsAPICodePack.dll</HintPath>
+      <HintPath>..\packages\EasyTabs.2.0.0-beta4\lib\net40\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EasyTabs.2.0.0-beta3\lib\net40\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+      <HintPath>..\packages\EasyTabs.2.0.0-beta4\lib\net40\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

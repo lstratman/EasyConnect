@@ -99,8 +99,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="EasyTabs, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EasyTabs.2.0.0-beta3\lib\net40\EasyTabs.dll</HintPath>
+    <Reference Include="EasyTabs, Version=2.0.0.32, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\EasyTabs.2.0.0-beta4\lib\net40\EasyTabs.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\HtmlRenderer.Core.1.5.1-beta1\lib\net45\HtmlRenderer.dll</HintPath>
@@ -109,10 +109,10 @@
       <HintPath>packages\HtmlRenderer.WinForms.1.5.1-beta1\lib\net45\HtmlRenderer.WinForms.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EasyTabs.2.0.0-beta3\lib\net40\Microsoft.WindowsAPICodePack.dll</HintPath>
+      <HintPath>packages\EasyTabs.2.0.0-beta4\lib\net40\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EasyTabs.2.0.0-beta3\lib\net40\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+      <HintPath>packages\EasyTabs.2.0.0-beta4\lib\net40\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
