@@ -75,6 +75,7 @@ namespace EasyConnect
 		{
 			_parentTabs = Parent.TopLevelControl as MainForm;
 			_autoHideCheckbox.Checked = GlobalSettings.Instance.AutoHideToolbar;
+			_enableAeroPeekCheckbox.Checked = GlobalSettings.Instance.EnableAeroPeek;
 
 			List<ListItem> items = new List<ListItem>
 				                       {
