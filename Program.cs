@@ -110,25 +110,17 @@ namespace EasyConnect
             {
                 string messageBoxText = @"Do you want to use an RSA key container to encrypt your passwords?
 
-The RSA encryption mode uses cryptographic keys associated with 
-your Windows user account to encrypt sensitive data without having 
-to enter an encryption password every time you start this 
-application. However, your bookmarks file will be tied uniquely to 
-this user account and you will be unable to share them between
-multiple users.";
+The RSA encryption mode uses cryptographic keys associated with your Windows user account to encrypt sensitive data without having to enter an encryption password every time you start this application. However, your bookmarks file will be tied uniquely to this user account and you will be unable to share them between multiple users.";
 
                 if (GlobalSettings.Instance.FirstLaunch)
                     messageBoxText += @"
 
-The alternative is to derive an encryption key from a password that
-you will need to enter every time that this application starts.";
+The alternative is to derive an encryption key from a password that you will need to enter every time that this application starts.";
 
                 else
                     messageBoxText += @"
 
-Since you've already encrypted your data with a password once, 
-you would need to enter it one more time to decrypt it before RSA 
-can be used.";
+Since you've already encrypted your data with a password once, you would need to enter it one more time to decrypt it before RSA can be used.";
 
                 GlobalSettings.Instance.EncryptionType = MessageBox.Show(messageBoxText, "Use RSA?", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes
                                              ? EncryptionType.Rsa
