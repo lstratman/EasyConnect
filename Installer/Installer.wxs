@@ -69,6 +69,7 @@
 		<ComponentGroup Id="MainExecutableComponents" Directory="INSTALLFOLDER">
 			<Component Id="ExecutableComponent" Guid="A1710458-E27D-4F40-924D-6CDC30A455E2">
 				<File Id="Executable" Name="$(var.EasyConnect.TargetFileName)" Source="$(var.EasyConnect.TargetPath)"/>
+        <File Id="AppConfig" Name="EasyConnect.exe.config" Source="$(var.EasyConnect.TargetDir)EasyConnect.exe.config"/>
 			</Component>
 			<Component Id="CommonAssemblyComponent" Guid="A7BBA837-FFFE-4767-A110-1464394FDDD0">
 				<File Id="CommonAssembly" Name="$(var.EasyConnect.Common.TargetFileName)" Source="$(var.EasyConnect.Common.TargetPath)"/>
@@ -105,6 +106,9 @@
 			</Component>
 			<Component Id="AutoUpdateComponent" Guid="0D3C0544-EB17-4E32-A8F4-766BC41ACE82">
 				<File Id="AutoUpdateAssembly" Name="AppLimit.NetSparkle.Net40.dll" Source="$(var.EasyConnect.TargetDir)AppLimit.NetSparkle.Net40.dll"/>
+			</Component>
+      <Component Id="SvgAssemblyComponent" Guid="1A754B13-9C7B-4D48-B628-4D1DE9971176">
+				<File Id="SvgAssembly" Name="Svg.dll" Source="$(var.EasyConnect.TargetDir)Svg.dll"/>
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="RdpPluginComponents" Directory="INSTALLFOLDER">
