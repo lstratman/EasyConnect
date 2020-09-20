@@ -616,14 +616,23 @@ namespace EasyConnect
 			// Add the connection to the jump list
 			if (_recentConnections.FirstOrDefault((HistoricalConnection c) => c.Connection.Guid == connection.Guid) == null)
 			{
-				_recentCategory.AddJumpListItems(
-					new JumpListLink(Application.ExecutablePath, connectionWindow.Text)
+				try
+				{
+					_recentCategory.AddJumpListItems(
+						new JumpListLink(Application.ExecutablePath, connectionWindow.Text)
 						{
 							Arguments = "/openHistory:" + connection.Guid.ToString(),
 							IconReference =
-								new IconReference(Application.ExecutablePath, 0)
+									new IconReference(Application.ExecutablePath, 0)
 						});
-				_jumpList.Refresh();
+					_jumpList.Refresh();
+				}
+
+				// Turning off the "show recent documents in the taskbar and start menu" setting in the start menu properties
+				// can cause adding a jump list item to throw an exception, so just ignore the error and continue
+				catch (Exception)
+                {
+                }
 
 				_recentConnections.Enqueue(History.Instance.Connections.First((HistoricalConnection c) => c.Connection.Guid == connection.Guid));
 
@@ -668,16 +677,35 @@ namespace EasyConnect
 				// Add each history entry to the jump list
 				foreach (HistoricalConnection historicalConnection in historicalConnections)
 				{
-					_recentCategory.AddJumpListItems(
-						new JumpListLink(Application.ExecutablePath, historicalConnection.Connection.DisplayName)
+					try
+					{
+						_recentCategory.AddJumpListItems(
+							new JumpListLink(Application.ExecutablePath, historicalConnection.Connection.DisplayName)
 							{
 								Arguments = "/openHistory:" + historicalConnection.Connection.Guid.ToString(),
 								IconReference = new IconReference(Application.ExecutablePath, 0)
 							});
+					}
+
+					// Turning off the "show recent documents in the taskbar and start menu" setting in the start menu properties
+					// can cause adding a jump list item to throw an exception, so just ignore the error and continue
+					catch (Exception)
+                    {
+                    }
+
 					_recentConnections.Enqueue(historicalConnection);
 				}
 
-				_jumpList.Refresh();
+				try
+				{
+					_jumpList.Refresh();
+				}
+
+				// Turning off the "show recent documents in the taskbar and start menu" setting in the start menu properties
+				// can cause adding a jump list item to throw an exception, so just ignore the error and continue
+				catch (Exception)
+                {
+                }
 
 				if (OpenToHistory != Guid.Empty)
 					SelectedTab = await Connect(History.Instance.FindInHistory(OpenToHistory));
