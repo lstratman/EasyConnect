@@ -3,14 +3,14 @@
   <metadata>
     <id>easyconnect</id>
     <title>EasyConnect</title>
-    <version>3.0.0.0</version>
+    <version>1.0.0.0</version>
     <authors>Luke Stratman</authors>
     <owners>Luke Stratman</owners>
     <description>Tabbed remote desktop application with a Chrome-like UI.</description>
     <tags>rdp ssh vnc remote-desktop admin</tags>
     <summary>This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP), Secure Shell (SSH), PowerShell, and VNC but has a plugin architecture designed to enable third-party support for other protocols such as Citrix, etc.</summary>
     <projectUrl>https://github.com/lstratman/EasyConnect</projectUrl>
-    <copyright>(c) 2017, Luke Stratman</copyright>
+    <copyright>(c) 2020, Luke Stratman</copyright>
     <licenseUrl>https://github.com/lstratman/EasyConnect/blob/master/GPL.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <releaseNotes> - Updated the look-and-feel to the latest version of Chrome.
