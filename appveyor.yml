@@ -3,6 +3,7 @@ configuration: Release
 platform: Any CPU
 before_build:
 - ps: .\SetAssemblyVersion.ps1 ${env:APPVEYOR_BUILD_VERSION}
+- ps: [System.IO.File]::ReadAllText("${env:APPVEYOR_BUILD_FOLDER}\app.config").Replace('<add key="checkForUpdates" value="false" />', '<add key="checkForUpdates" value="true" />') | Set-Content ${env:APPVEYOR_BUILD_FOLDER}\app.config
 build:
   project: EasyConnect.sln
   verbosity: minimal
