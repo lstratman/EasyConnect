@@ -13,7 +13,8 @@ using System.Windows.Forms;
 using System.Windows.Input;
 #if !APPX
 using System.Configuration;
-using AppLimit.NetSparkle;
+using NetSparkle;
+using NetSparkle.Enums;
 #endif
 using EasyConnect.Properties;
 using EasyConnect.Protocols;
@@ -23,6 +24,7 @@ using Microsoft.WindowsAPICodePack.Taskbar;
 using Win32Interop.Enums;
 using Win32Interop.Methods;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace EasyConnect
 {
@@ -134,20 +136,25 @@ namespace EasyConnect
 				_sparkle = new Sparkle(
 					String.IsNullOrEmpty(ConfigurationManager.AppSettings["appCastUrl"])
 						? "http://lstratman.github.io/EasyConnect/updates/EasyConnect.xml"
-						: ConfigurationManager.AppSettings["appCastUrl"]);
-				_sparkle.ApplicationWindowIcon = Icon;
-				_sparkle.ApplicationIcon = Icon.ToBitmap();
+						: ConfigurationManager.AppSettings["appCastUrl"], Icon, SecurityMode.Strict);
+				_sparkle.UIFactory = new NetSparkleUIFactory();
+                _sparkle.CloseApplication += _sparkle_CloseApplication;
 
 				_sparkle.StartLoop(true, true);
 			}
 #endif
 		}
 
-		/// <summary>
-		/// Constructor; initializes the UI.
-		/// </summary>
-		/// <param name="openToBookmarks">Bookmarks, if any, that we should open when initially creating the UI.</param>
-		public MainForm(IEnumerable<Guid> openToBookmarks)
+        private void _sparkle_CloseApplication()
+        {
+			Invoke(new Action(() => Close()));
+        }
+
+        /// <summary>
+        /// Constructor; initializes the UI.
+        /// </summary>
+        /// <param name="openToBookmarks">Bookmarks, if any, that we should open when initially creating the UI.</param>
+        public MainForm(IEnumerable<Guid> openToBookmarks)
 			: this()
 		{
 			if (openToBookmarks != null)
@@ -761,32 +768,23 @@ namespace EasyConnect
 		public void CheckForUpdate()
 		{
 #if !APPX
-            if (_sparkle == null)
+			if (_sparkle == null)
             {
-                return;
+				return;
             }
 
-			_sparkle.StopLoop();
-
-			_sparkle = new Sparkle(
-				String.IsNullOrEmpty(ConfigurationManager.AppSettings["appCastUrl"])
-					? "http://lstratman.github.io/EasyConnect/updates/EasyConnect.xml"
-					: ConfigurationManager.AppSettings["appCastUrl"]);
-			_sparkle.ApplicationWindowIcon = Icon;
-			_sparkle.ApplicationIcon = Icon.ToBitmap();
-			_sparkle.checkLoopFinished += _sparkle_checkLoopFinished;
-
-			_sparkle.StartLoop(true, true);
+            _sparkle.UpdateCheckFinished += _sparkle_UpdateCheckFinished;
+			_sparkle.CheckForUpdatesQuietly();
 #endif
 		}
 
 #if !APPX
-        void _sparkle_checkLoopFinished(object sender, bool UpdateRequired)
+        void _sparkle_UpdateCheckFinished(object sender, UpdateStatus status)
 		{
-			_sparkle.checkLoopFinished -= _sparkle_checkLoopFinished;
+			_sparkle.UpdateCheckFinished -= _sparkle_UpdateCheckFinished;
 
-			if (!UpdateRequired)
-				MessageBox.Show(this, "No updates are available.", "Software Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			if (status != UpdateStatus.UpdateAvailable)
+				MessageBox.Show(this, "No updates are available.", "EasyConnect Updater", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 #endif
 	}

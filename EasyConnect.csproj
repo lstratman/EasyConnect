@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EasyConnect</RootNamespace>
     <AssemblyName>EasyConnect</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
     </SccProjectName>
@@ -93,11 +93,6 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <ItemGroup Condition="'$(Configuration)' != 'AppX' And '$(Configuration)' != 'AppXDebug'">
-    <Reference Include="AppLimit.NetSparkle.Net40">
-      <HintPath>lib\AppLimit.NetSparkle.Net40.dll</HintPath>
-    </Reference>
-  </ItemGroup>
   <ItemGroup>
     <Reference Include="EasyTabs, Version=2.0.0.39, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\EasyTabs.2.0.0\lib\net40\EasyTabs.dll</HintPath>
@@ -114,6 +109,9 @@
     <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\EasyTabs.2.0.0\lib\net40\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
+    <Reference Include="NetSparkle, Version=0.19.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\NetSparkle.New.0.19.2\lib\net45\NetSparkle.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -126,15 +124,19 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Design" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.WindowsRuntime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="Win32Interop.Dwmapi, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\Win32Interop.Dwmapi.1.0.1\lib\Win32Interop.Dwmapi.dll</HintPath>
@@ -211,6 +213,19 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalSettings.cs" />
+    <Compile Include="NetSparkleProgressWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NetSparkleProgressWindow.Designer.cs">
+      <DependentUpon>NetSparkleProgressWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NetSparkleUIFactory.cs" />
+    <Compile Include="NetSparkleUpdateWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NetSparkleUpdateWindow.Designer.cs">
+      <DependentUpon>NetSparkleUpdateWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="SettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -243,6 +258,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetSparkleProgressWindow.resx">
+      <DependentUpon>NetSparkleProgressWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetSparkleUpdateWindow.resx">
+      <DependentUpon>NetSparkleUpdateWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsWindow.resx">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
@@ -297,7 +318,6 @@
     <Content Include="AppxManifest.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="lib\AppLimit.NetSparkle.Net40.dll" />
     <Content Include="Resources\TreeViewNodeExpandable.png" />
     <Content Include="Resources\TreeViewNodeExpanded.png" />
     <Content Include="Resources\UrlBoxLeft.png" />
