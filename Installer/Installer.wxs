@@ -105,7 +105,7 @@
 				<File Id="UxthemeInteropAssembly" Name="Win32Interop.Uxtheme.dll" Source="$(var.EasyConnect.TargetDir)Win32Interop.Uxtheme.dll"/>
 			</Component>
 			<Component Id="AutoUpdateComponent" Guid="0D3C0544-EB17-4E32-A8F4-766BC41ACE82">
-				<File Id="AutoUpdateAssembly" Name="AppLimit.NetSparkle.Net40.dll" Source="$(var.EasyConnect.TargetDir)AppLimit.NetSparkle.Net40.dll"/>
+				<File Id="AutoUpdateAssembly" Name="NetSparkle.dll" Source="$(var.EasyConnect.TargetDir)NetSparkle.dll"/>
 			</Component>
       <Component Id="SvgAssemblyComponent" Guid="1A754B13-9C7B-4D48-B628-4D1DE9971176">
 				<File Id="SvgAssembly" Name="Svg.dll" Source="$(var.EasyConnect.TargetDir)Svg.dll"/>
