@@ -38,7 +38,7 @@
     </DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppX|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppXRelease|AnyCPU' ">
     <OutputPath>bin\AppX\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>

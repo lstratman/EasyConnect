@@ -73,7 +73,7 @@
   <PropertyGroup>
     <StartupObject>EasyConnect.Program</StartupObject>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppX|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppXRelease|AnyCPU' ">
     <OutputPath>bin\AppX\</OutputPath>
     <DefineConstants>TRACE;APPX</DefineConstants>
     <Optimize>true</Optimize>
@@ -161,7 +161,7 @@
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
   </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)' == 'AppX' Or '$(Configuration)' == 'AppXDebug'">
+  <ItemGroup Condition="'$(Configuration)' == 'AppXRelease' Or '$(Configuration)' == 'AppXDebug'">
     <Reference Include="Windows">
       <HintPath>c:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral\Windows.winmd</HintPath>
       <Private>False</Private>
@@ -394,9 +394,9 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup Condition="'$(Configuration)' == 'AppX' Or '$(Configuration)' == 'AppXDebug'">
+  <PropertyGroup Condition="'$(Configuration)' == 'AppXRelease' Or '$(Configuration)' == 'AppXDebug'">
     <PostBuildEvent>del "$(TargetDir)*.xml" 1&gt;:null 2&gt;&amp;1
-IF "$(Configuration)" == "AppX" del "$(TargetDir)*.pdb" 1&gt;:null 2&gt;&amp;1
+IF "$(Configuration)" == "AppXRelease" del "$(TargetDir)*.pdb" 1&gt;:null 2&gt;&amp;1
 del "$(TargetDir)$(ProjectName).appx" 1&gt;:null 2&gt;&amp;1
 copy "$(SolutionDir)AppXManifest.xml" "$(TargetDir)" 1&gt;:null 2&gt;&amp;1
 xcopy "$(SolutionDir)AppX\Assets\*" "$(TargetDir)\Assets" /I /Q /Y 1&gt;:null 2&gt;&amp;1
