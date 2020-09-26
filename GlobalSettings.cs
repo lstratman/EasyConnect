@@ -79,9 +79,9 @@ namespace EasyConnect
 		    {
 		        try
 		        {
-		            if (File.Exists(OptionsFileName))
+		            if (File.Exists(SettingsFileName))
 		            {
-		                optionsFileText = File.ReadAllText(OptionsFileName);
+		                optionsFileText = File.ReadAllText(SettingsFileName);
 		            }
 		        }
 
@@ -106,8 +106,8 @@ namespace EasyConnect
             using (StringReader optionsFileTextReader = new StringReader(optionsFileText))
             using (XmlReader optionsXmlReader = new XmlTextReader(optionsFileTextReader))
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(Options));
-                Instance = (Options)serializer.Deserialize(optionsXmlReader);
+                XmlSerializer serializer = new XmlSerializer(typeof(GlobalSettings));
+                Instance = (GlobalSettings)serializer.Deserialize(optionsXmlReader);
             }
 #else
             // If the settings file doesn't exist yet (first time the application is being run), just create a new instance of the class
