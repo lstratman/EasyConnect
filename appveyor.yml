@@ -7,7 +7,7 @@ before_build:
 - ps: '[System.IO.File]::ReadAllText("${env:APPVEYOR_BUILD_FOLDER}\app.config").Replace(''<add key="checkForUpdates" value="false" />'', ''<add key="checkForUpdates" value="true" />'') | Set-Content ${env:APPVEYOR_BUILD_FOLDER}\app.config'
 build:
   project: EasyConnect.sln
-  verbosity: minimal
+#  verbosity: minimal
 after_build:
 - cmd: 7z a EasyConnect.zip %APPVEYOR_BUILD_FOLDER%\bin\%CONFIGURATION%\*.*
 - cmd: copy Installer\bin\%CONFIGURATION%\EasyConnect.msi .
