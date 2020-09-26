@@ -9,55 +9,55 @@
          <title>Version 1.2.0.0</title>
          <sparkle:releaseNotesLink>http://lstratman.github.io/EasyConnect/updates/1.2.html</sparkle:releaseNotesLink>
          <pubDate>Wed, 29 May 2013 17:37:00 -05</pubDate>
-         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-1.2.msi" sparkle:version="1.2.0.0" length="3211264" type="application/octet-stream" />
+         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-1.2.msi" sparkle:version="1.2.0.0" length="3211264" type="application/octet-stream" sparkle:dsaSignature="RxgwdXEWSG86eGB2bs99idE7OBmCxY33qUqO0vIQhOnDIskFLFgxTQ==" />
       </item>
       <item>
          <title>Version 1.3.0.0</title>
          <sparkle:releaseNotesLink>http://lstratman.github.io/EasyConnect/updates/1.3.html</sparkle:releaseNotesLink>
          <pubDate>Mon, 29 Jul 2013 16:29:00 -05</pubDate>
-         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-1.3.msi" sparkle:version="1.3.0.0" length="3219456" type="application/octet-stream" />
+         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-1.3.msi" sparkle:version="1.3.0.0" length="3219456" type="application/octet-stream" sparkle:dsaSignature="MNqnWF0wO7D1saRH6XFZD0N93MSQz/FtP8krxkF4qzkE+QP/N5EkOg==" />
       </item>
       <item>
          <title>Version 1.4.0.0</title>
          <sparkle:releaseNotesLink>http://lstratman.github.io/EasyConnect/updates/1.4.html</sparkle:releaseNotesLink>
          <pubDate>Wed, 06 Nov 2013 15:47:00 -05</pubDate>
-         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-1.4.msi" sparkle:version="1.4.0.0" length="3317760" type="application/octet-stream" />
+         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-1.4.msi" sparkle:version="1.4.0.0" length="3317760" type="application/octet-stream" sparkle:dsaSignature="lhY/gtxMk6R6awsjAEpVvMB65/G+O88shM4tNgoJiJ1OX86vCju4gw==" />
       </item>
       <item>
          <title>Version 1.5.0.0</title>
          <sparkle:releaseNotesLink>http://lstratman.github.io/EasyConnect/updates/1.5.html</sparkle:releaseNotesLink>
          <pubDate>Fri, 06 Dec 2013 13:49:00 -05</pubDate>
-         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-1.5.msi" sparkle:version="1.5.0.0" length="3317760" type="application/octet-stream" />
+         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-1.5.msi" sparkle:version="1.5.0.0" length="3317760" type="application/octet-stream" sparkle:dsaSignature="eEXgH9KYAIJrv6kExBWsDmt1qlh2GJpa0x1XYr30Ba5mBzPRyVw/1A==" />
       </item>
       <item>
          <title>Version 1.5.1.0</title>
          <sparkle:releaseNotesLink>http://lstratman.github.io/EasyConnect/updates/1.5.1.html</sparkle:releaseNotesLink>
          <pubDate>Wed, 11 Dec 2013 10:38:00 -05</pubDate>
-         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-1.5.1.msi" sparkle:version="1.5.1.0" length="3682304" type="application/octet-stream" />
+         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-1.5.1.msi" sparkle:version="1.5.1.0" length="3682304" type="application/octet-stream" sparkle:dsaSignature="YBAHP770myGkTQX9/pipBzEMb6KOfv77n5xdWHyQbIcRw3hvCmez5g==" />
       </item>
       <item>
          <title>Version 2.0.0.0</title>
          <sparkle:releaseNotesLink>http://lstratman.github.io/EasyConnect/updates/2.0.html</sparkle:releaseNotesLink>
          <pubDate>Mon, 17 Jul 2017 13:58:00 -05</pubDate>
-         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-2.0.msi" sparkle:version="2.0.0.0" length="2150400" type="application/octet-stream" />
+         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-2.0.msi" sparkle:version="2.0.0.0" length="2150400" type="application/octet-stream" sparkle:dsaSignature="TgNS/sCGhaqmSSfi3L/+KRiM3RAi6bBkV4j6wn2RyumJyVZmmYRC5g==" />
       </item>
       <item>
          <title>Version 2.0.1.0</title>
          <sparkle:releaseNotesLink>http://lstratman.github.io/EasyConnect/updates/2.0.1.html</sparkle:releaseNotesLink>
          <pubDate>Mon, 17 Jul 2017 16:56:00 -05</pubDate>
-         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-2.0.1.msi" sparkle:version="2.0.1.0" length="2150400" type="application/octet-stream" />
+         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-2.0.1.msi" sparkle:version="2.0.1.0" length="2150400" type="application/octet-stream" sparkle:dsaSignature="tWlLPMHbNg6vx8UROHTWP+eTCOmIgUBxdsDzrQVgbuIiJbhfC+vUJQ==" />
       </item>
       <item>
          <title>Version 2.1.0.0</title>
          <sparkle:releaseNotesLink>http://lstratman.github.io/EasyConnect/updates/2.1.html</sparkle:releaseNotesLink>
          <pubDate>Fri, 17 Nov 2017 14:21:00 -05</pubDate>
-         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-2.1.msi" sparkle:version="2.1.0.0" length="2162688" type="application/octet-stream" />
+         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-2.1.msi" sparkle:version="2.1.0.0" length="2162688" type="application/octet-stream" sparkle:dsaSignature="nno16Yx47s0I+JX9Dueo4IwdVCY+jJ+7NDVT9urAXCpnmR5/gphPbg==" />
       </item>
       <item>
          <title>Version 2.1.1.0</title>
          <sparkle:releaseNotesLink>http://lstratman.github.io/EasyConnect/updates/2.1.1.html</sparkle:releaseNotesLink>
          <pubDate>Tue, 5 May 2018 14:37:00 -05</pubDate>
-         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-2.1.1.msi" sparkle:version="2.1.1.0" length="2162688" type="application/octet-stream" />
+         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-2.1.1.msi" sparkle:version="2.1.1.0" length="2162688" type="application/octet-stream" sparkle:dsaSignature="hlNNlSiNXhLM9Z1FjvuMu+0sGCGI89Cpt3rDpofDcFi0lcQpis0KzA==" />
       </item>
    </channel>
 </rss>
