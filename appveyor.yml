@@ -5,12 +5,14 @@ before_build:
 - cmd: .nuget\NuGet.exe restore
 - ps: .\SetAssemblyVersion.ps1 ${env:APPVEYOR_BUILD_VERSION}
 - ps: '[System.IO.File]::ReadAllText("${env:APPVEYOR_BUILD_FOLDER}\app.config").Replace(''<add key="checkForUpdates" value="false" />'', ''<add key="checkForUpdates" value="true" />'') | Set-Content ${env:APPVEYOR_BUILD_FOLDER}\app.config'
-build:
-  project: EasyConnect.sln
-  verbosity: minimal
+build_script:
+- msbuild EasyConnect.sln /p:Configuration=%CONFIGURATION% /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+- msbuild EasyConnect.sln /p:Configuration=AppX%CONFIGURATION% /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 after_build:
 - cmd: 7z a EasyConnect.zip %APPVEYOR_BUILD_FOLDER%\bin\%CONFIGURATION%\*.*
 - cmd: copy Installer\bin\%CONFIGURATION%\EasyConnect.msi .
+- cmd: copy bin\AppX%CONFIGURATION%\EasyConnect.appx .
 artifacts:
 - path: EasyConnect.msi
 - path: EasyConnect.zip
+- path: EasyConnect.appx
