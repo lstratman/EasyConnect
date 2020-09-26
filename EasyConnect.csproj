@@ -75,7 +75,7 @@
     <StartupObject>EasyConnect.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppXRelease|AnyCPU' ">
-    <OutputPath>bin\AppX\</OutputPath>
+    <OutputPath>bin\AppXRelease\</OutputPath>
     <DefineConstants>TRACE;APPX</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -402,7 +402,7 @@ del "$(TargetDir)$(ProjectName).appx" 1&gt;:null 2&gt;&amp;1
 copy "$(SolutionDir)AppXManifest.xml" "$(TargetDir)" 1&gt;:null 2&gt;&amp;1
 xcopy "$(SolutionDir)AppX\Assets\*" "$(TargetDir)\Assets" /I /Q /Y 1&gt;:null 2&gt;&amp;1
 cd "$(TargetDir)"
-del resources*.pri
+del resources*.pri 1&gt;:null 2&gt;&amp;1
 "$(WindowsSDKBin)\makepri.exe" new /pr . /cf ..\..\priconfig.xml /in $(ProjectName)
 "$(WindowsSDKBin)\makeappx.exe" pack /d . /p $(ProjectName).appx /l
 Exit /b 0</PostBuildEvent>
