@@ -135,12 +135,21 @@ namespace EasyConnect
 			{
 				_sparkle = new Sparkle(
 					String.IsNullOrEmpty(ConfigurationManager.AppSettings["appCastUrl"])
-						? "http://lstratman.github.io/EasyConnect/updates/EasyConnect.xml"
-						: ConfigurationManager.AppSettings["appCastUrl"], Icon, SecurityMode.Strict);
+						? "https://lstratman.github.io/EasyConnect/updates/EasyConnect.xml"
+						: ConfigurationManager.AppSettings["appCastUrl"],
+					Icon,
+					SecurityMode.Strict,
+					"<DSAKeyValue><P>12ewCqvTWhA9MrRLFDyvohdnbTaNkktQCzu87Tolcs7pOQcwsA0wnZF5Tkp2m21H0Y4N5vILPttmXizYLUZUSndLRfJlBtKWJi45CrUVZaMsEgYECXNrxuPGt9U9guPX39xdn1wwB/8TZRmAzqVSyDnrNw6e+2Ln9EJUG6RwmVc=</P><Q>ydyEMyIgVPSHlJvv5pcp+/DE8wU=</Q><G>It/uZNoAH//7ZQDmcjMNtInYRQ4MJBAp3posEglTlsWHb/BcKLqDkd4R0FkL6T+ZCu8DeC7TK4bPiecWDPY9E3MRmtivCxJVGD3LPv1eTsuRl+MyOg4z6KsbPTtXFjnDdG1+0zm3hzKntzgHiY6OaHwJaYlyLMmlFoNePUo4zN4=</G><Y>J3eg75iIHjUqklOn/CUOR9FALbSz4LFiswBbQBAertYwWbjLvKnr85hMTLgoFKMW+s5PHJaTBSAMmZS4rLj01Rver12JcoXs9t/mwuJYSw6QNwIO1Oau1OXF4dqA8fOH/XCGGcRzMdLt8FxtzRTuU5H88afsg5yjui54ezg6c3U=</Y></DSAKeyValue>");
+
 				_sparkle.UIFactory = new NetSparkleUIFactory();
                 _sparkle.CloseApplication += _sparkle_CloseApplication;
 
-				_sparkle.StartLoop(true, true);
+				_sparkle.StartLoop(
+					true, 
+					true, 
+					String.IsNullOrEmpty(ConfigurationManager.AppSettings["updateCheckMinutes"]) 
+						? TimeSpan.FromMinutes(60 * 24) 
+						: TimeSpan.FromMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["updateCheckMinutes"])));
 			}
 #endif
 		}
