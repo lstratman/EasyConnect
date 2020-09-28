@@ -1,7 +1,5 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/u8ugbo8oh1mffhet?svg=true)](https://ci.appveyor.com/project/lstratman/easyconnect)
 
-### Get the installer for the latest released version <a href="http://lstratman.github.io/EasyConnect/updates/EasyConnect.msi" target="_blank">here</a> or for the latest CI version <a href="https://ci.appveyor.com/api/projects/lstratman/EasyConnect/artifacts/Installer/bin/Release/EasyConnect.msi" target="_blank">here</a>.  You can also install it from the Microsoft Store <a href="https://www.microsoft.com/en-us/store/p/easyconnect/9nml5g3phdg1?rtc=1" target="_blank">here</a>.
-
 This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP), Secure Shell (SSH), PowerShell, and VNC but has a plugin architecture designed to enable third-party support for other protocols such as Citrix, etc.
 
 <a href="http://lstratman.github.com/EasyConnect/images/screenshots/bookmarks.png" target="_blank"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/bookmarks.png"/></a>
@@ -11,14 +9,22 @@ This is a Windows tabbed remote desktop application whose UI was designed to res
 <a href="http://lstratman.github.com/EasyConnect/images/screenshots/options.png" target="_blank"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/options.png"/></a>
 <a href="http://lstratman.github.com/EasyConnect/images/screenshots/history.png" target="_blank"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/history.png"/></a>
 
+## Installation Options
+
+ - [Release installer](https://lstratman.github.io/EasyConnect/updates/EasyConnect.msi)
+ - [CI installer](https://ci.appveyor.com/api/projects/lstratman/EasyConnect/artifacts/EasyConnect.msi)
+ - [Microsoft Store](https://www.microsoft.com/en-us/store/p/easyconnect/9nml5g3phdg1?rtc=1)
+ - WinGet: `winget install easyconnect`
+ - Chocolatey: `choco install easyconnect`
+
 ## Implementing Protocol Plugins
 
-For an example of implementing a protocol plugin, you can look at the EasyConnect.Protocols.Rdp project.  You'll want to reference EasyConnect.Common and EasyConnect.Protocols and then implement classes that inherit from the following base classes:
+For an example of implementing a protocol plugin, you can look at the `EasyConnect.Protocols.Rdp` project.  You'll want to reference` EasyConnect.Common` and `EasyConnect.Protocols` and then implement classes that inherit from the following base classes:
 
-* BaseConnection - This holds the configuration for a connection using your protocol.  Make sure to implement your own ISerializable constructor and override GetObjectData()
-* BaseConnectionForm&lt;T&gt; - This is the form that contains the actual UI controls and logic to create a connection using your protocol.  The easiest thing to do is initially derive from Form, design the window (bear in mind that it will be displayed as a child of a Panel control with a BorderStyle of None), and then change the base class to BaseConnectionForm&lt;T&gt;.
-* IOptionsForm - This is the form that will allow the user to configure a connection using your protocol.  Like BaseConnectionForm&lt;T&gt;, this will be displayed as a child of a Panel control with a BorderStyle of None.
-* BaseProtocol - This serves simply to aggregate the previous classes and provide some display data for your new protocol.
+* `BaseConnection` - This holds the configuration for a connection using your protocol.  Make sure to implement your own `ISerializable` constructor and override `GetObjectData()`
+* `BaseConnectionForm&l`t;T&gt; - This is the form that contains the actual UI controls and logic to create a connection using your protocol.  The easiest thing to do is initially derive from `Form`, design the window (bear in mind that it will be displayed as a child of a `Panel` control with a `BorderStyle` of `None`), and then change the base class to `BaseConnectionForm&l`t;T&gt;.
+* `IOptionsForm` - This is the form that will allow the user to configure a connection using your protocol.  Like `BaseConnectionForm&l`t;T&gt;, this will be displayed as a child of a `Panel` control with a `BorderStyle` of `None`.
+* `BaseProtocol` - This serves simply to aggregate the previous classes and provide some display data for your new protocol.
 
 That's it!  Just make sure that the assembly for your protocol is in the EasyConnect directory and it will be picked up and used automatically by the application.  The protocol plugin architecture is still evolving, so if you find limitations to the API or want other things added to enable you to implement your protocol, please feel free to contact me or send me a pull request.  I'm also happy to accept pull requests for your protocol projects to include them in the main application.
 
