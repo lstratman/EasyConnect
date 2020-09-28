@@ -18,3 +18,4 @@ artifacts:
 - path: EasyConnect.msi
 - path: EasyConnect.zip
 - path: EasyConnect.appx
+- path: '*.nupkg'
