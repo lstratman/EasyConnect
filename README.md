@@ -22,7 +22,7 @@ This is a Windows tabbed remote desktop application whose UI was designed to res
 For an example of implementing a protocol plugin, you can look at the `EasyConnect.Protocols.Rdp` project.  You'll want to reference` EasyConnect.Common` and `EasyConnect.Protocols` and then implement classes that inherit from the following base classes:
 
 * `BaseConnection` - This holds the configuration for a connection using your protocol.  Make sure to implement your own `ISerializable` constructor and override `GetObjectData()`
-* `BaseConnectionForm&l`t;T&gt; - This is the form that contains the actual UI controls and logic to create a connection using your protocol.  The easiest thing to do is initially derive from `Form`, design the window (bear in mind that it will be displayed as a child of a `Panel` control with a `BorderStyle` of `None`), and then change the base class to `BaseConnectionForm&l`t;T&gt;.
+* `BaseConnectionForm<T>` - This is the form that contains the actual UI controls and logic to create a connection using your protocol.  The easiest thing to do is initially derive from `Form`, design the window (bear in mind that it will be displayed as a child of a `Panel` control with a `BorderStyle` of `None`), and then change the base class to `BaseConnectionForm&l`t;T&gt;.
 * `IOptionsForm` - This is the form that will allow the user to configure a connection using your protocol.  Like `BaseConnectionForm&l`t;T&gt;, this will be displayed as a child of a `Panel` control with a `BorderStyle` of `None`.
 * `BaseProtocol` - This serves simply to aggregate the previous classes and provide some display data for your new protocol.
 
