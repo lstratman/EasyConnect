@@ -35,6 +35,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4613C881-E174-4DD8-965C-ED053A28D543}"
 	ProjectSection(SolutionItems) = preProject
 		appveyor.yml = appveyor.yml
+		Chocolatey\tools\chocolateyInstall.ps1 = Chocolatey\tools\chocolateyInstall.ps1
+		Chocolatey\EasyConnect.nuspec = Chocolatey\EasyConnect.nuspec
 	EndProjectSection
 EndProject
 Global

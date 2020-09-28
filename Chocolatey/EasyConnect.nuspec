@@ -13,11 +13,12 @@
     <copyright>(c) 2020, Luke Stratman</copyright>
     <licenseUrl>https://github.com/lstratman/EasyConnect/blob/master/GPL.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <releaseNotes> - Updated the look-and-feel to the latest version of Chrome.
- - Updated the codebase for the terminal control used by the SSH and PowerShell plugins to the most recent version of the Poderosa project.
- - Moved to a new library for VNC connections.
- - Scrolling is now automatically enabled for all option screens.
- - Added the ability to specify the port for remote desktop connections.</releaseNotes>
+    <releaseNotes>
+      - Updated the UI to the look and feel of Chrome v85
+      - VNC plugin now uses the VncSharp package instead of RemoteViewing
+      - Turning off recent document tracking in the Start Menu settings no longer causes an exception to be thrown when trying to populate the jump list
+      - Auto update manifest is now signed and the auto updater checks signatures for the update MSI files
+    </releaseNotes>
   </metadata>
   <files>
     <file src="tools\**" target="tools" />
