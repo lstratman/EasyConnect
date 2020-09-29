@@ -29,9 +29,15 @@ foreach ($file in $foundFiles)
 	(Get-Content $file) | ForEach-Object {$_ -Replace ("version = """ + $assemblyPattern + """"), ("version = """ + $newVersion + """") } | Set-Content $file
 }
 
+$appxVersion = $newVersion
+
+if ($appxVersion.Split(".") -gt 3) {
+	$appxVersion = [String]::Join(".", $version.Split(".")[0..2]) + ".0"
+}
+
 $foundFiles = Get-ChildItem AppxManifest.xml -Recurse
 
 foreach ($file in $foundFiles)
 {
-	(Get-Content $file) | ForEach-Object {$_ -Replace (" Version=""" + $assemblyPattern + """"), (" Version=""" + $newVersion + """") } | Set-Content $file
+	(Get-Content $file) | ForEach-Object {$_ -Replace (" Version=""" + $assemblyPattern + """"), (" Version=""" + $appxVersion + """") } | Set-Content $file
 }
