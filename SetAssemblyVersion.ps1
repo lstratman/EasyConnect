@@ -31,7 +31,7 @@ foreach ($file in $foundFiles)
 
 $appxVersion = $newVersion
 
-if ($appxVersion.Split(".") -gt 3) {
+if ($appxVersion.Split(".").Count -gt 3) {
 	$appxVersion = [String]::Join(".", $newVersion.Split(".")[0..2]) + ".0"
 }
 
