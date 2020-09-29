@@ -32,7 +32,7 @@ foreach ($file in $foundFiles)
 $appxVersion = $newVersion
 
 if ($appxVersion.Split(".") -gt 3) {
-	$appxVersion = [String]::Join(".", $version.Split(".")[0..2]) + ".0"
+	$appxVersion = $version.Split(".")[0] + "." + $version.Split(".")[1] + "." + $version.Split(".")[2] + ".0"
 }
 
 $foundFiles = Get-ChildItem AppxManifest.xml -Recurse
