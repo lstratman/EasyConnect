@@ -50,7 +50,7 @@ body {
 }
 
 #screenshots {
-    border-radius: 3px;
+    border-radius: 0px;
     box-shadow: 0 0 3px #777;
 }
 
@@ -63,7 +63,7 @@ body {
 }
 
 #screenshots img {
-    border-radius: 5px;
+    border-radius: 0px;
     width: 400px;
     height: 271px;
     background-color: #fff;
@@ -188,4 +188,12 @@ pre .comm {
 
 .col-md-7 h1 img {
     margin-top: -14px
+}
+
+code {
+    font-family: "Cascadia Code","Consolas","Courier New",monospace;
+    color: black;
+    font-size: 14pt;
+    background-color: #ededed;
+    padding: 10px;
 }
