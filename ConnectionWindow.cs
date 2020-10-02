@@ -10,6 +10,7 @@ using Timer = System.Timers.Timer;
 using System.Configuration;
 using System.Threading.Tasks;
 using TheArtOfDev.HtmlRenderer.WinForms;
+using System.Globalization;
 
 namespace EasyConnect
 {
@@ -273,7 +274,7 @@ namespace EasyConnect
 			{
 				Match urlMatch = Regex.Match(urlTextBox.Text, "^((?<protocol>.*)://){0,1}(?<hostName>.*)$");
 
-				_urlPanel.Text = String.Format(
+				_urlPanel.Text = String.Format(CultureInfo.InvariantCulture,
 					@"<div style=""background-color: #F1F3F4; font-family: {2}; font-size: {3}pt; height: {4}px; color: #707172;"">{0}://<font color=""black"">{1}</font></div>",
 					urlMatch.Groups["protocol"].Success
 						? urlMatch.Groups["protocol"].Value
@@ -454,7 +455,7 @@ namespace EasyConnect
 				_toolbarBorder.Visible = false;
             }
 
-			_urlPanel.Text = String.Format(
+			_urlPanel.Text = String.Format(CultureInfo.InvariantCulture,
 				@"<div style=""background-color: #F1F3F4; font-family: {2}; font-size: {3}pt; height: {4}px; color: #707172;"">{0}://<font color=""black"">{1}</font></div>",
 				ConnectionFactory.GetProtocol(_connection).ProtocolPrefix, _connection.Host, urlTextBox.Font.FontFamily.GetName(0), urlTextBox.Font.SizeInPoints,
 				_urlPanel.Height);
@@ -945,7 +946,7 @@ namespace EasyConnect
 
 					// Set the text of the auto-complete item to "{Protocol}://{URI} - {DisplayName}" and bold the matching portions of the text
 					autoCompletePanel.Text =
-						String.Format(
+						String.Format(CultureInfo.InvariantCulture,
 							@"<div style=""background-color: #FFFFFF; padding-left: 29px; padding-top: 6px; padding-right: 5px; font-family: {3}; font-size: {4}pt; height: 30px; color: #9999BF;""><font color=""green"">{0}://{1}</font>{2}</div>",
 							ConnectionFactory.GetProtocol(connection).ProtocolPrefix,
 							Regex.Replace(connection.Host, urlTextBox.Text, "<b>$0</b>", RegexOptions.IgnoreCase), connection.DisplayName == connection.Host

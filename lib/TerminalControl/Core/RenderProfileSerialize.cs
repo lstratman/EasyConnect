@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.Diagnostics;
+using System.Globalization;
 
 #if UNITTEST
 using System.IO;
@@ -32,7 +33,7 @@ namespace Poderosa.View {
             RenderProfile prof = (RenderProfile)obj;
             storage.Set("font-name", prof.FontName);
             storage.Set("cjk-font-name", prof.CJKFontName);
-            storage.Set("font-size", prof.FontSize.ToString());
+            storage.Set("font-size", prof.FontSize.ToString(CultureInfo.InvariantCulture));
             storage.Set("line-spacing", prof.LineSpacing.ToString());
             if (prof.UseClearType)
                 storage.Set("clear-type", "true");
