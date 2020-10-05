@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using EasyConnect.Common;
 using TheArtOfDev.HtmlRenderer.WinForms;
 using Svg;
+using System.Globalization;
 
 namespace EasyConnect
 {
@@ -192,7 +193,7 @@ namespace EasyConnect
             };
 
             _urlPanelContainer.Controls.Add(_urlPanel);
-            _urlPanel.Text = String.Format(
+            _urlPanel.Text = String.Format(CultureInfo.InvariantCulture,
 					@"<span style=""background-color: #F1F3F4; font-family: {2}; font-size: {1}pt; height: {0}px; color: #707172"">easyconnect://<font color=""black"">bookmarks</font></span>",
                     _urlPanel.Height, urlTextBox.Font.SizeInPoints, urlTextBox.Font.FontFamily.GetName(0));
 
