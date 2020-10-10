@@ -389,6 +389,10 @@
       <Project>{ad8e208e-4e00-4c37-98ab-ac1cf8538fb9}</Project>
       <Name>EasyConnect.Protocols.Ssh</Name>
     </ProjectReference>
+    <ProjectReference Include="Protocols\Telnet\EasyConnect.Protocols.Telnet.csproj">
+      <Project>{3c101570-f914-4b69-8e96-ce45fbdc8fa5}</Project>
+      <Name>EasyConnect.Protocols.Telnet</Name>
+    </ProjectReference>
     <ProjectReference Include="Protocols\Vnc\EasyConnect.Protocols.Vnc.csproj">
       <Project>{13122d85-c813-4217-ae28-7921fc5588b2}</Project>
       <Name>EasyConnect.Protocols.Vnc</Name>

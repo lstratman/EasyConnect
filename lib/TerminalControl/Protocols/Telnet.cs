@@ -20,7 +20,7 @@ namespace Poderosa.Protocols {
     /// それ以外のTelnetOptionは拒否するが、拒否が成立しなくても_refusedOptionに格納するだけでエラーにはしない。
     /// オプションのネゴシエーションが終了したら、最後に受信したパケットはもうシェル本体であるので、呼び出し側はこれを使うようにしないといけない。
     /// </summary>
-    internal class TelnetNegotiator {
+    public class TelnetNegotiator {
         private string _terminalType;
         //必要ならここから情報を読む
         private int _width;
@@ -31,7 +31,7 @@ namespace Poderosa.Protocols {
         private TelnetOptionWriter _optionWriter;
         private bool _defaultOptionSent;
 
-        internal enum ProcessResult {
+        public enum ProcessResult {
             NOP,
             REAL_0xFF
         }

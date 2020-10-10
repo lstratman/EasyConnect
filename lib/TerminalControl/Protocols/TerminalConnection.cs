@@ -21,7 +21,7 @@ using Granados.SSH2;
 using Granados.KeyboardInteractive;
 
 namespace Poderosa.Protocols {
-    internal class PlainPoderosaSocket : IPoderosaSocket {
+    public class PlainPoderosaSocket : IPoderosaSocket {
         private IByteAsyncInputStream _callback;
         private Socket _socket;
         private byte[] _buf;
@@ -366,7 +366,7 @@ namespace Poderosa.Protocols {
 
     }
 
-    internal class TelnetReceiver : IByteAsyncInputStream {
+    public class TelnetReceiver : IByteAsyncInputStream {
         private IByteAsyncInputStream _callback;
         private TelnetNegotiator _negotiator;
         private TelnetTerminalConnection _parent;
@@ -390,10 +390,20 @@ namespace Poderosa.Protocols {
         }
 
         public void OnNormalTermination() {
+            if (NormalTermination != null)
+            {
+                NormalTermination.Invoke(this, null);
+            }
+
             _callback.OnNormalTermination();
         }
 
         public void OnAbnormalTermination(string msg) {
+            if (AbnormalTermination != null)
+            {
+                AbnormalTermination.Invoke(this, new AbnormalTerminationEventArgs(msg));
+            }
+
             _callback.OnAbnormalTermination(msg);
         }
 
@@ -432,9 +442,12 @@ namespace Poderosa.Protocols {
             }
 
         }
+
+        public event EventHandler NormalTermination;
+        public event EventHandler<AbnormalTerminationEventArgs> AbnormalTermination;
     }
 
-    internal class TelnetSocket : IPoderosaSocket, ITerminalOutput {
+    public class TelnetSocket : IPoderosaSocket, ITerminalOutput {
         private IPoderosaSocket _socket;
         private TelnetReceiver _callback;
         private TelnetTerminalConnection _parent;
@@ -539,7 +552,7 @@ namespace Poderosa.Protocols {
         }
     }
 
-    internal class TelnetTerminalConnection : TCPTerminalConnection {
+    public class TelnetTerminalConnection : TCPTerminalConnection {
         private TelnetReceiver _telnetReceiver;
         private TelnetSocket _telnetSocket;
         private IPoderosaSocket _rawSocket;
@@ -554,6 +567,11 @@ namespace Poderosa.Protocols {
             _rawSocket = s;
             _socket = _telnetSocket;
             _terminalOutput = _telnetSocket;
+        }
+        public TelnetReceiver ConnectionEventReceiver { 
+            get {
+                return _telnetReceiver;
+            }
         }
         //Telnetのエスケープ機能つき
         public TelnetSocket TelnetSocket {
@@ -635,5 +653,14 @@ namespace Poderosa.Protocols {
         }
     }
 
+    public class AbnormalTerminationEventArgs : EventArgs
+    {
+        public string Message;
+
+        public AbnormalTerminationEventArgs(string message)
+        {
+            Message = message;
+        }
+    }
 
 }

@@ -251,7 +251,7 @@ namespace Granados {
         void OnConnectionClosed();
 
         event EventHandler NormalTermination;
-        event EventHandler<AbnormalTerminationEventArgs> AbnormalTermination;
+        event EventHandler<global::Poderosa.Protocols.AbnormalTerminationEventArgs> AbnormalTermination;
     }
 
     /// <summary>
@@ -259,7 +259,7 @@ namespace Granados {
     /// </summary>
     public class SimpleSSHConnectionEventHandler : ISSHConnectionEventHandler {
         public event EventHandler NormalTermination;
-        public event EventHandler<AbnormalTerminationEventArgs> AbnormalTermination;
+        public event EventHandler<global::Poderosa.Protocols.AbnormalTerminationEventArgs> AbnormalTermination;
 
         public virtual void OnDebugMessage(bool alwaysDisplay, string message) {
         }
@@ -402,7 +402,7 @@ namespace Granados.SSH {
             }
         }
 
-        public event EventHandler<AbnormalTerminationEventArgs> AbnormalTermination
+        public event EventHandler<global::Poderosa.Protocols.AbnormalTerminationEventArgs> AbnormalTermination
         {
             add
             {
@@ -569,16 +569,6 @@ namespace Granados.SSH {
 
             throw new SSHException(
                 String.Format(Strings.GetString("InvalidServerVersionFormat"), _serverVersion));
-        }
-    }
-
-    public class AbnormalTerminationEventArgs : EventArgs
-    {
-        public string Message;
-
-        public AbnormalTerminationEventArgs(string message)
-        {
-            Message = message;
         }
     }
 
