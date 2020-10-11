@@ -82,12 +82,9 @@ namespace EasyConnect.Protocols.Telnet
 		/// <param name="e">Arguments associated with this event.</param>
 		private void TelnetSettingsForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			Connection.Username = _userNameTextBox.ForeColor == Color.LightGray ? "" : _userNameTextBox.Text;
 			Connection.Host = _hostNameTextBox.Text;
-			Connection.Password = _passwordTextBox.SecureText;
 			Connection.BackgroundColor = _backgroundColorPanel.BackColor;
 			Connection.TextColor = _textColorPanel.BackColor;
-			Connection.IdentityFile = _identityFileTextBox.Text;
 			Connection.Font = _font;
             Connection.Encoding = _encodingTypes[_encodingDropdown.Text];
             Connection.Port = Convert.ToInt32(_portTextBox.Text);
@@ -106,14 +103,9 @@ namespace EasyConnect.Protocols.Telnet
 			_backgroundColorPanel.BackColor = Connection.BackgroundColor;
 			_textColorPanel.BackColor = Connection.TextColor;
 			_fontTextBox.Text = Connection.Font.FontFamily.GetName(0);
-			_userNameTextBox.Text = Connection.Username;
 			_hostNameTextBox.Text = Connection.Host;
-			_identityFileTextBox.Text = Connection.IdentityFile;
             _encodingDropdown.Text = _encodingTypes.Single(p => p.Value == Connection.Encoding).Key;
             _portTextBox.Text = Connection.Port.ToString();
-			_passwordTextBox.SecureText = Connection.Password == null
-				                              ? new SecureString()
-				                              : Connection.Password.Copy();
 
 			// Hide the host panel if we're in defaults mode
 			if (DefaultsMode)
@@ -124,18 +116,6 @@ namespace EasyConnect.Protocols.Telnet
 
 				_settingsCard.Height -= 60;
 				_settingsLayoutPanel.Height -= 60;
-			}
-
-			if (String.IsNullOrEmpty(Connection.Username) && !String.IsNullOrEmpty(Connection.InheritedUsername))
-			{
-				_userNameTextBox.ForeColor = Color.LightGray;
-				_userNameTextBox.Text = "Inheriting " + Connection.InheritedUsername;
-			}
-
-			if ((Connection.Password == null || Connection.Password.Length == 0) && Connection.InheritedPassword != null && Connection.InheritedPassword.Length > 0)
-			{
-				_inheritedPasswordTextBox.Visible = true;
-				_passwordTextBox.Visible = false;
 			}
 		}
 
@@ -188,67 +168,6 @@ namespace EasyConnect.Protocols.Telnet
 
 			if (result == DialogResult.OK)
 				_textColorPanel.BackColor = _colorDialog.Color;
-		}
-
-		/// <summary>
-		/// Handler method that's called when the <see cref="_identityFileBrowseButton"/> is clicked.  Displays a file selection dialog and saves the resulting 
-		/// file path to <see cref="_identityFileTextBox"/>.
-		/// </summary>
-		/// <param name="sender">Object from which this event originated, <see cref="_identityFileBrowseButton"/> in this case.</param>
-		/// <param name="e">Arguments associated with this event.</param>
-		private void _identityFileBrowseButton_Click(object sender, EventArgs e)
-		{
-			if (!String.IsNullOrEmpty(_identityFileTextBox.Text))
-				_openFileDialog.FileName = _identityFileTextBox.Text;
-
-			DialogResult result = _openFileDialog.ShowDialog();
-
-			if (result == DialogResult.OK)
-				_identityFileTextBox.Text = _openFileDialog.FileName;
-		}
-
-		private void _userNameTextBox_Leave(object sender, EventArgs e)
-		{
-			if (String.IsNullOrEmpty(_userNameTextBox.Text) && !String.IsNullOrEmpty(Connection.InheritedUsername))
-			{
-				_userNameTextBox.ForeColor = Color.LightGray;
-				_userNameTextBox.Text = "Inheriting " + Connection.InheritedUsername;
-			}
-		}
-
-		private void _userNameTextBox_Enter(object sender, EventArgs e)
-		{
-			if (_userNameTextBox.ForeColor == Color.LightGray)
-			{
-				_userNameTextBox.ForeColor = Color.Black;
-				_userNameTextBox.Text = "";
-			}
-		}
-
-		private void _inheritedPasswordTextBox_Enter(object sender, EventArgs e)
-		{
-			_inheritedPasswordTextBox.Visible = false;
-			_passwordTextBox.Visible = true;
-			_passwordTextBox.Focus();
-		}
-
-		private void _passwordTextBox_Leave(object sender, EventArgs e)
-		{
-			if (_passwordTextBox.Focused)
-			{
-				return;
-			}
-
-			if (_passwordTextBox.SecureText == null || _passwordTextBox.SecureText.Length == 0)
-			{
-				SecureString inheritedPassword = Connection.GetInheritedPassword(Connection.ParentFolder);
-
-				if (inheritedPassword != null && inheritedPassword.Length > 0)
-				{
-					_passwordTextBox.Visible = false;
-					_inheritedPasswordTextBox.Visible = true;
-				}
-			}
 		}
 	}
 }
