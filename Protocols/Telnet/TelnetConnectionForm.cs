@@ -77,45 +77,6 @@ namespace EasyConnect.Protocols.Telnet
 			tcpParameters.Port = Connection.Port;
 
 			PoderosaProtocolService.AsyncTelnetConnect(this, tcpParameters);
-
-   //         telnetParameters.Account = Connection.InheritedUsername;
-
-			//SecureString password = Connection.InheritedPassword;
-
-			//// Set the auth file and the auth method to PublicKey if an identity file was specified
-		 //   if (!String.IsNullOrEmpty(Connection.IdentityFile))
-		 //   {
-   //             telnetParameters.AuthenticationType = AuthenticationType.PublicKey;
-		 //       telnetParameters.IdentityFileName = Connection.IdentityFile;
-
-		 //       PoderosaProtocolService.AsyncSSHConnect(this, telnetParameters);
-   //         }
-
-		 //   // Otherwise, set the auth type to Password
-		 //   else if (password != null && password.Length > 0)
-		 //   {
-		 //       SetSshPassword(telnetParameters, password);
-		 //       PoderosaProtocolService.AsyncSSHConnect(this, telnetParameters);
-   //         }
-
-   //         else
-   //         {
-   //             UsernamePasswordWindow usernamePasswordWindow = new UsernamePasswordWindow
-   //                                                             {
-   //                                                                 Username = String.IsNullOrEmpty(Connection.InheritedUsername) ? Environment.UserName : Connection.InheritedUsername
-   //                                                             };
-
-   //             if (usernamePasswordWindow.ShowDialog() == DialogResult.OK)
-   //             {
-   //                 Connection.Username = usernamePasswordWindow.Username;
-   //                 Connection.Password = usernamePasswordWindow.Password;
-
-   //                 telnetParameters.Account = usernamePasswordWindow.Username;
-   //                 SetSshPassword(telnetParameters, usernamePasswordWindow.Password);
-
-   //                 PoderosaProtocolService.AsyncSSHConnect(this, telnetParameters);
-   //             }
-   //         }
 		}
 
 	    protected override void OnConnected(object sender, EventArgs e)
