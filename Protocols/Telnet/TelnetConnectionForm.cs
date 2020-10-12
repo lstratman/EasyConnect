@@ -119,6 +119,7 @@ namespace EasyConnect.Protocols.Telnet
 	                    _telnetConnection.ConnectionEventReceiver.AbnormalTermination += ConnectionEventReceiver_AbnormalTermination;
 
                         ParentForm.Closing += ParentForm_OnClosing;
+						connection.TerminalOutput.Resize(session.Terminal.GetDocument().TerminalWidth, session.Terminal.GetDocument().TerminalHeight);
 
 	                    OnConnected(_terminal, null);
                     }));
