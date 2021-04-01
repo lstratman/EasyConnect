@@ -68,12 +68,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VncSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=61974755c7bfea7c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\VncSharp.1.0.7.0\lib\VncSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Win32Interop.User32, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Win32Interop.User32.1.0.1\lib\Win32Interop.User32.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources.Designer.cs">
@@ -120,10 +114,16 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="Resources\Vnc.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="VncSharp">
+      <Version>1.0.7</Version>
+    </PackageReference>
+    <PackageReference Include="Win32Interop.User32">
+      <Version>1.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
