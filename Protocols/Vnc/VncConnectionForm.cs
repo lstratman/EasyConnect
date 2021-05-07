@@ -8,6 +8,7 @@ using System.Security;
 using System.Windows.Forms;
 using Win32Interop.Enums;
 using EasyConnect.Common;
+using System.Threading;
 
 namespace EasyConnect.Protocols.Vnc
 {
@@ -22,6 +23,7 @@ namespace EasyConnect.Protocols.Vnc
 
 		protected VncClient _vncClient = null;
 		protected RfbConnection _vncConnection = null;
+		protected CancellationTokenSource _connectionCancellation = null;
 
 		/// <summary>
 		/// Default constructor.
@@ -73,6 +75,8 @@ namespace EasyConnect.Protocols.Vnc
 			_vncDesktop.Width = ClientSize.Width;
 			_vncDesktop.Height = ClientSize.Height;
 
+			_connectionCancellation = new CancellationTokenSource();
+
 			_vncClient.ConnectAsync(new ConnectParameters
 			{
 				TransportParameters = new TcpTransportParameters
@@ -82,7 +86,7 @@ namespace EasyConnect.Protocols.Vnc
                 },
 				AuthenticationHandler = new VncAuthenticationHandler(GetPassword()),
 				InitialRenderTarget = _vncDesktop
-			}).ContinueWith(connectionTask =>
+			}, _connectionCancellation.Token).ContinueWith(connectionTask =>
 			{
 				if (connectionTask.IsFaulted)
 				{
@@ -124,25 +128,29 @@ namespace EasyConnect.Protocols.Vnc
 
 	    private void VncConnectionForm_FormClosing(object sender, CancelEventArgs e)
 	    {
-	        if (_vncConnection.ConnectionState == ConnectionState.Connected)
-	        {
-				try
+			try
+			{
+				if (_vncConnection.ConnectionState == ConnectionState.Connected)
 				{
-					_vncConnection.CloseAsync().ContinueWith(task =>
-					{
-						_vncConnection.Dispose();
-					});
+					_vncConnection.CloseAsync().Wait(1000);
 				}
 
-				catch (Exception)
-                {
-                }
-	        }
-        }
+				else if (_connectionCancellation != null)
+				{
+					_connectionCancellation.Cancel();
+				}
+			}
+
+			catch (Exception)
+			{
+			}
+		}
 
 	    protected override void OnConnected(object sender, EventArgs e)
 	    {
 	        base.OnConnected(sender, e);
+
+			_connectionCancellation = null;
 
             _vncDesktop.Left = Math.Max(ClientSize.Width - _vncConnection.RemoteFramebufferSize.Width, 0) / 2;
 	        _vncDesktop.Top = Math.Max(ClientSize.Height - _vncConnection.RemoteFramebufferSize.Height, 0) / 2;
