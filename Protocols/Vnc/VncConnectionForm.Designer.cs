@@ -29,17 +29,17 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VncConnectionForm));
-            this._vncConnection = new VncSharp.RemoteDesktop();
+            this._vncFramebuffer = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // _vncConnection
             // 
-            this._vncConnection.Dock = System.Windows.Forms.DockStyle.None;
-            this._vncConnection.Enabled = true;
-            this._vncConnection.Location = new System.Drawing.Point(0, 0);
-            this._vncConnection.Name = "_vncConnection";
-            this._vncConnection.Size = new System.Drawing.Size(786, 551);
-            this._vncConnection.TabIndex = 0;
+            this._vncFramebuffer.Dock = System.Windows.Forms.DockStyle.None;
+            this._vncFramebuffer.Enabled = true;
+            this._vncFramebuffer.Location = new System.Drawing.Point(0, 0);
+            this._vncFramebuffer.Name = "_vncFramebuffer";
+            this._vncFramebuffer.Size = new System.Drawing.Size(786, 551);
+            this._vncFramebuffer.TabIndex = 0;
             // 
             // VncConnectionForm
             // 
@@ -47,7 +47,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(786, 551);
-            this.Controls.Add(this._vncConnection);
+            this.Controls.Add(this._vncFramebuffer);
             this.Name = "VncConnectionForm";
             this.Text = "VncConnectionForm";
             this.ResumeLayout(false);
@@ -56,7 +56,7 @@
 
         #endregion
 
-        private VncSharp.RemoteDesktop _vncConnection;
+        private System.Windows.Forms.Panel _vncFramebuffer;
 
     }
 }

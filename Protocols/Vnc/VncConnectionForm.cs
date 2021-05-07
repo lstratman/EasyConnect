@@ -1,5 +1,13 @@
-﻿using System;
+﻿using MarcusW.VncClient;
+using MarcusW.VncClient.Protocol.Implementation.Services.Transports;
+using MarcusW.VncClient.Rendering;
+using DrawingPixelFormat = System.Drawing.Imaging.PixelFormat;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Immutable;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -13,11 +21,17 @@ namespace EasyConnect.Protocols.Vnc
 	/// <summary>
 	/// UI that displays a VNC connection via the <see cref="VncControl"/> class.
 	/// </summary>
-	public partial class VncConnectionForm : BaseConnectionForm<VncConnection>
+	public partial class VncConnectionForm : BaseConnectionForm<VncConnection>, IRenderTarget
 	{
 		[DllImport("user32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool AddClipboardFormatListener(IntPtr hwnd);
+
+		protected VncClient _vncClient = null;
+		protected RfbConnection _vncConnection = null;
+		protected Bitmap _bitmap = null;
+
+		protected static LoggerFactory _loggerFactory;
 
 		/// <summary>
 		/// Default constructor.
@@ -26,15 +40,61 @@ namespace EasyConnect.Protocols.Vnc
 		{
 			InitializeComponent();
 			AddClipboardFormatListener(Handle);
+
+			_vncClient = new VncClient(_loggerFactory);
 		}
+
+        protected class ConsoleLoggerProvider : ILoggerProvider
+        {
+            public ILogger CreateLogger(string categoryName)
+            {
+				return new ConsoleLogger();
+            }
+
+            public void Dispose()
+            {
+            }
+        }
+
+        protected class ConsoleLogger : ILogger
+        {
+            public IDisposable BeginScope<TState>(TState state)
+            {
+				return new ConsoleLoggerScope();
+            }
+
+            public bool IsEnabled(LogLevel logLevel)
+            {
+				return true;
+            }
+
+            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+            {
+				Debug.WriteLine($"{logLevel.ToString("G")} - {formatter(state, exception)}");
+            }
+        }
+
+        protected class ConsoleLoggerScope : IDisposable
+        {
+            public void Dispose()
+            {
+            }
+        }
+
+        static VncConnectionForm()
+        {
+			_loggerFactory = new LoggerFactory();
+			_loggerFactory.AddProvider(new ConsoleLoggerProvider());
+        }
 
         protected override void WndProc(ref Message m)
         {
 			if (m.Msg == (int)WM.WM_CLIPBOARDUPDATE)
             {
-				if (Connection != null && Connection.ShareClipboard && _vncConnection.IsConnected)
+				if (Connection != null && Connection.ShareClipboard && _vncConnection != null && _vncConnection.ConnectionState == ConnectionState.Connected)
                 {
-					_vncConnection.FillServerClipboard();
+					// TODO: figure out how to fill the clipboard
+					//_vncConnection.FillServerClipboard();
                 }
             }
 
@@ -48,7 +108,7 @@ namespace EasyConnect.Protocols.Vnc
 		{
 			get
 			{
-				return _vncConnection;
+				return _vncFramebuffer;
 			}
 		}
 
@@ -63,23 +123,39 @@ namespace EasyConnect.Protocols.Vnc
 
 		    ParentForm.Closing += VncConnectionForm_FormClosing;
 
-            // Establish the actual connection
-            _vncConnection.ConnectComplete += OnConnected;
-			_vncConnection.ConnectionLost += OnConnectionLost;
-			_vncConnection.VncPort = Connection.Port;
-			_vncConnection.GetPassword = GetPassword;
-			_vncConnection.Width = ClientSize.Width;
-			_vncConnection.Height = ClientSize.Height;
+			_vncFramebuffer.Width = ClientSize.Width;
+			_vncFramebuffer.Height = ClientSize.Height;
 
-			try
+			_vncClient.ConnectAsync(new ConnectParameters
 			{
-				_vncConnection.Connect(Connection.Host, Connection.Display, Connection.ViewOnly, true);
-			}
+				TransportParameters = new TcpTransportParameters
+                {
+					Host = Connection.Host,
+					Port = Connection.Port + Connection.Display
+                },
+				AuthenticationHandler = new VncAuthenticationHandler(GetPassword()),
+				InitialRenderTarget = this
+			}).ContinueWith(connectionTask =>
+			{
+				if (connectionTask.IsFaulted)
+				{
+					Invoke(new Action(() =>
+					{
+						OnConnectionLost(this, new ErrorEventArgs(connectionTask.Exception));
+					}));
+				}
 
-			catch (Exception e)
-            {
-				OnConnectionLost(this, new ErrorEventArgs(e));
-			}
+				else
+				{
+					_vncConnection = connectionTask.Result;
+					// TODO: wire up connection lost handlers
+
+					Invoke(new Action(() =>
+					{
+						OnConnected(this, null);
+					}));
+				}
+			});
 		}
 
         /// <summary>
@@ -100,12 +176,14 @@ namespace EasyConnect.Protocols.Vnc
 
 	    private void VncConnectionForm_FormClosing(object sender, CancelEventArgs e)
 	    {
-	        if (_vncConnection.IsConnected)
+	        if (_vncConnection.ConnectionState == ConnectionState.Connected)
 	        {
 				try
 				{
-					_vncConnection.Disconnect();
-					_vncConnection.Dispose();
+					_vncConnection.CloseAsync().ContinueWith(task =>
+					{
+						_vncConnection.Dispose();
+					});
 				}
 
 				catch (Exception)
@@ -118,8 +196,51 @@ namespace EasyConnect.Protocols.Vnc
 	    {
 	        base.OnConnected(sender, e);
 
-            _vncConnection.Left = Math.Max(ClientSize.Width - _vncConnection.Width, 0) / 2;
-	        _vncConnection.Top = Math.Max(ClientSize.Height - _vncConnection.Height, 0) / 2;
+            _vncFramebuffer.Left = Math.Max(ClientSize.Width - _vncConnection.RemoteFramebufferSize.Width, 0) / 2;
+	        _vncFramebuffer.Top = Math.Max(ClientSize.Height - _vncConnection.RemoteFramebufferSize.Height, 0) / 2;
+
+			_vncFramebuffer.Width = _vncConnection.RemoteFramebufferSize.Width;
+			_vncFramebuffer.Height = _vncConnection.RemoteFramebufferSize.Height;
+		}
+
+        public IFramebufferReference GrabFramebufferReference(MarcusW.VncClient.Size size, IImmutableSet<MarcusW.VncClient.Screen> layout)
+        {
+            if (IsDisposed)
+            {
+				throw new ObjectDisposedException(nameof(VncConnectionForm));
+            }
+
+			bool sizeChanged = true;
+
+			if (_bitmap != null)
+            {
+				sizeChanged = _bitmap.Width != size.Width || _bitmap.Height != size.Height;
+            }
+
+			if (sizeChanged)
+            {
+				Bitmap newBitmap = new Bitmap(size.Width, size.Height, DrawingPixelFormat.Format32bppArgb);
+
+				if (_bitmap != null)
+                {
+					_bitmap.Dispose();
+                }
+
+				_bitmap = newBitmap;
+            }
+
+			return new FramebufferReference(_bitmap, RenderFramebuffer);
         }
-	}
+
+		protected void RenderFramebuffer()
+        {
+			Invoke(new Action(() =>
+			{
+				using (Graphics graphics = _vncFramebuffer.CreateGraphics())
+				{
+					graphics.DrawImage(_bitmap, 0, 0);
+				}
+			}));
+        }
+    }
 }
