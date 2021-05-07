@@ -1,4 +1,5 @@
 ﻿using MarcusW.VncClient.Rendering;
+using System.Collections.Generic;
 using System;
 using System.Collections.Immutable;
 using System.Drawing;
@@ -11,7 +12,6 @@ using VncScreen = MarcusW.VncClient.Screen;
 using DrawingPixelFormat = System.Drawing.Imaging.PixelFormat;
 using VncMouseButtons = MarcusW.VncClient.MouseButtons;
 using FormsMouseButtons = System.Windows.Forms.MouseButtons;
-using System.Collections.Generic;
 
 namespace EasyConnect.Protocols.Vnc
 {
@@ -26,6 +26,13 @@ namespace EasyConnect.Protocols.Vnc
         public VncDesktop()
         {
             InitializeComponent();
+
+            this.MouseWheel += VncDesktop_MouseWheel;
+        }
+
+        private void VncDesktop_MouseWheel(object sender, MouseEventArgs e)
+        {
+            HandlePointerEvent(e);
         }
 
         public RfbConnection Connection
@@ -120,14 +127,34 @@ namespace EasyConnect.Protocols.Vnc
 
             Position position = new Position(mouseData.X, mouseData.Y);
             VncMouseButtons buttonsMask = GetButtonsMask(mouseData.Button);
-            //VncMouseButtons wheelMask = GetWheelMask(wheelDelta);
+            VncMouseButtons wheelMask = GetWheelMask(mouseData.Delta);
 
             // For scrolling, set the wheel buttons and remove them quickly after that.
-            //if (wheelMask != MouseButtons.None)
-            //    connection.EnqueueMessage(new PointerEventMessage(position, buttonsMask | wheelMask));
+            if (wheelMask != VncMouseButtons.None)
+            {
+                connection.EnqueueMessage(new PointerEventMessage(position, buttonsMask | wheelMask));
+            }
+
             connection.EnqueueMessage(new PointerEventMessage(position, buttonsMask));
 
             return true;
+        }
+
+        private VncMouseButtons GetWheelMask(int wheelDelta)
+        {
+            var mask = VncMouseButtons.None;
+
+            if (wheelDelta > 0)
+            {
+                mask |= VncMouseButtons.WheelUp;
+            }
+
+            else if (wheelDelta < 0)
+            {
+                mask |= VncMouseButtons.WheelDown;
+            }
+
+            return mask;
         }
 
         private VncMouseButtons GetButtonsMask(FormsMouseButtons buttons)
