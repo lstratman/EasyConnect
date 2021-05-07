@@ -1,28 +1,20 @@
 ﻿using MarcusW.VncClient;
 using MarcusW.VncClient.Protocol.Implementation.Services.Transports;
-using MarcusW.VncClient.Rendering;
-using DrawingPixelFormat = System.Drawing.Imaging.PixelFormat;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Immutable;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Threading;
 using System.Windows.Forms;
 using Win32Interop.Enums;
-using Win32Interop.Methods;
 using EasyConnect.Common;
 
 namespace EasyConnect.Protocols.Vnc
 {
-	/// <summary>
-	/// UI that displays a VNC connection via the <see cref="VncControl"/> class.
-	/// </summary>
-	public partial class VncConnectionForm : BaseConnectionForm<VncConnection>, IRenderTarget
+    /// <summary>
+    /// UI that displays a VNC connection via the <see cref="VncControl"/> class.
+    /// </summary>
+    public partial class VncConnectionForm : BaseConnectionForm<VncConnection>
 	{
 		[DllImport("user32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -30,7 +22,6 @@ namespace EasyConnect.Protocols.Vnc
 
 		protected VncClient _vncClient = null;
 		protected RfbConnection _vncConnection = null;
-		protected Bitmap _bitmap = null;
 
 		/// <summary>
 		/// Default constructor.
@@ -64,7 +55,7 @@ namespace EasyConnect.Protocols.Vnc
 		{
 			get
 			{
-				return _vncFramebuffer;
+				return _vncDesktop;
 			}
 		}
 
@@ -79,8 +70,8 @@ namespace EasyConnect.Protocols.Vnc
 
 		    ParentForm.Closing += VncConnectionForm_FormClosing;
 
-			_vncFramebuffer.Width = ClientSize.Width;
-			_vncFramebuffer.Height = ClientSize.Height;
+			_vncDesktop.Width = ClientSize.Width;
+			_vncDesktop.Height = ClientSize.Height;
 
 			_vncClient.ConnectAsync(new ConnectParameters
 			{
@@ -90,7 +81,7 @@ namespace EasyConnect.Protocols.Vnc
 					Port = Connection.Port + Connection.Display
                 },
 				AuthenticationHandler = new VncAuthenticationHandler(GetPassword()),
-				InitialRenderTarget = this
+				InitialRenderTarget = _vncDesktop
 			}).ContinueWith(connectionTask =>
 			{
 				if (connectionTask.IsFaulted)
@@ -152,51 +143,11 @@ namespace EasyConnect.Protocols.Vnc
 	    {
 	        base.OnConnected(sender, e);
 
-            _vncFramebuffer.Left = Math.Max(ClientSize.Width - _vncConnection.RemoteFramebufferSize.Width, 0) / 2;
-	        _vncFramebuffer.Top = Math.Max(ClientSize.Height - _vncConnection.RemoteFramebufferSize.Height, 0) / 2;
+            _vncDesktop.Left = Math.Max(ClientSize.Width - _vncConnection.RemoteFramebufferSize.Width, 0) / 2;
+	        _vncDesktop.Top = Math.Max(ClientSize.Height - _vncConnection.RemoteFramebufferSize.Height, 0) / 2;
 
-			_vncFramebuffer.Width = _vncConnection.RemoteFramebufferSize.Width;
-			_vncFramebuffer.Height = _vncConnection.RemoteFramebufferSize.Height;
+			_vncDesktop.Width = _vncConnection.RemoteFramebufferSize.Width;
+			_vncDesktop.Height = _vncConnection.RemoteFramebufferSize.Height;
 		}
-
-        public IFramebufferReference GrabFramebufferReference(MarcusW.VncClient.Size size, IImmutableSet<MarcusW.VncClient.Screen> layout)
-        {
-            if (IsDisposed)
-            {
-				throw new ObjectDisposedException(nameof(VncConnectionForm));
-            }
-
-			bool sizeChanged = true;
-
-			if (_bitmap != null)
-            {
-				sizeChanged = _bitmap.Width != size.Width || _bitmap.Height != size.Height;
-            }
-
-			if (sizeChanged)
-            {
-				Bitmap newBitmap = new Bitmap(size.Width, size.Height, DrawingPixelFormat.Format32bppArgb);
-
-				if (_bitmap != null)
-                {
-					_bitmap.Dispose();
-                }
-
-				_bitmap = newBitmap;
-            }
-
-			return new FramebufferReference(_bitmap, RenderFramebuffer);
-        }
-
-		protected void RenderFramebuffer()
-        {
-			Invoke(new Action(() =>
-			{
-				using (Graphics graphics = _vncFramebuffer.CreateGraphics())
-				{
-					graphics.DrawImage(_bitmap, 0, 0);
-				}
-			}));
-        }
     }
 }
