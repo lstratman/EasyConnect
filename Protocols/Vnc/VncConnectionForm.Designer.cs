@@ -47,6 +47,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(786, 551);
+            this.AutoScroll = true;
             this.Controls.Add(this._vncDesktop);
             this.Name = "VncConnectionForm";
             this.Text = "VncConnectionForm";
