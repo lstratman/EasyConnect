@@ -15,6 +15,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Win32Interop.Enums;
 using Win32Interop.Methods;
+using EasyConnect.Common;
 
 namespace EasyConnect.Protocols.Vnc
 {
@@ -31,8 +32,6 @@ namespace EasyConnect.Protocols.Vnc
 		protected RfbConnection _vncConnection = null;
 		protected Bitmap _bitmap = null;
 
-		protected static LoggerFactory _loggerFactory;
-
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
@@ -41,51 +40,8 @@ namespace EasyConnect.Protocols.Vnc
 			InitializeComponent();
 			AddClipboardFormatListener(Handle);
 
-			_vncClient = new VncClient(_loggerFactory);
+			_vncClient = new VncClient(Logging.Factory);
 		}
-
-        protected class ConsoleLoggerProvider : ILoggerProvider
-        {
-            public ILogger CreateLogger(string categoryName)
-            {
-				return new ConsoleLogger();
-            }
-
-            public void Dispose()
-            {
-            }
-        }
-
-        protected class ConsoleLogger : ILogger
-        {
-            public IDisposable BeginScope<TState>(TState state)
-            {
-				return new ConsoleLoggerScope();
-            }
-
-            public bool IsEnabled(LogLevel logLevel)
-            {
-				return true;
-            }
-
-            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
-            {
-				Debug.WriteLine($"{logLevel.ToString("G")} - {formatter(state, exception)}");
-            }
-        }
-
-        protected class ConsoleLoggerScope : IDisposable
-        {
-            public void Dispose()
-            {
-            }
-        }
-
-        static VncConnectionForm()
-        {
-			_loggerFactory = new LoggerFactory();
-			_loggerFactory.AddProvider(new ConsoleLoggerProvider());
-        }
 
         protected override void WndProc(ref Message m)
         {
