@@ -100,7 +100,8 @@ namespace EasyConnect.Protocols.Vnc
 				{
 					_vncConnection = connectionTask.Result;
 					_vncDesktop.Connection = _vncConnection;
-					// TODO: wire up connection lost handlers
+
+                    _vncConnection.PropertyChanged += _vncConnection_PropertyChanged;
 
 					Invoke(new Action(() =>
 					{
@@ -109,6 +110,17 @@ namespace EasyConnect.Protocols.Vnc
 				}
 			});
 		}
+
+        private void _vncConnection_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(RfbConnection.ConnectionState))
+            {
+				if (_vncConnection.ConnectionState != ConnectionState.Connected)
+                {
+					OnConnectionLost(this, new ErrorEventArgs(_vncConnection.InterruptionCause));
+                }
+            }
+        }
 
         /// <summary>
         /// Decrypts the password (if any) associated with the connection (<see cref="BaseConnection.InheritedPassword"/> and provides it to 
@@ -146,7 +158,13 @@ namespace EasyConnect.Protocols.Vnc
 			}
 		}
 
-	    protected override void OnConnected(object sender, EventArgs e)
+        protected override void OnConnectionLost(object sender, EventArgs e)
+        {
+            base.OnConnectionLost(sender, e);
+			BackColor = System.Drawing.Color.White;
+		}
+
+        protected override void OnConnected(object sender, EventArgs e)
 	    {
 	        base.OnConnected(sender, e);
 
@@ -157,6 +175,8 @@ namespace EasyConnect.Protocols.Vnc
 
 			_vncDesktop.Width = _vncConnection.RemoteFramebufferSize.Width;
 			_vncDesktop.Height = _vncConnection.RemoteFramebufferSize.Height;
+
+			BackColor = System.Drawing.Color.FromArgb(171, 171, 171);
 		}
     }
 }
