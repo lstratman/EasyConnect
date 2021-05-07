@@ -36,8 +36,17 @@ namespace EasyConnect.Protocols.Vnc
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
+            this.DoubleBuffered = true;
             this.Name = "VncDesktop";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.VncDesktop_Paint);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.VncDesktop_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.VncDesktop_KeyUp);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.VncDesktop_MouseDown);
+            this.MouseEnter += new System.EventHandler(this.VncDesktop_MouseEnter);
+            this.MouseLeave += new System.EventHandler(this.VncDesktop_MouseLeave);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.VncDesktop_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.VncDesktop_MouseUp);
+            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.VncDesktop_PreviewKeyDown);
             this.ResumeLayout(false);
 
         }

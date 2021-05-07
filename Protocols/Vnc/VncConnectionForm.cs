@@ -95,6 +95,7 @@ namespace EasyConnect.Protocols.Vnc
 				else
 				{
 					_vncConnection = connectionTask.Result;
+					_vncDesktop.Connection = _vncConnection;
 					// TODO: wire up connection lost handlers
 
 					Invoke(new Action(() =>

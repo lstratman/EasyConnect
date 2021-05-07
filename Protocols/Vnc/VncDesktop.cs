@@ -1,27 +1,37 @@
 ﻿using MarcusW.VncClient.Rendering;
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using MarcusW.VncClient;
+using MarcusW.VncClient.Protocol.Implementation.MessageTypes.Outgoing;
+
 using VncSize = MarcusW.VncClient.Size;
 using VncScreen = MarcusW.VncClient.Screen;
 using DrawingPixelFormat = System.Drawing.Imaging.PixelFormat;
+using VncMouseButtons = MarcusW.VncClient.MouseButtons;
+using FormsMouseButtons = System.Windows.Forms.MouseButtons;
+using System.Collections.Generic;
 
 namespace EasyConnect.Protocols.Vnc
 {
     public partial class VncDesktop : UserControl, IRenderTarget
     {
+        protected object _bitmapReplacementLock = new object();
         protected Bitmap _bitmap = null;
+        protected bool locked = false;
+
+        protected HashSet<KeySymbol> _pressedKeys = new HashSet<KeySymbol>();
 
         public VncDesktop()
         {
             InitializeComponent();
+        }
+
+        public RfbConnection Connection
+        {
+            get;
+            set;
         }
 
         public IFramebufferReference GrabFramebufferReference(VncSize size, IImmutableSet<VncScreen> layout)
@@ -35,21 +45,28 @@ namespace EasyConnect.Protocols.Vnc
 
             if (_bitmap != null)
             {
-                sizeChanged = _bitmap.Width != size.Width || _bitmap.Height != size.Height;
+                lock (_bitmapReplacementLock)
+                {
+                    sizeChanged = _bitmap.Width != size.Width || _bitmap.Height != size.Height;
+                }
             }
 
             if (sizeChanged)
             {
-                Bitmap newBitmap = new Bitmap(size.Width, size.Height, DrawingPixelFormat.Format32bppArgb);
-
-                if (_bitmap != null)
+                lock (_bitmapReplacementLock)
                 {
-                    _bitmap.Dispose();
-                }
+                    Bitmap newBitmap = new Bitmap(size.Width, size.Height, DrawingPixelFormat.Format32bppArgb);
 
-                _bitmap = newBitmap;
+                    if (_bitmap != null)
+                    {
+                        _bitmap.Dispose();
+                    }
+
+                    _bitmap = newBitmap;
+                }
             }
 
+            locked = true;
             return new FramebufferReference(_bitmap, RenderFramebuffer);
         }
 
@@ -57,16 +74,154 @@ namespace EasyConnect.Protocols.Vnc
         {
             if (_bitmap != null)
             {
-                e.Graphics.DrawImage(_bitmap, 0, 0);
+                lock (_bitmapReplacementLock)
+                {
+                    if (!locked)
+                    {
+                        e.Graphics.DrawImage(_bitmap, 0, 0);
+                    }
+                }
             }
         }
 
         protected void RenderFramebuffer()
         {
+            locked = false;
+
             Invoke(new Action(() =>
             {
                 Invalidate();
             }));
+        }
+
+        private void VncDesktop_MouseMove(object sender, MouseEventArgs e)
+        {
+            HandlePointerEvent(e);
+        }
+
+        private void VncDesktop_MouseDown(object sender, MouseEventArgs e)
+        {
+            HandlePointerEvent(e);
+        }
+
+        private void VncDesktop_MouseUp(object sender, MouseEventArgs e)
+        {
+            HandlePointerEvent(e);
+        }
+
+        private bool HandlePointerEvent(MouseEventArgs mouseData)
+        {
+            RfbConnection connection = Connection;
+
+            if (connection == null)
+            {
+                return false;
+            }
+
+            Position position = new Position(mouseData.X, mouseData.Y);
+            VncMouseButtons buttonsMask = GetButtonsMask(mouseData.Button);
+            //VncMouseButtons wheelMask = GetWheelMask(wheelDelta);
+
+            // For scrolling, set the wheel buttons and remove them quickly after that.
+            //if (wheelMask != MouseButtons.None)
+            //    connection.EnqueueMessage(new PointerEventMessage(position, buttonsMask | wheelMask));
+            connection.EnqueueMessage(new PointerEventMessage(position, buttonsMask));
+
+            return true;
+        }
+
+        private VncMouseButtons GetButtonsMask(FormsMouseButtons buttons)
+        {
+            var mask = VncMouseButtons.None;
+
+            if ((buttons & FormsMouseButtons.Left) == FormsMouseButtons.Left)
+            {
+                mask |= VncMouseButtons.Left;
+            }
+
+            if ((buttons & FormsMouseButtons.Middle) == FormsMouseButtons.Middle)
+            {
+                mask |= VncMouseButtons.Middle;
+            }
+
+            if ((buttons & FormsMouseButtons.Right) == FormsMouseButtons.Right)
+            {
+                mask |= VncMouseButtons.Right;
+            }
+
+            return mask;
+        }
+
+        private void VncDesktop_MouseEnter(object sender, EventArgs e)
+        {
+            //Cursor.Hide();
+        }
+
+        private void VncDesktop_MouseLeave(object sender, EventArgs e)
+        {
+            //Cursor.Show();
+        }
+
+        private void VncDesktop_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.None)
+            {
+                return;
+            }
+
+            HandleKeyEvent(true, e.KeyCode, e.Modifiers);
+        }
+
+        private void VncDesktop_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.None)
+            {
+                return;
+            }
+
+            HandleKeyEvent(false, e.KeyCode, e.Modifiers);
+        }
+
+        private bool HandleKeyEvent(bool downFlag, Keys key, Keys keyModifiers)
+        {
+            // Get connection
+            RfbConnection connection = Connection;
+
+            if (connection == null)
+            {
+                return false;
+            }
+
+            // Get key symbol
+            KeySymbol keySymbol = VncKeyMapping.GetSymbolFromKey(key, keyModifiers, true);
+
+            if (keySymbol == KeySymbol.Null)
+            {
+                return false;
+            }
+
+            // Send key event to server
+            bool queued = connection.EnqueueMessage(new KeyEventMessage(downFlag, keySymbol));
+
+            if (downFlag && queued)
+            {
+                _pressedKeys.Add(keySymbol);
+            }
+
+            else if (!downFlag)
+            {
+                _pressedKeys.Remove(keySymbol);
+            }
+
+            return queued;
+        }
+
+        private void VncDesktop_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Left || e.KeyCode == Keys.Right || e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
+            {
+                e.IsInputKey = true;
+            }
         }
     }
 }
