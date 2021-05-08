@@ -9,13 +9,16 @@ using System.Windows.Forms;
 using Win32Interop.Enums;
 using EasyConnect.Common;
 using System.Threading;
+using MarcusW.VncClient.Output;
+using System.Media;
+using MarcusW.VncClient.Protocol.Implementation.MessageTypes.Outgoing;
 
 namespace EasyConnect.Protocols.Vnc
 {
     /// <summary>
     /// UI that displays a VNC connection via the <see cref="VncControl"/> class.
     /// </summary>
-    public partial class VncConnectionForm : BaseConnectionForm<VncConnection>
+    public partial class VncConnectionForm : BaseConnectionForm<VncConnection>, IOutputHandler
 	{
 		[DllImport("user32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -42,10 +45,9 @@ namespace EasyConnect.Protocols.Vnc
         {
 			if (m.Msg == (int)WM.WM_CLIPBOARDUPDATE)
             {
-				if (Connection != null && Connection.ShareClipboard && _vncConnection != null && _vncConnection.ConnectionState == ConnectionState.Connected)
+				if (Connection != null && Connection.ShareClipboard && _vncConnection != null && _vncConnection.ConnectionState == ConnectionState.Connected && Clipboard.ContainsText())
                 {
-					// TODO: figure out how to fill the clipboard
-					//_vncConnection.FillServerClipboard();
+					_vncConnection.EnqueueMessage(new ClientCutTextMessage(Clipboard.GetText()));
                 }
             }
 
@@ -93,7 +95,8 @@ namespace EasyConnect.Protocols.Vnc
                 },
 				AuthenticationHandler = new VncAuthenticationHandler(GetPassword()),
 				InitialRenderTarget = _vncDesktop,
-				JpegQualityLevel = Connection.PictureQuality * 10
+				JpegQualityLevel = Connection.PictureQuality * 10,
+				InitialOutputHandler = this
 			}, _connectionCancellation.Token).ContinueWith(connectionTask =>
 			{
 				if (connectionTask.IsFaulted)
@@ -186,5 +189,21 @@ namespace EasyConnect.Protocols.Vnc
 
 			BackColor = System.Drawing.Color.FromArgb(171, 171, 171);
 		}
+
+        public void RingBell()
+        {
+			Invoke(new Action(() =>
+			{
+				SystemSounds.Beep.Play();
+			}));
+        }
+
+        public void HandleServerClipboardUpdate(string text)
+        {
+			Invoke(new Action(() =>
+			{
+				Clipboard.SetText(text);
+			}));
+        }
     }
 }
