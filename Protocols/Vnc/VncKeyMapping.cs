@@ -251,6 +251,9 @@ namespace EasyConnect.Protocols.Vnc
                     break;
 
                 case Keys.Alt:
+                case Keys.Menu:
+                case Keys.LMenu:
+                case Keys.RMenu:
                     keySymbol = KeySymbol.Alt_L;
                     break;
 
