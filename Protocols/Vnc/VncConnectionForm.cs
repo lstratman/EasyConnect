@@ -13,6 +13,7 @@ using MarcusW.VncClient.Output;
 using System.Media;
 using MarcusW.VncClient.Protocol.Implementation.MessageTypes.Outgoing;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace EasyConnect.Protocols.Vnc
 {
@@ -29,6 +30,8 @@ namespace EasyConnect.Protocols.Vnc
 		protected RfbConnection _vncConnection = null;
 		protected CancellationTokenSource _connectionCancellation = null;
 		protected VncProtocolImplementation _vncProtocol = null;
+
+		protected List<ToolStripItem> _toolsMenuItems = new List<ToolStripItem>();
 
 		/// <summary>
 		/// Default constructor.
@@ -223,6 +226,37 @@ namespace EasyConnect.Protocols.Vnc
 			{
 				Clipboard.SetText(text);
 			}));
+        }
+
+        public override void AddToolsMenuItems(ContextMenuStrip toolsMenu)
+        {
+			_toolsMenuItems.Add(new ToolStripMenuItem("Send Ctrl+Alt+Del", null, new EventHandler(SendCtrlAltDel)));
+			_toolsMenuItems.Add(new ToolStripSeparator());
+
+			toolsMenu.Items.Insert(0, _toolsMenuItems[0]);
+			toolsMenu.Items.Insert(1, _toolsMenuItems[1]);
+		}
+
+		protected void SendCtrlAltDel(object sender, EventArgs e)
+        {
+			if (_vncConnection.ConnectionState == ConnectionState.Connected)
+            {
+				_vncConnection.EnqueueMessage(new KeyEventMessage(true, KeySymbol.Alt_L));
+				_vncConnection.EnqueueMessage(new KeyEventMessage(true, KeySymbol.Control_L));
+				_vncConnection.EnqueueMessage(new KeyEventMessage(true, KeySymbol.Delete));
+
+				_vncConnection.EnqueueMessage(new KeyEventMessage(false, KeySymbol.Alt_L));
+				_vncConnection.EnqueueMessage(new KeyEventMessage(false, KeySymbol.Control_L));
+				_vncConnection.EnqueueMessage(new KeyEventMessage(false, KeySymbol.Delete));
+			}
+        }
+
+        public override void RemoveToolsMenuItems(ContextMenuStrip toolsMenu)
+        {
+            foreach (ToolStripItem item in _toolsMenuItems)
+            {
+				toolsMenu.Items.Remove(item);
+            }
         }
     }
 }

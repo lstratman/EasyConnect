@@ -499,6 +499,8 @@ namespace EasyConnect
 			_iconPictureBox.Image = new Icon(Icon, 16, 16).ToBitmap();
 			_toolbarBorder.Visible = false;
 
+			_connectionForm.AddToolsMenuItems(_toolsMenu);
+
 			ParentTabs.RedrawTabs();
 		}
 
@@ -506,6 +508,11 @@ namespace EasyConnect
 		{
 			_iconPictureBox.Image = new Icon(Resources.EasyConnect, 16, 16).ToBitmap();
 			_toolbarBorder.Visible = !AutoHideToolbar;
+
+			if (_connectionForm != null)
+            {
+				_connectionForm.RemoveToolsMenuItems(_toolsMenu);
+			}
 
 			Icon = Resources.Disconnected;
 			ParentTabs.RedrawTabs();

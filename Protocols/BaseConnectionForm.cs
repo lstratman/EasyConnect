@@ -242,5 +242,13 @@ namespace EasyConnect.Protocols
 				                                             };
 			errorMessageWindow.ShowDialog(this);
 		}
+
+		public virtual void AddToolsMenuItems(ContextMenuStrip toolsMenu)
+        {
+        }
+
+		public virtual void RemoveToolsMenuItems(ContextMenuStrip toolsMenu)
+        {
+        }
 	}
 }
