@@ -95,6 +95,7 @@
       <DependentUpon>VncDesktop.cs</DependentUpon>
     </Compile>
     <Compile Include="VncKeyMapping.cs" />
+    <Compile Include="VncProtocolImplementation.cs" />
     <Compile Include="VncSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>

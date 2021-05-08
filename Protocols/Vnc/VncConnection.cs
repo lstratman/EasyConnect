@@ -15,7 +15,9 @@ namespace EasyConnect.Protocols.Vnc
 		public VncConnection()
 		{
 			Port = 5900;
+			PictureQuality = 7;
 		    ShareClipboard = true;
+			PreferredEncoding = "ZRLE";
 		}
 
 		/// <summary>
@@ -45,7 +47,15 @@ namespace EasyConnect.Protocols.Vnc
 				    case "ShareClipboard":
 				        ShareClipboard = (bool) entry.Value;
 				        break;
-                }
+
+					case "PictureQuality":
+						PictureQuality = (int) entry.Value;
+						break;
+
+					case "PreferredEncoding":
+						PreferredEncoding = (string) entry.Value;
+						break;
+				}
 			}
 		}
 
@@ -85,6 +95,18 @@ namespace EasyConnect.Protocols.Vnc
 	        set;
 	    }
 
+		public int PictureQuality
+        {
+			get;
+			set;
+        }
+
+		public string PreferredEncoding
+        {
+			get;
+			set;
+        }
+
 		/// <summary>
 		/// Method required for <see cref="ISerializable"/>; serializes the connection data to <paramref name="info"/>.
 		/// </summary>
@@ -98,6 +120,8 @@ namespace EasyConnect.Protocols.Vnc
 			info.AddValue("Display", Display);
 			info.AddValue("ViewOnly", ViewOnly);
             info.AddValue("ShareClipboard", ShareClipboard);
+			info.AddValue("PictureQuality", PictureQuality);
+			info.AddValue("PreferredEncoding", PreferredEncoding);
 		}
 	}
 }

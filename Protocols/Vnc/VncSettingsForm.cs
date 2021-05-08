@@ -69,6 +69,13 @@ namespace EasyConnect.Protocols.Vnc
 			_viewOnlyCheckbox.Checked = Connection.ViewOnly;
 		    _clipboardCheckbox.Checked = Connection.ShareClipboard;
 
+			if (!String.IsNullOrEmpty(Connection.PreferredEncoding))
+			{
+				_preferredEncodingDropdown.SelectedItem = Connection.PreferredEncoding;
+			}
+
+			_pictureQualitySlider.Value = Connection.PictureQuality;
+
 			if (Connection.Password != null)
 				_passwordTextBox.SecureText = Connection.Password;
 
@@ -105,6 +112,7 @@ namespace EasyConnect.Protocols.Vnc
 			Connection.ViewOnly = _viewOnlyCheckbox.Checked;
 			Connection.Password = _passwordTextBox.SecureText;
 		    Connection.ShareClipboard = _clipboardCheckbox.Checked;
+			Connection.PictureQuality = _pictureQualitySlider.Value;
 		}
 
 		private void _inheritedPasswordTextBox_Enter(object sender, EventArgs e)

@@ -40,7 +40,6 @@
             this._divider1 = new System.Windows.Forms.Panel();
             this._passwordLabel = new System.Windows.Forms.Label();
             this._passwordTextBox = new SecurePasswordTextBox.SecureTextBox();
-            this._inheritedPasswordTextBox = new System.Windows.Forms.TextBox();
             this._divider3 = new System.Windows.Forms.Panel();
             this._portLabel = new System.Windows.Forms.Label();
             this._portTextBox = new System.Windows.Forms.TextBox();
@@ -51,10 +50,22 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this._shareClipboardLabel = new System.Windows.Forms.Label();
             this._clipboardCheckbox = new System.Windows.Forms.CheckBox();
+            this._pictureQualityLabel = new System.Windows.Forms.Label();
+            this._pictureQualityContainer = new System.Windows.Forms.Panel();
+            this._pictureQualityLowLabel = new System.Windows.Forms.Label();
+            this._pictureQualitySlider = new System.Windows.Forms.TrackBar();
+            this._pictureQualityHighLabel = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this._inheritedPasswordTextBox = new System.Windows.Forms.TextBox();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this._preferredEncodingLabel = new System.Windows.Forms.Label();
+            this._preferredEncodingDropdown = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this._displayUpDown)).BeginInit();
             this._rootLayoutPanel.SuspendLayout();
             this._settingsCard.SuspendLayout();
             this._settingsLayoutPanel.SuspendLayout();
+            this._pictureQualityContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._pictureQualitySlider)).BeginInit();
             this.SuspendLayout();
             // 
             // _viewOnlyCheckbox
@@ -83,7 +94,7 @@
             this._rootLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this._rootLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this._rootLayoutPanel.Name = "_rootLayoutPanel";
-            this._rootLayoutPanel.Size = new System.Drawing.Size(723, 414);
+            this._rootLayoutPanel.Size = new System.Drawing.Size(723, 551);
             this._rootLayoutPanel.TabIndex = 121;
             // 
             // _settingsCard
@@ -93,7 +104,7 @@
             this._settingsCard.Location = new System.Drawing.Point(15, 19);
             this._settingsCard.Margin = new System.Windows.Forms.Padding(15, 19, 3, 3);
             this._settingsCard.Name = "_settingsCard";
-            this._settingsCard.Size = new System.Drawing.Size(692, 373);
+            this._settingsCard.Size = new System.Drawing.Size(692, 508);
             this._settingsCard.TabIndex = 87;
             // 
             // _settingsLayoutPanel
@@ -117,9 +128,15 @@
             this._settingsLayoutPanel.Controls.Add(this.panel4);
             this._settingsLayoutPanel.Controls.Add(this._shareClipboardLabel);
             this._settingsLayoutPanel.Controls.Add(this._clipboardCheckbox);
+            this._settingsLayoutPanel.Controls.Add(this.panel5);
+            this._settingsLayoutPanel.Controls.Add(this._preferredEncodingLabel);
+            this._settingsLayoutPanel.Controls.Add(this._preferredEncodingDropdown);
+            this._settingsLayoutPanel.Controls.Add(this.panel1);
+            this._settingsLayoutPanel.Controls.Add(this._pictureQualityLabel);
+            this._settingsLayoutPanel.Controls.Add(this._pictureQualityContainer);
             this._settingsLayoutPanel.Location = new System.Drawing.Point(5, 9);
             this._settingsLayoutPanel.Name = "_settingsLayoutPanel";
-            this._settingsLayoutPanel.Size = new System.Drawing.Size(682, 351);
+            this._settingsLayoutPanel.Size = new System.Drawing.Size(682, 489);
             this._settingsLayoutPanel.TabIndex = 112;
             // 
             // _hostNameLabel
@@ -174,19 +191,6 @@
             this._passwordTextBox.Size = new System.Drawing.Size(154, 25);
             this._passwordTextBox.TabIndex = 2;
             this._passwordTextBox.Leave += new System.EventHandler(this._passwordTextBox_Leave);
-            // 
-            // _inheritedPasswordTextBox
-            // 
-            this._inheritedPasswordTextBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._inheritedPasswordTextBox.ForeColor = System.Drawing.Color.LightGray;
-            this._inheritedPasswordTextBox.Location = new System.Drawing.Point(3, 128);
-            this._inheritedPasswordTextBox.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
-            this._inheritedPasswordTextBox.Name = "_inheritedPasswordTextBox";
-            this._inheritedPasswordTextBox.Size = new System.Drawing.Size(154, 25);
-            this._inheritedPasswordTextBox.TabIndex = 3;
-            this._inheritedPasswordTextBox.Text = "Inheriting password";
-            this._inheritedPasswordTextBox.Visible = false;
-            this._inheritedPasswordTextBox.Enter += new System.EventHandler(this._inheritedPasswordTextBox_Enter);
             // 
             // _divider3
             // 
@@ -287,12 +291,122 @@
             this._clipboardCheckbox.TabIndex = 127;
             this._clipboardCheckbox.UseVisualStyleBackColor = true;
             // 
+            // _pictureQualityLabel
+            // 
+            this._pictureQualityLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._pictureQualityLabel.Location = new System.Drawing.Point(19, 485);
+            this._pictureQualityLabel.Margin = new System.Windows.Forms.Padding(19, 25, 3, 18);
+            this._pictureQualityLabel.Name = "_pictureQualityLabel";
+            this._pictureQualityLabel.Size = new System.Drawing.Size(405, 20);
+            this._pictureQualityLabel.TabIndex = 128;
+            this._pictureQualityLabel.Text = "Picture quality";
+            this._pictureQualityLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // _pictureQualityContainer
+            // 
+            this._pictureQualityContainer.Controls.Add(this._pictureQualityHighLabel);
+            this._pictureQualityContainer.Controls.Add(this._pictureQualityLowLabel);
+            this._pictureQualityContainer.Controls.Add(this._pictureQualitySlider);
+            this._pictureQualityContainer.Location = new System.Drawing.Point(430, 463);
+            this._pictureQualityContainer.Name = "_pictureQualityContainer";
+            this._pictureQualityContainer.Size = new System.Drawing.Size(245, 61);
+            this._pictureQualityContainer.TabIndex = 129;
+            // 
+            // _pictureQualityLowLabel
+            // 
+            this._pictureQualityLowLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this._pictureQualityLowLabel.Location = new System.Drawing.Point(9, 40);
+            this._pictureQualityLowLabel.Name = "_pictureQualityLowLabel";
+            this._pictureQualityLowLabel.Size = new System.Drawing.Size(102, 19);
+            this._pictureQualityLowLabel.TabIndex = 80;
+            this._pictureQualityLowLabel.Text = "Low";
+            // 
+            // _pictureQualitySlider
+            // 
+            this._pictureQualitySlider.Location = new System.Drawing.Point(3, 3);
+            this._pictureQualitySlider.Minimum = 1;
+            this._pictureQualitySlider.Name = "_pictureQualitySlider";
+            this._pictureQualitySlider.Size = new System.Drawing.Size(240, 45);
+            this._pictureQualitySlider.TabIndex = 0;
+            this._pictureQualitySlider.Value = 1;
+            // 
+            // _pictureQualityHighLabel
+            // 
+            this._pictureQualityHighLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this._pictureQualityHighLabel.Location = new System.Drawing.Point(137, 40);
+            this._pictureQualityHighLabel.Name = "_pictureQualityHighLabel";
+            this._pictureQualityHighLabel.Size = new System.Drawing.Size(102, 19);
+            this._pictureQualityHighLabel.TabIndex = 81;
+            this._pictureQualityHighLabel.Text = "High";
+            this._pictureQualityHighLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.panel1.Location = new System.Drawing.Point(0, 456);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(682, 1);
+            this.panel1.TabIndex = 130;
+            // 
+            // _inheritedPasswordTextBox
+            // 
+            this._inheritedPasswordTextBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._inheritedPasswordTextBox.ForeColor = System.Drawing.Color.LightGray;
+            this._inheritedPasswordTextBox.Location = new System.Drawing.Point(3, 128);
+            this._inheritedPasswordTextBox.Margin = new System.Windows.Forms.Padding(3, 15, 3, 0);
+            this._inheritedPasswordTextBox.Name = "_inheritedPasswordTextBox";
+            this._inheritedPasswordTextBox.Size = new System.Drawing.Size(154, 25);
+            this._inheritedPasswordTextBox.TabIndex = 3;
+            this._inheritedPasswordTextBox.Text = "Inheriting password";
+            this._inheritedPasswordTextBox.Visible = false;
+            this._inheritedPasswordTextBox.Enter += new System.EventHandler(this._inheritedPasswordTextBox_Enter);
+            // 
+            // panel5
+            // 
+            this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.panel5.Location = new System.Drawing.Point(0, 396);
+            this.panel5.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(682, 1);
+            this.panel5.TabIndex = 133;
+            // 
+            // _preferredEncodingLabel
+            // 
+            this._preferredEncodingLabel.BackColor = System.Drawing.Color.White;
+            this._preferredEncodingLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._preferredEncodingLabel.Location = new System.Drawing.Point(19, 415);
+            this._preferredEncodingLabel.Margin = new System.Windows.Forms.Padding(19, 15, 3, 18);
+            this._preferredEncodingLabel.Name = "_preferredEncodingLabel";
+            this._preferredEncodingLabel.Size = new System.Drawing.Size(456, 20);
+            this._preferredEncodingLabel.TabIndex = 132;
+            this._preferredEncodingLabel.Text = "Preferred encoding";
+            this._preferredEncodingLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // _preferredEncodingDropdown
+            // 
+            this._preferredEncodingDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this._preferredEncodingDropdown.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._preferredEncodingDropdown.FormattingEnabled = true;
+            this._preferredEncodingDropdown.Items.AddRange(new object[] {
+            "",
+            "Raw",
+            "CopyRect",
+            "ZLib",
+            "ZRLE",
+            "Tight"});
+            this._preferredEncodingDropdown.Location = new System.Drawing.Point(481, 415);
+            this._preferredEncodingDropdown.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
+            this._preferredEncodingDropdown.Name = "_preferredEncodingDropdown";
+            this._preferredEncodingDropdown.Size = new System.Drawing.Size(184, 25);
+            this._preferredEncodingDropdown.TabIndex = 131;
+            // 
             // VncSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.ClientSize = new System.Drawing.Size(723, 414);
+            this.ClientSize = new System.Drawing.Size(723, 551);
             this.Controls.Add(this._rootLayoutPanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "VncSettingsForm";
@@ -304,6 +418,9 @@
             this._settingsCard.ResumeLayout(false);
             this._settingsLayoutPanel.ResumeLayout(false);
             this._settingsLayoutPanel.PerformLayout();
+            this._pictureQualityContainer.ResumeLayout(false);
+            this._pictureQualityContainer.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._pictureQualitySlider)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -319,7 +436,6 @@
         private System.Windows.Forms.Panel _divider1;
         private System.Windows.Forms.Label _passwordLabel;
         private SecurePasswordTextBox.SecureTextBox _passwordTextBox;
-        private System.Windows.Forms.TextBox _inheritedPasswordTextBox;
         private System.Windows.Forms.Panel _divider3;
         private System.Windows.Forms.Label _portLabel;
         private System.Windows.Forms.TextBox _portTextBox;
@@ -330,5 +446,15 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label _shareClipboardLabel;
         private System.Windows.Forms.CheckBox _clipboardCheckbox;
+        private System.Windows.Forms.Label _pictureQualityLabel;
+        private System.Windows.Forms.Panel _pictureQualityContainer;
+        private System.Windows.Forms.Label _pictureQualityHighLabel;
+        private System.Windows.Forms.Label _pictureQualityLowLabel;
+        private System.Windows.Forms.TrackBar _pictureQualitySlider;
+        private System.Windows.Forms.TextBox _inheritedPasswordTextBox;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Label _preferredEncodingLabel;
+        private System.Windows.Forms.ComboBox _preferredEncodingDropdown;
     }
 }

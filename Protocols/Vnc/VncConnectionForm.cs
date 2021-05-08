@@ -24,6 +24,7 @@ namespace EasyConnect.Protocols.Vnc
 		protected VncClient _vncClient = null;
 		protected RfbConnection _vncConnection = null;
 		protected CancellationTokenSource _connectionCancellation = null;
+		protected VncProtocolImplementation _vncProtocol = null;
 
 		/// <summary>
 		/// Default constructor.
@@ -33,7 +34,8 @@ namespace EasyConnect.Protocols.Vnc
 			InitializeComponent();
 			AddClipboardFormatListener(Handle);
 
-			_vncClient = new VncClient(Logging.Factory);
+			_vncProtocol = new VncProtocolImplementation();
+			_vncClient = new VncClient(Logging.Factory, _vncProtocol);
 		}
 
         protected override void WndProc(ref Message m)
@@ -77,6 +79,11 @@ namespace EasyConnect.Protocols.Vnc
 
 			_connectionCancellation = new CancellationTokenSource();
 
+			if (!String.IsNullOrEmpty(Connection.PreferredEncoding))
+			{
+				_vncProtocol.PreferredEncodingType = Connection.PreferredEncoding;
+			}
+
 			_vncClient.ConnectAsync(new ConnectParameters
 			{
 				TransportParameters = new TcpTransportParameters
@@ -85,7 +92,8 @@ namespace EasyConnect.Protocols.Vnc
 					Port = Connection.Port + Connection.Display
                 },
 				AuthenticationHandler = new VncAuthenticationHandler(GetPassword()),
-				InitialRenderTarget = _vncDesktop
+				InitialRenderTarget = _vncDesktop,
+				JpegQualityLevel = Connection.PictureQuality * 10
 			}, _connectionCancellation.Token).ContinueWith(connectionTask =>
 			{
 				if (connectionTask.IsFaulted)
