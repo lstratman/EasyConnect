@@ -12,6 +12,7 @@ using System.Threading;
 using MarcusW.VncClient.Output;
 using System.Media;
 using MarcusW.VncClient.Protocol.Implementation.MessageTypes.Outgoing;
+using System.Threading.Tasks;
 
 namespace EasyConnect.Protocols.Vnc
 {
@@ -151,21 +152,39 @@ namespace EasyConnect.Protocols.Vnc
 
 	    private void VncConnectionForm_FormClosing(object sender, CancelEventArgs e)
 	    {
-			try
+			CloseConnection();
+		}
+
+		private async Task CloseConnection()
+        {
+
+			if (_vncConnection.ConnectionState == ConnectionState.Connected)
 			{
-				if (_vncConnection.ConnectionState == ConnectionState.Connected)
+				try
 				{
-					_vncConnection.CloseAsync().Wait(1000);
+					await _vncConnection.CloseAsync();
 				}
 
-				else if (_connectionCancellation != null)
+				catch (Exception)
 				{
-					_connectionCancellation.Cancel();
+				}
+
+				finally
+				{
+					try
+					{
+						_vncConnection.Dispose();
+					}
+
+					catch (Exception)
+					{
+					}
 				}
 			}
 
-			catch (Exception)
+			else if (_connectionCancellation != null)
 			{
+				_connectionCancellation.Cancel();
 			}
 		}
 
