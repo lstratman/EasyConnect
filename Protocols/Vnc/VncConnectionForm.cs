@@ -257,6 +257,8 @@ namespace EasyConnect.Protocols.Vnc
             {
 				toolsMenu.Items.Remove(item);
             }
+
+			_toolsMenuItems.Clear();
         }
     }
 }
