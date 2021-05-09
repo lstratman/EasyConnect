@@ -172,10 +172,27 @@ namespace EasyConnect.Protocols
 								                      ? (e as ErrorEventArgs).GetException()
 								                      : null;
 
+							string exceptionMessage = null;
+
+							if (exception != null)
+                            {
+								exceptionMessage = exception.Message;
+
+								AggregateException aggregateException = exception as AggregateException;
+
+								if (aggregateException != null)
+                                {
+									foreach (Exception innerException in aggregateException.InnerExceptions)
+                                    {
+										exceptionMessage += Environment.NewLine + Environment.NewLine + innerException.Message;
+                                    }
+                                }
+                            }
+
 							_errorMessageLinkLabel.Visible = exception != null && !String.IsNullOrEmpty(exception.Message);
 							ConnectionErrorMessage = exception == null
 								                         ? null
-								                         : exception.Message.Replace("\r", "").Replace("\n", "\r\n");
+								                         : exceptionMessage.Replace("\r", "").Replace("\n", "\r\n");
 							_textLayoutPanel.Width = _errorMessageLinkLabel.Visible
 								                         ? _errorMessageLinkLabel.Width + disconnectedLabel.Width
 								                         : disconnectedLabel.Width;
