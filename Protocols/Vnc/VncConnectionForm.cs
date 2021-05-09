@@ -43,6 +43,17 @@ namespace EasyConnect.Protocols.Vnc
 
 			_vncProtocol = new VncProtocolImplementation();
 			_vncClient = new VncClient(Logging.Factory, _vncProtocol);
+
+            Resize += VncConnectionForm_Resize;
+		}
+
+        private void VncConnectionForm_Resize(object sender, EventArgs e)
+        {
+			if (_vncConnection != null && _vncConnection.ConnectionState == ConnectionState.Connected)
+			{
+				_vncDesktop.Left = Math.Max(ClientSize.Width - _vncConnection.RemoteFramebufferSize.Width, 0) / 2;
+				_vncDesktop.Top = Math.Max(ClientSize.Height - _vncConnection.RemoteFramebufferSize.Height, 0) / 2;
+			}
 		}
 
         protected override void WndProc(ref Message m)
@@ -203,11 +214,10 @@ namespace EasyConnect.Protocols.Vnc
 
 			_connectionCancellation = null;
 
-            _vncDesktop.Left = Math.Max(ClientSize.Width - _vncConnection.RemoteFramebufferSize.Width, 0) / 2;
-	        _vncDesktop.Top = Math.Max(ClientSize.Height - _vncConnection.RemoteFramebufferSize.Height, 0) / 2;
-
 			_vncDesktop.Width = _vncConnection.RemoteFramebufferSize.Width;
 			_vncDesktop.Height = _vncConnection.RemoteFramebufferSize.Height;
+
+			VncConnectionForm_Resize(this, null);
 
 			BackColor = System.Drawing.Color.FromArgb(171, 171, 171);
 		}
