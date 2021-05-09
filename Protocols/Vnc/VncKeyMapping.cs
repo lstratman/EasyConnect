@@ -16,7 +16,7 @@ namespace EasyConnect.Protocols.Vnc
         /// <param name="key">The case Keys.</param>
         /// <param name="includePrintable">True, if printable chars should be included in the mapping, false otherwise.</param>
         /// <returns>The X key symbol.</returns>
-        public static KeySymbol GetSymbolFromKey(Keys key, Keys modifiers, bool includePrintable = true)
+        public static KeySymbol GetSymbolFromKey(Keys key, Keys modifiers)
         {
             KeySymbol keySymbol;
 
@@ -262,8 +262,12 @@ namespace EasyConnect.Protocols.Vnc
                     break;
             };
 
-            if (keySymbol == KeySymbol.Null && includePrintable)
+            if (keySymbol == KeySymbol.Null)
             {
+                bool capsLockOn = Control.IsKeyLocked(Keys.CapsLock);
+                bool shiftOn = (modifiers & Keys.Shift) == Keys.Shift;
+                bool shouldUppercase = (capsLockOn && !shiftOn) || (!capsLockOn && shiftOn);
+
                 switch (key)
                 {
                     case Keys.Space:
@@ -271,107 +275,107 @@ namespace EasyConnect.Protocols.Vnc
                         break;
 
                     case Keys.A:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.A : KeySymbol.a;
+                        keySymbol = shouldUppercase ? KeySymbol.A : KeySymbol.a;
                         break;
 
                     case Keys.B:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.B : KeySymbol.b;
+                        keySymbol = shouldUppercase ? KeySymbol.B : KeySymbol.b;
                         break;
 
                     case Keys.C:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.C : KeySymbol.c;
+                        keySymbol = shouldUppercase ? KeySymbol.C : KeySymbol.c;
                         break;
 
                     case Keys.D:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.D : KeySymbol.d;
+                        keySymbol = shouldUppercase ? KeySymbol.D : KeySymbol.d;
                         break;
 
                     case Keys.E:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.E : KeySymbol.e;
+                        keySymbol = shouldUppercase ? KeySymbol.E : KeySymbol.e;
                         break;
 
                     case Keys.F:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.F : KeySymbol.f;
+                        keySymbol = shouldUppercase ? KeySymbol.F : KeySymbol.f;
                         break;
 
                     case Keys.G:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.G : KeySymbol.g;
+                        keySymbol = shouldUppercase ? KeySymbol.G : KeySymbol.g;
                         break;
 
                     case Keys.H:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.H : KeySymbol.h;
+                        keySymbol = shouldUppercase ? KeySymbol.H : KeySymbol.h;
                         break;
 
                     case Keys.I:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.I : KeySymbol.i;
+                        keySymbol = shouldUppercase ? KeySymbol.I : KeySymbol.i;
                         break;
 
                     case Keys.J:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.J : KeySymbol.j;
+                        keySymbol = shouldUppercase ? KeySymbol.J : KeySymbol.j;
                         break;
 
                     case Keys.K:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.K : KeySymbol.k;
+                        keySymbol = shouldUppercase ? KeySymbol.K : KeySymbol.k;
                         break;
 
                     case Keys.L:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.L : KeySymbol.l;
+                        keySymbol = shouldUppercase ? KeySymbol.L : KeySymbol.l;
                         break;
 
                     case Keys.M:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.M : KeySymbol.m;
+                        keySymbol = shouldUppercase ? KeySymbol.M : KeySymbol.m;
                         break;
 
                     case Keys.N:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.N : KeySymbol.n;
+                        keySymbol = shouldUppercase ? KeySymbol.N : KeySymbol.n;
                         break;
 
                     case Keys.O:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.O : KeySymbol.o;
+                        keySymbol = shouldUppercase ? KeySymbol.O : KeySymbol.o;
                         break;
 
                     case Keys.P:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.P : KeySymbol.p;
+                        keySymbol = shouldUppercase ? KeySymbol.P : KeySymbol.p;
                         break;
 
                     case Keys.Q:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.Q : KeySymbol.q;
+                        keySymbol = shouldUppercase ? KeySymbol.Q : KeySymbol.q;
                         break;
 
                     case Keys.R:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.R : KeySymbol.r;
+                        keySymbol = shouldUppercase ? KeySymbol.R : KeySymbol.r;
                         break;
 
                     case Keys.S:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.S : KeySymbol.s;
+                        keySymbol = shouldUppercase ? KeySymbol.S : KeySymbol.s;
                         break;
 
                     case Keys.T:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.T : KeySymbol.t;
+                        keySymbol = shouldUppercase ? KeySymbol.T : KeySymbol.t;
                         break;
 
                     case Keys.U:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.U : KeySymbol.u;
+                        keySymbol = shouldUppercase ? KeySymbol.U : KeySymbol.u;
                         break;
 
                     case Keys.V:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.V : KeySymbol.v;
+                        keySymbol = shouldUppercase ? KeySymbol.V : KeySymbol.v;
                         break;
 
                     case Keys.W:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.W : KeySymbol.w;
+                        keySymbol = shouldUppercase ? KeySymbol.W : KeySymbol.w;
                         break;
 
                     case Keys.X:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.X : KeySymbol.x;
+                        keySymbol = shouldUppercase ? KeySymbol.X : KeySymbol.x;
                         break;
 
                     case Keys.Y:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.Y : KeySymbol.y;
+                        keySymbol = shouldUppercase ? KeySymbol.Y : KeySymbol.y;
                         break;
 
                     case Keys.Z:
-                        keySymbol = (modifiers & Keys.Shift) == Keys.Shift ? KeySymbol.Z : KeySymbol.z;
+                        keySymbol = shouldUppercase ? KeySymbol.Z : KeySymbol.z;
                         break;
 
                     case Keys.NumPad0:

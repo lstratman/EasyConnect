@@ -220,7 +220,7 @@ namespace EasyConnect.Protocols.Vnc
             }
 
             // Get key symbol
-            KeySymbol keySymbol = VncKeyMapping.GetSymbolFromKey(key, keyModifiers, true);
+            KeySymbol keySymbol = VncKeyMapping.GetSymbolFromKey(key, keyModifiers);
 
             if (keySymbol == KeySymbol.Null)
             {
