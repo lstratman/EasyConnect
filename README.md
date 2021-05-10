@@ -2,12 +2,12 @@
 
 This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP), Secure Shell (SSH), PowerShell, and VNC but has a plugin architecture designed to enable third-party support for other protocols such as Citrix, etc.
 
-<a href="http://lstratman.github.com/EasyConnect/images/screenshots/bookmarks.png" target="_blank"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/bookmarks.png"/></a>
-<a href="http://lstratman.github.com/EasyConnect/images/screenshots/rdp.png" target="_blank"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/rdp.png"/></a>
-<a href="http://lstratman.github.com/EasyConnect/images/screenshots/ssh.png" target="_blank"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/ssh.png"/></a>
-<a href="http://lstratman.github.com/EasyConnect/images/screenshots/powershell.png" target="_blank"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/powershell.png"/></a>
-<a href="http://lstratman.github.com/EasyConnect/images/screenshots/options.png" target="_blank"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/options.png"/></a>
-<a href="http://lstratman.github.com/EasyConnect/images/screenshots/history.png" target="_blank"><img src="http://lstratman.github.com/EasyConnect/images/screenshots/thumbnails/history.png"/></a>
+<a href="http://lstratman.github.io/EasyConnect/images/screenshots/bookmarks.png" target="_blank"><img src="http://lstratman.github.io/EasyConnect/images/screenshots/thumbnails/bookmarks.png"/></a>
+<a href="http://lstratman.github.io/EasyConnect/images/screenshots/rdp.png" target="_blank"><img src="http://lstratman.github.io/EasyConnect/images/screenshots/thumbnails/rdp.png"/></a>
+<a href="http://lstratman.github.io/EasyConnect/images/screenshots/ssh.png" target="_blank"><img src="http://lstratman.github.io/EasyConnect/images/screenshots/thumbnails/ssh.png"/></a>
+<a href="http://lstratman.github.io/EasyConnect/images/screenshots/powershell.png" target="_blank"><img src="http://lstratman.github.io/EasyConnect/images/screenshots/thumbnails/powershell.png"/></a>
+<a href="http://lstratman.github.io/EasyConnect/images/screenshots/options.png" target="_blank"><img src="http://lstratman.github.io/EasyConnect/images/screenshots/thumbnails/options.png"/></a>
+<a href="http://lstratman.github.io/EasyConnect/images/screenshots/history.png" target="_blank"><img src="http://lstratman.github.io/EasyConnect/images/screenshots/thumbnails/history.png"/></a>
 
 ## Installation Options
 
