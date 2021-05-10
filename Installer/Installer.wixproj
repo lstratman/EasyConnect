@@ -81,6 +81,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Protocols\Telnet\EasyConnect.Protocols.Telnet.csproj">
+      <Name>EasyConnect.Protocols.Telnet</Name>
+      <Project>{3c101570-f914-4b69-8e96-ce45fbdc8fa5}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Protocols\Vnc\EasyConnect.Protocols.Vnc.csproj">
       <Name>EasyConnect.Protocols.Vnc</Name>
       <Project>{13122d85-c813-4217-ae28-7921fc5588b2}</Project>
