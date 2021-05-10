@@ -56,9 +56,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MarcusW.VncClient">
-      <HintPath>..\..\..\MarcusW.VncClient\src\MarcusW.VncClient\bin\Debug\netstandard2.0\MarcusW.VncClient.dll</HintPath>
-    </Reference>
     <Reference Include="SecurePasswordTextBox">
       <HintPath>..\..\lib\SecurePasswordTextBox.dll</HintPath>
     </Reference>
@@ -133,6 +130,9 @@
     <None Include="Resources\Vnc.ico" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="MarcusW.VncClient">
+      <Version>1.0.0-easyconnect1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging">
       <Version>3.1.3</Version>
     </PackageReference>
