@@ -29,6 +29,10 @@
 				<ComponentGroupRef Id="SshPluginComponents"/>
 			  <ComponentGroupRef Id="TerminalControlComponents"/>
 			</Feature>
+			<Feature Id="TelnetPlugin" Title="Telnet Plugin" Description="Plugin to allow telnet connections." Level="1" Absent="allow">
+				<ComponentGroupRef Id="TelnetPluginComponents"/>
+				<ComponentGroupRef Id="TerminalControlComponents"/>
+			</Feature>
 			<Feature Id="PowerShellPlugin" Title="PowerShell Plugin" Description="Plugin to allow PowerShell connections." Level="1" Absent="allow">
 				<ComponentGroupRef Id="PowerShellPluginComponents"/>
 				<ComponentGroupRef Id="TerminalControlComponents"/>
@@ -177,6 +181,11 @@
 		<ComponentGroup Id="SshPluginComponents" Directory="INSTALLFOLDER">
 			<Component Id="SshPluginAssemblyComponent" Guid="779FA6DA-64F2-4FB5-9BF7-7CA5E0EC6FB6">
 				<File Id="SshPluginAssembly" Name="$(var.EasyConnect.Protocols.Ssh.TargetFileName)" Source="$(var.EasyConnect.Protocols.Ssh.TargetPath)"/>
+			</Component>
+		</ComponentGroup>
+		<ComponentGroup Id="TelnetPluginComponents" Directory="INSTALLFOLDER">
+			<Component Id="TelnetPluginAssemblyComponent" Guid="F01AC354-06C5-4AB2-8CEA-15E41469E4E4">
+				<File Id="TelnetPluginAssembly" Name="$(var.EasyConnect.Protocols.Telnet.TargetFileName)" Source="$(var.EasyConnect.Protocols.Telnet.TargetPath)"/>
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="TerminalControlComponents" Directory="INSTALLFOLDER">
