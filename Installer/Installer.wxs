@@ -110,6 +110,54 @@
       <Component Id="SvgAssemblyComponent" Guid="1A754B13-9C7B-4D48-B628-4D1DE9971176">
 				<File Id="SvgAssembly" Name="Svg.dll" Source="$(var.EasyConnect.TargetDir)Svg.dll"/>
 			</Component>
+      <Component Id="MicrosoftBclAsyncInterfacesSvgAssemblyComponent" Guid="1104A205-4D2F-4F5C-A1D1-EE0B98D408FB">
+				<File Id="MicrosoftBclAsyncInterfacesSvgAssembly" Name="Microsoft.Bcl.AsyncInterfaces.dll" Source="$(var.EasyConnect.TargetDir)Microsoft.Bcl.AsyncInterfaces.dll"/>
+			</Component>
+      <Component Id="MicrosoftExtensionsConfigurationAbstractionsAssemblyComponent" Guid="F25D5263-9836-4BDB-BEE4-6D397304273A">
+				<File Id="MicrosoftExtensionsConfigurationAbstractionsAssembly" Name="Microsoft.Extensions.Configuration.Abstractions.dll" Source="$(var.EasyConnect.TargetDir)Microsoft.Extensions.Configuration.Abstractions.dll"/>
+			</Component>
+      <Component Id="MicrosoftExtensionsConfigurationBinderAssemblyComponent" Guid="66065F33-3A08-4020-8434-462D0FAD8E50">
+				<File Id="MicrosoftExtensionsConfigurationBinderAssembly" Name="Microsoft.Extensions.Configuration.Binder.dll" Source="$(var.EasyConnect.TargetDir)Microsoft.Extensions.Configuration.Binder.dll"/>
+			</Component>
+      <Component Id="MicrosoftExtensionsConfigurationAssemblyComponent" Guid="9F386B80-BAA2-4388-BC5B-5547F40D79AA">
+				<File Id="MicrosoftExtensionsConfigurationAssembly" Name="Microsoft.Extensions.Configuration.dll" Source="$(var.EasyConnect.TargetDir)Microsoft.Extensions.Configuration.dll"/>
+			</Component>
+      <Component Id="MicrosoftExtensionsDependencyInjectionAbstractionsAssemblyComponent" Guid="BFFAA4B0-58F1-4C9C-A42F-B5A7F3EBBAD4">
+				<File Id="MicrosoftExtensionsDependencyInjectionAbstractionsAssembly" Name="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Source="$(var.EasyConnect.TargetDir)Microsoft.Extensions.DependencyInjection.Abstractions.dll"/>
+			</Component>
+      <Component Id="MicrosoftExtensionsDependencyInjectionAssemblyComponent" Guid="A2AED60D-B25C-4B72-8ACB-4E91432B3152">
+				<File Id="MicrosoftExtensionsDependencyInjectionAssembly" Name="Microsoft.Extensions.DependencyInjection.dll" Source="$(var.EasyConnect.TargetDir)Microsoft.Extensions.DependencyInjection.dll"/>
+			</Component>
+      <Component Id="MicrosoftExtensionsLoggingAbstractionsAssemblyComponent" Guid="F942EC32-A3F8-45AF-9C71-55EB9808F253">
+				<File Id="MicrosoftExtensionsLoggingAbstractionsAssembly" Name="Microsoft.Extensions.Logging.Abstractions.dll" Source="$(var.EasyConnect.TargetDir)Microsoft.Extensions.Logging.Abstractions.dll"/>
+			</Component>
+      <Component Id="MicrosoftExtensionsLoggingAssemblyComponent" Guid="F2FED730-521A-4116-A982-1829FC31D08C">
+				<File Id="MicrosoftExtensionsLoggingAssembly" Name="Microsoft.Extensions.Logging.dll" Source="$(var.EasyConnect.TargetDir)Microsoft.Extensions.Logging.dll"/>
+			</Component>
+      <Component Id="MicrosoftExtensionsOptionsAssemblyComponent" Guid="9446BFBC-E174-4D6B-9C4A-92502931BA0D">
+				<File Id="MicrosoftExtensionsOptionsAssembly" Name="Microsoft.Extensions.Options.dll" Source="$(var.EasyConnect.TargetDir)Microsoft.Extensions.Options.dll"/>
+			</Component>
+      <Component Id="MicrosoftExtensionsPrimitivesAssemblyComponent" Guid="F3D27F54-748F-4838-AE80-A4B9A177383D">
+				<File Id="MicrosoftExtensionsPrimitivesAssembly" Name="Microsoft.Extensions.Primitives.dll" Source="$(var.EasyConnect.TargetDir)Microsoft.Extensions.Primitives.dll"/>
+			</Component>
+      <Component Id="SystemBuffersAssemblyComponent" Guid="1190E045-7645-4FA7-B4ED-43BA982F9EE9">
+				<File Id="SystemBuffersAssembly" Name="System.Buffers.dll" Source="$(var.EasyConnect.TargetDir)System.Buffers.dll"/>
+			</Component>
+      <Component Id="SystemComponentModelAnnotationsAssemblyComponent" Guid="3F30A191-F7FC-4C2B-A87F-45665C465ADC">
+				<File Id="SystemComponentModelAnnotationsAssembly" Name="System.ComponentModel.Annotations.dll" Source="$(var.EasyConnect.TargetDir)System.ComponentModel.Annotations.dll"/>
+			</Component>
+      <Component Id="SystemMemoryAssemblyComponent" Guid="05CD73C1-4D5A-40EB-86C4-617CB324D45C">
+				<File Id="SystemMemoryAssembly" Name="System.Memory.dll" Source="$(var.EasyConnect.TargetDir)System.Memory.dll"/>
+			</Component>
+      <Component Id="SystemNumericsVectorsAssemblyComponent" Guid="703196B1-C333-4A6A-9003-79E529891D24">
+				<File Id="SystemNumericsVectorsAssembly" Name="System.Numerics.Vectors.dll" Source="$(var.EasyConnect.TargetDir)System.Numerics.Vectors.dll"/>
+			</Component>
+      <Component Id="SystemRuntimeCompilerServicesUnsafeAssemblyComponent" Guid="FBB5BF03-D955-4511-BF2C-5B2B4621CC19">
+				<File Id="SystemRuntimeCompilerServicesUnsafeAssembly" Name="System.Runtime.CompilerServices.Unsafe.dll" Source="$(var.EasyConnect.TargetDir)System.Runtime.CompilerServices.Unsafe.dll"/>
+			</Component>
+      <Component Id="SystemThreadingTasksExtensionsAssemblyComponent" Guid="2151C950-684D-4FFC-978C-8B839091BB89">
+				<File Id="SystemThreadingTasksExtensionsAssembly" Name="System.Threading.Tasks.Extensions.dll" Source="$(var.EasyConnect.TargetDir)System.Threading.Tasks.Extensions.dll"/>
+			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="RdpPluginComponents" Directory="INSTALLFOLDER">
 			<Component Id="RdpPluginAssemblyComponent" Guid="5DE75ACB-FFE2-40E0-8FD0-365132D5E4BF">
@@ -121,7 +169,9 @@
 		<ComponentGroup Id="VncPluginComponents" Directory="INSTALLFOLDER">
 			<Component Id="VncPluginAssemblyComponent" Guid="D39F04E9-B216-4EDB-A041-FFEB65AB0AE5">
 				<File Id="VncPluginAssembly" Name="$(var.EasyConnect.Protocols.Vnc.TargetFileName)" Source="$(var.EasyConnect.Protocols.Vnc.TargetPath)"/>
-				<File Id="VncSharpAssembly" Name="VncSharp.dll" Source="$(var.EasyConnect.Protocols.Vnc.TargetDir)VncSharp.dll"/>
+				<File Id="MarcusWVncClientAssembly" Name="MarcusW.VncClient.dll" Source="$(var.EasyConnect.Protocols.Vnc.TargetDir)MarcusW.VncClient.dll"/>
+			  <File Id="MicrosoftBclHashCodeAssembly" Name="Microsoft.Bcl.HashCode.dll" Source="$(var.EasyConnect.Protocols.Vnc.TargetDir)Microsoft.Bcl.HashCode.dll"/>
+			  <File Id="SystemCollectionsImmutableAssembly" Name="System.Collections.Immutable.dll" Source="$(var.EasyConnect.Protocols.Vnc.TargetDir)System.Collections.Immutable.dll"/>
 			</Component>
 		</ComponentGroup>
 		<ComponentGroup Id="SshPluginComponents" Directory="INSTALLFOLDER">
