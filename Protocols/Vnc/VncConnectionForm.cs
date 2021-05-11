@@ -62,7 +62,12 @@ namespace EasyConnect.Protocols.Vnc
             {
 				if (Connection != null && Connection.ShareClipboard && _vncConnection != null && _vncConnection.ConnectionState == ConnectionState.Connected && Clipboard.ContainsText())
                 {
-					_vncConnection.EnqueueMessage(new ClientCutTextMessage(Clipboard.GetText()));
+					string text = Clipboard.GetText();
+
+					if (!String.IsNullOrEmpty(text))
+					{
+						_vncConnection.EnqueueMessage(new ClientCutTextMessage(text));
+					}
                 }
             }
 
@@ -91,6 +96,7 @@ namespace EasyConnect.Protocols.Vnc
 
 		    ParentForm.Closing += VncConnectionForm_FormClosing;
 
+			_vncDesktop.Reset();
 			_vncDesktop.Width = ClientSize.Width;
 			_vncDesktop.Height = ClientSize.Height;
 
@@ -111,7 +117,8 @@ namespace EasyConnect.Protocols.Vnc
 				AuthenticationHandler = new VncAuthenticationHandler(GetPassword()),
 				InitialRenderTarget = _vncDesktop,
 				JpegQualityLevel = Connection.PictureQuality * 10,
-				InitialOutputHandler = this
+				InitialOutputHandler = this,
+				MaxReconnectAttempts = 0
 			}, _connectionCancellation.Token).ContinueWith(connectionTask =>
 			{
 				if (connectionTask.IsFaulted)

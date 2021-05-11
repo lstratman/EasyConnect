@@ -30,6 +30,24 @@ namespace EasyConnect.Protocols.Vnc
             this.MouseWheel += VncDesktop_MouseWheel;
         }
 
+        public void Reset()
+        {
+            if (_currentFramebufferReference != null)
+            {
+                _currentFramebufferReference.Dispose();
+                _currentFramebufferReference = null;
+            }
+
+            if (_bitmap != null)
+            {
+                lock (_bitmapReplacementLock)
+                {
+                    _bitmap.Dispose();
+                    _bitmap = null;
+                }
+            }
+        }
+
         private void VncDesktop_MouseWheel(object sender, MouseEventArgs e)
         {
             HandlePointerEvent(e);
@@ -99,12 +117,15 @@ namespace EasyConnect.Protocols.Vnc
 
         protected void RenderFramebuffer()
         {
-            _currentFramebufferReference = null;
-
-            Invoke(new Action(() =>
+            if (_currentFramebufferReference != null)
             {
-                Invalidate();
-            }));
+                _currentFramebufferReference = null;
+
+                Invoke(new Action(() =>
+                {
+                    Invalidate();
+                }));
+            }
         }
 
         private void VncDesktop_MouseMove(object sender, MouseEventArgs e)
