@@ -19,7 +19,7 @@ namespace EasyConnect.Protocols.Vnc
     {
         protected object _bitmapReplacementLock = new object();
         protected Bitmap _bitmap = null;
-        protected bool locked = false;
+        protected FramebufferReference _currentFramebufferReference = null;
 
         protected HashSet<KeySymbol> _pressedKeys = new HashSet<KeySymbol>();
 
@@ -79,8 +79,8 @@ namespace EasyConnect.Protocols.Vnc
                 }
             }
 
-            locked = true;
-            return new FramebufferReference(_bitmap, RenderFramebuffer);
+            _currentFramebufferReference = new FramebufferReference(_bitmap, RenderFramebuffer);
+            return _currentFramebufferReference;
         }
 
         private void VncDesktop_Paint(object sender, PaintEventArgs e)
@@ -89,7 +89,7 @@ namespace EasyConnect.Protocols.Vnc
             {
                 lock (_bitmapReplacementLock)
                 {
-                    if (!locked)
+                    if (_currentFramebufferReference == null)
                     {
                         e.Graphics.DrawImage(_bitmap, 0, 0);
                     }
@@ -99,7 +99,7 @@ namespace EasyConnect.Protocols.Vnc
 
         protected void RenderFramebuffer()
         {
-            locked = false;
+            _currentFramebufferReference = null;
 
             Invoke(new Action(() =>
             {
