@@ -35,7 +35,13 @@ namespace EasyConnect.Protocols.Vnc
             HandlePointerEvent(e);
         }
 
-        public RfbConnection Connection
+        public VncConnection VncConnection
+        {
+            get;
+            set;
+        }
+
+        public RfbConnection RfbConnection
         {
             get;
             set;
@@ -118,7 +124,7 @@ namespace EasyConnect.Protocols.Vnc
 
         private bool HandlePointerEvent(MouseEventArgs mouseData)
         {
-            RfbConnection connection = Connection;
+            RfbConnection connection = RfbConnection;
 
             if (connection == null)
             {
@@ -181,12 +187,18 @@ namespace EasyConnect.Protocols.Vnc
 
         private void VncDesktop_MouseEnter(object sender, EventArgs e)
         {
-            //Cursor.Hide();
+            if (!VncConnection.ShowLocalCursor)
+            {
+                Cursor.Hide();
+            }
         }
 
         private void VncDesktop_MouseLeave(object sender, EventArgs e)
         {
-            //Cursor.Show();
+            if (!VncConnection.ShowLocalCursor)
+            {
+                Cursor.Show();
+            }
         }
 
         private void VncDesktop_KeyDown(object sender, KeyEventArgs e)
@@ -212,7 +224,7 @@ namespace EasyConnect.Protocols.Vnc
         private bool HandleKeyEvent(bool downFlag, Keys key, Keys keyModifiers)
         {
             // Get connection
-            RfbConnection connection = Connection;
+            RfbConnection connection = RfbConnection;
 
             if (connection == null)
             {

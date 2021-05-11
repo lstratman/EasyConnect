@@ -18,6 +18,7 @@ namespace EasyConnect.Protocols.Vnc
 			PictureQuality = 7;
 		    ShareClipboard = true;
 			PreferredEncoding = "ZRLE";
+			ShowLocalCursor = true;
 		}
 
 		/// <summary>
@@ -47,6 +48,10 @@ namespace EasyConnect.Protocols.Vnc
 				    case "ShareClipboard":
 				        ShareClipboard = (bool) entry.Value;
 				        break;
+
+					case "ShowLocalCursor":
+						ShowLocalCursor = (bool)entry.Value;
+						break;
 
 					case "PictureQuality":
 						PictureQuality = (int) entry.Value;
@@ -95,6 +100,12 @@ namespace EasyConnect.Protocols.Vnc
 	        set;
 	    }
 
+		public bool ShowLocalCursor
+		{
+			get;
+			set;
+		}
+
 		public int PictureQuality
         {
 			get;
@@ -120,6 +131,7 @@ namespace EasyConnect.Protocols.Vnc
 			info.AddValue("Display", Display);
 			info.AddValue("ViewOnly", ViewOnly);
             info.AddValue("ShareClipboard", ShareClipboard);
+			info.AddValue("ShareClipboard", ShowLocalCursor);
 			info.AddValue("PictureQuality", PictureQuality);
 			info.AddValue("PreferredEncoding", PreferredEncoding);
 		}

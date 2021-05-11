@@ -68,6 +68,7 @@ namespace EasyConnect.Protocols.Vnc
 			_displayUpDown.Value = Connection.Display;
 			_viewOnlyCheckbox.Checked = Connection.ViewOnly;
 		    _clipboardCheckbox.Checked = Connection.ShareClipboard;
+			_showLocalCursorCheckbox.Checked = Connection.ShowLocalCursor;
 
 			if (!String.IsNullOrEmpty(Connection.PreferredEncoding))
 			{
@@ -113,6 +114,7 @@ namespace EasyConnect.Protocols.Vnc
 			Connection.Password = _passwordTextBox.SecureText;
 		    Connection.ShareClipboard = _clipboardCheckbox.Checked;
 			Connection.PictureQuality = _pictureQualitySlider.Value;
+			Connection.ShowLocalCursor = _showLocalCursorCheckbox.Checked;
 		}
 
 		private void _inheritedPasswordTextBox_Enter(object sender, EventArgs e)

@@ -125,7 +125,8 @@ namespace EasyConnect.Protocols.Vnc
 				else
 				{
 					_vncConnection = connectionTask.Result;
-					_vncDesktop.Connection = _vncConnection;
+					_vncDesktop.RfbConnection = _vncConnection;
+					_vncDesktop.VncConnection = Connection;
 
                     _vncConnection.PropertyChanged += _vncConnection_PropertyChanged;
 
