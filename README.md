@@ -1,9 +1,10 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/u8ugbo8oh1mffhet?svg=true)](https://ci.appveyor.com/project/lstratman/easyconnect)
 
-This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP), Secure Shell (SSH), PowerShell, and VNC but has a plugin architecture designed to enable third-party support for other protocols such as Citrix, etc.
+This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP), Secure Shell (SSH), Telnet, PowerShell, and VNC but has a plugin architecture designed to enable third-party support for other protocols such as Citrix, etc.
 
 <a href="http://lstratman.github.io/EasyConnect/images/screenshots/bookmarks.png" target="_blank"><img src="http://lstratman.github.io/EasyConnect/images/screenshots/thumbnails/bookmarks.png"/></a>
 <a href="http://lstratman.github.io/EasyConnect/images/screenshots/rdp.png" target="_blank"><img src="http://lstratman.github.io/EasyConnect/images/screenshots/thumbnails/rdp.png"/></a>
+<a href="http://lstratman.github.io/EasyConnect/images/screenshots/vnc.png" target="_blank"><img src="http://lstratman.github.io/EasyConnect/images/screenshots/thumbnails/vnc.png"/></a>
 <a href="http://lstratman.github.io/EasyConnect/images/screenshots/ssh.png" target="_blank"><img src="http://lstratman.github.io/EasyConnect/images/screenshots/thumbnails/ssh.png"/></a>
 <a href="http://lstratman.github.io/EasyConnect/images/screenshots/powershell.png" target="_blank"><img src="http://lstratman.github.io/EasyConnect/images/screenshots/thumbnails/powershell.png"/></a>
 <a href="http://lstratman.github.io/EasyConnect/images/screenshots/options.png" target="_blank"><img src="http://lstratman.github.io/EasyConnect/images/screenshots/thumbnails/options.png"/></a>
