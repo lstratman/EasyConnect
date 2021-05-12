@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Luke Stratman")]
 [assembly: AssemblyProduct("EasyConnect")]
-[assembly: AssemblyCopyright("Copyright 2020")]
+[assembly: AssemblyCopyright("Copyright 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
