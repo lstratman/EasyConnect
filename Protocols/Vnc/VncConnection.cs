@@ -131,7 +131,7 @@ namespace EasyConnect.Protocols.Vnc
 			info.AddValue("Display", Display);
 			info.AddValue("ViewOnly", ViewOnly);
             info.AddValue("ShareClipboard", ShareClipboard);
-			info.AddValue("ShareClipboard", ShowLocalCursor);
+			info.AddValue("ShowLocalCursor", ShowLocalCursor);
 			info.AddValue("PictureQuality", PictureQuality);
 			info.AddValue("PreferredEncoding", PreferredEncoding);
 		}
