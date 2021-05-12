@@ -7,22 +7,21 @@
     <authors>Luke Stratman</authors>
     <owners>Luke Stratman</owners>
     <description>Tabbed remote desktop application with a Chrome-like UI.</description>
-    <tags>rdp ssh vnc remote-desktop powershell admin</tags>
-    <summary>This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP), Secure Shell (SSH), PowerShell, and VNC but has a plugin architecture designed to enable third-party support for other protocols such as Citrix, etc.</summary>
+    <tags>rdp ssh vnc remote-desktop powershell telnet admin</tags>
+    <summary>This is a Windows tabbed remote desktop application whose UI was designed to resemble Chrome's.  Currently it supports Microsoft's Remote Desktop Protocol (RDP), Secure Shell (SSH), Telnet, PowerShell, and VNC but has a plugin architecture designed to enable third-party support for other protocols such as Citrix, etc.</summary>
     <projectUrl>https://lstratman.github.io/EasyConnect</projectUrl>
     <projectSourceUrl>https://github.com/lstratman/EasyConnect</projectSourceUrl>
     <bugTrackerUrl>https://github.com/lstratman/EasyConnect/issues</bugTrackerUrl>
     <packageSourceUrl>https://github.com/lstratman/EasyConnect/tree/master/Chocolatey</packageSourceUrl>
     <iconUrl>https://lstratman.github.io/EasyConnect/images/EasyConnect.png</iconUrl>
-    <copyright>(c) 2020, Luke Stratman</copyright>
+    <copyright>(c) 2021, Luke Stratman</copyright>
     <licenseUrl>https://github.com/lstratman/EasyConnect/blob/master/GPL.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <releaseNotes>
-      - Updated the UI to the look and feel of Chrome v85
-      - VNC plugin now uses the VncSharp package instead of RemoteViewing
-      - Turning off recent document tracking in the Start Menu settings no longer causes an exception to be thrown when trying to populate the jump list
-      - Auto update manifest is now signed and the auto updater checks signatures for the update MSI files
-    </releaseNotes>
+			- Fixed a font size rendering issue in the address bar for some cultures
+			- Added plugin for Telnet connections
+			- Re-wrote the VNC plugin to use the excellent MarcusW.VncClient
+		</releaseNotes>
   </metadata>
   <files>
     <file src="tools\**" target="tools" />
