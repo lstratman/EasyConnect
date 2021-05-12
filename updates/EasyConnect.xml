@@ -65,5 +65,11 @@
          <pubDate>Sat, 26 Sep 2020 12:20:00 -05</pubDate>
          <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-3.0.0.82.msi" sparkle:version="3.0.0.82" length="2359296" type="application/octet-stream" sparkle:dsaSignature="c8FUEZa0R9q7EHTYjEm623NhMoNqKhAIx+SkgWIJvi2ANgvP4ZfxRg==" />
       </item>
+      <item>
+         <title>Version 3.1.0.105</title>
+         <sparkle:releaseNotesLink>http://lstratman.github.io/EasyConnect/updates/3.1.html</sparkle:releaseNotesLink>
+         <pubDate>Wed, 12 Apr 2021 13:29:00 -05</pubDate>
+         <enclosure url="http://lstratman.github.io/EasyConnect/updates/EasyConnect-3.1.0.105.msi" sparkle:version="3.1.0.105" length="2793472" type="application/octet-stream" sparkle:dsaSignature="lwOIn4qROj+z1t65fnaZec/KMHGCjfX2MCrfOYqgPeSMxKnP48FssA==" />
+      </item>
    </channel>
 </rss>
