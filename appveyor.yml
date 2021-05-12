@@ -5,7 +5,7 @@ platform: Any CPU
 before_build:
 - cmd: .nuget\NuGet.exe restore
 - ps: .\SetAssemblyVersion.ps1 ${env:APPVEYOR_BUILD_VERSION}
-- ps: '[System.IO.File]::ReadAllText("${env:APPVEYOR_BUILD_FOLDER}\app.config").Replace(''<add key="checkForUpdates" value="false" />'', ''<add key="checkForUpdates" value="true" />'') | Set-Content ${env:APPVEYOR_BUILD_FOLDER}\app.config'
+- ps: '[System.IO.File]::ReadAllText("${env:APPVEYOR_BUILD_FOLDER}\app.config").Replace(''add key="checkForUpdates" value="false"'', ''add key="checkForUpdates" value="true"'') | Set-Content ${env:APPVEYOR_BUILD_FOLDER}\app.config'
 build_script:
 - msbuild EasyConnect.sln /p:Configuration=%CONFIGURATION% /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 - msbuild EasyConnect.sln /p:Configuration=AppX%CONFIGURATION% /p:WindowsSDKBin="C:\Program Files (x86)\Windows Kits\10\bin\10.0.16299.0\x64" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
