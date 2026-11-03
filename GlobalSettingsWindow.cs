@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security;
 using System.Windows.Forms;
 using EasyConnect.Protocols;
+using System.Drawing;
 
 namespace EasyConnect
 {
@@ -65,6 +66,8 @@ namespace EasyConnect
 			
 			// Persist selected value
 			GlobalSettings.Instance.ToolbarAutoHideVisibleHeight = (int)_toolbarHiddenHeightNumeric.Value;
+			// Persist selected bookmarks icon size
+			GlobalSettings.Instance.BookmarksListIconSize = (int)_bookmarksIconSizeNumeric.Value;
 
 			await GlobalSettings.Instance.Save();
 		}
@@ -152,6 +155,8 @@ namespace EasyConnect
             _defaultProtocolDropdown.SelectedItem = await ConnectionFactory.GetDefaultProtocol();
             // Load persisted value
             _toolbarHiddenHeightNumeric.Value = GlobalSettings.Instance.ToolbarAutoHideVisibleHeight;
+            // Load persisted bookmarks icon size
+            _bookmarksIconSizeNumeric.Value = GlobalSettings.Instance.BookmarksListIconSize;
         }
     }
 }

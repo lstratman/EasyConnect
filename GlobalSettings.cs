@@ -24,6 +24,9 @@ namespace EasyConnect
         {
             // Keep backward-compatible default behavior
             ToolbarAutoHideVisibleHeight = 5;
+
+            // Default icon size for bookmarks list view
+            BookmarksListIconSize = 32;
         }
 
 		/// <summary>
@@ -154,5 +157,10 @@ namespace EasyConnect
 		/// Visible toolbar height in auto-hide mode (0 = fully hidden).
 		/// </summary>
 		public int ToolbarAutoHideVisibleHeight { get; set; }
+
+		/// <summary>
+		/// Icon size (pixels) used in bookmarks list view.
+		/// </summary>
+		public int BookmarksListIconSize { get; set; }
 	}
 }

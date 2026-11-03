@@ -1934,5 +1934,10 @@ namespace EasyConnect
         {
 			_toolsButton.BackgroundImage = Resources.ButtonPressedBackground;
 		}
+
+        public ImageList ListViewImageList
+        {
+            get { return _listViewImageList; }
+        }
     }
 }

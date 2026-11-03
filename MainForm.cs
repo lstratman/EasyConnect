@@ -25,6 +25,7 @@ using Win32Interop.Enums;
 using Win32Interop.Methods;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Drawing;
 
 namespace EasyConnect
 {
@@ -206,7 +207,9 @@ namespace EasyConnect
 				if (_bookmarksWindow == null && ConnectionFactory.ReadyForCrypto)
 					_bookmarksWindow = new BookmarksWindow(this);
 
-				return _bookmarksWindow;
+                int listIconSize = Math.Max(16, Math.Min(64, GlobalSettings.Instance.BookmarksListIconSize));
+				this._bookmarksWindow.ListViewImageList.ImageSize = new Size(listIconSize, listIconSize);
+                return _bookmarksWindow;
 			}
 		}
 
