@@ -63,6 +63,9 @@ namespace EasyConnect
 			if (_parentTabs.AeroPeekEnabled != _enableAeroPeekCheckbox.Checked)
 				_parentTabs.AeroPeekEnabled = _enableAeroPeekCheckbox.Checked;
 			
+			// Persist selected value
+			GlobalSettings.Instance.ToolbarAutoHideVisibleHeight = (int)_toolbarHiddenHeightNumeric.Value;
+
 			await GlobalSettings.Instance.Save();
 		}
 
@@ -147,6 +150,8 @@ namespace EasyConnect
         private async void GlobalSettingsWindow_Load(object sender, EventArgs e)
         {
             _defaultProtocolDropdown.SelectedItem = await ConnectionFactory.GetDefaultProtocol();
+            // Load persisted value
+            _toolbarHiddenHeightNumeric.Value = GlobalSettings.Instance.ToolbarAutoHideVisibleHeight;
         }
     }
 }

@@ -22,6 +22,8 @@ namespace EasyConnect
 
         private GlobalSettings()
         {
+            // Keep backward-compatible default behavior
+            ToolbarAutoHideVisibleHeight = 5;
         }
 
 		/// <summary>
@@ -147,5 +149,10 @@ namespace EasyConnect
 				serializer.Serialize(fileStream, this);
 #endif
         }
+
+		/// <summary>
+		/// Visible toolbar height in auto-hide mode (0 = fully hidden).
+		/// </summary>
+		public int ToolbarAutoHideVisibleHeight { get; set; }
 	}
 }

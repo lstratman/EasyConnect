@@ -40,6 +40,11 @@
             this._encryptionTypeDropdown = new System.Windows.Forms.ComboBox();
             this._enableAeroPeekLabel = new System.Windows.Forms.Label();
             this._enableAeroPeekCheckbox = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this._toolbarHiddenHeightNumeric = new System.Windows.Forms.NumericUpDown();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this._card.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._toolbarHiddenHeightNumeric)).BeginInit();
             this.SuspendLayout();
             // 
             // _defaultProtocolLabel
@@ -69,9 +74,12 @@
             // _card
             // 
             this._card.BackColor = System.Drawing.Color.White;
+            this._card.Controls.Add(this.panel1);
+            this._card.Controls.Add(this._toolbarHiddenHeightNumeric);
+            this._card.Controls.Add(this.label1);
             this._card.Location = new System.Drawing.Point(15, 19);
             this._card.Name = "_card";
-            this._card.Size = new System.Drawing.Size(692, 249);
+            this._card.Size = new System.Drawing.Size(692, 324);
             this._card.TabIndex = 77;
             // 
             // _divider1
@@ -165,13 +173,39 @@
             this._enableAeroPeekCheckbox.TabIndex = 85;
             this._enableAeroPeekCheckbox.UseVisualStyleBackColor = true;
             // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.White;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(24, 256);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(174, 20);
+            this.label1.TabIndex = 87;
+            this.label1.Text = "Toolbar Hidden Height";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // _toolbarHiddenHeightNumeric
+            // 
+            this._toolbarHiddenHeightNumeric.Location = new System.Drawing.Point(487, 256);
+            this._toolbarHiddenHeightNumeric.Name = "_toolbarHiddenHeightNumeric";
+            this._toolbarHiddenHeightNumeric.Size = new System.Drawing.Size(60, 20);
+            this._toolbarHiddenHeightNumeric.TabIndex = 88;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.panel1.Location = new System.Drawing.Point(5, 243);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(682, 1);
+            this.panel1.TabIndex = 89;
+            // 
             // GlobalSettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.ClientSize = new System.Drawing.Size(717, 311);
+            this.ClientSize = new System.Drawing.Size(717, 375);
             this.Controls.Add(this._enableAeroPeekLabel);
             this.Controls.Add(this._enableAeroPeekCheckbox);
             this.Controls.Add(this._encryptionTypeLabel);
@@ -189,6 +223,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GlobalSettingsWindow_FormClosing);
             this.Load += new System.EventHandler(this.GlobalSettingsWindow_Load);
             this.Shown += new System.EventHandler(this.GlobalSettingsWindow_Shown);
+            this._card.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this._toolbarHiddenHeightNumeric)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -208,5 +244,8 @@
         private System.Windows.Forms.ComboBox _encryptionTypeDropdown;
         private System.Windows.Forms.Label _enableAeroPeekLabel;
         private System.Windows.Forms.CheckBox _enableAeroPeekCheckbox;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.NumericUpDown _toolbarHiddenHeightNumeric;
+        private System.Windows.Forms.Label label1;
     }
 }
