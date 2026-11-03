@@ -313,7 +313,8 @@ namespace EasyConnect
 
 			if (_connection != null && AutoHideToolbar)
 			{
-				toolbarBackground.Height = 0; //changed from 5
+				// Initialize toolbar in collapsed state
+				toolbarBackground.Height = CollapsedToolbarHeight;
 				_toolbarShown = false;
 			}
 		}
@@ -441,8 +442,10 @@ namespace EasyConnect
 			// Set the top and height of the connection contain panel appropriately depending on if we're auto-hiding the toolbar
 			if (AutoHideToolbar && !_connectionContainerPanelSizeSet)
 			{
-				_connectionContainerPanel.Top = 0; //changed from 5
-				_connectionContainerPanel.Height += 36;
+				// Move content to start below the collapsed toolbar height
+				_connectionContainerPanel.Top = CollapsedToolbarHeight;
+				// Compensate panel height for hidden toolbar portion
+				_connectionContainerPanel.Height += (ExpandedToolbarHeight - CollapsedToolbarHeight);
 			}
 
 			if (!AutoHideToolbar)
@@ -1124,5 +1127,16 @@ namespace EasyConnect
         {
             _urlPanel.AutoScroll = false;
         }
+
+		private const int ExpandedToolbarHeight = 41;
+
+		private int CollapsedToolbarHeight
+		{
+			get
+			{
+				int configured = GlobalSettings.Instance?.ToolbarAutoHideVisibleHeight ?? 5;
+				return Math.Max(0, Math.Min(ExpandedToolbarHeight, configured));
+			}
+		}
     }
 }
