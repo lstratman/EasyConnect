@@ -313,7 +313,7 @@ namespace EasyConnect
 
 			if (_connection != null && AutoHideToolbar)
 			{
-				toolbarBackground.Height = 5;
+				toolbarBackground.Height = 0; //changed from 5
 				_toolbarShown = false;
 			}
 		}
@@ -441,7 +441,7 @@ namespace EasyConnect
 			// Set the top and height of the connection contain panel appropriately depending on if we're auto-hiding the toolbar
 			if (AutoHideToolbar && !_connectionContainerPanelSizeSet)
 			{
-				_connectionContainerPanel.Top = 5;
+				_connectionContainerPanel.Top = 0; //changed from 5
 				_connectionContainerPanel.Height += 36;
 			}
 
