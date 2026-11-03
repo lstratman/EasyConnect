@@ -14,6 +14,7 @@ using System.Media;
 using MarcusW.VncClient.Protocol.Implementation.MessageTypes.Outgoing;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace EasyConnect.Protocols.Vnc
 {
@@ -32,6 +33,9 @@ namespace EasyConnect.Protocols.Vnc
 		protected VncProtocolImplementation _vncProtocol = null;
 
 		protected List<ToolStripItem> _toolsMenuItems = new List<ToolStripItem>();
+        private bool _scaleToFit = false;
+        private ToolStripMenuItem _scaleToFitMenuItem;
+        private ToolStripMenuItem _originalSizeMenuItem;
 
 		/// <summary>
 		/// Default constructor.
@@ -49,12 +53,46 @@ namespace EasyConnect.Protocols.Vnc
 
         private void VncConnectionForm_Resize(object sender, EventArgs e)
         {
-			if (_vncConnection != null && _vncConnection.ConnectionState == ConnectionState.Connected)
-			{
-				_vncDesktop.Left = Math.Max(ClientSize.Width - _vncConnection.RemoteFramebufferSize.Width, 0) / 2;
-				_vncDesktop.Top = Math.Max(ClientSize.Height - _vncConnection.RemoteFramebufferSize.Height, 0) / 2;
-			}
-		}
+            ApplyDisplayLayout();
+        }
+
+        private void ApplyDisplayLayout()
+        {
+            if (_vncConnection == null || _vncConnection.ConnectionState != ConnectionState.Connected)
+                return;
+
+            if (_scaleToFit)
+            {
+                _vncDesktop.ScaleToFit = true;
+                _vncDesktop.Location = Point.Empty;
+                _vncDesktop.Size = ClientSize;
+                _vncDesktop.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+                AutoScroll = false;
+            }
+            else
+            {
+                _vncDesktop.ScaleToFit = false;
+                _vncDesktop.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+                _vncDesktop.Size = new System.Drawing.Size(
+                    _vncConnection.RemoteFramebufferSize.Width,
+                    _vncConnection.RemoteFramebufferSize.Height);
+                _vncDesktop.Left = Math.Max(ClientSize.Width - _vncDesktop.Width, 0) / 2;
+                _vncDesktop.Top = Math.Max(ClientSize.Height - _vncDesktop.Height, 0) / 2;
+                AutoScroll = true;
+            }
+
+            _vncDesktop.Invalidate();
+        }
+
+        private void SetScaleToFit(bool enabled)
+        {
+            _scaleToFit = enabled;
+            if (_scaleToFitMenuItem != null)
+                _scaleToFitMenuItem.Checked = enabled;
+            if (_originalSizeMenuItem != null)
+                _originalSizeMenuItem.Checked = !enabled;
+            ApplyDisplayLayout();
+        }
 
         protected override void WndProc(ref Message m)
         {
@@ -172,13 +210,18 @@ namespace EasyConnect.Protocols.Vnc
 			return password;
 		}
 
-	    private void VncConnectionForm_FormClosing(object sender, CancelEventArgs e)
+	    private async void VncConnectionForm_FormClosing(object sender, CancelEventArgs e)
 	    {
-			CloseConnection();
-		}
+	        await CloseConnection();
+	    }
 
 		private async Task CloseConnection()
         {
+            if (_vncConnection == null)
+            {
+                _connectionCancellation?.Cancel();
+                return;
+            }
 
 			if (_vncConnection.ConnectionState == ConnectionState.Connected)
 			{
@@ -225,7 +268,7 @@ namespace EasyConnect.Protocols.Vnc
 			_vncDesktop.Width = _vncConnection.RemoteFramebufferSize.Width;
 			_vncDesktop.Height = _vncConnection.RemoteFramebufferSize.Height;
 
-			VncConnectionForm_Resize(this, null);
+            ApplyDisplayLayout();
 
 			BackColor = System.Drawing.Color.FromArgb(171, 171, 171);
 		}
@@ -248,16 +291,27 @@ namespace EasyConnect.Protocols.Vnc
 
         public override void AddToolsMenuItems(ContextMenuStrip toolsMenu)
         {
-			_toolsMenuItems.Add(new ToolStripMenuItem("Send Ctrl+Alt+Del", null, new EventHandler(SendCtrlAltDel)));
-			_toolsMenuItems.Add(new ToolStripSeparator());
+            _toolsMenuItems.Add(new ToolStripMenuItem("Send Ctrl+Alt+Del", null, new EventHandler(SendCtrlAltDel)));
+            _toolsMenuItems.Add(new ToolStripSeparator());
 
-			toolsMenu.Items.Insert(0, _toolsMenuItems[0]);
-			toolsMenu.Items.Insert(1, _toolsMenuItems[1]);
+            var displayMenu = new ToolStripMenuItem("Display scaling");
+            _originalSizeMenuItem = new ToolStripMenuItem("Original resolution", null,
+                (sender, e) => SetScaleToFit(false));
+            _scaleToFitMenuItem = new ToolStripMenuItem("Automatically fit to window", null,
+                (sender, e) => SetScaleToFit(true));
+            _originalSizeMenuItem.Checked = true;
+            displayMenu.DropDownItems.Add(_originalSizeMenuItem);
+            displayMenu.DropDownItems.Add(_scaleToFitMenuItem);
+            _toolsMenuItems.Add(displayMenu);
+
+            toolsMenu.Items.Insert(0, _toolsMenuItems[0]);
+            toolsMenu.Items.Insert(1, _toolsMenuItems[1]);
+            toolsMenu.Items.Insert(2, _toolsMenuItems[2]);
 		}
 
 		protected void SendCtrlAltDel(object sender, EventArgs e)
         {
-			if (_vncConnection.ConnectionState == ConnectionState.Connected)
+			if (_vncConnection != null && _vncConnection.ConnectionState == ConnectionState.Connected)
             {
 				_vncConnection.EnqueueMessage(new KeyEventMessage(true, KeySymbol.Alt_L));
 				_vncConnection.EnqueueMessage(new KeyEventMessage(true, KeySymbol.Control_L));

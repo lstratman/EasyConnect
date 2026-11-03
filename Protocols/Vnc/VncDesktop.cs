@@ -23,6 +23,9 @@ namespace EasyConnect.Protocols.Vnc
 
         protected HashSet<KeySymbol> _pressedKeys = new HashSet<KeySymbol>();
 
+        /// <summary>Whether the remote framebuffer is scaled to the control bounds.</summary>
+        public bool ScaleToFit { get; set; }
+
         public VncDesktop()
         {
             InitializeComponent();
@@ -109,7 +112,23 @@ namespace EasyConnect.Protocols.Vnc
                 {
                     if (_currentFramebufferReference == null)
                     {
-                        e.Graphics.DrawImage(_bitmap, 0, 0);
+                        if (ScaleToFit && ClientSize.Width > 0 && ClientSize.Height > 0)
+                        {
+                            float scale = Math.Min(
+                                (float)ClientSize.Width / _bitmap.Width,
+                                (float)ClientSize.Height / _bitmap.Height);
+                            int width = Math.Max(1, (int)Math.Round(_bitmap.Width * scale));
+                            int height = Math.Max(1, (int)Math.Round(_bitmap.Height * scale));
+                            int left = (ClientSize.Width - width) / 2;
+                            int top = (ClientSize.Height - height) / 2;
+                            e.Graphics.Clear(BackColor);
+                            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                            e.Graphics.DrawImage(_bitmap, new System.Drawing.Rectangle(left, top, width, height));
+                        }
+                        else
+                        {
+                            e.Graphics.DrawImage(_bitmap, 0, 0);
+                        }
                     }
                 }
             }
@@ -152,7 +171,28 @@ namespace EasyConnect.Protocols.Vnc
                 return false;
             }
 
-            Position position = new Position(mouseData.X, mouseData.Y);
+            int remoteX = mouseData.X;
+            int remoteY = mouseData.Y;
+
+            // Convert client coordinates back to remote framebuffer coordinates
+            // when the image is scaled to fit the available window.
+            if (ScaleToFit && _bitmap != null && ClientSize.Width > 0 && ClientSize.Height > 0)
+            {
+                float scale = Math.Min(
+                    (float)ClientSize.Width / _bitmap.Width,
+                    (float)ClientSize.Height / _bitmap.Height);
+                int width = Math.Max(1, (int)Math.Round(_bitmap.Width * scale));
+                int height = Math.Max(1, (int)Math.Round(_bitmap.Height * scale));
+                int left = (ClientSize.Width - width) / 2;
+                int top = (ClientSize.Height - height) / 2;
+
+                remoteX = (int)((mouseData.X - left) / scale);
+                remoteY = (int)((mouseData.Y - top) / scale);
+                remoteX = Math.Max(0, Math.Min(_bitmap.Width - 1, remoteX));
+                remoteY = Math.Max(0, Math.Min(_bitmap.Height - 1, remoteY));
+            }
+
+            Position position = new Position(remoteX, remoteY);
             VncMouseButtons buttonsMask = GetButtonsMask(mouseData.Button);
             VncMouseButtons wheelMask = GetWheelMask(mouseData.Delta);
 
