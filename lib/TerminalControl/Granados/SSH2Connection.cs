@@ -1379,14 +1379,14 @@ namespace Granados.SSH2 {
             Debug.Assert(reader.RemainingDataLength == 0);
 
             // get shared secret
-            ECPoint serverPublicKeyPoint;
-            if (!ECPoint.Parse(serverPublicKey, state.ecdhCurve, out serverPublicKeyPoint)
+            Granados.PKI.ECPoint serverPublicKeyPoint;
+            if (!Granados.PKI.ECPoint.Parse(serverPublicKey, state.ecdhCurve, out serverPublicKeyPoint)
                     || !state.ecdhCurve.ValidatePoint(serverPublicKeyPoint)) {
                 _protocolEventManager.Trace("Server's ephemeral public key is invalid");
                 return false;
             }
 
-            ECPoint p = state.ecdhCurve.PointMul(state.ecdhCurve.Cofactor, state.ecdhPrivateKey, serverPublicKeyPoint, true);
+            Granados.PKI.ECPoint p = state.ecdhCurve.PointMul(state.ecdhCurve.Cofactor, state.ecdhPrivateKey, serverPublicKeyPoint, true);
             if (p == null) {
                 _protocolEventManager.Trace("Failed to get a shared secret");
                 return false;
