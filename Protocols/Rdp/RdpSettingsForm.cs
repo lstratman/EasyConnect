@@ -37,7 +37,11 @@ namespace EasyConnect.Protocols.Rdp
 
 		private void InitializeAmtSettings()
 		{
+#if INTEL_AMT
 			Label heading = new Label { Text = "AMT Control", AutoSize = true, Font = _gatewayLabel.Font, Margin = _gatewayLabel.Margin };
+#else
+			Label heading = new Label { Text = "AMT Control (not available in this build)", AutoSize = true, Font = _gatewayLabel.Font, Margin = _gatewayLabel.Margin };
+#endif
 			Common.MaterialCard card = new Common.MaterialCard { BackColor = Color.White, Size = new Size(692, 315), Margin = new Padding(15, 3, 3, 3) };
 			TableLayoutPanel fields = new TableLayoutPanel
 			{
@@ -68,7 +72,11 @@ namespace EasyConnect.Protocols.Rdp
 			_rootLayoutPanel.Height += heading.PreferredHeight + heading.Margin.Vertical + card.Height + card.Margin.Vertical;
 			_useAmtControl.CheckedChanged += (sender, args) =>
 			{
+#if INTEL_AMT
 				_amtUsername.Enabled = _amtPassword.Enabled = _amtUseTls.Enabled = _amtAuthentication.Enabled = _useAmtControl.Checked;
+#else
+				_useAmtControl.Enabled = _useAmtControl.Checked;
+#endif
 			};
 		}
 
@@ -205,7 +213,12 @@ namespace EasyConnect.Protocols.Rdp
 			_amtUseTls.Checked = Connection.AmtUseTls;
 			_amtAuthentication.SelectedIndex = (int)Connection.AmtAuthentication;
 			_useAmtControl.Checked = Connection.UseAmtControl;
+#if INTEL_AMT
 			_amtUsername.Enabled = _amtPassword.Enabled = _amtUseTls.Enabled = _amtAuthentication.Enabled = _useAmtControl.Checked;
+#else
+			_useAmtControl.Enabled = _useAmtControl.Checked;
+			_amtUsername.Enabled = _amtPassword.Enabled = _amtUseTls.Enabled = _amtAuthentication.Enabled = false;
+#endif
 
 			_portTextBox.Text = Connection.Port.ToString();
 

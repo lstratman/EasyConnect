@@ -1,0 +1,10 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+	<IntelAmtDirectory Condition="'$(IntelAmtDirectory)' == ''">$(MSBuildThisFileDirectory)..\..\lib\IntelAMT</IntelAmtDirectory>
+	<IntelAmtFilesPresent Condition="Exists('$(IntelAmtDirectory)\HLAPI.dll') and Exists('$(IntelAmtDirectory)\DotNetWSManClient.dll') and Exists('$(IntelAmtDirectory)\Intel.Wsman.Scripting.dll') and Exists('$(IntelAmtDirectory)\IWSManClient.dll') and Exists('$(IntelAmtDirectory)\WebStorage.dll') and Exists('$(IntelAmtDirectory)\Intel AMT SDK License.txt')">true</IntelAmtFilesPresent>
+	<IntelAmtEnabled Condition="'$(EnableIntelAmt)' == 'true' or '$(EnableIntelAmt)' == '1' or '$(EnableIntelAmt)' == 'yes'">true</IntelAmtEnabled>
+	<IntelAmtEnabled Condition="'$(EnableIntelAmt)' == 'false' or '$(EnableIntelAmt)' == '0' or '$(EnableIntelAmt)' == 'no'">false</IntelAmtEnabled>
+	<IntelAmtEnabled Condition="'$(EnableIntelAmt)' == '' and '$(IntelAmtFilesPresent)' == 'true'">true</IntelAmtEnabled>
+	<IntelAmtEnabled Condition="'$(EnableIntelAmt)' == '' and '$(IntelAmtFilesPresent)' != 'true'">false</IntelAmtEnabled>
+  </PropertyGroup>
+</Project>

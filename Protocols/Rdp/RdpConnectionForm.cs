@@ -7,8 +7,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AxMSTSCLib;
+#if INTEL_AMT
 using Intel.Manageability;
 using PowerState = Intel.Manageability.Power.PowerState;
+#endif
 
 namespace EasyConnect.Protocols.Rdp
 {
@@ -32,8 +34,10 @@ namespace EasyConnect.Protocols.Rdp
         /// </summary>
 		protected bool _rdpWindowSizeSet = false;
 
+#if INTEL_AMT
 		private readonly CancellationTokenSource _amtCancellation = new CancellationTokenSource();
 		private bool _amtConnecting;
+#endif
 
 		/// <summary>
 		/// Default constructor.
@@ -41,7 +45,9 @@ namespace EasyConnect.Protocols.Rdp
 		public RdpConnectionForm()
 		{
 			InitializeComponent();
+#if INTEL_AMT
 			Disposed += (sender, args) => _amtCancellation.Cancel();
+#endif
 		}
 
 		/// <summary>
@@ -516,15 +522,28 @@ namespace EasyConnect.Protocols.Rdp
 		/// </summary>
 		public override void Connect()
 		{
-			if (_amtConnecting || IsClosing || IsDisposed)
+			if (IsClosing || IsDisposed)
 				return;
-
+#if INTEL_AMT
+			if (_amtConnecting)
+				return;
+#endif
 			if (!Connection.UseAmtControl)
+			{
+				SetConnectingStatus("Connecting via RDP...");
 				ConnectRdp();
+			}
 			else
+			{
+#if INTEL_AMT
 				ConnectWithAmt();
+#else
+				OnConnectionLost(this, new ErrorEventArgs(new InvalidOperationException("Intel AMT support is not available in this build. Disable AMT control in the connection settings or use a build with Intel AMT support.")));
+#endif
+			}
 		}
 
+#if INTEL_AMT
 		private async void ConnectWithAmt()
 		{
 			_amtConnecting = true;
@@ -610,6 +629,7 @@ namespace EasyConnect.Protocols.Rdp
 					Marshal.ZeroFreeBSTR(plaintext);
 			}
 		}
+#endif
 
 		private void ConnectRdp()
 		{

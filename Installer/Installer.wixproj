@@ -30,6 +30,16 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
+  <Import Project="..\Protocols\Rdp\IntelAmt.props" />
+  <PropertyGroup>
+    <IntelAmtInstallerEnabled Condition="'$(IntelAmtEnabled)' == 'true'">1</IntelAmtInstallerEnabled>
+    <IntelAmtInstallerEnabled Condition="'$(IntelAmtEnabled)' != 'true'">0</IntelAmtInstallerEnabled>
+    <DefineConstants>$(DefineConstants);EnableIntelAmt=$(IntelAmtInstallerEnabled)</DefineConstants>
+  </PropertyGroup>
+  <Target Name="ValidateIntelAmt" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(EnableIntelAmt)' != '' and '$(IntelAmtEnabled)' == ''" Text="EnableIntelAmt must be true, false, 1, 0, yes, or no." />
+    <Error Condition="'$(IntelAmtEnabled)' == 'true' and '$(IntelAmtFilesPresent)' != 'true'" Text="Intel AMT is enabled, but its DLLs or license are missing from $(IntelAmtDirectory)." />
+  </Target>
   <ItemGroup>
     <Compile Include="Installer.wxs" />
   </ItemGroup>
