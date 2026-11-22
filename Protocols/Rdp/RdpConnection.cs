@@ -6,6 +6,12 @@ using EasyConnect.Common;
 
 namespace EasyConnect.Protocols.Rdp
 {
+	public enum AmtAuthentication
+	{
+		Digest,
+		Kerberos
+	}
+
 	/// <summary>
 	/// Connection class for connecting to Microsoft Remote Desktop (RDP) servers.
 	/// </summary>
@@ -62,10 +68,22 @@ namespace EasyConnect.Protocols.Rdp
 		    Port = info.GetInt32("Port");
 
             string encryptedProxyPassword = info.GetString("ProxyPassword");
-            if (!String.IsNullOrEmpty(encryptedProxyPassword))
-            {
-                EncryptedPassword = encryptedProxyPassword;
-            }
+			if (!String.IsNullOrEmpty(encryptedProxyPassword))
+			{
+				EncryptedPassword = encryptedProxyPassword;
+			}
+
+			foreach (SerializationEntry entry in info)
+			{
+				switch (entry.Name)
+				{
+					case "UseAmtControl": UseAmtControl = (bool)entry.Value; break;
+					case "AmtUseTls": AmtUseTls = (bool)entry.Value; break;
+					case "AmtAuthentication": AmtAuthentication = (AmtAuthentication)entry.Value; break;
+					case "AmtUsername": AmtUsername = (string)entry.Value; break;
+					case "AmtPassword": EncryptedAmtPassword = (string)entry.Value; break;
+				}
+			}
 		}
 
 		/// <summary>
@@ -299,14 +317,62 @@ namespace EasyConnect.Protocols.Rdp
         /// <summary>
         /// The raw text of the password for the proxy server.
         /// </summary>
-        [XmlIgnore]
-        public SecureString ProxyPassword
-        {
-            get;
-            set;
-        }
+		[XmlIgnore]
+		public SecureString ProxyPassword
+		{
+			get;
+			set;
+		}
 
-	    public int Port
+		public bool UseAmtControl { get; set; }
+		public bool AmtUseTls { get; set; } = true;
+		public AmtAuthentication AmtAuthentication { get; set; }
+		public string AmtUsername { get; set; }
+
+		[XmlIgnore]
+		public SecureString AmtPassword { get; set; }
+
+		[XmlElement("AmtPassword")]
+		public string EncryptedAmtPassword
+		{
+			get
+			{
+				return AmtPassword == null || AmtPassword.Length == 0
+					? null
+					: Convert.ToBase64String(ConnectionFactory.Encrypt(AmtPassword));
+			}
+			set
+			{
+				if (String.IsNullOrEmpty(value))
+				{
+					AmtPassword = null;
+					return;
+				}
+
+				byte[] decrypted = ConnectionFactory.Decrypt(Convert.FromBase64String(value));
+				try
+				{
+					SecureString password = new SecureString();
+					for (int i = 0; i < decrypted.Length && decrypted[i] != 0; i++)
+						password.AppendChar((char)decrypted[i]);
+					AmtPassword = password;
+				}
+				finally
+				{
+					Array.Clear(decrypted, 0, decrypted.Length);
+				}
+			}
+		}
+
+		public override object CloneAnon()
+		{
+			RdpConnection clone = (RdpConnection)base.CloneAnon();
+			clone.AmtUsername = null;
+			clone.AmtPassword = null;
+			return clone;
+		}
+
+		public int Port
 	    {
 	        get;
 	        set;
@@ -342,12 +408,17 @@ namespace EasyConnect.Protocols.Rdp
             info.AddValue("Port", Port);
 
             info.AddValue("UseTSProxy", UseTSProxy);
-            info.AddValue("ProxyName", ProxyName);
-            info.AddValue("ProxyUserName", ProxyUserName);
-            info.AddValue(
-                "ProxyPassword", ProxyPassword == null
-                                     ? null
-                                     : EncryptedProxyPassword);
+			info.AddValue("ProxyName", ProxyName);
+			info.AddValue("ProxyUserName", ProxyUserName);
+			info.AddValue(
+				"ProxyPassword", ProxyPassword == null
+									 ? null
+									 : EncryptedProxyPassword);
+			info.AddValue("UseAmtControl", UseAmtControl);
+			info.AddValue("AmtUseTls", AmtUseTls);
+			info.AddValue("AmtAuthentication", AmtAuthentication);
+			info.AddValue("AmtUsername", AmtUsername);
+			info.AddValue("AmtPassword", EncryptedAmtPassword);
 		}
 	}
 }

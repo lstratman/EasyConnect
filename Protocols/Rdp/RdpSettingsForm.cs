@@ -20,12 +20,56 @@ namespace EasyConnect.Protocols.Rdp
 		/// </summary>
 		protected List<DEVMODE> _resolutions = new List<DEVMODE>();
 
+		private readonly CheckBox _useAmtControl = new CheckBox();
+		private readonly CheckBox _amtUseTls = new CheckBox();
+		private readonly ComboBox _amtAuthentication = new ComboBox();
+		private readonly TextBox _amtUsername = new TextBox();
+		private readonly SecurePasswordTextBox.SecureTextBox _amtPassword = new SecurePasswordTextBox.SecureTextBox();
+
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
 		public RdpSettingsForm()
 		{
 			InitializeComponent();
+			InitializeAmtSettings();
+		}
+
+		private void InitializeAmtSettings()
+		{
+			Label heading = new Label { Text = "AMT Control", AutoSize = true, Font = _gatewayLabel.Font, Margin = _gatewayLabel.Margin };
+			Common.MaterialCard card = new Common.MaterialCard { BackColor = Color.White, Size = new Size(692, 315), Margin = new Padding(15, 3, 3, 3) };
+			TableLayoutPanel fields = new TableLayoutPanel
+			{
+				Location = new Point(5, 9), Size = new Size(682, 295), ColumnCount = 2, RowCount = 5,
+				BackColor = Color.White
+			};
+			fields.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70));
+			fields.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30));
+			_useAmtControl.AutoSize = true;
+			_amtUseTls.AutoSize = true;
+			_amtAuthentication.DropDownStyle = ComboBoxStyle.DropDownList;
+			_amtAuthentication.Items.AddRange(new object[] { "Digest", "Kerberos" });
+			_amtUsername.Width = 154;
+			_amtPassword.Width = 154;
+			_amtPassword.PasswordChar = '*';
+			Control[] controls = { _useAmtControl, _amtUsername, _amtPassword, _amtUseTls, _amtAuthentication };
+			string[] labels = { "Use AMT Control", "Username", "Password", "Use TLS", "Authentication" };
+			for (int i = 0; i < controls.Length; i++)
+			{
+				fields.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
+				fields.Controls.Add(new Label { Text = labels[i], Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft, Font = _gatewayLabel.Font, Padding = new Padding(14, 0, 0, 0) }, 0, i);
+				controls[i].Anchor = AnchorStyles.Left;
+				fields.Controls.Add(controls[i], 1, i);
+			}
+			card.Controls.Add(fields);
+			_rootLayoutPanel.Controls.Add(heading);
+			_rootLayoutPanel.Controls.Add(card);
+			_rootLayoutPanel.Height += heading.PreferredHeight + heading.Margin.Vertical + card.Height + card.Margin.Vertical;
+			_useAmtControl.CheckedChanged += (sender, args) =>
+			{
+				_amtUsername.Enabled = _amtPassword.Enabled = _amtUseTls.Enabled = _amtAuthentication.Enabled = _useAmtControl.Checked;
+			};
 		}
 
 		/// <summary>
@@ -153,11 +197,17 @@ namespace EasyConnect.Protocols.Rdp
             _useProxyCheckBox.Checked = Connection.UseTSProxy;
 		    _proxyHostNameTextBox.Text = Connection.ProxyName;
             _proxyUserNameTextBox.Text = Connection.ProxyUserName;
-            _proxyPasswordTextBox.SecureText = (Connection.ProxyPassword == null
-                                               ? new SecureString()
-                                               : Connection.ProxyPassword.Copy());
+			_proxyPasswordTextBox.SecureText = (Connection.ProxyPassword == null
+											   ? new SecureString()
+											   : Connection.ProxyPassword.Copy());
+			_amtUsername.Text = Connection.AmtUsername;
+			_amtPassword.SecureText = Connection.AmtPassword == null ? new SecureString() : Connection.AmtPassword.Copy();
+			_amtUseTls.Checked = Connection.AmtUseTls;
+			_amtAuthentication.SelectedIndex = (int)Connection.AmtAuthentication;
+			_useAmtControl.Checked = Connection.UseAmtControl;
+			_amtUsername.Enabled = _amtPassword.Enabled = _amtUseTls.Enabled = _amtAuthentication.Enabled = _useAmtControl.Checked;
 
-		    _portTextBox.Text = Connection.Port.ToString();
+			_portTextBox.Text = Connection.Port.ToString();
 
 			// Hide the host panel if we're in defaults mode
 			if (DefaultsMode)
@@ -225,11 +275,16 @@ namespace EasyConnect.Protocols.Rdp
 			Connection.ConnectToAdminChannel = _adminChannelCheckBox.Checked;
 
             Connection.UseTSProxy = _useProxyCheckBox.Checked;
-            Connection.ProxyName = _proxyHostNameTextBox.Text;
-            Connection.ProxyUserName = _proxyUserNameTextBox.Text;
-            Connection.ProxyPassword = _proxyPasswordTextBox.SecureText;
+			Connection.ProxyName = _proxyHostNameTextBox.Text;
+			Connection.ProxyUserName = _proxyUserNameTextBox.Text;
+			Connection.ProxyPassword = _proxyPasswordTextBox.SecureText;
+			Connection.UseAmtControl = _useAmtControl.Checked;
+			Connection.AmtUsername = _amtUsername.Text;
+			Connection.AmtPassword = _amtPassword.SecureText;
+			Connection.AmtUseTls = _amtUseTls.Checked;
+			Connection.AmtAuthentication = (AmtAuthentication)_amtAuthentication.SelectedIndex;
 
-		    int port = 0;
+			int port = 0;
 
             if (Int32.TryParse(_portTextBox.Text, out port))
 		        Connection.Port = port;

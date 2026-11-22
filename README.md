@@ -18,6 +18,14 @@ This is a Windows tabbed remote desktop application whose UI was designed to res
  - WinGet: `winget install easyconnect`
  - Chocolatey: `choco install easyconnect`
 
+## Intel AMT control for RDP
+
+An RDP host can optionally use Intel AMT control from its settings, below Gateway. Configure its AMT username, password, authentication method (Digest or Kerberos), and TLS. The RDP host name must also resolve to the AMT device, and AMT must be provisioned and reachable directly; the RDP gateway is not used for AMT traffic. Digest requires an AMT username and an 8–32 character password. With Kerberos, credentials can be left empty to use the current identity. TLS requires a trusted server certificate matching the host name. Disabling TLS leaves AMT traffic unencrypted.
+
+When enabled, EasyConnect checks the power state before connecting and sends a power-up request for sleeping, hibernating, or powered-off systems. It waits 20 seconds after the request before starting RDP; the operating system may take longer to start, in which case retry the connection. AMT errors are shown as connection errors. AMT credentials are stored using the same encryption mechanism as other connection passwords.
+
+The Intel SDK binaries are subject to the accompanying Intel AMT SDK license; review its terms and distribution obligations separately from this project's GPL license.
+
 ## Implementing Protocol Plugins
 
 For an example of implementing a protocol plugin, you can look at the `EasyConnect.Protocols.Rdp` project.  You'll want to reference` EasyConnect.Common` and `EasyConnect.Protocols` and then implement classes that inherit from the following base classes:

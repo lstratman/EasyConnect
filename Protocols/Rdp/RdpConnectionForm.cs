@@ -3,8 +3,12 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using AxMSTSCLib;
+using Intel.Manageability;
+using PowerState = Intel.Manageability.Power.PowerState;
 
 namespace EasyConnect.Protocols.Rdp
 {
@@ -26,7 +30,10 @@ namespace EasyConnect.Protocols.Rdp
         /// <summary>
         /// Flag indicating if the RDP window's size has been set explicitly.
         /// </summary>
-        protected bool _rdpWindowSizeSet = false;
+		protected bool _rdpWindowSizeSet = false;
+
+		private readonly CancellationTokenSource _amtCancellation = new CancellationTokenSource();
+		private bool _amtConnecting;
 
 		/// <summary>
 		/// Default constructor.
@@ -34,6 +41,7 @@ namespace EasyConnect.Protocols.Rdp
 		public RdpConnectionForm()
 		{
 			InitializeComponent();
+			Disposed += (sender, args) => _amtCancellation.Cancel();
 		}
 
 		/// <summary>
@@ -507,6 +515,92 @@ namespace EasyConnect.Protocols.Rdp
 		/// <see cref="BaseConnectionForm{T}.Connection"/> and then calls <see cref="AxMsRdpClient2.Connect"/> on <see cref="_rdpWindow"/>.
 		/// </summary>
 		public override void Connect()
+		{
+			if (_amtConnecting || IsClosing || IsDisposed)
+				return;
+
+			if (!Connection.UseAmtControl)
+				ConnectRdp();
+			else
+				ConnectWithAmt();
+		}
+
+		private async void ConnectWithAmt()
+		{
+			_amtConnecting = true;
+			try
+			{
+				string host = Connection.Host;
+				string username = Connection.AmtUsername;
+				bool useTls = Connection.AmtUseTls;
+				AmtAuthentication authentication = Connection.AmtAuthentication;
+				using (SecureString password = Connection.AmtPassword == null ? null : Connection.AmtPassword.Copy())
+				{
+					bool poweredUp = await Task.Run(() => CheckAmtPower(host, username, password, useTls, authentication, _amtCancellation.Token));
+					if (poweredUp)
+						await Task.Delay(TimeSpan.FromSeconds(20), _amtCancellation.Token);
+				}
+
+				if (!IsClosing && !IsDisposed && Parent != null)
+					ConnectRdp();
+			}
+			catch (OperationCanceledException) when (_amtCancellation.IsCancellationRequested)
+			{
+			}
+			catch (Exception ex)
+			{
+				if (!IsClosing && !IsDisposed && Parent != null)
+					OnConnectionLost(this, new ErrorEventArgs(new Exception("AMT control or RDP connection failed: " + ex.Message, ex)));
+			}
+			finally
+			{
+				_amtConnecting = false;
+			}
+		}
+
+		private static bool CheckAmtPower(string host, string username, SecureString password, bool useTls, AmtAuthentication authentication, CancellationToken cancellation)
+		{
+			cancellation.ThrowIfCancellationRequested();
+			ConnectionInfoEX.AuthMethod auth;
+			switch (authentication)
+			{
+				case AmtAuthentication.Digest: auth = ConnectionInfoEX.AuthMethod.Digest; break;
+				case AmtAuthentication.Kerberos: auth = ConnectionInfoEX.AuthMethod.Kerberos; break;
+				default: throw new InvalidOperationException("Unknown AMT authentication method.");
+			}
+
+			IntPtr plaintext = IntPtr.Zero;
+			try
+			{
+				if (password != null)
+					plaintext = Marshal.SecureStringToBSTR(password);
+				string passwordText = plaintext == IntPtr.Zero ? String.Empty : Marshal.PtrToStringBSTR(plaintext);
+				ConnectionInfoEX info = new ConnectionInfoEX(host, username, passwordText, useTls, String.Empty, auth, null, null, null);
+				using (IAMTInstance amt = AMTInstanceFactory.CreateEX(info))
+				{
+					cancellation.ThrowIfCancellationRequested();
+					PowerState state = amt.Power.CurrentOSPowerState.PowerState;
+					cancellation.ThrowIfCancellationRequested();
+					switch (state)
+					{
+						case PowerState.On: return false;
+						case PowerState.StandBy:
+						case PowerState.Hibernate:
+						case PowerState.Off:
+							amt.Power.Powerup();
+							return true;
+						default: throw new InvalidOperationException("Unable to determine AMT power state: " + state);
+					}
+				}
+			}
+			finally
+			{
+				if (plaintext != IntPtr.Zero)
+					Marshal.ZeroFreeBSTR(plaintext);
+			}
+		}
+
+		private void ConnectRdp()
 		{
 			if (!_rdpWindowSizeSet)
 			{
