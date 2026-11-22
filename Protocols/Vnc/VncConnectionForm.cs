@@ -2,6 +2,7 @@
 using MarcusW.VncClient.Protocol.Implementation.Services.Transports;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -15,6 +16,10 @@ using MarcusW.VncClient.Protocol.Implementation.MessageTypes.Outgoing;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Drawing;
+#if INTEL_AMT
+using Intel.Manageability;
+using PowerState = Intel.Manageability.Power.PowerState;
+#endif
 
 namespace EasyConnect.Protocols.Vnc
 {
@@ -31,6 +36,10 @@ namespace EasyConnect.Protocols.Vnc
 		protected RfbConnection _vncConnection = null;
 		protected CancellationTokenSource _connectionCancellation = null;
 		protected VncProtocolImplementation _vncProtocol = null;
+#if INTEL_KVM
+		private AmtKvmProxyProcess _amtProxy;
+		private string _amtProxyError;
+#endif
 
 		protected List<ToolStripItem> _toolsMenuItems = new List<ToolStripItem>();
         private bool _scaleToFit = false;
@@ -47,8 +56,17 @@ namespace EasyConnect.Protocols.Vnc
 
 			_vncProtocol = new VncProtocolImplementation();
 			_vncClient = new VncClient(Logging.Factory, _vncProtocol);
+			Disposed += async (sender, args) =>
+			{
+				_connectionCancellation?.Cancel();
+#if INTEL_KVM
+				await StopAmtProxyAsync();
+#endif
+				_connectionCancellation?.Dispose();
+				_connectionCancellation = null;
+			};
 
-            Resize += VncConnectionForm_Resize;
+			Resize += VncConnectionForm_Resize;
 		}
 
         private void VncConnectionForm_Resize(object sender, EventArgs e)
@@ -130,84 +148,209 @@ namespace EasyConnect.Protocols.Vnc
 		/// </summary>
 		public override void Connect()
 		{
-		    OnResize(null);
+			if (IsClosing || IsDisposed)
+				return;
 
-		    ParentForm.Closing += VncConnectionForm_FormClosing;
-
+			OnResize(null);
+			ParentForm.Closing += VncConnectionForm_FormClosing;
 			_vncDesktop.Reset();
 			_vncDesktop.Width = ClientSize.Width;
 			_vncDesktop.Height = ClientSize.Height;
-
+			_connectionCancellation?.Cancel();
+			_connectionCancellation?.Dispose();
 			_connectionCancellation = new CancellationTokenSource();
-
 			if (!String.IsNullOrEmpty(Connection.PreferredEncoding))
-			{
 				_vncProtocol.PreferredEncodingType = Connection.PreferredEncoding;
-			}
-
-			_vncClient.ConnectAsync(new ConnectParameters
-			{
-				TransportParameters = new TcpTransportParameters
-                {
-					Host = Connection.Host,
-					Port = Connection.Port + Connection.Display
-                },
-				AuthenticationHandler = new VncAuthenticationHandler(GetPassword()),
-				InitialRenderTarget = _vncDesktop,
-				JpegQualityLevel = Connection.PictureQuality * 10,
-				InitialOutputHandler = this,
-				MaxReconnectAttempts = 0
-			}, _connectionCancellation.Token).ContinueWith(connectionTask =>
-			{
-				if (connectionTask.IsFaulted)
-				{
-					Invoke(new Action(() =>
-					{
-						OnConnectionLost(this, new ErrorEventArgs(connectionTask.Exception));
-					}));
-				}
-
-				else
-				{
-					_vncConnection = connectionTask.Result;
-					_vncDesktop.RfbConnection = _vncConnection;
-					_vncDesktop.VncConnection = Connection;
-
-                    _vncConnection.PropertyChanged += _vncConnection_PropertyChanged;
-
-					Invoke(new Action(() =>
-					{
-						OnConnected(this, null);
-					}));
-				}
-			});
+			ConnectAsync(_connectionCancellation.Token);
 		}
 
-        private void _vncConnection_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(RfbConnection.ConnectionState))
-            {
+		private async void ConnectAsync(CancellationToken cancellationToken)
+		{
+			try
+			{
+				string host = Connection.Host;
+				int port = Connection.Port + Connection.Display;
+#if INTEL_KVM
+				if (Connection.UseAmtKvm)
+				{
+					bool hasUsername = !String.IsNullOrEmpty(Connection.AmtUsername);
+					bool hasDomain = !String.IsNullOrEmpty(Connection.AmtDomain);
+					bool hasPassword = Connection.AmtPassword != null && Connection.AmtPassword.Length > 0;
+					if (hasDomain && !hasUsername)
+						throw new InvalidOperationException("Enter an AMT username when a Kerberos domain is specified.");
+					if (hasUsername != hasPassword)
+						throw new InvalidOperationException("Enter both an AMT username and password, or leave all AMT credentials empty to use the current Windows identity.");
+					SetConnectingStatus("Checking AMT power status...");
+					bool poweredUp;
+					using (SecureString password = Connection.AmtPassword == null ? null : Connection.AmtPassword.Copy())
+						poweredUp = await Task.Run(() => CheckAmtPower(host, Connection.AmtUsername, Connection.AmtDomain, password, Connection.AmtUseTls, cancellationToken, SetConnectingStatus), cancellationToken);
+					if (poweredUp)
+					{
+						SetConnectingStatus("Waiting for the AMT system to start...");
+						await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
+					}
+					cancellationToken.ThrowIfCancellationRequested();
+					SetConnectingStatus("Starting the Intel AMT KVM redirection proxy...");
+					ushort amtPort = (ushort)(Connection.AmtUseTls ? 16995 : 16994);
+					_amtProxy = await AmtKvmProxyProcess.StartAsync(host, amtPort, Connection.AmtUsername, Connection.AmtDomain, Connection.AmtPassword, cancellationToken);
+					_amtProxy.StatusChanged += AmtProxy_StatusChanged;
+					_amtProxy.Failed += AmtProxy_Failed;
+					_amtProxyError = null;
+					host = "127.0.0.1";
+					port = _amtProxy.LocalPort;
+				}
+#endif
+#if !INTEL_KVM
+				if (Connection.UseAmtKvm)
+					throw new InvalidOperationException("Intel AMT KVM support is not available in this build. Disable AMT KVM in the connection settings or use a build with Intel AMT support.");
+#endif
+				SetConnectingStatus("Connecting via VNC...");
+				_vncConnection = await _vncClient.ConnectAsync(new ConnectParameters
+				{
+					TransportParameters = new TcpTransportParameters { Host = host, Port = port },
+					AuthenticationHandler = new VncAuthenticationHandler(GetPassword()),
+					InitialRenderTarget = _vncDesktop,
+					JpegQualityLevel = Connection.PictureQuality * 10,
+					InitialOutputHandler = this,
+					MaxReconnectAttempts = 0
+				}, cancellationToken);
+				_vncDesktop.RfbConnection = _vncConnection;
+				_vncDesktop.VncConnection = Connection;
+				_vncConnection.PropertyChanged += _vncConnection_PropertyChanged;
+				OnConnected(this, null);
+			}
+			catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+			{
+#if INTEL_KVM
+				if (!String.IsNullOrEmpty(_amtProxyError) && !IsClosing && !IsDisposed && Parent != null)
+					OnConnectionLost(this, new ErrorEventArgs(new InvalidOperationException(_amtProxyError)));
+#endif
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine("VNC connection failed: " + ex);
+				if (!IsClosing && !IsDisposed && Parent != null)
+					OnConnectionLost(this, new ErrorEventArgs(ex));
+			}
+			finally
+			{
+#if INTEL_KVM
+				if (_vncConnection == null)
+					await StopAmtProxyAsync();
+#endif
+			}
+		}
+
+#if INTEL_AMT
+		private static bool CheckAmtPower(string host, string username, string domain, SecureString password, bool useTls, CancellationToken cancellation, Action<string> statusChanged)
+		{
+			cancellation.ThrowIfCancellationRequested();
+			bool useKerberos = !String.IsNullOrEmpty(domain) || String.IsNullOrEmpty(username);
+			ConnectionInfoEX.AuthMethod authentication = useKerberos ? ConnectionInfoEX.AuthMethod.Kerberos : ConnectionInfoEX.AuthMethod.Digest;
+			string amtUsername = String.IsNullOrEmpty(domain) ? username : domain + "\\" + username;
+			ConnectionInfoEX info = new ConnectionInfoEX(host, amtUsername, password, useTls, String.Empty, authentication, null, null, null);
+			statusChanged("Connecting to AMT...");
+			using (IAMTInstance amt = AMTInstanceFactory.CreateEX(info))
+			{
+				cancellation.ThrowIfCancellationRequested();
+				statusChanged("Checking AMT power status...");
+				PowerState state = amt.Power.CurrentOSPowerState.PowerState;
+				cancellation.ThrowIfCancellationRequested();
+				switch (state)
+				{
+					case PowerState.On: return false;
+					case PowerState.StandBy:
+					case PowerState.Hibernate:
+					case PowerState.Off:
+						statusChanged("Powering on the AMT system...");
+						amt.Power.Powerup();
+						return true;
+					default: throw new InvalidOperationException("Unable to determine AMT power state: " + state);
+				}
+			}
+		}
+#endif
+
+#if INTEL_KVM
+		private void AmtProxy_StatusChanged(int status)
+		{
+			Debug.WriteLine("Intel AMT KVM proxy status: " + status);
+			AmtProxy_Failed(new InvalidOperationException(GetAmtProxyStatusMessage(status)));
+		}
+
+		private void AmtProxy_Failed(Exception exception)
+		{
+			Debug.WriteLine("Intel AMT KVM proxy failed: " + exception);
+			_amtProxyError = exception.Message;
+			CancellationTokenSource cancellation = _connectionCancellation;
+			if (cancellation != null)
+				cancellation.Cancel();
+			if (_vncConnection != null && _vncConnection.ConnectionState == ConnectionState.Connected && !IsClosing && !IsDisposed && Parent != null)
+				OnConnectionLost(this, new ErrorEventArgs(exception));
+		}
+
+		private static string GetAmtProxyStatusMessage(int status)
+		{
+			switch (status)
+			{
+				case 2: return "Intel AMT session manager failed.";
+				case 3: return "The Intel AMT TLS connection failed. Check the trusted certificate and host name.";
+				case 4: return "The Intel AMT proxy connection failed.";
+				case 5: return "Intel AMT proxy authentication failed.";
+				case 6: return "The Intel AMT audit log is full or locked.";
+				case 7: return "The Intel AMT connection settings are invalid.";
+				case 8: return "Intel AMT authentication failed. Check the credentials and provisioning.";
+				case 9: return "The Intel AMT KVM session is busy.";
+				case 10: return "The Intel AMT KVM redirection is not supported.";
+				default: return "The Intel AMT KVM connection failed (status " + status + ").";
+			}
+		}
+
+		private async Task StopAmtProxyAsync()
+		{
+			AmtKvmProxyProcess proxy = _amtProxy;
+			_amtProxy = null;
+			if (proxy != null)
+			{
+				proxy.StatusChanged -= AmtProxy_StatusChanged;
+				proxy.Failed -= AmtProxy_Failed;
+				await proxy.StopAsync();
+			}
+		}
+#endif
+
+		private void _vncConnection_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == nameof(RfbConnection.ConnectionState))
+			{
 				if (_vncConnection.ConnectionState != ConnectionState.Connected)
-                {
+				{
+					Debug.WriteLine("VNC connection state: " + _vncConnection.ConnectionState + "; interruption: " + _vncConnection.InterruptionCause);
 					OnConnectionLost(this, new ErrorEventArgs(_vncConnection.InterruptionCause));
-                }
-            }
-        }
+				}
+			}
+		}
 
         /// <summary>
         /// Decrypts the password (if any) associated with the connection (<see cref="BaseConnection.InheritedPassword"/> and provides it to 
         /// <see cref="_vncConnection"/> for use in the connection process.
         /// </summary>
         /// <returns>The decrypted contents, if any, of <see cref="BaseConnection.InheritedPassword"/>.</returns>
-        private string GetPassword()
+		private string GetPassword()
 		{
-			string password = null;
 			SecureString inheritedPassword = Connection.InheritedPassword;
+			if (inheritedPassword == null || inheritedPassword.Length == 0)
+				return null;
 
-		    if (inheritedPassword != null && inheritedPassword.Length > 0)
-		        password = Marshal.PtrToStringAnsi(Marshal.SecureStringToGlobalAllocAnsi(inheritedPassword));
-
-			return password;
+			IntPtr plaintext = Marshal.SecureStringToGlobalAllocAnsi(inheritedPassword);
+			try
+			{
+				return Marshal.PtrToStringAnsi(plaintext);
+			}
+			finally
+			{
+				Marshal.ZeroFreeGlobalAllocAnsi(plaintext);
+			}
 		}
 
 	    private async void VncConnectionForm_FormClosing(object sender, CancelEventArgs e)
@@ -216,54 +359,48 @@ namespace EasyConnect.Protocols.Vnc
 	    }
 
 		private async Task CloseConnection()
-        {
-            if (_vncConnection == null)
-            {
-                _connectionCancellation?.Cancel();
-                return;
-            }
-
-			if (_vncConnection.ConnectionState == ConnectionState.Connected)
+		{
+			_connectionCancellation?.Cancel();
+			if (_vncConnection != null && _vncConnection.ConnectionState == ConnectionState.Connected)
 			{
 				try
 				{
 					await _vncConnection.CloseAsync();
 				}
-
 				catch (Exception)
 				{
 				}
-
 				finally
 				{
 					try
 					{
 						_vncConnection.Dispose();
 					}
-
 					catch (Exception)
 					{
 					}
 				}
 			}
-
-			else if (_connectionCancellation != null)
-			{
-				_connectionCancellation.Cancel();
-			}
+#if INTEL_KVM
+			await StopAmtProxyAsync();
+#endif
 		}
 
-        protected override void OnConnectionLost(object sender, EventArgs e)
-        {
-            base.OnConnectionLost(sender, e);
-			BackColor = System.Drawing.Color.White;
+		protected override async void OnConnectionLost(object sender, EventArgs e)
+		{
+			base.OnConnectionLost(sender, e);
+			if (InvokeRequired)
+				BeginInvoke(new Action(() => BackColor = System.Drawing.Color.White));
+			else
+				BackColor = System.Drawing.Color.White;
+#if INTEL_KVM
+			await StopAmtProxyAsync();
+#endif
 		}
 
-        protected override void OnConnected(object sender, EventArgs e)
-	    {
-	        base.OnConnected(sender, e);
-
-			_connectionCancellation = null;
+		protected override void OnConnected(object sender, EventArgs e)
+		{
+			base.OnConnected(sender, e);
 
 			_vncDesktop.Width = _vncConnection.RemoteFramebufferSize.Width;
 			_vncDesktop.Height = _vncConnection.RemoteFramebufferSize.Height;

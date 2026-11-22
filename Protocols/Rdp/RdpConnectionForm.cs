@@ -595,38 +595,25 @@ namespace EasyConnect.Protocols.Rdp
 				default: throw new InvalidOperationException("Unknown AMT authentication method.");
 			}
 
-			IntPtr plaintext = IntPtr.Zero;
-			try
+			ConnectionInfoEX info = new ConnectionInfoEX(host, username, password, useTls, String.Empty, auth, null, null, null);
+			statusChanged("Connecting to AMT...");
+			using (IAMTInstance amt = AMTInstanceFactory.CreateEX(info))
 			{
-				if (password != null)
-					plaintext = Marshal.SecureStringToBSTR(password);
-
-				string passwordText = plaintext == IntPtr.Zero ? String.Empty : Marshal.PtrToStringBSTR(plaintext);
-				ConnectionInfoEX info = new ConnectionInfoEX(host, username, passwordText, useTls, String.Empty, auth, null, null, null);
-				statusChanged("Connecting to AMT...");
-				using (IAMTInstance amt = AMTInstanceFactory.CreateEX(info))
+				cancellation.ThrowIfCancellationRequested();
+				statusChanged("Checking AMT power status...");
+				PowerState state = amt.Power.CurrentOSPowerState.PowerState;
+				cancellation.ThrowIfCancellationRequested();
+				switch (state)
 				{
-					cancellation.ThrowIfCancellationRequested();
-					statusChanged("Checking AMT power status...");
-					PowerState state = amt.Power.CurrentOSPowerState.PowerState;
-					cancellation.ThrowIfCancellationRequested();
-					switch (state)
-					{
-						case PowerState.On: return false;
-						case PowerState.StandBy:
-						case PowerState.Hibernate:
-						case PowerState.Off:
-							statusChanged("Powering on the AMT system...");
-							amt.Power.Powerup();
-							return true;
-						default: throw new InvalidOperationException("Unable to determine AMT power state: " + state);
-					}
+					case PowerState.On: return false;
+					case PowerState.StandBy:
+					case PowerState.Hibernate:
+					case PowerState.Off:
+						statusChanged("Powering on the AMT system...");
+						amt.Power.Powerup();
+						return true;
+					default: throw new InvalidOperationException("Unable to determine AMT power state: " + state);
 				}
-			}
-			finally
-			{
-				if (plaintext != IntPtr.Zero)
-					Marshal.ZeroFreeBSTR(plaintext);
 			}
 		}
 #endif

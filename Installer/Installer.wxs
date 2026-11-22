@@ -179,6 +179,12 @@
 				<File Id="IntelAmtLicense" Name="Intel AMT SDK License.txt" Source="$(var.EasyConnect.Protocols.Rdp.TargetDir)Intel AMT SDK License.txt"/>
 			</Component>
 			<?endif?>
+			<?if $(var.EnableIntelAmtKvm) = "1" ?>
+			<Component Id="IntelAmtKvmProxyComponent" Guid="A56F8B92-D46B-472C-8F89-07DD9019A75A">
+				<File Id="IntelAmtKvmProxy" Name="EasyConnect.AmtKvmProxy.exe" Source="$(var.EasyConnect.TargetDir)EasyConnect.AmtKvmProxy.exe" KeyPath="yes" />
+				<File Id="IntelAmtKvmLibrary" Name="KVMLib.dll" Source="$(var.EasyConnect.TargetDir)KVMLib.dll" />
+			</Component>
+			<?endif?>
 		</ComponentGroup>
 		<ComponentGroup Id="VncPluginComponents" Directory="INSTALLFOLDER">
 			<Component Id="VncPluginAssemblyComponent" Guid="D39F04E9-B216-4EDB-A041-FFEB65AB0AE5">

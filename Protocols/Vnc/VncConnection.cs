@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.Security;
+using System.Xml.Serialization;
+using EasyConnect.Common;
 
 namespace EasyConnect.Protocols.Vnc
 {
@@ -16,9 +19,10 @@ namespace EasyConnect.Protocols.Vnc
 		{
 			Port = 5900;
 			PictureQuality = 7;
-		    ShareClipboard = true;
+			ShareClipboard = true;
 			PreferredEncoding = "ZRLE";
 			ShowLocalCursor = true;
+			AmtUseTls = true;
 		}
 
 		/// <summary>
@@ -60,6 +64,11 @@ namespace EasyConnect.Protocols.Vnc
 					case "PreferredEncoding":
 						PreferredEncoding = (string) entry.Value;
 						break;
+					case "UseAmtKvm": UseAmtKvm = (bool)entry.Value; break;
+					case "AmtUseTls": AmtUseTls = (bool)entry.Value; break;
+					case "AmtUsername": AmtUsername = (string)entry.Value; break;
+					case "AmtDomain": AmtDomain = (string)entry.Value; break;
+					case "AmtPassword": EncryptedAmtPassword = (string)entry.Value; break;
 				}
 			}
 		}
@@ -113,10 +122,59 @@ namespace EasyConnect.Protocols.Vnc
         }
 
 		public string PreferredEncoding
-        {
+		{
 			get;
 			set;
-        }
+		}
+
+		public bool UseAmtKvm { get; set; }
+		public bool AmtUseTls { get; set; }
+		public string AmtUsername { get; set; }
+		public string AmtDomain { get; set; }
+
+		[XmlIgnore]
+		public SecureString AmtPassword { get; set; }
+
+		[XmlElement("AmtPassword")]
+		public string EncryptedAmtPassword
+		{
+			get
+			{
+				return AmtPassword == null || AmtPassword.Length == 0
+					? null
+					: Convert.ToBase64String(ConnectionFactory.Encrypt(AmtPassword));
+			}
+			set
+			{
+				if (String.IsNullOrEmpty(value))
+				{
+					AmtPassword = null;
+					return;
+				}
+
+				byte[] decrypted = ConnectionFactory.Decrypt(Convert.FromBase64String(value));
+				try
+				{
+					SecureString password = new SecureString();
+					for (int i = 0; i < decrypted.Length && decrypted[i] != 0; i++)
+						password.AppendChar((char)decrypted[i]);
+					AmtPassword = password;
+				}
+				finally
+				{
+					Array.Clear(decrypted, 0, decrypted.Length);
+				}
+			}
+		}
+
+		public override object CloneAnon()
+		{
+			VncConnection clone = (VncConnection)base.CloneAnon();
+			clone.AmtUsername = null;
+			clone.AmtDomain = null;
+			clone.AmtPassword = null;
+			return clone;
+		}
 
 		/// <summary>
 		/// Method required for <see cref="ISerializable"/>; serializes the connection data to <paramref name="info"/>.
@@ -134,6 +192,11 @@ namespace EasyConnect.Protocols.Vnc
 			info.AddValue("ShowLocalCursor", ShowLocalCursor);
 			info.AddValue("PictureQuality", PictureQuality);
 			info.AddValue("PreferredEncoding", PreferredEncoding);
+			info.AddValue("UseAmtKvm", UseAmtKvm);
+			info.AddValue("AmtUseTls", AmtUseTls);
+			info.AddValue("AmtUsername", AmtUsername);
+			info.AddValue("AmtDomain", AmtDomain);
+			info.AddValue("AmtPassword", EncryptedAmtPassword);
 		}
 	}
 }

@@ -34,7 +34,9 @@
   <PropertyGroup>
     <IntelAmtInstallerEnabled Condition="'$(IntelAmtEnabled)' == 'true'">1</IntelAmtInstallerEnabled>
     <IntelAmtInstallerEnabled Condition="'$(IntelAmtEnabled)' != 'true'">0</IntelAmtInstallerEnabled>
-    <DefineConstants>$(DefineConstants);EnableIntelAmt=$(IntelAmtInstallerEnabled)</DefineConstants>
+    <IntelAmtKvmInstallerEnabled Condition="'$(IntelAmtEnabled)' == 'true' and Exists('$(IntelAmtDirectory)\KVMLib.dll')">1</IntelAmtKvmInstallerEnabled>
+    <IntelAmtKvmInstallerEnabled Condition="'$(IntelAmtKvmInstallerEnabled)' == ''">0</IntelAmtKvmInstallerEnabled>
+    <DefineConstants>$(DefineConstants);EnableIntelAmt=$(IntelAmtInstallerEnabled);EnableIntelAmtKvm=$(IntelAmtKvmInstallerEnabled)</DefineConstants>
   </PropertyGroup>
   <Target Name="ValidateIntelAmt" BeforeTargets="PrepareForBuild">
     <Error Condition="'$(EnableIntelAmt)' != '' and '$(IntelAmtEnabled)' == ''" Text="EnableIntelAmt must be true, false, 1, 0, yes, or no." />
