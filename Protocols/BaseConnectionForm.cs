@@ -54,6 +54,21 @@ namespace EasyConnect.Protocols
 			set;
 		}
 
+		protected void SetConnectingStatus(string status)
+		{
+			if (IsDisposed || Disposing || IsClosing)
+				return;
+
+			if (InvokeRequired)
+			{
+				if (IsHandleCreated)
+					Invoke(new Action<string>(SetConnectingStatus), status);
+				return;
+			}
+
+			connectingLabel.Text = status;
+		}
+
 		/// <summary>
 		/// Handler method that's called when the form has started closing.  Sets the <see cref="IsClosing"/> property to true.
 		/// </summary>

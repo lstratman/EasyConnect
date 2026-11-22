@@ -530,19 +530,26 @@ namespace EasyConnect.Protocols.Rdp
 			_amtConnecting = true;
 			try
 			{
+				SetConnectingStatus("Connecting to AMT...");
 				string host = Connection.Host;
 				string username = Connection.AmtUsername;
 				bool useTls = Connection.AmtUseTls;
 				AmtAuthentication authentication = Connection.AmtAuthentication;
 				using (SecureString password = Connection.AmtPassword == null ? null : Connection.AmtPassword.Copy())
 				{
-					bool poweredUp = await Task.Run(() => CheckAmtPower(host, username, password, useTls, authentication, _amtCancellation.Token));
+					bool poweredUp = await Task.Run(() => CheckAmtPower(host, username, password, useTls, authentication, _amtCancellation.Token, SetConnectingStatus));
 					if (poweredUp)
-						await Task.Delay(TimeSpan.FromSeconds(20), _amtCancellation.Token);
+					{
+						SetConnectingStatus("Waiting for the AMT system to start...");
+						await Task.Delay(TimeSpan.FromSeconds(10), _amtCancellation.Token);
+					}
 				}
 
 				if (!IsClosing && !IsDisposed && Parent != null)
+				{
+					SetConnectingStatus("Connecting via RDP...");
 					ConnectRdp();
+				}
 			}
 			catch (OperationCanceledException) when (_amtCancellation.IsCancellationRequested)
 			{
@@ -558,7 +565,7 @@ namespace EasyConnect.Protocols.Rdp
 			}
 		}
 
-		private static bool CheckAmtPower(string host, string username, SecureString password, bool useTls, AmtAuthentication authentication, CancellationToken cancellation)
+		private static bool CheckAmtPower(string host, string username, SecureString password, bool useTls, AmtAuthentication authentication, CancellationToken cancellation, Action<string> statusChanged)
 		{
 			cancellation.ThrowIfCancellationRequested();
 			ConnectionInfoEX.AuthMethod auth;
@@ -574,11 +581,14 @@ namespace EasyConnect.Protocols.Rdp
 			{
 				if (password != null)
 					plaintext = Marshal.SecureStringToBSTR(password);
+
 				string passwordText = plaintext == IntPtr.Zero ? String.Empty : Marshal.PtrToStringBSTR(plaintext);
 				ConnectionInfoEX info = new ConnectionInfoEX(host, username, passwordText, useTls, String.Empty, auth, null, null, null);
+				statusChanged("Connecting to AMT...");
 				using (IAMTInstance amt = AMTInstanceFactory.CreateEX(info))
 				{
 					cancellation.ThrowIfCancellationRequested();
+					statusChanged("Checking AMT power status...");
 					PowerState state = amt.Power.CurrentOSPowerState.PowerState;
 					cancellation.ThrowIfCancellationRequested();
 					switch (state)
@@ -587,6 +597,7 @@ namespace EasyConnect.Protocols.Rdp
 						case PowerState.StandBy:
 						case PowerState.Hibernate:
 						case PowerState.Off:
+							statusChanged("Powering on the AMT system...");
 							amt.Power.Powerup();
 							return true;
 						default: throw new InvalidOperationException("Unable to determine AMT power state: " + state);
