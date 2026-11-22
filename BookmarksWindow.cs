@@ -133,11 +133,11 @@ namespace EasyConnect
 		{
 			InitializeComponent();
 
-            _treeViewImageList.Images.Add(LoadSvg(Encoding.UTF8.GetString(AppResources.Folder), 24, 24));
-            _treeViewImageList.Images.Add(LoadSvg(Encoding.UTF8.GetString(AppResources.FolderOpen), 24, 24));
-            _bookmarksFoldersTreeView.SelectedImageIndex = 1;
+			_treeViewImageList.Images.Add(LoadSvg(Encoding.UTF8.GetString(AppResources.Folder), 24, 24));
+			_treeViewImageList.Images.Add(LoadSvg(Encoding.UTF8.GetString(AppResources.FolderOpen), 24, 24));
+			_bookmarksFoldersTreeView.SelectedImageIndex = 1;
 
-            _toolsMenu.Renderer = new EasyConnectToolStripRender();
+			_toolsMenu.Renderer = new EasyConnectToolStripRender();
 
             _listViewNotesDoubleClickTimer.Tick += _listViewNotesDoubleClickTimer_Tick;
             _listViewNotesDoubleClickTimer.Interval = SystemInformation.DoubleClickTime;
@@ -1797,6 +1797,17 @@ namespace EasyConnect
         private void _exitMenuItem_Click(object sender, EventArgs e)
         {
             ((Form)Parent).Close();
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            MainForm parent = ParentForm as MainForm;
+            if (!e.Cancel && (parent == null || !parent.IsClosingTabs) &&
+                MessageBox.Show(parent, "Close the Bookmarks tab?", "Close Bookmarks", MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+                e.Cancel = true;
+
+            base.OnClosing(e);
         }
 
         /// <summary>

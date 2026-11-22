@@ -64,6 +64,8 @@ namespace EasyConnect
 		/// </summary>
 		protected BookmarksWindow _bookmarksWindow = null;
 
+		internal bool IsClosingTabs { get; private set; }
+
 		/// <summary>
 		/// Flag indicating whether or not the user is currently pressing the Ctrl key.
 		/// </summary>
@@ -660,6 +662,19 @@ namespace EasyConnect
 
 				if (_recentConnections.Count > _jumpList.MaxSlotsInList)
 					_recentConnections.Dequeue();
+			}
+		}
+
+		protected override void OnFormClosing(FormClosingEventArgs e)
+		{
+			IsClosingTabs = true;
+			try
+			{
+				base.OnFormClosing(e);
+			}
+			finally
+			{
+				IsClosingTabs = false;
 			}
 		}
 
