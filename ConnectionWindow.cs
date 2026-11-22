@@ -1138,5 +1138,19 @@ namespace EasyConnect
 				return Math.Max(0, Math.Min(ExpandedToolbarHeight, configured));
 			}
 		}
+
+        protected virtual void OnConnectionLost(object sender, EventArgs e)
+        {
+            if (IsClosing || Parent == null) return;
+
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(() => OnConnectionLost(sender, e)));
+                return;
+            }
+
+            // UI-Updates...
+            ConnectionLost?.Invoke(sender, e);
+        }
     }
 }
