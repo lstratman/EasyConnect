@@ -1139,9 +1139,14 @@ namespace EasyConnect
 			}
 		}
 
-        protected virtual void OnConnectionLost(object sender, EventArgs e)
+		/// <summary>
+		/// Event that is fired when the connection for this window is lost.
+		/// </summary>
+		public event EventHandler ConnectionLost;
+
+		protected virtual void OnConnectionLost(object sender, EventArgs e)
         {
-            if (IsClosing || Parent == null) return;
+            if ((_connectionForm != null && _connectionForm.IsClosing) || Parent == null) return;
 
             if (InvokeRequired)
             {

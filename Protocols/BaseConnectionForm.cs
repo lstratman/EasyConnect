@@ -39,10 +39,10 @@ namespace EasyConnect.Protocols
 		/// <summary>
 		/// Flag indicating whether the form is in the process of closing.
 		/// </summary>
-		protected bool IsClosing
+		public bool IsClosing
 		{
 			get;
-			set;
+			protected set;
 		}
 
 		/// <summary>
