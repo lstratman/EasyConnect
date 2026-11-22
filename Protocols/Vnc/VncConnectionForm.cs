@@ -39,6 +39,7 @@ namespace EasyConnect.Protocols.Vnc
 #if INTEL_KVM
 		private AmtKvmProxyProcess _amtProxy;
 		private string _amtProxyError;
+		private Exception _amtLastInterruption;
 #endif
 
 		protected List<ToolStripItem> _toolsMenuItems = new List<ToolStripItem>();
@@ -159,6 +160,12 @@ namespace EasyConnect.Protocols.Vnc
 			_connectionCancellation?.Cancel();
 			_connectionCancellation?.Dispose();
 			_connectionCancellation = new CancellationTokenSource();
+#if INTEL_KVM
+			_amtLastInterruption = null;
+			_vncProtocol.UseAmtZrleDecoder = Connection.UseAmtKvm;
+#else
+			_vncProtocol.UseAmtZrleDecoder = false;
+#endif
 			if (!String.IsNullOrEmpty(Connection.PreferredEncoding))
 				_vncProtocol.PreferredEncodingType = Connection.PreferredEncoding;
 			ConnectAsync(_connectionCancellation.Token);
@@ -212,7 +219,11 @@ namespace EasyConnect.Protocols.Vnc
 					InitialRenderTarget = _vncDesktop,
 					JpegQualityLevel = Connection.PictureQuality * 10,
 					InitialOutputHandler = this,
+#if INTEL_KVM
+					MaxReconnectAttempts = Connection.UseAmtKvm ? 1 : 0
+#else
 					MaxReconnectAttempts = 0
+#endif
 				}, cancellationToken);
 				_vncDesktop.RfbConnection = _vncConnection;
 				_vncDesktop.VncConnection = Connection;
@@ -321,12 +332,32 @@ namespace EasyConnect.Protocols.Vnc
 
 		private void _vncConnection_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
+			RfbConnection connection = sender as RfbConnection;
+			if (connection == null || connection != _vncConnection)
+				return;
+#if INTEL_KVM
+			if (Connection.UseAmtKvm)
+			{
+				if (e.PropertyName == nameof(RfbConnection.InterruptionCause) && connection.InterruptionCause != null)
+					_amtLastInterruption = connection.InterruptionCause;
+				if (e.PropertyName != nameof(RfbConnection.ConnectionState))
+					return;
+
+				ConnectionState state = connection.ConnectionState;
+				Debug.WriteLine("AMT VNC connection state: " + state + "; interruption: " + connection.InterruptionCause);
+				if (state == ConnectionState.Interrupted)
+					return;
+				if (state == ConnectionState.Closed && !IsClosing && !IsDisposed)
+					OnConnectionLost(this, new ErrorEventArgs(connection.InterruptionCause ?? _amtLastInterruption));
+				return;
+			}
+#endif
 			if (e.PropertyName == nameof(RfbConnection.ConnectionState))
 			{
-				if (_vncConnection.ConnectionState != ConnectionState.Connected)
+				if (connection.ConnectionState != ConnectionState.Connected)
 				{
-					Debug.WriteLine("VNC connection state: " + _vncConnection.ConnectionState + "; interruption: " + _vncConnection.InterruptionCause);
-					OnConnectionLost(this, new ErrorEventArgs(_vncConnection.InterruptionCause));
+					Debug.WriteLine("VNC connection state: " + connection.ConnectionState + "; interruption: " + connection.InterruptionCause);
+					OnConnectionLost(this, new ErrorEventArgs(connection.InterruptionCause));
 				}
 			}
 		}
@@ -361,7 +392,11 @@ namespace EasyConnect.Protocols.Vnc
 		private async Task CloseConnection()
 		{
 			_connectionCancellation?.Cancel();
-			if (_vncConnection != null && _vncConnection.ConnectionState == ConnectionState.Connected)
+			if (_vncConnection != null && (_vncConnection.ConnectionState == ConnectionState.Connected
+#if INTEL_KVM
+				|| (Connection.UseAmtKvm && _vncConnection.ConnectionState != ConnectionState.Closed)
+#endif
+				))
 			{
 				try
 				{
@@ -389,10 +424,24 @@ namespace EasyConnect.Protocols.Vnc
 		protected override async void OnConnectionLost(object sender, EventArgs e)
 		{
 			base.OnConnectionLost(sender, e);
-			if (InvokeRequired)
-				BeginInvoke(new Action(() => BackColor = System.Drawing.Color.White));
-			else
-				BackColor = System.Drawing.Color.White;
+			if (!IsDisposed && !Disposing && IsHandleCreated)
+			{
+				try
+				{
+					if (InvokeRequired)
+						BeginInvoke(new Action(() => BackColor = System.Drawing.Color.White));
+					else
+						BackColor = System.Drawing.Color.White;
+				}
+				catch (ObjectDisposedException)
+				{
+					Debug.WriteLine("Ignoring VNC color update after the connection form was disposed.");
+				}
+				catch (InvalidOperationException) when (IsDisposed || Disposing || !IsHandleCreated)
+				{
+					Debug.WriteLine("Ignoring VNC color update while the connection form is closing.");
+				}
+			}
 #if INTEL_KVM
 			await StopAmtProxyAsync();
 #endif

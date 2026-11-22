@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -169,12 +170,14 @@ namespace EasyConnect.Protocols
 		/// <param name="e">Arguments associated with this event.</param>
 		protected virtual void OnConnectionLost(object sender, EventArgs e)
 		{
-			if (IsClosing || Parent == null)
+			if (IsClosing || IsDisposed || Disposing || Parent == null || !IsHandleCreated)
 				return;
 
-			Invoke(
-				new Action(
-					() =>
+			try
+			{
+				Invoke(
+					new Action(
+						() =>
 						{
 							ConnectionWindow.Visible = false;
 							disconnectedPanel.Visible = true;
@@ -218,6 +221,15 @@ namespace EasyConnect.Protocols
 
 							ConnectionLost?.Invoke(sender, e);
 						}));
+			}
+			catch (ObjectDisposedException)
+			{
+				Debug.WriteLine("Ignoring connection-lost notification after the connection form was disposed.");
+			}
+			catch (InvalidOperationException) when (IsDisposed || Disposing || !IsHandleCreated)
+			{
+				Debug.WriteLine("Ignoring connection-lost notification while the connection form is closing.");
+			}
 		}
 
 		/// <summary>
