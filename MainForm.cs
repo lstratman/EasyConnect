@@ -129,10 +129,13 @@ namespace EasyConnect
 		public MainForm()
 		{
 			InitializeComponent();
+			StartPosition = FormStartPosition.Manual;
+			Bounds = Screen.FromControl(this).WorkingArea;
+			WindowState = FormWindowState.Maximized;
 			Init();
 
 #if !APPX
-            if (_sparkle == null && ConfigurationManager.AppSettings["checkForUpdates"] != "false")
+			if (_sparkle == null && ConfigurationManager.AppSettings["checkForUpdates"] != "false")
 			{
 				_sparkle = new Sparkle(
 					String.IsNullOrEmpty(ConfigurationManager.AppSettings["appCastUrl"])
