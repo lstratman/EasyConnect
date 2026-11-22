@@ -43,9 +43,10 @@ namespace EasyConnect.Protocols.Vnc
 #endif
 
 		protected List<ToolStripItem> _toolsMenuItems = new List<ToolStripItem>();
-        private bool _scaleToFit = false;
-        private ToolStripMenuItem _scaleToFitMenuItem;
-        private ToolStripMenuItem _originalSizeMenuItem;
+		private bool _scaleToFit = false;
+		private bool _scalingManuallySelected;
+		private ToolStripMenuItem _scaleToFitMenuItem;
+		private ToolStripMenuItem _originalSizeMenuItem;
 
 		/// <summary>
 		/// Default constructor.
@@ -79,6 +80,14 @@ namespace EasyConnect.Protocols.Vnc
         {
             if (_vncConnection == null || _vncConnection.ConnectionState != ConnectionState.Connected)
                 return;
+
+            if (!_scalingManuallySelected && !_scaleToFit && ClientSize.Width > 0 && ClientSize.Height > 0 &&
+                (_vncConnection.RemoteFramebufferSize.Width > ClientSize.Width ||
+                 _vncConnection.RemoteFramebufferSize.Height > ClientSize.Height))
+            {
+                SetScaleToFit(true);
+                return;
+            }
 
             if (_scaleToFit)
             {
@@ -225,6 +234,7 @@ namespace EasyConnect.Protocols.Vnc
 					MaxReconnectAttempts = 0
 #endif
 				}, cancellationToken);
+				_scalingManuallySelected = false;
 				_vncDesktop.RfbConnection = _vncConnection;
 				_vncDesktop.VncConnection = Connection;
 				_vncConnection.PropertyChanged += _vncConnection_PropertyChanged;
@@ -335,6 +345,26 @@ namespace EasyConnect.Protocols.Vnc
 			RfbConnection connection = sender as RfbConnection;
 			if (connection == null || connection != _vncConnection)
 				return;
+
+			if (e.PropertyName == nameof(RfbConnection.RemoteFramebufferSize))
+			{
+				if (!IsDisposed && !Disposing && IsHandleCreated)
+				{
+					try
+					{
+						BeginInvoke(new Action(() =>
+						{
+							if (!IsDisposed && !Disposing && connection == _vncConnection)
+								ApplyDisplayLayout();
+						}));
+					}
+					catch (InvalidOperationException) when (IsDisposed || Disposing || !IsHandleCreated)
+					{
+						Debug.WriteLine("Ignoring VNC framebuffer size change while the connection form is closing.");
+					}
+				}
+				return;
+			}
 #if INTEL_KVM
 			if (Connection.UseAmtKvm)
 			{
@@ -451,10 +481,7 @@ namespace EasyConnect.Protocols.Vnc
 		{
 			base.OnConnected(sender, e);
 
-			_vncDesktop.Width = _vncConnection.RemoteFramebufferSize.Width;
-			_vncDesktop.Height = _vncConnection.RemoteFramebufferSize.Height;
-
-            ApplyDisplayLayout();
+			ApplyDisplayLayout();
 
 			BackColor = System.Drawing.Color.FromArgb(171, 171, 171);
 		}
@@ -482,10 +509,11 @@ namespace EasyConnect.Protocols.Vnc
 
             var displayMenu = new ToolStripMenuItem("Display scaling");
             _originalSizeMenuItem = new ToolStripMenuItem("Original resolution", null,
-                (sender, e) => SetScaleToFit(false));
+                (sender, e) => { _scalingManuallySelected = true; SetScaleToFit(false); });
             _scaleToFitMenuItem = new ToolStripMenuItem("Automatically fit to window", null,
-                (sender, e) => SetScaleToFit(true));
-            _originalSizeMenuItem.Checked = true;
+                (sender, e) => { _scalingManuallySelected = true; SetScaleToFit(true); });
+            _originalSizeMenuItem.Checked = !_scaleToFit;
+            _scaleToFitMenuItem.Checked = _scaleToFit;
             displayMenu.DropDownItems.Add(_originalSizeMenuItem);
             displayMenu.DropDownItems.Add(_scaleToFitMenuItem);
             _toolsMenuItems.Add(displayMenu);

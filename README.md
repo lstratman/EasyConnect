@@ -24,6 +24,10 @@ An RDP host can optionally use Intel AMT control from its settings, below Gatewa
 
 When enabled, EasyConnect checks the power state before connecting and sends a power-up request for sleeping, hibernating, or powered-off systems. It waits 10 seconds after the request before starting RDP; the operating system may take longer to start, in which case retry the connection. AMT errors are shown as connection errors. AMT credentials are stored using the same encryption mechanism as other connection passwords.
 
+## VNC display scaling
+
+VNC automatically enables fitting to the window when the remote desktop is wider or taller than the available display area, including after a window or remote resolution change. Choose a display scaling mode from the tools menu to override automatic selection for the current connection. Once enabled, fit remains active until you select original resolution.
+
 ## Intel AMT KVM redirection for VNC
 
 VNC connections can optionally use Intel AMT KVM redirection. The AMT target uses port 16994 without TLS or 16995 with TLS; the regular VNC port and display number are ignored in this mode. The existing VNC client handles the RFB session through Intel's local proxy; this does not add RFB 4.0 support. AMT connections use a corrected ZRLE decoder for 16-bit true-color framebuffer data; other VNC connections retain the standard decoder. Authentication is negotiated automatically by Intel's KVM library. Supply an AMT username and password for Digest, or a domain, username, and password for Kerberos. With no AMT credentials, the SDK can use the current Windows identity if the device offers Kerberos. TLS verifies the AMT certificate. The VNC password setting is separate and is not the AMT credential.
