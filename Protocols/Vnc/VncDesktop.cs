@@ -140,10 +140,30 @@ namespace EasyConnect.Protocols.Vnc
             {
                 _currentFramebufferReference = null;
 
-                Invoke(new Action(() =>
+                if (IsDisposed || Disposing || !IsHandleCreated)
                 {
-                    Invalidate();
-                }));
+                    System.Diagnostics.Debug.WriteLine("Ignoring VNC framebuffer render callback while the desktop is closing.");
+                    return;
+                }
+
+                try
+                {
+                    Invoke(new Action(() =>
+                    {
+                        if (!IsDisposed && !Disposing)
+                        {
+                            Invalidate();
+                        }
+                    }));
+                }
+                catch (ObjectDisposedException) when (IsDisposed || Disposing || !IsHandleCreated)
+                {
+                    System.Diagnostics.Debug.WriteLine("Ignoring VNC framebuffer render callback after the desktop was disposed.");
+                }
+                catch (InvalidOperationException) when (IsDisposed || Disposing || !IsHandleCreated)
+                {
+                    System.Diagnostics.Debug.WriteLine("Ignoring VNC framebuffer render callback while the desktop handle is unavailable.");
+                }
             }
         }
 
