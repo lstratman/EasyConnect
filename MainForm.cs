@@ -64,6 +64,11 @@ namespace EasyConnect
 		/// </summary>
 		protected BookmarksWindow _bookmarksWindow = null;
 
+		/// <summary>
+		/// Recently connected servers shown in the Favorites tab.
+		/// </summary>
+		protected FavoritesWindow _favoritesWindow = null;
+
 		internal bool IsClosingTabs { get; private set; }
 
 		/// <summary>
@@ -183,9 +188,11 @@ namespace EasyConnect
 				}
 			}
 
-			// Show the bookmarks manager window initially if we're not opening bookmarks or history entries
+			OpenBookmarkManager();
+
+			// Keep the existing Favorites start tab when no specific content was requested.
 			if (OpenToBookmarks == null && OpenToHistory == Guid.Empty)
-				OpenBookmarkManager();
+				OpenFavorites();
 		}
 
 		/// <summary>
@@ -197,9 +204,11 @@ namespace EasyConnect
 		{
 			OpenToBookmarks = openToBookmarks;
 
-			// Show the bookmarks manager window initially if we're not opening bookmarks or history entries
+			OpenBookmarkManager();
+
+			// Keep the existing Favorites start tab when no specific content was requested.
 			if (OpenToBookmarks == null && OpenToHistory == Guid.Empty)
-				OpenBookmarkManager();
+				OpenFavorites();
 		}
 
 		/// <summary>
@@ -540,6 +549,29 @@ namespace EasyConnect
         private void History_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			_historyWindow = null;
+		}
+
+		/// <summary>
+		/// Opens or focuses the Favorites tab.
+		/// </summary>
+		public void OpenFavorites()
+		{
+			TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content is FavoritesWindow);
+
+			if (tab != null)
+			{
+				SelectedTab = tab;
+				return;
+			}
+
+			_favoritesWindow = new FavoritesWindow(this);
+			_favoritesWindow.FormClosed += Favorites_FormClosed;
+			ShowInEmptyTab(_favoritesWindow);
+		}
+
+		private void Favorites_FormClosed(object sender, FormClosedEventArgs e)
+		{
+			_favoritesWindow = null;
 		}
 
         /// <summary>

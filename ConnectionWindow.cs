@@ -105,6 +105,9 @@ namespace EasyConnect
 
 		    _toolsMenu.Renderer = new EasyConnectToolStripRender();
 		    _bookmarksMenu.Renderer = new EasyConnectToolStripRender();
+			ToolStripMenuItem favoritesMenuItem = new ToolStripMenuItem("Favorites");
+			favoritesMenuItem.Click += (sender, args) => ParentTabs.OpenFavorites();
+			_toolsMenu.Items.Insert(3, favoritesMenuItem);
 
 			// Create the panels that will contain the display text for each auto complete entry when the user is typing in the URL text box
 			for (int i = 0; i < 6; i++)

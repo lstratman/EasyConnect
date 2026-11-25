@@ -138,9 +138,12 @@ namespace EasyConnect
 			_bookmarksFoldersTreeView.SelectedImageIndex = 1;
 
 			_toolsMenu.Renderer = new EasyConnectToolStripRender();
+			ToolStripMenuItem favoritesMenuItem = new ToolStripMenuItem("Favorites");
+			favoritesMenuItem.Click += (sender, args) => _applicationForm.OpenFavorites();
+			_toolsMenu.Items.Insert(3, favoritesMenuItem);
 
-            _listViewNotesDoubleClickTimer.Tick += _listViewNotesDoubleClickTimer_Tick;
-            _listViewNotesDoubleClickTimer.Interval = SystemInformation.DoubleClickTime;
+			_listViewNotesDoubleClickTimer.Tick += _listViewNotesDoubleClickTimer_Tick;
+			_listViewNotesDoubleClickTimer.Interval = SystemInformation.DoubleClickTime;
 
 			_applicationForm = applicationForm;
 			_bookmarksFoldersTreeView.Sorted = true;

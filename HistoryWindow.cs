@@ -51,6 +51,9 @@ namespace EasyConnect
 			InitializeComponent();
 
 		    historyContextMenu.Renderer = new EasyConnectToolStripRender();
+            ToolStripMenuItem favoritesMenuItem = new ToolStripMenuItem("Favorites");
+            favoritesMenuItem.Click += (sender, args) => _applicationForm.OpenFavorites();
+            _toolsMenu.Items.Insert(3, favoritesMenuItem);
             _historyListView.ListViewItemSorter = new HistoryComparer(_connections);
 
 			// Get the icon for each protocol

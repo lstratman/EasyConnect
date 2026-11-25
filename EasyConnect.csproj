@@ -139,6 +139,9 @@
     <Compile Include="BookmarksWindow.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FavoritesWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="BookmarksWindow.designer.cs">
       <DependentUpon>BookmarksWindow.cs</DependentUpon>
     </Compile>
