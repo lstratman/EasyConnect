@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security;
 using System.Windows.Forms;
 using EasyConnect.Protocols;
+using System.Drawing;
 
 namespace EasyConnect
 {
@@ -63,6 +64,11 @@ namespace EasyConnect
 			if (_parentTabs.AeroPeekEnabled != _enableAeroPeekCheckbox.Checked)
 				_parentTabs.AeroPeekEnabled = _enableAeroPeekCheckbox.Checked;
 			
+			// Persist selected value
+			GlobalSettings.Instance.ToolbarAutoHideVisibleHeight = (int)_toolbarHiddenHeightNumeric.Value;
+			// Persist selected bookmarks icon size
+			GlobalSettings.Instance.BookmarksListIconSize = (int)_bookmarksIconSizeNumeric.Value;
+
 			await GlobalSettings.Instance.Save();
 		}
 
@@ -147,6 +153,10 @@ namespace EasyConnect
         private async void GlobalSettingsWindow_Load(object sender, EventArgs e)
         {
             _defaultProtocolDropdown.SelectedItem = await ConnectionFactory.GetDefaultProtocol();
+            // Load persisted value
+            _toolbarHiddenHeightNumeric.Value = GlobalSettings.Instance.ToolbarAutoHideVisibleHeight;
+            // Load persisted bookmarks icon size
+            _bookmarksIconSizeNumeric.Value = GlobalSettings.Instance.BookmarksListIconSize;
         }
     }
 }

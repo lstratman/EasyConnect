@@ -71,14 +71,25 @@ namespace EasyConnect.Protocols
 			{
 				try
 				{
-					Assembly loadedAssembly = Assembly.LoadFile(assemblyFile);
+					Assembly loadedAssembly;
+					try
+					{
+						loadedAssembly = Assembly.LoadFile(assemblyFile);
+					}
+					catch (NotSupportedException exception)
+					{
+						MessageBox.Show("The following assembly could not be loaded during protocol discovery and will be skipped:\n\n" +
+										assemblyFile + "\n\n" + exception.Message,
+										"Assembly loading warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						continue;
+					}
 
 					// Get each type in the assembly that implements IProtocol
 					foreach (Type type in from type in loadedAssembly.GetTypes()
-					                      where type.IsClass && !type.IsNotPublic && !type.IsAbstract
-					                      let interfaces = type.GetInterfaces()
-					                      where interfaces.Contains(typeof (IProtocol))
-					                      select type)
+										  where type.IsClass && !type.IsNotPublic && !type.IsAbstract
+										  let interfaces = type.GetInterfaces()
+										  where interfaces.Contains(typeof (IProtocol))
+										  select type)
 						_protocols[type] = (IProtocol) Activator.CreateInstance(type);
 				}
 

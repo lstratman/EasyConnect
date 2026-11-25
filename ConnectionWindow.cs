@@ -105,6 +105,9 @@ namespace EasyConnect
 
 		    _toolsMenu.Renderer = new EasyConnectToolStripRender();
 		    _bookmarksMenu.Renderer = new EasyConnectToolStripRender();
+			ToolStripMenuItem favoritesMenuItem = new ToolStripMenuItem("Favorites");
+			favoritesMenuItem.Click += (sender, args) => ParentTabs.OpenFavorites();
+			_toolsMenu.Items.Insert(3, favoritesMenuItem);
 
 			// Create the panels that will contain the display text for each auto complete entry when the user is typing in the URL text box
 			for (int i = 0; i < 6; i++)
@@ -313,7 +316,8 @@ namespace EasyConnect
 
 			if (_connection != null && AutoHideToolbar)
 			{
-				toolbarBackground.Height = 5;
+				// Initialize toolbar in collapsed state
+				toolbarBackground.Height = CollapsedToolbarHeight;
 				_toolbarShown = false;
 			}
 		}
@@ -441,8 +445,10 @@ namespace EasyConnect
 			// Set the top and height of the connection contain panel appropriately depending on if we're auto-hiding the toolbar
 			if (AutoHideToolbar && !_connectionContainerPanelSizeSet)
 			{
-				_connectionContainerPanel.Top = 5;
-				_connectionContainerPanel.Height += 36;
+				// Move content to start below the collapsed toolbar height
+				_connectionContainerPanel.Top = CollapsedToolbarHeight;
+				// Compensate panel height for hidden toolbar portion
+				_connectionContainerPanel.Height += (ExpandedToolbarHeight - CollapsedToolbarHeight);
 			}
 
 			if (!AutoHideToolbar)
@@ -1123,6 +1129,36 @@ namespace EasyConnect
         private void urlBackground_Resize(object sender, EventArgs e)
         {
             _urlPanel.AutoScroll = false;
+        }
+
+		private const int ExpandedToolbarHeight = 41;
+
+		private int CollapsedToolbarHeight
+		{
+			get
+			{
+				int configured = GlobalSettings.Instance?.ToolbarAutoHideVisibleHeight ?? 5;
+				return Math.Max(0, Math.Min(ExpandedToolbarHeight, configured));
+			}
+		}
+
+		/// <summary>
+		/// Event that is fired when the connection for this window is lost.
+		/// </summary>
+		public event EventHandler ConnectionLost;
+
+		protected virtual void OnConnectionLost(object sender, EventArgs e)
+        {
+            if ((_connectionForm != null && _connectionForm.IsClosing) || Parent == null) return;
+
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(() => OnConnectionLost(sender, e)));
+                return;
+            }
+
+            // UI-Updates...
+            ConnectionLost?.Invoke(sender, e);
         }
     }
 }

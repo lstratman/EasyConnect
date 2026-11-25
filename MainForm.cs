@@ -25,6 +25,7 @@ using Win32Interop.Enums;
 using Win32Interop.Methods;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Drawing;
 
 namespace EasyConnect
 {
@@ -62,6 +63,13 @@ namespace EasyConnect
 		/// Contains the UI for using bookmarks but also the data concerning all of the bookmarks and folders that the user has.
 		/// </summary>
 		protected BookmarksWindow _bookmarksWindow = null;
+
+		/// <summary>
+		/// Recently connected servers shown in the Favorites tab.
+		/// </summary>
+		protected FavoritesWindow _favoritesWindow = null;
+
+		internal bool IsClosingTabs { get; private set; }
 
 		/// <summary>
 		/// Flag indicating whether or not the user is currently pressing the Ctrl key.
@@ -128,10 +136,13 @@ namespace EasyConnect
 		public MainForm()
 		{
 			InitializeComponent();
+			StartPosition = FormStartPosition.Manual;
+			Bounds = Screen.FromControl(this).WorkingArea;
+			WindowState = FormWindowState.Maximized;
 			Init();
 
 #if !APPX
-            if (_sparkle == null && ConfigurationManager.AppSettings["checkForUpdates"] != "false")
+			if (_sparkle == null && ConfigurationManager.AppSettings["checkForUpdates"] != "false")
 			{
 				_sparkle = new Sparkle(
 					String.IsNullOrEmpty(ConfigurationManager.AppSettings["appCastUrl"])
@@ -177,9 +188,11 @@ namespace EasyConnect
 				}
 			}
 
-			// Show the bookmarks manager window initially if we're not opening bookmarks or history entries
+			OpenBookmarkManager();
+
+			// Keep the existing Favorites start tab when no specific content was requested.
 			if (OpenToBookmarks == null && OpenToHistory == Guid.Empty)
-				OpenBookmarkManager();
+				OpenFavorites();
 		}
 
 		/// <summary>
@@ -191,9 +204,11 @@ namespace EasyConnect
 		{
 			OpenToBookmarks = openToBookmarks;
 
-			// Show the bookmarks manager window initially if we're not opening bookmarks or history entries
+			OpenBookmarkManager();
+
+			// Keep the existing Favorites start tab when no specific content was requested.
 			if (OpenToBookmarks == null && OpenToHistory == Guid.Empty)
-				OpenBookmarkManager();
+				OpenFavorites();
 		}
 
 		/// <summary>
@@ -206,7 +221,9 @@ namespace EasyConnect
 				if (_bookmarksWindow == null && ConnectionFactory.ReadyForCrypto)
 					_bookmarksWindow = new BookmarksWindow(this);
 
-				return _bookmarksWindow;
+                int listIconSize = Math.Max(16, Math.Min(64, GlobalSettings.Instance.BookmarksListIconSize));
+				this._bookmarksWindow.ListViewImageList.ImageSize = new Size(listIconSize, listIconSize);
+                return _bookmarksWindow;
 			}
 		}
 
@@ -534,6 +551,29 @@ namespace EasyConnect
 			_historyWindow = null;
 		}
 
+		/// <summary>
+		/// Opens or focuses the Favorites tab.
+		/// </summary>
+		public void OpenFavorites()
+		{
+			TitleBarTab tab = Tabs.FirstOrDefault(t => t.Content is FavoritesWindow);
+
+			if (tab != null)
+			{
+				SelectedTab = tab;
+				return;
+			}
+
+			_favoritesWindow = new FavoritesWindow(this);
+			_favoritesWindow.FormClosed += Favorites_FormClosed;
+			ShowInEmptyTab(_favoritesWindow);
+		}
+
+		private void Favorites_FormClosed(object sender, FormClosedEventArgs e)
+		{
+			_favoritesWindow = null;
+		}
+
         /// <summary>
         /// Opens a <see cref="global::EasyConnect.BookmarksWindow"/> instance when the user clicks on the "Bookmarks" menu item in the tools menu from a 
         /// <see cref="ConnectionWindow"/> instance.
@@ -654,6 +694,19 @@ namespace EasyConnect
 
 				if (_recentConnections.Count > _jumpList.MaxSlotsInList)
 					_recentConnections.Dequeue();
+			}
+		}
+
+		protected override void OnFormClosing(FormClosingEventArgs e)
+		{
+			IsClosingTabs = true;
+			try
+			{
+				base.OnFormClosing(e);
+			}
+			finally
+			{
+				IsClosingTabs = false;
 			}
 		}
 

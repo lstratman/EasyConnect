@@ -47,7 +47,6 @@ namespace EasyConnect
             this.Name = "MainForm";
             this.Text = "EasyConnect";
             this.Padding = new Padding(0, 10, 0, 0);
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.ResumeLayout(false);
 

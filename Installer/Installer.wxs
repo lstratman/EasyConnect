@@ -169,6 +169,22 @@
 				<File Id="MstsclibAxInteropAssembly" Name="AxInterop.MSTSCLib.dll" Source="$(var.EasyConnect.Protocols.Rdp.TargetDir)AxInterop.MSTSCLib.dll"/>
 				<File Id="MstsclibInteropAssembly" Name="Interop.MSTSCLib.dll" Source="$(var.EasyConnect.Protocols.Rdp.TargetDir)Interop.MSTSCLib.dll"/>
 			</Component>
+			<?if $(var.EnableIntelAmt) = "1" ?>
+			<Component Id="IntelAmtLibrariesComponent" Guid="EAE41336-7BFC-41F0-9DBD-29D459C526AC">
+				<File Id="IntelAmtHLAPI" Name="HLAPI.dll" Source="$(var.EasyConnect.Protocols.Rdp.TargetDir)HLAPI.dll" KeyPath="yes"/>
+				<File Id="IntelAmtDotNetWsman" Name="DotNetWSManClient.dll" Source="$(var.EasyConnect.Protocols.Rdp.TargetDir)DotNetWSManClient.dll"/>
+				<File Id="IntelAmtScripting" Name="Intel.Wsman.Scripting.dll" Source="$(var.EasyConnect.Protocols.Rdp.TargetDir)Intel.Wsman.Scripting.dll"/>
+				<File Id="IntelAmtIWsman" Name="IWSManClient.dll" Source="$(var.EasyConnect.Protocols.Rdp.TargetDir)IWSManClient.dll"/>
+				<File Id="IntelAmtWebStorage" Name="WebStorage.dll" Source="$(var.EasyConnect.Protocols.Rdp.TargetDir)WebStorage.dll"/>
+				<File Id="IntelAmtLicense" Name="Intel AMT SDK License.txt" Source="$(var.EasyConnect.Protocols.Rdp.TargetDir)Intel AMT SDK License.txt"/>
+			</Component>
+			<?endif?>
+			<?if $(var.EnableIntelAmtKvm) = "1" ?>
+			<Component Id="IntelAmtKvmProxyComponent" Guid="A56F8B92-D46B-472C-8F89-07DD9019A75A">
+				<File Id="IntelAmtKvmProxy" Name="EasyConnect.AmtKvmProxy.exe" Source="$(var.EasyConnect.TargetDir)EasyConnect.AmtKvmProxy.exe" KeyPath="yes" />
+				<File Id="IntelAmtKvmLibrary" Name="KVMLib.dll" Source="$(var.EasyConnect.TargetDir)KVMLib.dll" />
+			</Component>
+			<?endif?>
 		</ComponentGroup>
 		<ComponentGroup Id="VncPluginComponents" Directory="INSTALLFOLDER">
 			<Component Id="VncPluginAssemblyComponent" Guid="D39F04E9-B216-4EDB-A041-FFEB65AB0AE5">

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EasyConnect.Protocols.Vnc</RootNamespace>
     <AssemblyName>EasyConnect.Protocols.Vnc</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -77,6 +77,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="VncAuthenticationHandler.cs" />
+    <Compile Include="AmtKvmProxyProcess.cs" />
     <Compile Include="VncConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VncConnectionForm.cs">
@@ -165,4 +166,31 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-</Project>
+<Import Project="..\Rdp\IntelAmt.props" />
+  <PropertyGroup>
+    <EnableVncAmtKvm Condition="'$(IntelAmtEnabled)' == 'true' and Exists('$(IntelAmtDirectory)\KVMLib.dll')">true</EnableVncAmtKvm>
+    <EnableVncAmtKvm Condition="'$(EnableVncAmtKvm)' == ''">false</EnableVncAmtKvm>
+    <DefineConstants Condition="'$(IntelAmtEnabled)' == 'true'">$(DefineConstants);INTEL_AMT</DefineConstants>
+    <DefineConstants Condition="'$(EnableVncAmtKvm)' == 'true'">$(DefineConstants);INTEL_KVM</DefineConstants>
+    <EasyConnectOutputDirectory>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\..\bin\$(Configuration)'))</EasyConnectOutputDirectory>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(IntelAmtEnabled)' == 'true'">
+    <Reference Include="HLAPI"><HintPath>$(IntelAmtDirectory)\HLAPI.dll</HintPath><Private>True</Private></Reference>
+    <Reference Include="DotNetWSManClient"><HintPath>$(IntelAmtDirectory)\DotNetWSManClient.dll</HintPath><Private>True</Private></Reference>
+    <Reference Include="Intel.Wsman.Scripting"><HintPath>$(IntelAmtDirectory)\Intel.Wsman.Scripting.dll</HintPath><Private>True</Private></Reference>
+    <Reference Include="IWSManClient"><HintPath>$(IntelAmtDirectory)\IWSManClient.dll</HintPath><Private>True</Private></Reference>
+    <Reference Include="WebStorage"><HintPath>$(IntelAmtDirectory)\WebStorage.dll</HintPath><Private>True</Private></Reference>
+  </ItemGroup>
+  <Target Name="BuildIntelKvmProxy" AfterTargets="Build" Condition="'$(EnableVncAmtKvm)' == 'true'">
+    <MSBuild Projects="AmtKvmProxy\EasyConnect.AmtKvmProxy.csproj" Targets="Build" Properties="Configuration=$(Configuration);OutputPath=$(TargetDir)" />
+    <Copy SourceFiles="$(IntelAmtDirectory)\KVMLib.dll" DestinationFolder="$(TargetDir)" />
+    <MakeDir Directories="$(EasyConnectOutputDirectory)" />
+    <Copy SourceFiles="$(TargetDir)EasyConnect.AmtKvmProxy.exe;$(TargetDir)KVMLib.dll" DestinationFolder="$(EasyConnectOutputDirectory)" />
+  </Target>
+  <Target Name="RemoveIntelKvmProxy" AfterTargets="Build" Condition="'$(EnableVncAmtKvm)' != 'true'">
+    <Delete Files="$(TargetDir)EasyConnect.AmtKvmProxy.exe;$(TargetDir)KVMLib.dll;$(EasyConnectOutputDirectory)\EasyConnect.AmtKvmProxy.exe;$(EasyConnectOutputDirectory)\KVMLib.dll" />
+  </Target>
+  <Target Name="ValidateVncAmtKvm" BeforeTargets="PrepareForBuild">
+    <Message Importance="high" Text="VNC Intel AMT KVM support: $(EnableVncAmtKvm)" />
+  </Target>
+  </Project>

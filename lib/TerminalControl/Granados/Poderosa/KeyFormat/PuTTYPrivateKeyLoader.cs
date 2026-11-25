@@ -179,8 +179,8 @@ namespace Granados.Poderosa.KeyFormat {
                 if (curve == null) {
                     throw new SSHException(Strings.GetString("UnsupportedEllipticCurve") + " : " + curveName);
                 }
-                ECPoint publicKey;
-                if (!ECPoint.Parse(publicKeyPt, curve, out publicKey)) {
+                Granados.PKI.ECPoint publicKey;
+                if (!Granados.PKI.ECPoint.Parse(publicKeyPt, curve, out publicKey)) {
                     throw new SSHException(Strings.GetString("NotValidPrivateKeyFile") + " (parsing public key failed)");
                 }
 

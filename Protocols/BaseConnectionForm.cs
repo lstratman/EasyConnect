@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -39,10 +40,10 @@ namespace EasyConnect.Protocols
 		/// <summary>
 		/// Flag indicating whether the form is in the process of closing.
 		/// </summary>
-		protected bool IsClosing
+		public bool IsClosing
 		{
 			get;
-			set;
+			protected set;
 		}
 
 		/// <summary>
@@ -52,6 +53,21 @@ namespace EasyConnect.Protocols
 		{
 			get;
 			set;
+		}
+
+		protected void SetConnectingStatus(string status)
+		{
+			if (IsDisposed || Disposing || IsClosing)
+				return;
+
+			if (InvokeRequired)
+			{
+				if (IsHandleCreated)
+					Invoke(new Action<string>(SetConnectingStatus), status);
+				return;
+			}
+
+			connectingLabel.Text = status;
 		}
 
 		/// <summary>
@@ -114,10 +130,9 @@ namespace EasyConnect.Protocols
 							IsConnected = true;
 							connectingLabel.Visible = false;
 							ConnectionWindow.Visible = true;
-						}));
 
-			if (Connected != null)
-				Connected(sender, e);
+							Connected?.Invoke(sender, e);
+						}));
 		}
 
 		/// <summary>
@@ -155,56 +170,66 @@ namespace EasyConnect.Protocols
 		/// <param name="e">Arguments associated with this event.</param>
 		protected virtual void OnConnectionLost(object sender, EventArgs e)
 		{
-			if (IsClosing || Parent == null)
+			if (IsClosing || IsDisposed || Disposing || Parent == null || !IsHandleCreated)
 				return;
 
-			Invoke(
-				new Action(
-					() =>
+			try
+			{
+				Invoke(
+					new Action(
+						() =>
 						{
 							ConnectionWindow.Visible = false;
 							disconnectedPanel.Visible = true;
 							disconnectedLabel.Text = IsConnected
-								                         ? "Disconnected"
-								                         : "Unable to connect";
+														 ? "Disconnected"
+														 : "Unable to connect";
 
 							Exception exception = e is ErrorEventArgs
-								                      ? (e as ErrorEventArgs).GetException()
-								                      : null;
+													  ? (e as ErrorEventArgs).GetException()
+													  : null;
 
 							string exceptionMessage = null;
 
 							if (exception != null)
-                            {
+							{
 								exceptionMessage = exception.Message;
 
 								AggregateException aggregateException = exception as AggregateException;
 
 								if (aggregateException != null)
-                                {
+								{
 									foreach (Exception innerException in aggregateException.InnerExceptions)
-                                    {
+									{
 										exceptionMessage += Environment.NewLine + Environment.NewLine + innerException.Message;
-                                    }
-                                }
-                            }
+									}
+								}
+							}
 
 							_errorMessageLinkLabel.Visible = exception != null && !String.IsNullOrEmpty(exception.Message);
 							ConnectionErrorMessage = exception == null
-								                         ? null
-								                         : exceptionMessage.Replace("\r", "").Replace("\n", "\r\n");
+														 ? null
+														 : exceptionMessage.Replace("\r", "").Replace("\n", "\r\n");
 							_textLayoutPanel.Width = _errorMessageLinkLabel.Visible
-								                         ? _errorMessageLinkLabel.Width + disconnectedLabel.Width
-								                         : disconnectedLabel.Width;
+														 ? _errorMessageLinkLabel.Width + disconnectedLabel.Width
+														 : disconnectedLabel.Width;
 							_textLayoutPanel.Location = new Point(
 								Convert.ToInt32(Math.Round((disconnectedPanel.Width - _textLayoutPanel.Width) / (double) 2)), _textLayoutPanel.Location.Y);
 
 							connectingLabel.Visible = false;
 							IsConnected = false;
-						}));
 
-			if (ConnectionLost != null)
-				ConnectionLost(sender, e);
+							ConnectionLost?.Invoke(sender, e);
+						}));
+			}
+			catch (ObjectDisposedException)
+			{
+				Debug.WriteLine("Ignoring connection-lost notification after the connection form was disposed.");
+			}
+			catch (InvalidOperationException) when (IsDisposed || Disposing || !IsHandleCreated)
+			{
+				Debug.WriteLine("Ignoring connection-lost notification while the connection form is closing.");
+			}
 		}
 
 		/// <summary>

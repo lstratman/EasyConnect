@@ -1,0 +1,22 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="IntelAmt.props" />
+  <PropertyGroup Condition="'$(IntelAmtEnabled)' == 'true'">
+	<DefineConstants>$(DefineConstants);INTEL_AMT</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(IntelAmtEnabled)' == 'true'">
+	<Reference Include="HLAPI"><HintPath>$(IntelAmtDirectory)\HLAPI.dll</HintPath><Private>True</Private></Reference>
+	<Reference Include="DotNetWSManClient"><HintPath>$(IntelAmtDirectory)\DotNetWSManClient.dll</HintPath><Private>True</Private></Reference>
+	<Reference Include="Intel.Wsman.Scripting"><HintPath>$(IntelAmtDirectory)\Intel.Wsman.Scripting.dll</HintPath><Private>True</Private></Reference>
+	<Reference Include="IWSManClient"><HintPath>$(IntelAmtDirectory)\IWSManClient.dll</HintPath><Private>True</Private></Reference>
+	<Reference Include="WebStorage"><HintPath>$(IntelAmtDirectory)\WebStorage.dll</HintPath><Private>True</Private></Reference>
+	<Content Include="$(IntelAmtDirectory)\Intel AMT SDK License.txt">
+	  <Link>Intel AMT SDK License.txt</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
+  </ItemGroup>
+  <Target Name="ValidateIntelAmt" BeforeTargets="PrepareForBuild">
+	<Error Condition="'$(EnableIntelAmt)' != '' and '$(IntelAmtEnabled)' == ''" Text="EnableIntelAmt must be true, false, 1, 0, yes, or no." />
+	<Error Condition="'$(IntelAmtEnabled)' == 'true' and '$(IntelAmtFilesPresent)' != 'true'" Text="Intel AMT is enabled, but its DLLs or license are missing from $(IntelAmtDirectory)." />
+	<Message Importance="high" Text="Intel AMT support: $(IntelAmtEnabled)" />
+  </Target>
+</Project>
